@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/admin-layout :: adminHead(#{admin.dashboard})}"></head>
+<body class="admin-body">
+<div class="admin-wrapper">
+    <!-- Sidebar -->
+    <div th:replace="~{fragments/admin-layout :: adminSidebar}"></div>
+
+    <!-- Main Content -->
+    <div class="admin-content">
+        <div th:replace="~{fragments/admin-layout :: adminTopbar}"></div>
+
+        <div class="admin-main">
+            <h4 class="mb-4" th:text="#{admin.dashboard}">Dashboard</h4>
+
+            <!-- Flash Messages -->
+            <div th:if="${message}" class="alert alert-success alert-dismissible fade show">
+                <span th:text="${message}"></span>
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+
+            <!-- Stats Cards -->
+            <div class="row g-4 mb-4">
+                <div class="col-md-6 col-xl-3">
+                    <div class="stat-card">
+                        <div class="stat-card-icon bg-blue">
+                            <i class="bi bi-box-seam"></i>
+                        </div>
+                        <div class="stat-card-info">
+                            <h3 th:text="${productCount}">0</h3>
+                            <p th:text="#{admin.products}">Products</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-xl-3">
+                    <div class="stat-card">
+                        <div class="stat-card-icon bg-green">
+                            <i class="bi bi-folder2"></i>
+                        </div>
+                        <div class="stat-card-info">
+                            <h3 th:text="${categoryCount}">0</h3>
+                            <p th:text="#{admin.categories}">Categories</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-xl-3">
+                    <div class="stat-card">
+                        <div class="stat-card-icon bg-orange">
+                            <i class="bi bi-tags"></i>
+                        </div>
+                        <div class="stat-card-info">
+                            <h3 th:text="${tagCount}">0</h3>
+                            <p th:text="#{admin.tags}">Tags</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-xl-3">
+                    <div class="stat-card">
+                        <div class="stat-card-icon bg-purple">
+                            <i class="bi bi-image"></i>
+                        </div>
+                        <div class="stat-card-info">
+                            <h3 th:text="${imageCount}">0</h3>
+                            <p th:text="#{admin.images}">Images</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="admin-card">
+                <div class="admin-card-header">
+                    <h5>Quick Actions</h5>
+                </div>
+                <div class="admin-card-body p-4">
+                    <div class="d-flex flex-wrap gap-3">
+                        <a href="/admin/products/add" class="btn btn-primary">
+                            <i class="bi bi-plus-circle"></i> Add Product
+                        </a>
+                        <a href="/admin/categories/add" class="btn btn-outline-primary">
+                            <i class="bi bi-folder-plus"></i> Add Category
+                        </a>
+                        <a href="/admin/images" class="btn btn-outline-primary">
+                            <i class="bi bi-cloud-upload"></i> Upload Images
+                        </a>
+                        <a href="/admin/menus" class="btn btn-outline-primary">
+                            <i class="bi bi-list-nested"></i> Manage Menus
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div th:replace="~{fragments/admin-layout :: adminScripts}"></div>
+</body>
+</html>

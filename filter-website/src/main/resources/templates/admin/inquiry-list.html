@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/admin-layout :: adminHead('Inquiries')}"></head>
+<body class="admin-body">
+<div class="admin-wrapper">
+    <div th:replace="~{fragments/admin-layout :: adminSidebar}"></div>
+
+    <div class="admin-content">
+        <div th:replace="~{fragments/admin-layout :: adminTopbar}"></div>
+
+        <div class="admin-main">
+            <!-- Flash Messages -->
+            <div th:if="${message}" class="alert alert-success alert-dismissible fade show">
+                <span th:text="${message}"></span>
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+            <div th:if="${error}" class="alert alert-danger alert-dismissible fade show">
+                <span th:text="${error}"></span>
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+
+            <div class="admin-card">
+                <div class="admin-card-header">
+                    <h5>Customer Inquiries</h5>
+                    <span class="badge bg-primary" th:text="${inquiryPage.total} + ' total'">0 total</span>
+                </div>
+                <div class="admin-card-body">
+                    <div class="table-responsive">
+                        <table class="table admin-table mb-0">
+                            <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Company</th>
+                                <th>Product Interest</th>
+                                <th>Message</th>
+                                <th>Date</th>
+                                <th th:text="#{admin.actions}">Actions</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="inq : ${inquiryPage.records}"
+                                th:class="${inq.isRead != null and !inq.isRead} ? 'fw-medium' : ''">
+                                <td th:text="${inq.id}">1</td>
+                                <td th:text="${inq.name}">Name</td>
+                                <td>
+                                    <a th:href="'mailto:' + ${inq.email}" th:text="${inq.email}">email@example.com</a>
+                                </td>
+                                <td th:text="${inq.company} ?: '-'" class="text-muted">Company</td>
+                                <td th:text="${inq.productInterest} ?: '-'" class="text-muted">Product</td>
+                                <td>
+                                    <span th:text="${#strings.abbreviate(inq.message, 50)}" class="text-muted">Message preview...</span>
+                                </td>
+                                <td class="text-muted text-nowrap"
+                                    th:text="${inq.createdTime != null} ? ${#temporals.format(inq.createdTime, 'yyyy-MM-dd HH:mm')} : '-'">2026-01-01</td>
+                                <td class="actions">
+                                    <form th:action="@{/admin/inquiries/delete/{id}(id=${inq.id})}"
+                                          method="post" class="d-inline"
+                                          onsubmit="return confirm('Delete this inquiry?')">
+                                        <button type="submit" class="btn btn-sm btn-outline-danger">
+                                            <i class="bi bi-trash"></i>
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                            <tr th:if="${inquiryPage.records.isEmpty()}">
+                                <td colspan="8" class="text-center text-muted py-4">No inquiries yet.</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Pagination -->
+                    <div class="p-3" th:if="${inquiryPage.pages > 1}">
+                        <nav>
+                            <ul class="pagination mb-0 justify-content-center">
+                                <li class="page-item" th:classappend="${inquiryPage.current <= 1} ? 'disabled'">
+                                    <a class="page-link" th:href="@{/admin/inquiries(page=${inquiryPage.current - 1})}">Previous</a>
+                                </li>
+                                <th:block th:each="i : ${#numbers.sequence(1, inquiryPage.pages)}">
+                                    <li class="page-item" th:classappend="${i == inquiryPage.current} ? 'active'">
+                                        <a class="page-link" th:href="@{/admin/inquiries(page=${i})}" th:text="${i}">1</a>
+                                    </li>
+                                </th:block>
+                                <li class="page-item" th:classappend="${inquiryPage.current >= inquiryPage.pages} ? 'disabled'">
+                                    <a class="page-link" th:href="@{/admin/inquiries(page=${inquiryPage.current + 1})}">Next</a>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div th:replace="~{fragments/admin-layout :: adminScripts}"></div>
+</body>
+</html>

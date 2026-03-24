@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<!-- Product Sidebar Fragment -->
+<aside th:fragment="productSidebar(categoryTree, currentCategory)" class="product-sidebar">
+
+    <!-- Search Box -->
+    <div class="sidebar-widget">
+        <h5 class="sidebar-title" th:text="#{search.button}">Search</h5>
+        <form th:action="@{/search}" method="get">
+            <div class="input-group">
+                <input type="text" name="keyword" class="form-control"
+                       th:placeholder="#{search.placeholder}">
+                <button class="btn btn-primary" type="submit">
+                    <i class="bi bi-search"></i>
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Category Tree -->
+    <div class="sidebar-widget">
+        <h5 class="sidebar-title" th:text="#{home.categories.title}">Product Categories</h5>
+        <ul class="category-tree" th:if="${categoryTree != null}">
+            <li th:each="cat : ${categoryTree}" class="category-tree-item"
+                th:classappend="${currentCategory != null and currentCategory.id == cat.id} ? ' active' : ''">
+                <div class="category-tree-link d-flex justify-content-between align-items-center">
+                    <a th:href="@{/categories/{slug}(slug=${cat.slug})}">
+                        <span th:text="${cat.name}">Category Name</span>
+                    </a>
+                    <span class="badge bg-light text-muted" th:if="${cat.productCount != null and cat.productCount > 0}"
+                          th:text="${cat.productCount}">0</span>
+                </div>
+                <!-- Sub Categories -->
+                <ul class="category-subtree" th:if="${cat.children != null and !cat.children.isEmpty()}">
+                    <li th:each="child : ${cat.children}"
+                        th:classappend="${currentCategory != null and currentCategory.id == child.id} ? ' active' : ''">
+                        <div class="category-tree-link d-flex justify-content-between align-items-center">
+                            <a th:href="@{/categories/{slug}(slug=${child.slug})}">
+                                <span th:text="${child.name}">Sub Category</span>
+                            </a>
+                            <span class="badge bg-light text-muted"
+                                  th:if="${child.productCount != null and child.productCount > 0}"
+                                  th:text="${child.productCount}">0</span>
+                        </div>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+
+    <!-- Quick Contact -->
+    <div class="sidebar-widget sidebar-contact">
+        <h5 class="sidebar-title" th:text="#{footer.contact}">Contact</h5>
+        <div class="sidebar-contact-body">
+            <p><i class="bi bi-envelope"></i> info@philitee.com</p>
+            <p><i class="bi bi-whatsapp"></i> WhatsApp: +86-XXX-XXXX-XXXX</p>
+            <a th:href="@{/contact}" class="btn btn-primary btn-sm w-100 mt-2"
+               th:text="#{product.inquiry}">Send Inquiry</a>
+        </div>
+    </div>
+
+</aside>
+
+</html>

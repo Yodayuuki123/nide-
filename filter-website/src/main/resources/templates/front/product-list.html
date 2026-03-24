@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/header :: htmlHead(
+    ${currentCategory != null} ? ${currentCategory.name} + ' - Products' : (${currentTag != null} ? ${currentTag.name} + ' - Products' : #{breadcrumb.products}),
+    ${currentCategory != null} ? ${currentCategory.description} : #{site.description}
+)}"></head>
+<body>
+<div th:replace="~{fragments/header :: navbar}"></div>
+
+<!-- Page Hero -->
+<section class="page-hero">
+    <div class="container">
+        <h1 th:if="${currentCategory != null}" th:text="${currentCategory.name}">Category Name</h1>
+        <h1 th:if="${currentTag != null}" th:text="${currentTag.name}">Tag Name</h1>
+        <h1 th:if="${currentCategory == null and currentTag == null}" th:text="#{breadcrumb.products}">Products</h1>
+        <!-- Breadcrumb -->
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb mb-0">
+                <li class="breadcrumb-item"><a href="/" th:text="#{breadcrumb.home}">Home</a></li>
+                <li class="breadcrumb-item" th:if="${currentCategory == null and currentTag == null}">
+                    <span th:text="#{breadcrumb.products}">Products</span>
+                </li>
+                <li class="breadcrumb-item" th:if="${currentCategory != null}">
+                    <a href="/products" th:text="#{breadcrumb.products}">Products</a>
+                </li>
+                <li class="breadcrumb-item active" th:if="${currentCategory != null}" th:text="${currentCategory.name}">Category</li>
+                <li class="breadcrumb-item" th:if="${currentTag != null}">
+                    <a href="/products" th:text="#{breadcrumb.products}">Products</a>
+                </li>
+                <li class="breadcrumb-item active" th:if="${currentTag != null}" th:text="${currentTag.name}">Tag</li>
+            </ol>
+        </nav>
+    </div>
+</section>
+
+<section class="section-padding">
+    <div class="container">
+        <!-- Category Description -->
+        <div th:if="${currentCategory != null and currentCategory.description != null}" class="mb-4">
+            <p class="text-muted" th:text="${currentCategory.description}">Category description</p>
+        </div>
+
+        <!-- Child Categories -->
+        <div th:if="${childCategories != null and !childCategories.isEmpty()}" class="mb-4">
+            <div class="d-flex flex-wrap gap-2">
+                <a th:each="child : ${childCategories}"
+                   th:href="@{/categories/{slug}(slug=${child.slug})}"
+                   class="btn btn-outline-primary btn-sm">
+                    <span th:text="${child.name}">Sub Category</span>
+                    <span th:if="${child.productCount != null}" class="badge bg-primary ms-1"
+                          th:text="${child.productCount}">5</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="row g-4">
+            <!-- Sidebar -->
+            <div class="col-lg-3 d-none d-lg-block">
+                <div th:replace="~{fragments/sidebar :: productSidebar(${categoryTree}, ${currentCategory})}"></div>
+            </div>
+
+            <!-- Product Grid -->
+            <div class="col-lg-9">
+                <!-- Toolbar -->
+                <div class="d-flex justify-content-between align-items-center mb-4" th:if="${productPage != null}">
+                    <div class="text-muted">
+                        <span th:text="#{pagination.showing}">Showing</span>
+                        <strong th:text="${productPage.total}">0</strong>
+                        <span th:text="#{pagination.results}">results</span>
+                    </div>
+                    <div class="d-flex gap-2">
+                        <select class="form-select form-select-sm" style="width: auto;" onchange="changePageSize(this.value)">
+                            <option value="12" th:selected="${productPage.size == 12}">12 / page</option>
+                            <option value="24" th:selected="${productPage.size == 24}">24 / page</option>
+                            <option value="48" th:selected="${productPage.size == 48}">48 / page</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Product Grid (Paged - for /products and /categories/{slug}) -->
+                <div th:if="${productPage != null}" class="row g-4">
+                    <div class="col-6 col-md-4" th:each="product : ${productPage.records}">
+                        <div class="product-card">
+                            <a th:href="@{/products/{slug}(slug=${product.slug})}" class="product-card-img">
+                                <img th:if="${product.mainImage != null}" th:src="${product.mainImage.url}"
+                                     th:alt="${product.name}">
+                                <div th:unless="${product.mainImage != null}" class="product-placeholder">
+                                    <i class="bi bi-image"></i>
+                                </div>
+                            </a>
+                            <div class="product-card-body">
+                                <div class="product-card-categories" th:if="${product.categories != null and !product.categories.isEmpty()}">
+                                    <span th:each="cat,iter : ${product.categories}" th:if="${iter.index < 1}">
+                                        <a th:href="@{/categories/{slug}(slug=${cat.slug})}"
+                                           th:text="${cat.name}" class="product-card-cat">Category</a>
+                                    </span>
+                                </div>
+                                <h6 class="product-card-title">
+                                    <a th:href="@{/products/{slug}(slug=${product.slug})}"
+                                       th:text="${product.name}">Product Name</a>
+                                </h6>
+                                <div class="product-card-sku" th:if="${product.sku != null}">
+                                    <small class="text-muted" th:text="'SKU: ' + ${product.sku}">SKU: ABC-123</small>
+                                </div>
+                            </div>
+                            <div class="product-card-footer">
+                                <a th:href="@{/products/{slug}(slug=${product.slug})}" class="btn btn-sm btn-outline-primary w-100">
+                                    <i class="bi bi-eye"></i> <span th:text="#{product.view_detail}">View Details</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div th:if="${productPage.records.isEmpty()}" class="col-12 text-center py-5">
+                        <i class="bi bi-inbox fs-1 text-muted d-block mb-3"></i>
+                        <p class="text-muted" th:text="#{search.no_results}">No products found.</p>
+                    </div>
+                </div>
+
+                <!-- Product List (Non-paged - for /tags/{slug}) -->
+                <div th:if="${productPage == null and products != null}" class="row g-4">
+                    <div class="col-6 col-md-4" th:each="product : ${products}">
+                        <div class="product-card">
+                            <a th:href="@{/products/{slug}(slug=${product.slug})}" class="product-card-img">
+                                <img th:if="${product.mainImage != null}" th:src="${product.mainImage.url}"
+                                     th:alt="${product.name}">
+                                <div th:unless="${product.mainImage != null}" class="product-placeholder">
+                                    <i class="bi bi-image"></i>
+                                </div>
+                            </a>
+                            <div class="product-card-body">
+                                <h6 class="product-card-title">
+                                    <a th:href="@{/products/{slug}(slug=${product.slug})}"
+                                       th:text="${product.name}">Product Name</a>
+                                </h6>
+                                <div class="product-card-sku" th:if="${product.sku != null}">
+                                    <small class="text-muted" th:text="'SKU: ' + ${product.sku}">SKU: ABC-123</small>
+                                </div>
+                            </div>
+                            <div class="product-card-footer">
+                                <a th:href="@{/products/{slug}(slug=${product.slug})}" class="btn btn-sm btn-outline-primary w-100">
+                                    <i class="bi bi-eye"></i> <span th:text="#{product.view_detail}">View Details</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div th:if="${products.isEmpty()}" class="col-12 text-center py-5">
+                        <i class="bi bi-inbox fs-1 text-muted d-block mb-3"></i>
+                        <p class="text-muted" th:text="#{search.no_results}">No products found.</p>
+                    </div>
+                </div>
+
+                <!-- Pagination -->
+                <div th:if="${productPage != null and productPage.pages > 1}" class="mt-4">
+                    <nav>
+                        <ul class="pagination justify-content-center">
+                            <li class="page-item" th:classappend="${productPage.current <= 1} ? 'disabled'">
+                                <a class="page-link" th:href="${currentCategory != null} ?
+                                    @{/categories/{slug}(slug=${currentCategory.slug}, page=${productPage.current - 1}, size=${productPage.size})} :
+                                    @{/products(page=${productPage.current - 1}, size=${productPage.size})}">
+                                    <i class="bi bi-chevron-left"></i>
+                                </a>
+                            </li>
+                            <th:block th:each="i : ${#numbers.sequence(1, productPage.pages)}">
+                                <li class="page-item" th:classappend="${i == productPage.current} ? 'active'"
+                                    th:if="${i <= 3 or i > productPage.pages - 3 or (i >= productPage.current - 1 and i <= productPage.current + 1)}">
+                                    <a class="page-link" th:href="${currentCategory != null} ?
+                                        @{/categories/{slug}(slug=${currentCategory.slug}, page=${i}, size=${productPage.size})} :
+                                        @{/products(page=${i}, size=${productPage.size})}"
+                                       th:text="${i}">1</a>
+                                </li>
+                            </th:block>
+                            <li class="page-item" th:classappend="${productPage.current >= productPage.pages} ? 'disabled'">
+                                <a class="page-link" th:href="${currentCategory != null} ?
+                                    @{/categories/{slug}(slug=${currentCategory.slug}, page=${productPage.current + 1}, size=${productPage.size})} :
+                                    @{/products(page=${productPage.current + 1}, size=${productPage.size})}">
+                                    <i class="bi bi-chevron-right"></i>
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CTA Strip -->
+<section class="cta-strip">
+    <div class="container text-center">
+        <h3 th:text="#{cta.title}">Need Custom Filtration Solutions?</h3>
+        <p class="mb-4" th:text="#{cta.subtitle}">Contact our team for professional consultation and competitive quotation</p>
+        <a href="/contact" class="btn btn-accent btn-lg">
+            <i class="bi bi-envelope"></i> <span th:text="#{cta.button}">Get In Touch</span>
+        </a>
+    </div>
+</section>
+
+<div th:replace="~{fragments/footer :: footer}"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="/static/js/main.js"></script>
+<script>
+    function changePageSize(size) {
+        var url = new URL(window.location);
+        url.searchParams.set('size', size);
+        url.searchParams.set('page', '1');
+        window.location.href = url.toString();
+    }
+</script>
+</body>
+</html>

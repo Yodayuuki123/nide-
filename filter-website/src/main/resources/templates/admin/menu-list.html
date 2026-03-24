@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/admin-layout :: adminHead(#{admin.menus})}"></head>
+<body class="admin-body">
+<div class="admin-wrapper">
+    <div th:replace="~{fragments/admin-layout :: adminSidebar}"></div>
+
+    <div class="admin-content">
+        <div th:replace="~{fragments/admin-layout :: adminTopbar}"></div>
+
+        <div class="admin-main">
+            <!-- Flash Messages -->
+            <div th:if="${message}" class="alert alert-success alert-dismissible fade show">
+                <span th:text="${message}"></span>
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+            <div th:if="${error}" class="alert alert-danger alert-dismissible fade show">
+                <span th:text="${error}"></span>
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+
+            <div class="row g-4">
+                <!-- Menu List -->
+                <div class="col-lg-8">
+                    <div class="admin-card">
+                        <div class="admin-card-header">
+                            <h5 th:text="#{admin.menus}">Menu Management</h5>
+                        </div>
+                        <div class="admin-card-body">
+                            <div class="table-responsive">
+                                <table class="table admin-table mb-0">
+                                    <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Name</th>
+                                        <th>Location</th>
+                                        <th>Items</th>
+                                        <th>Created</th>
+                                        <th th:text="#{admin.actions}">Actions</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr th:each="menu : ${menus}">
+                                        <td th:text="${menu.id}">1</td>
+                                        <td>
+                                            <a th:href="@{/admin/menus/{id}(id=${menu.id})}"
+                                               th:text="${menu.name}" class="fw-medium">Menu Name</a>
+                                        </td>
+                                        <td>
+                                            <span class="badge bg-info text-dark" th:text="${menu.location} ?: 'unassigned'">primary</span>
+                                        </td>
+                                        <td>
+                                            <span class="badge bg-light text-dark"
+                                                  th:text="${menu.menuItems != null} ? ${menu.menuItems.size()} : 0">0</span>
+                                        </td>
+                                        <td class="text-muted" th:text="${menu.createdAt != null} ? ${#temporals.format(menu.createdAt, 'yyyy-MM-dd')} : '-'">2026-01-01</td>
+                                        <td class="actions">
+                                            <a th:href="@{/admin/menus/{id}(id=${menu.id})}"
+                                               class="btn btn-sm btn-outline-primary" title="Manage">
+                                                <i class="bi bi-gear"></i>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                    <tr th:if="${menus == null or menus.isEmpty()}">
+                                        <td colspan="6" class="text-center text-muted py-4">No menus found.</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Add Menu Form -->
+                <div class="col-lg-4">
+                    <div class="admin-form">
+                        <h6 class="mb-3">Add New Menu</h6>
+                        <form th:action="@{/admin/menus/save}" method="post">
+                            <div class="mb-3">
+                                <label class="form-label">Menu Name <span class="text-danger">*</span></label>
+                                <input type="text" name="name" class="form-control" required placeholder="e.g. Main Navigation">
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Location</label>
+                                <select name="location" class="form-select">
+                                    <option value="">— Select —</option>
+                                    <option value="primary">Primary</option>
+                                    <option value="footer">Footer</option>
+                                    <option value="sidebar">Sidebar</option>
+                                </select>
+                            </div>
+                            <button type="submit" class="btn btn-primary w-100">
+                                <i class="bi bi-plus-circle"></i> Create Menu
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div th:replace="~{fragments/admin-layout :: adminScripts}"></div>
+</body>
+</html>

@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /admin/
+Disallow: /static/js/admin.js
+
+Sitemap: https://filter.philitee.com/sitemap.xml

@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/admin-layout :: adminHead(#{admin.categories})}"></head>
+<body class="admin-body">
+<div class="admin-wrapper">
+    <div th:replace="~{fragments/admin-layout :: adminSidebar}"></div>
+
+    <div class="admin-content">
+        <div th:replace="~{fragments/admin-layout :: adminTopbar}"></div>
+
+        <div class="admin-main">
+            <!-- Flash Messages -->
+            <div th:if="${message}" class="alert alert-success alert-dismissible fade show">
+                <span th:text="${message}"></span>
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+            <div th:if="${error}" class="alert alert-danger alert-dismissible fade show">
+                <span th:text="${error}"></span>
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+
+            <div class="admin-card">
+                <div class="admin-card-header">
+                    <h5 th:text="#{admin.categories}">Category Management</h5>
+                    <a href="/admin/categories/add" class="btn btn-primary btn-sm">
+                        <i class="bi bi-plus-circle"></i> <span th:text="#{admin.add}">Add New</span>
+                    </a>
+                </div>
+                <div class="admin-card-body">
+                    <div class="table-responsive">
+                        <table class="table admin-table mb-0">
+                            <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Name</th>
+                                <th>Slug</th>
+                                <th>Parent</th>
+                                <th>Products</th>
+                                <th>Created</th>
+                                <th th:text="#{admin.actions}">Actions</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <!-- Top-level categories -->
+                            <th:block th:each="cat : ${categoryTree}">
+                                <tr>
+                                    <td th:text="${cat.id}">1</td>
+                                    <td>
+                                        <strong>
+                                            <i class="bi bi-folder2 text-primary me-1"></i>
+                                            <span th:text="${cat.name}">Category</span>
+                                        </strong>
+                                    </td>
+                                    <td class="text-muted" th:text="${cat.slug}">slug</td>
+                                    <td class="text-muted">—</td>
+                                    <td>
+                                        <span class="badge bg-light text-dark" th:text="${cat.productCount} ?: 0">0</span>
+                                    </td>
+                                    <td class="text-muted" th:text="${cat.createdAt != null} ? ${#temporals.format(cat.createdAt, 'yyyy-MM-dd')} : '-'">2026-01-01</td>
+                                    <td class="actions">
+                                        <a th:href="@{/admin/categories/edit/{id}(id=${cat.id})}"
+                                           class="btn btn-sm btn-outline-primary me-1" title="Edit">
+                                            <i class="bi bi-pencil"></i>
+                                        </a>
+                                        <button type="button" class="btn btn-sm btn-outline-danger"
+                                                th:data-id="${cat.id}"
+                                                th:data-name="${cat.name}"
+                                                data-bs-toggle="modal" data-bs-target="#deleteModal"
+                                                onclick="prepareDelete(this)">
+                                            <i class="bi bi-trash"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                                <!-- Child categories -->
+                                <tr th:each="child : ${cat.children}" class="table-light">
+                                    <td th:text="${child.id}">2</td>
+                                    <td style="padding-left: 2.5rem;">
+                                        <i class="bi bi-arrow-return-right text-muted me-1"></i>
+                                        <span th:text="${child.name}">Sub Category</span>
+                                    </td>
+                                    <td class="text-muted" th:text="${child.slug}">slug</td>
+                                    <td class="text-muted" th:text="${cat.name}">Parent</td>
+                                    <td>
+                                        <span class="badge bg-light text-dark" th:text="${child.productCount} ?: 0">0</span>
+                                    </td>
+                                    <td class="text-muted" th:text="${child.createdAt != null} ? ${#temporals.format(child.createdAt, 'yyyy-MM-dd')} : '-'">2026-01-01</td>
+                                    <td class="actions">
+                                        <a th:href="@{/admin/categories/edit/{id}(id=${child.id})}"
+                                           class="btn btn-sm btn-outline-primary me-1" title="Edit">
+                                            <i class="bi bi-pencil"></i>
+                                        </a>
+                                        <button type="button" class="btn btn-sm btn-outline-danger"
+                                                th:data-id="${child.id}"
+                                                th:data-name="${child.name}"
+                                                data-bs-toggle="modal" data-bs-target="#deleteModal"
+                                                onclick="prepareDelete(this)">
+                                            <i class="bi bi-trash"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            </th:block>
+                            <tr th:if="${categoryTree == null or categoryTree.isEmpty()}">
+                                <td colspan="7" class="text-center text-muted py-4">No categories found.</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Delete Confirmation Modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Confirm Delete</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <p th:text="#{admin.confirm_delete}">Are you sure you want to delete this item?</p>
+                <p class="fw-medium" id="deleteItemName"></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" th:text="#{admin.cancel}">Cancel</button>
+                <form id="deleteForm" method="post" class="d-inline">
+                    <button type="submit" class="btn btn-danger" th:text="#{admin.delete}">Delete</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div th:replace="~{fragments/admin-layout :: adminScripts}"></div>
+<script>
+    function prepareDelete(btn) {
+        document.getElementById('deleteItemName').textContent = btn.getAttribute('data-name');
+        document.getElementById('deleteForm').action = '/admin/categories/delete/' + btn.getAttribute('data-id');
+    }
+</script>
+</body>
+</html>

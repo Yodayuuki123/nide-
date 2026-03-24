@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/admin-layout :: adminHead(#{admin.images})}"></head>
+<body class="admin-body">
+<div class="admin-wrapper">
+    <div th:replace="~{fragments/admin-layout :: adminSidebar}"></div>
+
+    <div class="admin-content">
+        <div th:replace="~{fragments/admin-layout :: adminTopbar}"></div>
+
+        <div class="admin-main">
+            <!-- Flash Messages -->
+            <div th:if="${message}" class="alert alert-success alert-dismissible fade show">
+                <span th:text="${message}"></span>
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+            <div th:if="${error}" class="alert alert-danger alert-dismissible fade show">
+                <span th:text="${error}"></span>
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+
+            <!-- Upload Zone -->
+            <div class="admin-card mb-4">
+                <div class="admin-card-body p-4">
+                    <div class="upload-zone" id="pageUploadZone">
+                        <i class="bi bi-cloud-arrow-up"></i>
+                        <h5>Upload Images</h5>
+                        <p class="text-muted mb-0">Click or drag files here to upload</p>
+                        <input type="file" id="pageFileInput" accept="image/*" style="display: none">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Image Grid -->
+            <div class="admin-card">
+                <div class="admin-card-header">
+                    <h5>
+                        <span th:text="#{admin.images}">Images</span>
+                        <span class="badge bg-light text-dark ms-2" th:text="${imagePage.total}">0</span>
+                    </h5>
+                </div>
+                <div class="admin-card-body p-4">
+                    <div class="image-grid">
+                        <div th:each="img : ${imagePage.records}" class="image-grid-item">
+                            <div class="image-grid-thumb">
+                                <img th:src="${img.url} ?: ('/wp-content/uploads' + ${img.filePath})"
+                                     th:alt="${img.altText} ?: ${img.fileName}">
+                            </div>
+                            <div class="image-grid-info">
+                                <small class="text-truncate d-block" th:text="${img.fileName}">filename.jpg</small>
+                                <small class="text-muted" th:if="${img.width != null}"
+                                       th:text="${img.width} + 'x' + ${img.height}">800x600</small>
+                            </div>
+                            <div class="image-grid-actions">
+                                <button type="button" class="btn btn-sm btn-outline-danger"
+                                        th:onclick="'deleteImage(' + ${img.id} + ', this)'">
+                                    <i class="bi bi-trash"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div th:if="${imagePage.records.isEmpty()}" class="text-center text-muted py-4">
+                        <i class="bi bi-image fs-1 d-block mb-2"></i>
+                        <p>No images uploaded yet.</p>
+                    </div>
+
+                    <!-- Pagination -->
+                    <div class="mt-4" th:if="${imagePage.pages > 1}">
+                        <nav>
+                            <ul class="pagination mb-0 justify-content-center">
+                                <li class="page-item" th:classappend="${imagePage.current <= 1} ? 'disabled'">
+                                    <a class="page-link" th:href="@{/admin/images(page=${imagePage.current - 1}, size=${imagePage.size})}">Previous</a>
+                                </li>
+                                <th:block th:each="i : ${#numbers.sequence(1, imagePage.pages)}">
+                                    <li class="page-item" th:classappend="${i == imagePage.current} ? 'active'">
+                                        <a class="page-link" th:href="@{/admin/images(page=${i}, size=${imagePage.size})}" th:text="${i}">1</a>
+                                    </li>
+                                </th:block>
+                                <li class="page-item" th:classappend="${imagePage.current >= imagePage.pages} ? 'disabled'">
+                                    <a class="page-link" th:href="@{/admin/images(page=${imagePage.current + 1}, size=${imagePage.size})}">Next</a>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div th:replace="~{fragments/admin-layout :: adminScripts}"></div>
+</body>
+</html>

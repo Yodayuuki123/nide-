@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/admin-layout :: adminHead(${product.id != null} ? 'Edit Product' : 'Add Product')}"></head>
+<body class="admin-body">
+<div class="admin-wrapper">
+    <div th:replace="~{fragments/admin-layout :: adminSidebar}"></div>
+
+    <div class="admin-content">
+        <div th:replace="~{fragments/admin-layout :: adminTopbar}"></div>
+
+        <div class="admin-main">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h4 th:text="${product.id != null} ? 'Edit Product' : 'Add Product'">Product Form</h4>
+                <a href="/admin/products" class="btn btn-outline-secondary btn-sm">
+                    <i class="bi bi-arrow-left"></i> <span th:text="#{admin.back}">Back</span>
+                </a>
+            </div>
+
+            <form th:action="@{/admin/products/save}" method="post" id="productForm">
+                <!-- Hidden ID for edit mode -->
+                <input type="hidden" name="id" th:value="${product.id}">
+
+                <div class="row g-4">
+                    <!-- Left Column: Main Info -->
+                    <div class="col-lg-8">
+                        <!-- Basic Info -->
+                        <div class="admin-form mb-4">
+                            <h6 class="mb-3">Basic Information</h6>
+                            <div class="mb-3">
+                                <label class="form-label">Product Name <span class="text-danger">*</span></label>
+                                <input type="text" name="name" class="form-control" th:value="${product.name}"
+                                       required id="productName" placeholder="Enter product name">
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Slug (URL)</label>
+                                <input type="text" name="slug" class="form-control" th:value="${product.slug}"
+                                       id="productSlug" placeholder="auto-generated-from-name">
+                            </div>
+                            <div class="row g-3">
+                                <div class="col-md-4">
+                                    <label class="form-label">SKU</label>
+                                    <input type="text" name="sku" class="form-control" th:value="${product.sku}"
+                                           placeholder="Product SKU">
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="form-label">Price</label>
+                                    <input type="number" name="price" class="form-control" step="0.01"
+                                           th:value="${product.price}" placeholder="0.00">
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="form-label">Sale Price</label>
+                                    <input type="number" name="salePrice" class="form-control" step="0.01"
+                                           th:value="${product.salePrice}" placeholder="0.00">
+                                </div>
+                            </div>
+                            <div class="row g-3 mt-0">
+                                <div class="col-md-4">
+                                    <label class="form-label">Stock Quantity</label>
+                                    <input type="number" name="stockQuantity" class="form-control"
+                                           th:value="${product.stockQuantity}" placeholder="0">
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="form-label">Status <span class="text-danger">*</span></label>
+                                    <select name="status" class="form-select" required>
+                                        <option value="draft" th:selected="${product.status == 'draft'}">Draft</option>
+                                        <option value="publish" th:selected="${product.status == 'publish'}">Published</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Short Description (Rich Text) -->
+                        <div class="admin-form mb-4">
+                            <h6 class="mb-3" th:text="#{product.short_description}">Short Description</h6>
+                            <div class="tinymce-wrapper">
+                                <textarea name="shortDescription" id="shortDescription" rows="6"
+                                          th:utext="${product.shortDescription}"></textarea>
+                            </div>
+                        </div>
+
+                        <!-- Full Description (Rich Text) -->
+                        <div class="admin-form mb-4">
+                            <h6 class="mb-3" th:text="#{product.description}">Description</h6>
+                            <div class="tinymce-wrapper">
+                                <textarea name="description" id="description" rows="12"
+                                          th:utext="${product.description}"></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right Column: Side Panels -->
+                    <div class="col-lg-4">
+                        <!-- Main Image -->
+                        <div class="admin-form mb-4">
+                            <h6 class="mb-3">Main Image</h6>
+                            <input type="hidden" name="mainImageId" id="mainImageId" th:value="${product.mainImageId}">
+                            <div id="mainImagePreview" class="mb-2">
+                                <img th:if="${product.mainImage != null}" th:src="${product.mainImage.url}"
+                                     class="img-fluid rounded" style="max-height: 200px;">
+                                <div th:unless="${product.mainImage != null}"
+                                     class="placeholder-img rounded d-flex align-items-center justify-content-center"
+                                     style="height: 150px; background: #f0f2f5;">
+                                    <i class="bi bi-image fs-1 text-muted"></i>
+                                </div>
+                            </div>
+                            <button type="button" class="btn btn-outline-primary btn-sm w-100"
+                                    onclick="openImagePicker('main')">
+                                <i class="bi bi-image"></i> Select Image
+                            </button>
+                        </div>
+
+                        <!-- Gallery Images -->
+                        <div class="admin-form mb-4">
+                            <h6 class="mb-3">Gallery Images</h6>
+                            <div id="galleryImagesContainer" class="d-flex flex-wrap gap-2 mb-2">
+                                <div th:each="img : ${product.images}" class="gallery-thumb-item position-relative"
+                                     th:data-id="${img.id}">
+                                    <img th:src="${img.url}" class="rounded" style="width: 80px; height: 80px; object-fit: cover;">
+                                    <input type="hidden" name="imageIds" th:value="${img.id}">
+                                    <button type="button" class="btn btn-sm btn-danger position-absolute top-0 end-0"
+                                            style="padding: 0 4px; font-size: 0.7rem; line-height: 1.4;"
+                                            onclick="removeGalleryImage(this)">
+                                        <i class="bi bi-x"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <button type="button" class="btn btn-outline-primary btn-sm w-100"
+                                    onclick="openImagePicker('gallery')">
+                                <i class="bi bi-images"></i> Add Images
+                            </button>
+                        </div>
+
+                        <!-- Categories -->
+                        <div class="admin-form mb-4">
+                            <h6 class="mb-3" th:text="#{product.category}">Categories</h6>
+                            <div class="category-checkbox-tree">
+                                <th:block th:each="cat : ${categories}">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" name="categoryIds"
+                                               th:value="${cat.id}" th:id="'cat_' + ${cat.id}"
+                                               th:checked="${product.categories != null and #lists.contains(product.categories.![id], cat.id)}">
+                                        <label class="form-check-label" th:for="'cat_' + ${cat.id}"
+                                               th:text="${cat.name}">Category</label>
+                                    </div>
+                                    <div class="sub-categories" th:if="${cat.children != null and !cat.children.isEmpty()}">
+                                        <div class="form-check" th:each="child : ${cat.children}">
+                                            <input class="form-check-input" type="checkbox" name="categoryIds"
+                                                   th:value="${child.id}" th:id="'cat_' + ${child.id}"
+                                                   th:checked="${product.categories != null and #lists.contains(product.categories.![id], child.id)}">
+                                            <label class="form-check-label" th:for="'cat_' + ${child.id}"
+                                                   th:text="${child.name}">Sub Category</label>
+                                        </div>
+                                    </div>
+                                </th:block>
+                            </div>
+                        </div>
+
+                        <!-- Tags -->
+                        <div class="admin-form mb-4">
+                            <h6 class="mb-3" th:text="#{product.tags}">Tags</h6>
+                            <div style="max-height: 200px; overflow-y: auto; border: 1px solid #dee2e6; border-radius: 6px; padding: 12px;">
+                                <div class="form-check" th:each="tag : ${tags}">
+                                    <input class="form-check-input" type="checkbox" name="tagIds"
+                                           th:value="${tag.id}" th:id="'tag_' + ${tag.id}"
+                                           th:checked="${product.tags != null and #lists.contains(product.tags.![id], tag.id)}">
+                                    <label class="form-check-label" th:for="'tag_' + ${tag.id}"
+                                           th:text="${tag.name}">Tag</label>
+                                </div>
+                                <p th:if="${tags == null or tags.isEmpty()}" class="text-muted mb-0">No tags available.</p>
+                            </div>
+                        </div>
+
+                        <!-- Submit -->
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="bi bi-check-circle"></i> <span th:text="#{admin.save}">Save</span>
+                            </button>
+                            <a href="/admin/products" class="btn btn-outline-secondary" th:text="#{admin.cancel}">Cancel</a>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Image Picker Modal -->
+<div class="modal fade" id="imagePickerModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Select Image</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <!-- Upload Tab -->
+                <ul class="nav nav-tabs mb-3">
+                    <li class="nav-item">
+                        <a class="nav-link active" data-bs-toggle="tab" href="#tabLibrary">Image Library</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-bs-toggle="tab" href="#tabUpload">Upload New</a>
+                    </li>
+                </ul>
+                <div class="tab-content">
+                    <div class="tab-pane fade show active" id="tabLibrary">
+                        <div id="imagePickerGrid" class="image-picker-grid">
+                            <p class="text-muted text-center py-4">Loading images...</p>
+                        </div>
+                        <div class="text-center mt-3">
+                            <button type="button" class="btn btn-outline-secondary btn-sm" id="loadMoreImages">
+                                Load More
+                            </button>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="tabUpload">
+                        <div class="upload-zone" id="modalUploadZone">
+                            <i class="bi bi-cloud-arrow-up d-block"></i>
+                            <p>Click or drag file to upload</p>
+                            <input type="file" id="modalFileInput" accept="image/*" style="display: none">
+                        </div>
+                        <div id="uploadProgress" class="mt-2" style="display: none">
+                            <div class="progress">
+                                <div class="progress-bar" style="width: 0%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary" id="confirmImageSelect" disabled>Select</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- TinyMCE CDN -->
+<script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
+<div th:replace="~{fragments/admin-layout :: adminScripts}"></div>
+</body>
+</html>

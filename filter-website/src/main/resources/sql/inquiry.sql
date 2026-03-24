@@ -1,0 +1,11 @@
+CREATE TABLE IF NOT EXISTS inquiry (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    email VARCHAR(100) NOT NULL,
+    phone VARCHAR(50),
+    company VARCHAR(200),
+    product_interest VARCHAR(200),
+    message TEXT NOT NULL,
+    is_read TINYINT(1) DEFAULT 0,
+    created_time DATETIME DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;

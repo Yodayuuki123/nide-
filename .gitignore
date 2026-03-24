@@ -1,0 +1,19 @@
+# Maven
+target/
+*.class
+*.jar
+!filter-website/target/filter-website-1.0.0.jar
+
+# IDE
+.idea/
+*.iml
+.vscode/
+*.eclipse
+
+# Logs
+*.log
+logs/
+
+# OS
+.DS_Store
+Thumbs.db

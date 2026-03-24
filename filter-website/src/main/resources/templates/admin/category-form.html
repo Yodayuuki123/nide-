@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/admin-layout :: adminHead(${category.id != null} ? 'Edit Category' : 'Add Category')}"></head>
+<body class="admin-body">
+<div class="admin-wrapper">
+    <div th:replace="~{fragments/admin-layout :: adminSidebar}"></div>
+
+    <div class="admin-content">
+        <div th:replace="~{fragments/admin-layout :: adminTopbar}"></div>
+
+        <div class="admin-main">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h4 th:text="${category.id != null} ? 'Edit Category' : 'Add Category'">Category Form</h4>
+                <a href="/admin/categories" class="btn btn-outline-secondary btn-sm">
+                    <i class="bi bi-arrow-left"></i> <span th:text="#{admin.back}">Back</span>
+                </a>
+            </div>
+
+            <div class="row">
+                <div class="col-lg-8">
+                    <form th:action="@{/admin/categories/save}" method="post" class="admin-form">
+                        <input type="hidden" name="id" th:value="${category.id}">
+
+                        <div class="mb-3">
+                            <label class="form-label">Category Name <span class="text-danger">*</span></label>
+                            <input type="text" name="name" class="form-control" th:value="${category.name}"
+                                   required id="categoryName" placeholder="Enter category name">
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Slug (URL)</label>
+                            <input type="text" name="slug" class="form-control" th:value="${category.slug}"
+                                   id="categorySlug" placeholder="auto-generated-from-name">
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Parent Category</label>
+                            <select name="parentId" class="form-select">
+                                <option value="">— None (Top Level) —</option>
+                                <option th:each="parent : ${parentCategories}"
+                                        th:value="${parent.id}"
+                                        th:text="${parent.name}"
+                                        th:selected="${category.parentId != null and category.parentId == parent.id}">Parent</option>
+                            </select>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Description</label>
+                            <textarea name="description" class="form-control" rows="4"
+                                      th:text="${category.description}" placeholder="Category description (optional)"></textarea>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Image ID</label>
+                            <input type="number" name="imageId" class="form-control" th:value="${category.imageId}"
+                                   placeholder="Image ID (optional)">
+                        </div>
+
+                        <div class="d-flex gap-2">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="bi bi-check-circle"></i> <span th:text="#{admin.save}">Save</span>
+                            </button>
+                            <a href="/admin/categories" class="btn btn-outline-secondary" th:text="#{admin.cancel}">Cancel</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div th:replace="~{fragments/admin-layout :: adminScripts}"></div>
+</body>
+</html>
