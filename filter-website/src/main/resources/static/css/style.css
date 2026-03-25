@@ -396,7 +396,8 @@ img {
     box-shadow: 0 20px 60px rgba(37,36,34,0.08);
 }
 
-.has-dropdown:hover .mega-menu {
+.has-dropdown:hover .mega-menu,
+.mega-menu.active {
     opacity: 1;
     visibility: visible;
     transform: translateX(-50%) translateY(0);

@@ -29,6 +29,7 @@ public class GlobalModelAdvice {
     @ModelAttribute
     public void addGlobalAttributes(Model model, HttpServletRequest request) {
         // 注入当前请求URI，用于导航高亮
+        model.addAttribute("currentUrl", request.getRequestURI());
         model.addAttribute("currentUri", request.getRequestURI());
 
         try {

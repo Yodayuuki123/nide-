@@ -437,3 +437,97 @@ function switchGalleryImage(thumbEl) {
         }
     }
 })();
+
+// ===== Mega Menu Hover (Aesop-style dropdown) =====
+(function() {
+    var categoryNavItems = document.querySelectorAll('.has-dropdown');
+    categoryNavItems.forEach(function(item) {
+        var megaMenu = item.querySelector('.mega-menu');
+        if (!megaMenu) return;
+
+        var showTimeout, hideTimeout;
+
+        item.addEventListener('mouseenter', function() {
+            clearTimeout(hideTimeout);
+            showTimeout = setTimeout(function() {
+                megaMenu.classList.add('active');
+            }, 150);
+        });
+
+        item.addEventListener('mouseleave', function() {
+            clearTimeout(showTimeout);
+            hideTimeout = setTimeout(function() {
+                megaMenu.classList.remove('active');
+            }, 200);
+        });
+    });
+})();
+
+// ===== Smooth Page Transition =====
+(function() {
+    // Add loaded class to body for entrance animation
+    document.body.classList.add('page-loaded');
+
+    // Smooth link transitions (internal links only)
+    var internalLinks = document.querySelectorAll('a[href^="/"]:not([target="_blank"])');
+    internalLinks.forEach(function(link) {
+        link.addEventListener('click', function(e) {
+            var href = link.getAttribute('href');
+            if (href && href !== '#' && !href.startsWith('javascript')) {
+                e.preventDefault();
+                document.body.style.opacity = '0';
+                document.body.style.transition = 'opacity 0.25s ease';
+                setTimeout(function() {
+                    window.location.href = href;
+                }, 250);
+            }
+        });
+    });
+})();
+
+// ===== Smooth Scroll for Anchor Links =====
+(function() {
+    var anchorLinks = document.querySelectorAll('a[href^="#"]');
+    anchorLinks.forEach(function(link) {
+        link.addEventListener('click', function(e) {
+            var targetId = link.getAttribute('href').substring(1);
+            var target = document.getElementById(targetId);
+            if (target) {
+                e.preventDefault();
+                target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        });
+    });
+})();
+
+// ===== Cursor Trail Effect (subtle, Aesop-like) =====
+(function() {
+    if (window.innerWidth <= 768) return;
+
+    var cursor = document.createElement('div');
+    cursor.style.cssText = 'position:fixed;width:8px;height:8px;border-radius:50%;background:rgba(37,36,34,0.15);pointer-events:none;z-index:9999;transition:transform 0.15s ease,opacity 0.3s ease;opacity:0;';
+    document.body.appendChild(cursor);
+
+    document.addEventListener('mousemove', function(e) {
+        cursor.style.left = e.clientX - 4 + 'px';
+        cursor.style.top = e.clientY - 4 + 'px';
+        cursor.style.opacity = '1';
+    });
+
+    document.addEventListener('mouseleave', function() {
+        cursor.style.opacity = '0';
+    });
+
+    // Scale up on hoverable elements
+    var hoverables = document.querySelectorAll('a, button, .product-card, .category-card, .gallery-item');
+    hoverables.forEach(function(el) {
+        el.addEventListener('mouseenter', function() {
+            cursor.style.transform = 'scale(3)';
+            cursor.style.background = 'rgba(37,36,34,0.08)';
+        });
+        el.addEventListener('mouseleave', function() {
+            cursor.style.transform = 'scale(1)';
+            cursor.style.background = 'rgba(37,36,34,0.15)';
+        });
+    });
+})();
