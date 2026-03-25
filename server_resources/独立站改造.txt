@@ -1,0 +1,18 @@
+独立站要求：
+
+1、将原来wordpress搭建的独立站，
+使用springboot+thymeleaf（页面展现）+mybatis-plus+mysql进行技术改造，完全脱离wordpress框架。
+2、对网站使用的涉及的wordpress表结构重新设计，可增加新的字段和表结构进行扩展，并兼容原来的数据，便于数据迁移，原来的数据进行复用，原来数据库表中的数据通过sql脚本的方式抽取到新的表结构中。（这部分工作进本完成，可以继续完善）
+3、图片及视频数据存储目录保持现有目录不动，新网站访问图片或者视频数据，提供新的接口直接读取原目录的数据，新网站新增图片和视频数据按照wordpress存储规则，存储到现有目录中。
+4、开发网站前台，面向国外用户访问，主要展示公司信息、工厂信息、产品信息；页面代码需要原生html方式编写，便于搜索引擎搜索，不要用vue等涉及html、js等编译过程，导致html结构压缩等
+5、开发网站后台，便于系统管理员、运营人员对网站进行设置，包括菜单配置，权限配置、
+产品发布等功能，整个产品详情页可以由两部分组成，简要介绍部分+详细介绍部分，均存储为html片段，
+发布商品时，使用富文本编辑器对这两部分动态配置，图文并茂。
+6、网站展示内容可以参考独立站：https://filter.philitee.com/或者https://best-filter.com/product-category/industrial-filter-bags/dust-filter-bags/，风格可为：B端企业官网，简洁、大气、时尚、绚丽
+7、网站前台支持多语言，至少支持英文、中午，可以扩展到其他主流语言更好
+8、访问速度快
+
+
+    url: jdbc:mysql://47.251.117.119:3306/web_site?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=Asia/Shanghai
+    username: root
+    password: Root@1234
