@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>FAQ &#8211; Philite Environment Technology（菲滤特环保科技）</title>
+	<atom:link href="https://filter.philitee.com/?feed=rss2&#038;cat=65" rel="self" type="application/rss+xml" />
+	<link>https://filter.philitee.com</link>
+	<description>Philite Environment Technology</description>
+	<lastBuildDate>Sun, 01 Dec 2024 10:15:55 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>
+	hourly	</sy:updatePeriod>
+	<sy:updateFrequency>
+	1	</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=6.8.2</generator>
+
+<image>
+	<url>https://filter.philitee.com/wp-content/uploads/2024/10/cropped-微信图片_20241010232721-32x32.png</url>
+	<title>FAQ &#8211; Philite Environment Technology（菲滤特环保科技）</title>
+	<link>https://filter.philitee.com</link>
+	<width>32</width>
+	<height>32</height>
+</image> 
+        <wp_options>
+            <wp_option>
+                <name>
+                    shopengine_activated_templates                </name>
+                <val>
+                    a:1:{s:7:&quot;archive&quot;;a:1:{s:4:&quot;lang&quot;;a:1:{s:2:&quot;en&quot;;a:0:{}}}}                </val>
+            </wp_option>
+        </wp_options>
+        	<item>
+		<title>Which factors need to consider when choose the filter media</title>
+		<link>https://filter.philitee.com/?p=4025</link>
+					<comments>https://filter.philitee.com/?p=4025#respond</comments>
+		
+		<dc:creator><![CDATA[wpdc@20248]]></dc:creator>
+		<pubDate>Sun, 01 Dec 2024 10:12:11 +0000</pubDate>
+				<category><![CDATA[FAQ]]></category>
+		<guid isPermaLink="false">http://filter.philitee.com/?p=4025</guid>
+
+					<description><![CDATA[Q:Which factors need to consider when I choose the filter media? A:There are four main factors need to be considered [&#8230;]]]></description>
+										<content:encoded><![CDATA[		<div data-elementor-type="wp-post" data-elementor-id="4025" class="elementor elementor-4025" data-elementor-post-type="post">
+				<div class="elementor-element elementor-element-5d6f1478 e-flex e-con-boxed e-con e-parent" data-id="5d6f1478" data-element_type="container">
+					<div class="e-con-inner">
+				<div class="elementor-element elementor-element-1dc8fa2f elementor-widget elementor-widget-text-editor" data-id="1dc8fa2f" data-element_type="widget" data-widget_type="text-editor.default">
+				<div class="elementor-widget-container">
+							<blockquote>
+<p>Q:Which factors need to consider when I choose the filter media?</p>
+</blockquote>
+<p>A:There are four main factors need to be considered before choose the filter media.</p>
+<ul>
+<li><strong>The temperature</strong>. As different media has different operating temperature range, if the working temperature is beyond the filter media’s bearable range, it will damage soon.</li>
+<li><strong>Humidity</strong>. Air humidity is related with its dew point. It is easy to cause condensation in the filter bag with high moisture content and high dew point, which will  affect de-dusting performance. If the duster always work up and down the dew point temperature, the filter media will be brittle and easily be damaged.</li>
+<li><strong>Chemical composition</strong>. If the dusty gas contains acid, alkali or organic solvent, it need to choose the anti-acid, anti-alkali, and anti-organic solvent filter media</li>
+<li><strong>Combustibility and explosive</strong><em class="op_dict3_highlight">.</em> If  the dusty gas contains combustible gas, it need to choose flame-retarded and anti-static filter media.</li>
+</ul>						</div>
+				</div>
+					</div>
+				</div>
+				</div>
+		]]></content:encoded>
+					
+					<wfw:commentRss>https://filter.philitee.com/?feed=rss2&#038;p=4025</wfw:commentRss>
+			<slash:comments>0</slash:comments>
+		
+		
+			</item>
+		<item>
+		<title>The correct use of dust bag</title>
+		<link>https://filter.philitee.com/?p=1763</link>
+					<comments>https://filter.philitee.com/?p=1763#respond</comments>
+		
+		<dc:creator><![CDATA[wpdc@20248]]></dc:creator>
+		<pubDate>Sun, 15 Sep 2024 10:46:47 +0000</pubDate>
+				<category><![CDATA[FAQ]]></category>
+		<guid isPermaLink="false">http://49.0.247.223/wordpress/?p=1763</guid>
+
+					<description><![CDATA[The correct installation method of the dust bag (1) Installation method of the external filter bag ①The bag mouth and [&#8230;]]]></description>
+										<content:encoded><![CDATA[		<div data-elementor-type="wp-post" data-elementor-id="1763" class="elementor elementor-1763" data-elementor-post-type="post">
+				<div class="elementor-element elementor-element-9af3223 e-flex e-con-boxed e-con e-parent" data-id="9af3223" data-element_type="container">
+					<div class="e-con-inner">
+				<div class="elementor-element elementor-element-d18359e elementor-widget elementor-widget-text-editor" data-id="d18359e" data-element_type="widget" data-widget_type="text-editor.default">
+				<div class="elementor-widget-container">
+							<ol><li>The correct installation method of the dust bag</li></ol><p>(1) Installation method of the external filter bag</p><p>①The bag mouth and perforated plate are reliably sealed and fixed.</p><p>②The filter bag is suspended vertically under the perforated plate.</p><p>③ Adjacent filter bags do not collide with each other.</p><p>④The filter bag and frame are matched correctly, and the frame is straight without burrs.</p><p>(2) Installation method of the inner filter bag</p><p>① A bag cap is installed above the filter bag and hung on the beam of the dust collector by a strap device, and the lower end is reliably sealed and fixed with the lower bag.</p><p>②The tension of the filter bag installation should be adjusted to a fixed value so that the filter bag will not loosen and fall off when the filter is considered and blown back, and adjust each accessory in the filter bag once again in the first week and the first month of use (prevent Deflated ring) fit correctly, all accessories should not have burrs or breaks.</p><ol start="2"><li>Reliable and effective cleaning</li></ol><p>When the filter bag is in use, the dust area gradually increases and the pressure difference rises. The dust should be effectively isolated to isolate the dust so that the pressure difference between the inside and outside of the filter bag is kept within the set range.</p><ol start="3"><li>Prevent sudden abnormal situations</li></ol><p>When the bag filter is in operation, it should prevent sudden abnormal conditions, such as the sudden increase of gas temperature through the entry of corrosive gas, or the sudden drop of gas temperature below the dew point, etc., subject to temperature, humidity, chemical corrosion, mechanical wear or impact Factors such as ultra-filter bags are damaged.</p><ol start="4"><li>Equipment maintenance</li></ol><p>If the filter bag is damaged, it should be discovered and updated in time. Observe the pressure difference of the bag dust collector. If the cleaning failure occurs, it should be eliminated in time. Whether the cleaning system works normally. If the process conditions of the cleaning system change, the cleaning should be adjusted in time. The working system of the cycle or bag filter.</p>						</div>
+				</div>
+					</div>
+				</div>
+				</div>
+		]]></content:encoded>
+					
+					<wfw:commentRss>https://filter.philitee.com/?feed=rss2&#038;p=1763</wfw:commentRss>
+			<slash:comments>0</slash:comments>
+		
+		
+			</item>
+	</channel>
+</rss>

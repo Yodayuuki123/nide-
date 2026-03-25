@@ -1,18 +1,32 @@
 package com.philitee.filter.config;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
 /**
  * Spring Security 安全配置
  * 前台页面完全开放，后台 /admin/** 需要登录
+ * 支持基于数据库的用户认证和角色/权限控制
  */
 @Configuration
 @EnableWebSecurity
+@EnableMethodSecurity(prePostEnabled = true)
+@RequiredArgsConstructor
 public class SecurityConfig {
+
+    private final LoginSuccessHandler loginSuccessHandler;
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -28,7 +42,12 @@ public class SecurityConfig {
                                 "/css/**", "/js/**", "/images/**", "/favicon.ico").permitAll()
                         // 语言切换开放
                         .requestMatchers("/lang/**").permitAll()
-                        // 后台需要认证
+                        // 用户管理需要 ADMIN 角色
+                        .requestMatchers("/admin/users/**").hasRole("ADMIN")
+                        .requestMatchers("/admin/roles/**").hasRole("ADMIN")
+                        // 网站设置需要设置权限
+                        .requestMatchers("/admin/settings/**").hasAnyAuthority("setting:view", "setting:edit")
+                        // 后台其他页面需要认证
                         .requestMatchers("/admin/**").authenticated()
                         // 其他请求开放
                         .anyRequest().permitAll()
@@ -36,7 +55,7 @@ public class SecurityConfig {
                 .formLogin(form -> form
                         .loginPage("/admin/login")
                         .loginProcessingUrl("/admin/login")
-                        .defaultSuccessUrl("/admin/dashboard", true)
+                        .successHandler(loginSuccessHandler)
                         .failureUrl("/admin/login?error=true")
                         .permitAll()
                 )
@@ -50,5 +69,4 @@ public class SecurityConfig {
 
         return http.build();
     }
-
 }

@@ -531,3 +531,85 @@ function switchGalleryImage(thumbEl) {
         });
     });
 })();
+
+/* ===== Category Carousel Logic ===== */
+(function () {
+    var pages = document.querySelectorAll('.cat-carousel-page');
+    var dots  = document.querySelectorAll('.cat-dot');
+    var prevBtn = document.getElementById('catPrev');
+    var nextBtn = document.getElementById('catNext');
+    if (!pages.length || !prevBtn || !nextBtn) return;
+
+    var current = 0;
+    var total   = pages.length;
+    var animating = false;
+
+    function goTo(idx, direction) {
+        if (animating || idx === current) return;
+        animating = true;
+
+        var outClass = direction === 'next' ? 'slide-out-left'  : 'slide-out-right';
+        var inClass  = direction === 'next' ? 'slide-in-right'  : 'slide-in-left';
+
+        var outPage = pages[current];
+        var inPage  = pages[idx];
+
+        outPage.classList.remove('active');
+        outPage.classList.add(outClass);
+
+        inPage.style.display = 'grid';
+        inPage.classList.add(inClass);
+
+        setTimeout(function () {
+            outPage.classList.remove(outClass);
+            outPage.style.display = '';
+            inPage.classList.remove(inClass);
+            inPage.classList.add('active');
+            inPage.style.display = '';
+
+            dots[current].classList.remove('active');
+            dots[idx].classList.add('active');
+
+            current = idx;
+            updateButtons();
+            animating = false;
+        }, 380);
+    }
+
+    function updateButtons() {
+        prevBtn.disabled = (current === 0);
+        nextBtn.disabled = (current === total - 1);
+    }
+
+    prevBtn.addEventListener('click', function () {
+        if (current > 0) goTo(current - 1, 'prev');
+    });
+
+    nextBtn.addEventListener('click', function () {
+        if (current < total - 1) goTo(current + 1, 'next');
+    });
+
+    dots.forEach(function (dot) {
+        dot.addEventListener('click', function () {
+            var idx = parseInt(this.getAttribute('data-page'), 10);
+            goTo(idx, idx > current ? 'next' : 'prev');
+        });
+    });
+
+    var touchStartX = 0;
+    var viewport = document.getElementById('catCarouselViewport');
+    if (viewport) {
+        viewport.addEventListener('touchstart', function (e) {
+            touchStartX = e.changedTouches[0].clientX;
+        }, { passive: true });
+        viewport.addEventListener('touchend', function (e) {
+            var dx = e.changedTouches[0].clientX - touchStartX;
+            if (Math.abs(dx) > 50) {
+                if (dx < 0 && current < total - 1) goTo(current + 1, 'next');
+                if (dx > 0 && current > 0)         goTo(current - 1, 'prev');
+            }
+        }, { passive: true });
+    }
+
+    updateButtons();
+})();

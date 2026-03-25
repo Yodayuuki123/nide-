@@ -13,8 +13,8 @@
     <div class="login-card">
         <div class="login-logo">
             <i class="bi bi-filter-circle-fill"></i>
-            <h4>Philitee Admin</h4>
-            <p class="text-muted mb-0">Sign in to manage your website</p>
+            <h4>Philitee</h4>
+            <p class="mb-0">Administration Panel</p>
         </div>
 
         <!-- Error Message -->
@@ -24,33 +24,29 @@
 
         <!-- Logout Message -->
         <div class="alert alert-success" th:if="${param.logout}">
-            <i class="bi bi-check-circle"></i> You have been logged out successfully.
+            <i class="bi bi-check-circle"></i> You have been logged out.
         </div>
 
         <form th:action="@{/admin/login}" method="post">
             <div class="mb-3">
                 <label for="username" class="form-label">Username</label>
-                <div class="input-group">
-                    <span class="input-group-text"><i class="bi bi-person"></i></span>
-                    <input type="text" id="username" name="username" class="form-control"
-                           placeholder="Enter username" required autofocus>
-                </div>
+                <input type="text" id="username" name="username" class="form-control"
+                       placeholder="Enter your username" required autofocus>
             </div>
             <div class="mb-4">
                 <label for="password" class="form-label">Password</label>
-                <div class="input-group">
-                    <span class="input-group-text"><i class="bi bi-lock"></i></span>
-                    <input type="password" id="password" name="password" class="form-control"
-                           placeholder="Enter password" required>
-                </div>
+                <input type="password" id="password" name="password" class="form-control"
+                       placeholder="Enter your password" required>
             </div>
-            <button type="submit" class="btn btn-primary w-100 py-2">
-                <i class="bi bi-box-arrow-in-right"></i> Sign In
+            <button type="submit" class="btn btn-primary w-100">
+                Sign In
             </button>
         </form>
 
-        <div class="text-center mt-3">
-            <a href="/" class="text-muted"><i class="bi bi-arrow-left"></i> Back to website</a>
+        <div class="text-center mt-4">
+            <a href="/" style="color: var(--admin-text-tertiary); font-size: 12px; letter-spacing: 0.04em; text-transform: uppercase; text-decoration: none;">
+                <i class="bi bi-arrow-left"></i> Back to Website
+            </a>
         </div>
     </div>
 </div>

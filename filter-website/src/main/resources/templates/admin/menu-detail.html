@@ -20,10 +20,13 @@
             </div>
 
             <div class="d-flex justify-content-between align-items-center mb-4">
-                <h4>
-                    <span th:text="${menu.name}">Menu Name</span>
-                    <span class="badge bg-info text-dark fs-6 ms-2" th:text="${menu.location} ?: 'unassigned'">primary</span>
-                </h4>
+                <div>
+                    <h4 style="font-size: 1.8rem; margin-bottom: 4px;">
+                        <span th:text="${menu.name}">Menu Name</span>
+                        <span class="badge bg-info text-dark fs-6 ms-2" th:text="${menu.location} ?: 'unassigned'">primary</span>
+                    </h4>
+                    <p style="color: var(--admin-text-tertiary); font-size: 13px; margin: 0;">Manage menu items and structure</p>
+                </div>
                 <a href="/admin/menus" class="btn btn-outline-secondary btn-sm">
                     <i class="bi bi-arrow-left"></i> <span th:text="#{admin.back}">Back</span>
                 </a>

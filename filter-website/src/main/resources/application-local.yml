@@ -3,6 +3,8 @@ server:
   servlet:
     context-path: /
 spring:
+  main:
+    allow-circular-references: true
   application:
     name: filter-website
   thymeleaf:
@@ -16,7 +18,7 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://127.0.0.1:3306/web_site?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true
     username: root
-    password: Philitee@Flt2026#Sec
+    password: Root@1234
     druid:
       initial-size: 5
       min-idle: 5
@@ -30,27 +32,19 @@ spring:
     basename: i18n/messages
     encoding: UTF-8
     fallback-to-system-locale: false
-  security:
-    user:
-      name: admin
-      password: admin123
 mybatis-plus:
   mapper-locations: classpath:/mapper/**/*.xml
   type-aliases-package: com.philitee.filter.entity
   global-config:
     db-config:
       id-type: auto
-      logic-delete-field: deleted
-      logic-delete-value: 1
-      logic-not-delete-value: 0
   configuration:
     map-underscore-to-camel-case: true
 upload:
-  base-path: /home/ubuntu/wp-content/uploads
+  base-path: /home/ubuntu/nide-/filter-website/src/main/resources/static/wp-content/uploads
   url-prefix: /wp-content/uploads
   static-web-path:
-  proxy-enabled: true
-  proxy-remote-host: https://filter.philitee.com
+  proxy-enabled: false
 logging:
   level:
     com.philitee.filter: debug

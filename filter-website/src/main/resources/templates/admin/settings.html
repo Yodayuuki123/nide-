@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/admin-layout :: adminHead('Site Settings')}"></head>
+<body class="admin-body">
+<div class="admin-wrapper">
+    <div th:replace="~{fragments/admin-layout :: adminSidebar}"></div>
+
+    <div class="admin-content">
+        <div th:replace="~{fragments/admin-layout :: adminTopbar}"></div>
+
+        <div class="admin-main">
+            <!-- Flash Messages -->
+            <div th:if="${message}" class="alert alert-success alert-dismissible fade show">
+                <span th:text="${message}"></span>
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+            <div th:if="${error}" class="alert alert-danger alert-dismissible fade show">
+                <span th:text="${error}"></span>
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+
+            <div class="mb-5">
+                <h4 style="font-size: 1.8rem; margin-bottom: 4px;">Site Settings</h4>
+                <p style="color: var(--admin-text-tertiary); font-size: 13px; margin: 0;">Configure your website's general settings and information</p>
+            </div>
+
+            <form th:action="@{/admin/settings/save}" method="post">
+                <div th:each="entry : ${settingMap}" class="admin-form mb-4">
+                    <h6 class="mb-3 text-capitalize">
+                        <span th:switch="${entry.key}">
+                            <span th:case="'general'">基本设置</span>
+                            <span th:case="'contact'">联系信息</span>
+                            <span th:case="'seo'">SEO设置</span>
+                            <span th:case="*" th:text="${entry.key}">分组</span>
+                        </span>
+                    </h6>
+
+                    <div th:each="setting : ${entry.value}" class="mb-3">
+                        <label class="form-label" th:text="${setting.displayName}">Setting Name</label>
+
+                        <!-- text input -->
+                        <input th:if="${setting.inputType == 'text'}" type="text"
+                               th:name="'setting_' + ${setting.settingKey}"
+                               class="form-control"
+                               th:value="${setting.settingValue}">
+
+                        <!-- textarea input -->
+                        <textarea th:if="${setting.inputType == 'textarea'}"
+                                  th:name="'setting_' + ${setting.settingKey}"
+                                  class="form-control" rows="3"
+                                  th:text="${setting.settingValue}"></textarea>
+
+                        <!-- image input -->
+                        <div th:if="${setting.inputType == 'image'}">
+                            <div class="input-group">
+                                <input type="text"
+                                       th:name="'setting_' + ${setting.settingKey}"
+                                       th:id="'setting_' + ${setting.settingKey}"
+                                       class="form-control"
+                                       th:value="${setting.settingValue}"
+                                       placeholder="图片URL">
+                                <button type="button" class="btn btn-outline-primary"
+                                        th:onclick="'openSettingImagePicker(\'' + ${setting.settingKey} + '\')'">
+                                    <i class="bi bi-image"></i> 选择
+                                </button>
+                            </div>
+                            <div th:if="${setting.settingValue != null and !setting.settingValue.isEmpty()}" class="mt-2">
+                                <img th:src="${setting.settingValue}" style="max-height: 80px;" class="rounded">
+                            </div>
+                        </div>
+
+                        <!-- switch input -->
+                        <div th:if="${setting.inputType == 'switch'}" class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox"
+                                   th:checked="${setting.settingValue == 'true' or setting.settingValue == '1'}"
+                                   onchange="this.previousElementSibling.value = this.checked ? '1' : '0'">
+                            <input type="hidden"
+                                   th:name="'setting_' + ${setting.settingKey}"
+                                   th:value="${setting.settingValue}">
+                        </div>
+
+                        <!-- richtext input -->
+                        <div th:if="${setting.inputType == 'richtext'}">
+                            <div class="tinymce-wrapper">
+                                <textarea th:name="'setting_' + ${setting.settingKey}"
+                                          th:id="'setting_richtext_' + ${setting.settingKey}"
+                                          class="richtext-editor" rows="8"
+                                          th:utext="${setting.settingValue}"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="d-grid" style="max-width: 200px;">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="bi bi-check-circle"></i> 保存设置
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Image Picker Modal (reuse from admin.js) -->
+<div class="modal fade" id="settingImagePickerModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">选择图片</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <div id="settingImageGrid" class="image-picker-grid">
+                    <p class="text-muted text-center py-4">加载中...</p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+                <button type="button" class="btn btn-primary" id="confirmSettingImage" disabled>确定</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div th:replace="~{fragments/admin-layout :: adminScripts}"></div>
+
+<script>
+    var settingImageTarget = null;
+    var settingSelectedUrl = null;
+
+    function openSettingImagePicker(settingKey) {
+        settingImageTarget = settingKey;
+        settingSelectedUrl = null;
+        document.getElementById('confirmSettingImage').disabled = true;
+
+        fetch('/admin/api/images/list?page=1&size=40')
+            .then(function(r) { return r.json(); })
+            .then(function(data) {
+                var grid = document.getElementById('settingImageGrid');
+                grid.innerHTML = '';
+                if (data.records && data.records.length > 0) {
+                    data.records.forEach(function(img) {
+                        var url = img.url || ('/wp-content/uploads' + img.filePath);
+                        var div = document.createElement('div');
+                        div.className = 'image-picker-item';
+                        div.innerHTML = '<img src="' + url + '" alt="' + (img.altText || img.fileName) + '">';
+                        div.addEventListener('click', function() {
+                            grid.querySelectorAll('.image-picker-item').forEach(function(i) { i.classList.remove('selected'); });
+                            div.classList.add('selected');
+                            settingSelectedUrl = url;
+                            document.getElementById('confirmSettingImage').disabled = false;
+                        });
+                        grid.appendChild(div);
+                    });
+                } else {
+                    grid.innerHTML = '<p class="text-muted text-center py-4">暂无图片</p>';
+                }
+            });
+
+        new bootstrap.Modal(document.getElementById('settingImagePickerModal')).show();
+    }
+
+    document.getElementById('confirmSettingImage').addEventListener('click', function() {
+        if (settingImageTarget && settingSelectedUrl) {
+            document.getElementById('setting_' + settingImageTarget).value = settingSelectedUrl;
+            bootstrap.Modal.getInstance(document.getElementById('settingImagePickerModal')).hide();
+        }
+    });
+</script>
+</body>
+</html>

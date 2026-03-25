@@ -19,12 +19,19 @@
                 <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
             </div>
 
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <div>
+                    <h4 style="font-size: 1.8rem; margin-bottom: 4px;" th:text="#{admin.categories}">Categories</h4>
+                    <p style="color: var(--admin-text-tertiary); font-size: 13px; margin: 0;">Organize your products with categories</p>
+                </div>
+                <a href="/admin/categories/add" class="btn btn-primary btn-sm">
+                    <i class="bi bi-plus-circle"></i> <span th:text="#{admin.add}">Add New</span>
+                </a>
+            </div>
+
             <div class="admin-card">
                 <div class="admin-card-header">
-                    <h5 th:text="#{admin.categories}">Category Management</h5>
-                    <a href="/admin/categories/add" class="btn btn-primary btn-sm">
-                        <i class="bi bi-plus-circle"></i> <span th:text="#{admin.add}">Add New</span>
-                    </a>
+                    <h5>All Categories</h5>
                 </div>
                 <div class="admin-card-body">
                     <div class="table-responsive">

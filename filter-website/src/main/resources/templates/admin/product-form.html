@@ -10,7 +10,10 @@
 
         <div class="admin-main">
             <div class="d-flex justify-content-between align-items-center mb-4">
-                <h4 th:text="${product.id != null} ? 'Edit Product' : 'Add Product'">Product Form</h4>
+                <div>
+                    <h4 style="font-size: 1.8rem; margin-bottom: 4px;" th:text="${product.id != null} ? 'Edit Product' : 'Add Product'">Product Form</h4>
+                    <p style="color: var(--admin-text-tertiary); font-size: 13px; margin: 0;" th:text="${product.id != null} ? 'Update product details, images and rich content' : 'Create a new product with descriptions and media'">Subtitle</p>
+                </div>
                 <a href="/admin/products" class="btn btn-outline-secondary btn-sm">
                     <i class="bi bi-arrow-left"></i> <span th:text="#{admin.back}">Back</span>
                 </a>
@@ -69,20 +72,36 @@
                             </div>
                         </div>
 
-                        <!-- Short Description (Rich Text) -->
+                        <!-- Part 1: 简要介绍 (Short Description - Rich Text HTML Fragment) -->
                         <div class="admin-form mb-4">
-                            <h6 class="mb-3" th:text="#{product.short_description}">Short Description</h6>
+                            <div class="d-flex align-items-center mb-3">
+                                <span class="badge bg-primary me-2">Part 1</span>
+                                <h6 class="mb-0">产品简要介绍</h6>
+                                <small class="text-muted ms-2">（产品详情页上半部分，简要概述产品特点）</small>
+                            </div>
+                            <p class="text-muted small mb-2">
+                                <i class="bi bi-info-circle"></i>
+                                此部分显示在产品详情页的产品信息区域，支持图文混排。建议包含产品亮点、核心参数等。
+                            </p>
                             <div class="tinymce-wrapper">
-                                <textarea name="shortDescription" id="shortDescription" rows="6"
+                                <textarea name="shortDescription" id="shortDescription" rows="8"
                                           th:utext="${product.shortDescription}"></textarea>
                             </div>
                         </div>
 
-                        <!-- Full Description (Rich Text) -->
+                        <!-- Part 2: 详细介绍 (Full Description - Rich Text HTML Fragment) -->
                         <div class="admin-form mb-4">
-                            <h6 class="mb-3" th:text="#{product.description}">Description</h6>
+                            <div class="d-flex align-items-center mb-3">
+                                <span class="badge bg-success me-2">Part 2</span>
+                                <h6 class="mb-0">产品详细介绍</h6>
+                                <small class="text-muted ms-2">（产品详情页下半部分，详细产品描述）</small>
+                            </div>
+                            <p class="text-muted small mb-2">
+                                <i class="bi bi-info-circle"></i>
+                                此部分显示在产品详情页下方独立区域，支持图文并茂的富文本内容。建议包含详细规格、应用场景、技术参数等。
+                            </p>
                             <div class="tinymce-wrapper">
-                                <textarea name="description" id="description" rows="12"
+                                <textarea name="description" id="description" rows="15"
                                           th:utext="${product.description}"></textarea>
                             </div>
                         </div>
@@ -235,8 +254,127 @@
     </div>
 </div>
 
-<!-- TinyMCE CDN -->
-<script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
+<!-- TinyMCE (free self-hosted via jsDelivr CDN, no API key needed) -->
+<script src="https://cdn.jsdelivr.net/npm/tinymce@6.8.3/tinymce.min.js"></script>
 <div th:replace="~{fragments/admin-layout :: adminScripts}"></div>
+
+<!-- Enhanced TinyMCE initialization for product form -->
+<script>
+(function() {
+    // Override the default TinyMCE init from admin.js with enhanced config
+    if (typeof tinymce !== 'undefined') {
+        // Remove any existing instances first
+        tinymce.remove('#shortDescription');
+        tinymce.remove('#description');
+
+        // Short Description editor (Part 1 - compact)
+        tinymce.init({
+            selector: '#shortDescription',
+            height: 350,
+            menubar: false,
+            plugins: 'lists link image table code fullscreen preview media hr anchor charmap',
+            toolbar: [
+                'undo redo | blocks fontsize | bold italic underline strikethrough | forecolor backcolor',
+                'alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image media table | hr charmap | code fullscreen'
+            ],
+            content_style: 'body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; font-size: 14px; line-height: 1.6; padding: 12px; } img { max-width: 100%; height: auto; }',
+            images_upload_handler: tinymceImageUploadHandler,
+            file_picker_types: 'image',
+            file_picker_callback: tinymceFilePicker,
+            promotion: false,
+            branding: false,
+            convert_urls: false,
+            relative_urls: false,
+            placeholder: '请输入产品简要介绍，支持图文混排...'
+        });
+
+        // Full Description editor (Part 2 - full featured)
+        tinymce.init({
+            selector: '#description',
+            height: 550,
+            menubar: 'file edit view insert format table',
+            plugins: 'lists link image table code fullscreen preview media hr anchor charmap wordcount visualblocks pagebreak',
+            toolbar: [
+                'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | forecolor backcolor removeformat',
+                'alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image media table | hr pagebreak charmap | visualblocks code fullscreen'
+            ],
+            content_style: 'body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; font-size: 14px; line-height: 1.8; padding: 16px; max-width: 900px; margin: 0 auto; } img { max-width: 100%; height: auto; border-radius: 4px; } table { border-collapse: collapse; width: 100%; } table td, table th { border: 1px solid #ddd; padding: 8px; }',
+            images_upload_handler: tinymceImageUploadHandler,
+            file_picker_types: 'image',
+            file_picker_callback: tinymceFilePicker,
+            promotion: false,
+            branding: false,
+            convert_urls: false,
+            relative_urls: false,
+            placeholder: '请输入产品详细介绍，支持插入图片、表格、视频等富文本内容...',
+            image_caption: true,
+            image_advtab: true,
+            table_default_styles: { 'border-collapse': 'collapse', 'width': '100%' },
+            table_default_attributes: { border: '1' }
+        });
+    }
+
+    // Image upload handler for TinyMCE
+    function tinymceImageUploadHandler(blobInfo) {
+        return new Promise(function(resolve, reject) {
+            var formData = new FormData();
+            formData.append('file', blobInfo.blob(), blobInfo.filename());
+
+            fetch('/admin/api/images/upload', {
+                method: 'POST',
+                body: formData
+            })
+            .then(function(resp) { return resp.json(); })
+            .then(function(data) {
+                if (data.success) {
+                    resolve(data.url);
+                } else {
+                    reject('上传失败: ' + (data.message || '未知错误'));
+                }
+            })
+            .catch(function(err) {
+                reject('上传失败: ' + err.message);
+            });
+        });
+    }
+
+    // File picker for selecting images from library
+    function tinymceFilePicker(callback, value, meta) {
+        if (meta.filetype === 'image') {
+            // Create a temporary file input to upload
+            var input = document.createElement('input');
+            input.setAttribute('type', 'file');
+            input.setAttribute('accept', 'image/*');
+            input.onchange = function() {
+                var file = this.files[0];
+                var formData = new FormData();
+                formData.append('file', file);
+
+                fetch('/admin/api/images/upload', {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(function(resp) { return resp.json(); })
+                .then(function(data) {
+                    if (data.success) {
+                        callback(data.url, { alt: file.name });
+                    }
+                });
+            };
+            input.click();
+        }
+    }
+
+    // Ensure TinyMCE content syncs before form submit
+    var form = document.getElementById('productForm');
+    if (form) {
+        form.addEventListener('submit', function() {
+            if (typeof tinymce !== 'undefined') {
+                tinymce.triggerSave();
+            }
+        });
+    }
+})();
+</script>
 </body>
 </html>

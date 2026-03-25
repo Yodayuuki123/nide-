@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 <!-- ===== Admin HTML Head ===== -->
 <head th:fragment="adminHead(pageTitle)">
@@ -30,6 +30,10 @@
                     <span th:text="#{admin.dashboard}">Dashboard</span>
                 </a>
             </li>
+
+            <!-- 内容管理分组 -->
+            <li class="nav-section-title">内容管理</li>
+
             <li th:classappend="${#strings.startsWith(currentUri, '/admin/products')} ? 'active'">
                 <a href="/admin/products">
                     <i class="bi bi-box-seam"></i>
@@ -60,6 +64,31 @@
                     <span>Inquiries</span>
                 </a>
             </li>
+
+            <!-- 系统管理分组 - 仅管理员可见 -->
+            <li class="nav-section-title" sec:authorize="hasRole('ADMIN')">系统管理</li>
+
+            <li sec:authorize="hasRole('ADMIN')"
+                th:classappend="${#strings.startsWith(currentUri, '/admin/users')} ? 'active'">
+                <a href="/admin/users">
+                    <i class="bi bi-people"></i>
+                    <span>用户管理</span>
+                </a>
+            </li>
+            <li sec:authorize="hasRole('ADMIN')"
+                th:classappend="${#strings.startsWith(currentUri, '/admin/roles')} ? 'active'">
+                <a href="/admin/roles">
+                    <i class="bi bi-shield-lock"></i>
+                    <span>角色权限</span>
+                </a>
+            </li>
+            <li sec:authorize="hasAnyAuthority('setting:view', 'setting:edit')"
+                th:classappend="${#strings.startsWith(currentUri, '/admin/settings')} ? 'active'">
+                <a href="/admin/settings">
+                    <i class="bi bi-gear"></i>
+                    <span>网站设置</span>
+                </a>
+            </li>
         </ul>
     </nav>
 
@@ -67,7 +96,7 @@
         <a href="/" target="_blank" class="btn btn-outline-light btn-sm w-100 mb-2">
             <i class="bi bi-eye"></i> View Site
         </a>
-        <form th:action="@{/logout}" method="post">
+        <form th:action="@{/admin/logout}" method="post">
             <button type="submit" class="btn btn-outline-danger btn-sm w-100">
                 <i class="bi bi-box-arrow-right"></i>
                 <span th:text="#{admin.logout}">Logout</span>
@@ -83,7 +112,10 @@
             <i class="bi bi-list fs-4"></i>
         </button>
         <div class="ms-auto d-flex align-items-center gap-3">
-            <span class="text-muted"><i class="bi bi-person-circle"></i> Admin</span>
+            <span class="text-muted">
+                <i class="bi bi-person-circle"></i>
+                <span sec:authentication="name">Admin</span>
+            </span>
         </div>
     </div>
 </div>

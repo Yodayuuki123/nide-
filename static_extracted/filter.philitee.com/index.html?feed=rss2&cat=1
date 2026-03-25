@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>未分类 &#8211; Philite Environment Technology（菲滤特环保科技）</title>
+	<atom:link href="https://filter.philitee.com/?feed=rss2&#038;cat=1" rel="self" type="application/rss+xml" />
+	<link>https://filter.philitee.com</link>
+	<description>Philite Environment Technology</description>
+	<lastBuildDate>Sun, 15 Sep 2024 10:45:50 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>
+	hourly	</sy:updatePeriod>
+	<sy:updateFrequency>
+	1	</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=6.8.2</generator>
+
+<image>
+	<url>https://filter.philitee.com/wp-content/uploads/2024/10/cropped-微信图片_20241010232721-32x32.png</url>
+	<title>未分类 &#8211; Philite Environment Technology（菲滤特环保科技）</title>
+	<link>https://filter.philitee.com</link>
+	<width>32</width>
+	<height>32</height>
+</image> 
+        <wp_options>
+            <wp_option>
+                <name>
+                    shopengine_activated_templates                </name>
+                <val>
+                    a:1:{s:7:&quot;archive&quot;;a:1:{s:4:&quot;lang&quot;;a:1:{s:2:&quot;en&quot;;a:0:{}}}}                </val>
+            </wp_option>
+        </wp_options>
+        	<item>
+		<title>Different connection methods of dust collector skeleton</title>
+		<link>https://filter.philitee.com/?p=1759</link>
+					<comments>https://filter.philitee.com/?p=1759#respond</comments>
+		
+		<dc:creator><![CDATA[wpdc@20248]]></dc:creator>
+		<pubDate>Sun, 15 Sep 2024 10:41:04 +0000</pubDate>
+				<category><![CDATA[Wiki]]></category>
+		<category><![CDATA[未分类]]></category>
+		<guid isPermaLink="false">http://49.0.247.223/wordpress/?p=1759</guid>
+
+					<description><![CDATA[(1) Connection ring type: buckle the horizontal rings of the two skeletons into the semi-circular grooves of the connection ring. [&#8230;]]]></description>
+										<content:encoded><![CDATA[		<div data-elementor-type="wp-post" data-elementor-id="1759" class="elementor elementor-1759" data-elementor-post-type="post">
+				<div class="elementor-element elementor-element-a27f763 e-flex e-con-boxed e-con e-parent" data-id="a27f763" data-element_type="container">
+					<div class="e-con-inner">
+				<div class="elementor-element elementor-element-328209c elementor-widget elementor-widget-text-editor" data-id="328209c" data-element_type="widget" data-widget_type="text-editor.default">
+				<div class="elementor-widget-container">
+							<p>(1) Connection ring type: buckle the horizontal rings of the two skeletons into the semi-circular grooves of the connection ring. The connection ring type is a relatively stable connection method, but its processing procedures are relatively cumbersome, the cost is high, but the strength and verticality are better. At present, many large filter bag dust removal equipment and dust removal skeletons use this connection method.</p><p>(2) Chuck type: make matching positive and negative chucks, welded on two sections of bag cage. The chuck-type connection has better straightness than other connection methods. It has the following advantages: firm connection, easy disassembly and maintenance, good straightness, and reduced wear on the filter bag during spraying.</p><p>(3) Insert type: the steel wire is stamped and formed with an abrasive tool, and the steel wire is caught in the horizontal ring of another skeleton when connected. The socket type skeleton is an older connection method. It does not require transition joints and the price is relatively low, but it has poor connection stability and poor overall straightness. It is not suitable for use in places with strong external force and vibration. There are many contact points with the filter bag, which can easily break the filter bag and affect the service life of the filter bag.</p>						</div>
+				</div>
+					</div>
+				</div>
+				</div>
+		]]></content:encoded>
+					
+					<wfw:commentRss>https://filter.philitee.com/?feed=rss2&#038;p=1759</wfw:commentRss>
+			<slash:comments>0</slash:comments>
+		
+		
+			</item>
+	</channel>
+</rss>

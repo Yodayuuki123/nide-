@@ -4,40 +4,44 @@
 (function() {
     'use strict';
 
-    // ===== TinyMCE Initialization =====
+    // ===== TinyMCE Initialization (generic - for settings page richtext editors) =====
+    // Product form does its own enhanced TinyMCE init, so skip if already initialized
     if (typeof tinymce !== 'undefined') {
-        tinymce.init({
-            selector: '#shortDescription, #description',
-            height: 350,
-            menubar: false,
-            plugins: 'lists link image table code fullscreen preview',
-            toolbar: 'undo redo | blocks | bold italic underline | alignleft aligncenter alignright | bullist numlist | link image table | code fullscreen',
-            content_style: 'body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; font-size: 14px; }',
-            images_upload_handler: function(blobInfo) {
-                return new Promise(function(resolve, reject) {
-                    var formData = new FormData();
-                    formData.append('file', blobInfo.blob(), blobInfo.filename());
+        var richEditors = document.querySelectorAll('.richtext-editor');
+        if (richEditors.length > 0) {
+            tinymce.init({
+                selector: '.richtext-editor',
+                height: 350,
+                menubar: false,
+                plugins: 'lists link image table code fullscreen preview',
+                toolbar: 'undo redo | blocks | bold italic underline | alignleft aligncenter alignright | bullist numlist | link image table | code fullscreen',
+                content_style: 'body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; font-size: 14px; }',
+                images_upload_handler: function(blobInfo) {
+                    return new Promise(function(resolve, reject) {
+                        var formData = new FormData();
+                        formData.append('file', blobInfo.blob(), blobInfo.filename());
 
-                    fetch('/admin/api/images/upload', {
-                        method: 'POST',
-                        body: formData
-                    })
-                    .then(function(resp) { return resp.json(); })
-                    .then(function(data) {
-                        if (data.success) {
-                            resolve(data.url);
-                        } else {
-                            reject('Upload failed: ' + (data.message || 'Unknown error'));
-                        }
-                    })
-                    .catch(function(err) {
-                        reject('Upload failed: ' + err.message);
+                        fetch('/admin/api/images/upload', {
+                            method: 'POST',
+                            body: formData
+                        })
+                        .then(function(resp) { return resp.json(); })
+                        .then(function(data) {
+                            if (data.success) {
+                                resolve(data.url);
+                            } else {
+                                reject('Upload failed: ' + (data.message || 'Unknown error'));
+                            }
+                        })
+                        .catch(function(err) {
+                            reject('Upload failed: ' + err.message);
+                        });
                     });
-                });
-            },
-            promotion: false,
-            branding: false
-        });
+                },
+                promotion: false,
+                branding: false
+            });
+        }
     }
 
     // ===== Slug Auto-Generation =====

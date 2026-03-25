@@ -1,25 +1,26 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head th:replace="~{fragments/admin-layout :: adminHead(#{admin.dashboard})}"></head>
 <body class="admin-body">
 <div class="admin-wrapper">
-    <!-- Sidebar -->
     <div th:replace="~{fragments/admin-layout :: adminSidebar}"></div>
 
-    <!-- Main Content -->
     <div class="admin-content">
         <div th:replace="~{fragments/admin-layout :: adminTopbar}"></div>
 
         <div class="admin-main">
-            <h4 class="mb-4" th:text="#{admin.dashboard}">Dashboard</h4>
-
             <!-- Flash Messages -->
             <div th:if="${message}" class="alert alert-success alert-dismissible fade show">
                 <span th:text="${message}"></span>
                 <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
             </div>
 
-            <!-- Stats Cards -->
+            <div class="mb-5">
+                <h4 style="font-size: 2rem; margin-bottom: 4px;" th:text="#{admin.dashboard}">Dashboard</h4>
+                <p style="color: var(--admin-text-tertiary); font-size: 13px; margin: 0;">Overview of your website content and activity</p>
+            </div>
+
+            <!-- Stats Cards Row 1 -->
             <div class="row g-4 mb-4">
                 <div class="col-md-6 col-xl-3">
                     <div class="stat-card">
@@ -46,22 +47,22 @@
                 <div class="col-md-6 col-xl-3">
                     <div class="stat-card">
                         <div class="stat-card-icon bg-orange">
-                            <i class="bi bi-tags"></i>
+                            <i class="bi bi-image"></i>
                         </div>
                         <div class="stat-card-info">
-                            <h3 th:text="${tagCount}">0</h3>
-                            <p th:text="#{admin.tags}">Tags</p>
+                            <h3 th:text="${imageCount}">0</h3>
+                            <p th:text="#{admin.images}">Images</p>
                         </div>
                     </div>
                 </div>
                 <div class="col-md-6 col-xl-3">
                     <div class="stat-card">
                         <div class="stat-card-icon bg-purple">
-                            <i class="bi bi-image"></i>
+                            <i class="bi bi-chat-dots"></i>
                         </div>
                         <div class="stat-card-info">
-                            <h3 th:text="${imageCount}">0</h3>
-                            <p th:text="#{admin.images}">Images</p>
+                            <h3 th:text="${inquiryCount ?: 0}">0</h3>
+                            <p>Inquiries</p>
                         </div>
                     </div>
                 </div>
@@ -83,8 +84,16 @@
                         <a href="/admin/images" class="btn btn-outline-primary">
                             <i class="bi bi-cloud-upload"></i> Upload Images
                         </a>
-                        <a href="/admin/menus" class="btn btn-outline-primary">
+                        <a href="/admin/menus" class="btn btn-outline-secondary">
                             <i class="bi bi-list-nested"></i> Manage Menus
+                        </a>
+                        <a href="/admin/settings" class="btn btn-outline-secondary"
+                           sec:authorize="hasAnyAuthority('setting:view', 'setting:edit')">
+                            <i class="bi bi-gear"></i> Site Settings
+                        </a>
+                        <a href="/admin/users" class="btn btn-outline-secondary"
+                           sec:authorize="hasRole('ADMIN')">
+                            <i class="bi bi-people"></i> Manage Users
                         </a>
                     </div>
                 </div>

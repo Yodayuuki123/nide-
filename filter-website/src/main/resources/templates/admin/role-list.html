@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/admin-layout :: adminHead('Role Management')}"></head>
+<body class="admin-body">
+<div class="admin-wrapper">
+    <div th:replace="~{fragments/admin-layout :: adminSidebar}"></div>
+
+    <div class="admin-content">
+        <div th:replace="~{fragments/admin-layout :: adminTopbar}"></div>
+
+        <div class="admin-main">
+            <!-- Flash Messages -->
+            <div th:if="${message}" class="alert alert-success alert-dismissible fade show">
+                <span th:text="${message}"></span>
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+            <div th:if="${error}" class="alert alert-danger alert-dismissible fade show">
+                <span th:text="${error}"></span>
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <div>
+                    <h4 style="font-size: 1.8rem; margin-bottom: 4px;">Role Management</h4>
+                    <p style="color: var(--admin-text-tertiary); font-size: 13px; margin: 0;">Configure roles and permissions for team members</p>
+                </div>
+                <a href="/admin/roles/add" class="btn btn-primary btn-sm">
+                    <i class="bi bi-plus-circle"></i> Add Role
+                </a>
+            </div>
+
+            <div class="admin-card">
+                <div class="admin-card-header">
+                    <h5>All Roles</h5>
+                </div>
+                <div class="admin-card-body">
+                    <table class="table admin-table">
+                        <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>角色标识</th>
+                            <th>角色名称</th>
+                            <th>描述</th>
+                            <th>权限数量</th>
+                            <th>创建时间</th>
+                            <th>操作</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="role : ${roles}">
+                            <td th:text="${role.id}">1</td>
+                            <td><code th:text="${role.name}">ADMIN</code></td>
+                            <td><strong th:text="${role.displayName}">系统管理员</strong></td>
+                            <td th:text="${role.description ?: '-'}">描述</td>
+                            <td>
+                                <span class="badge bg-info" th:text="${role.permissions != null ? role.permissions.size() : 0}">0</span> 个权限
+                            </td>
+                            <td>
+                                <small th:text="${role.createdAt != null ? #temporals.format(role.createdAt, 'yyyy-MM-dd') : '-'}">2026-01-01</small>
+                            </td>
+                            <td class="actions">
+                                <a th:href="@{/admin/roles/edit/{id}(id=${role.id})}"
+                                   class="btn btn-outline-primary btn-sm" title="编辑">
+                                    <i class="bi bi-pencil"></i>
+                                </a>
+                                <form th:action="@{/admin/roles/delete/{id}(id=${role.id})}"
+                                      method="post" style="display:inline"
+                                      onsubmit="return confirm('确定要删除该角色吗？')">
+                                    <button type="submit" class="btn btn-outline-danger btn-sm" title="删除">
+                                        <i class="bi bi-trash"></i>
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                        <tr th:if="${roles == null or roles.isEmpty()}">
+                            <td colspan="7" class="text-center text-muted py-4">暂无角色数据</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div th:replace="~{fragments/admin-layout :: adminScripts}"></div>
+</body>
+</html>

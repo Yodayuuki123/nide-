@@ -80,29 +80,92 @@
     </div>
 </section>
 
-<!-- Product Categories (Aesop-style image grid) -->
-<section class="section" th:if="${categories != null and !categories.isEmpty()}">
+<!-- Product Categories Carousel (3 pages x 6 cards, left/right navigation) -->
+<section class="section category-carousel-section" th:if="${categories != null and !categories.isEmpty()}">
     <div class="aesop-container">
         <div class="section-header fade-in">
             <div class="eyebrow" th:text="#{home.categories.eyebrow}">Our Range</div>
             <h2 th:text="#{home.categories.title}">Product Categories</h2>
             <p th:text="#{home.categories.subtitle}">Comprehensive filtration solutions for every industrial application</p>
         </div>
-        <div class="category-grid">
-            <a th:each="cat,iter : ${categories}" th:if="${iter.index < 6}"
-               th:href="@{/categories/{slug}(slug=${cat.slug})}"
-               class="category-card fade-in"
-               th:classappend="'stagger-' + ${(iter.index % 6) + 1}">
-                <img th:if="${cat.image != null}" th:src="${cat.image.url}" th:alt="${cat.name}" loading="lazy">
-                <div th:unless="${cat.image != null}" class="category-placeholder">
-                    <i class="bi bi-funnel"></i>
+
+        <!-- Carousel wrapper -->
+        <div class="cat-carousel-wrapper">
+            <!-- Left arrow -->
+            <button class="cat-carousel-arrow cat-carousel-prev" id="catPrev" aria-label="Previous page">
+                <i class="bi bi-chevron-left"></i>
+            </button>
+
+            <!-- Pages container -->
+            <div class="cat-carousel-viewport" id="catCarouselViewport">
+                <!-- Page 1: index 0-5 -->
+                <div class="cat-carousel-page active">
+                    <th:block th:each="cat,iter : ${categories}" th:if="${iter.index >= 0 and iter.index < 6}">
+                        <a th:href="@{/categories/{slug}(slug=${cat.slug})}" class="category-card fade-in">
+                            <!-- Try cover image from category-covers directory by slug -->
+                            <img th:src="'/wp-content/uploads/category-covers/' + ${cat.slug} + '.jpg'"
+                                 th:alt="${cat.name}"
+                                 loading="lazy"
+                                 onerror="this.src='/wp-content/uploads/category-covers/'+this.dataset.slug+'.jpeg'; this.onerror=function(){this.src='/wp-content/uploads/category-covers/'+this.dataset.slug+'.png'; this.onerror=function(){this.style.display='none';this.nextElementSibling.style.display='flex';};}"
+                                 th:data-slug="${cat.slug}">
+                            <div class="category-placeholder" style="display:none;"><i class="bi bi-funnel"></i></div>
+                            <div class="category-card-content">
+                                <h5 th:text="${cat.name}">Category Name</h5>
+                                <span th:if="${cat.productCount != null}"
+                                      th:text="${cat.productCount} + ' ' + #{home.products_count}">12 Products</span>
+                            </div>
+                        </a>
+                    </th:block>
                 </div>
-                <div class="category-card-content">
-                    <h5 th:text="${cat.name}">Category Name</h5>
-                    <span th:if="${cat.productCount != null}"
-                          th:text="${cat.productCount} + ' ' + #{home.products_count}">12 Products</span>
+                <!-- Page 2: index 6-11 -->
+                <div class="cat-carousel-page">
+                    <th:block th:each="cat,iter : ${categories}" th:if="${iter.index >= 6 and iter.index < 12}">
+                        <a th:href="@{/categories/{slug}(slug=${cat.slug})}" class="category-card fade-in">
+                            <img th:src="'/wp-content/uploads/category-covers/' + ${cat.slug} + '.jpg'"
+                                 th:alt="${cat.name}"
+                                 loading="lazy"
+                                 onerror="this.src='/wp-content/uploads/category-covers/'+this.dataset.slug+'.jpeg'; this.onerror=function(){this.src='/wp-content/uploads/category-covers/'+this.dataset.slug+'.png'; this.onerror=function(){this.style.display='none';this.nextElementSibling.style.display='flex';};}"
+                                 th:data-slug="${cat.slug}">
+                            <div class="category-placeholder" style="display:none;"><i class="bi bi-funnel"></i></div>
+                            <div class="category-card-content">
+                                <h5 th:text="${cat.name}">Category Name</h5>
+                                <span th:if="${cat.productCount != null}"
+                                      th:text="${cat.productCount} + ' ' + #{home.products_count}">12 Products</span>
+                            </div>
+                        </a>
+                    </th:block>
                 </div>
-            </a>
+                <!-- Page 3: index 12-17 -->
+                <div class="cat-carousel-page">
+                    <th:block th:each="cat,iter : ${categories}" th:if="${iter.index >= 12 and iter.index < 18}">
+                        <a th:href="@{/categories/{slug}(slug=${cat.slug})}" class="category-card fade-in">
+                            <img th:src="'/wp-content/uploads/category-covers/' + ${cat.slug} + '.jpg'"
+                                 th:alt="${cat.name}"
+                                 loading="lazy"
+                                 onerror="this.src='/wp-content/uploads/category-covers/'+this.dataset.slug+'.jpeg'; this.onerror=function(){this.src='/wp-content/uploads/category-covers/'+this.dataset.slug+'.png'; this.onerror=function(){this.style.display='none';this.nextElementSibling.style.display='flex';};}"
+                                 th:data-slug="${cat.slug}">
+                            <div class="category-placeholder" style="display:none;"><i class="bi bi-funnel"></i></div>
+                            <div class="category-card-content">
+                                <h5 th:text="${cat.name}">Category Name</h5>
+                                <span th:if="${cat.productCount != null}"
+                                      th:text="${cat.productCount} + ' ' + #{home.products_count}">12 Products</span>
+                            </div>
+                        </a>
+                    </th:block>
+                </div>
+            </div>
+
+            <!-- Right arrow -->
+            <button class="cat-carousel-arrow cat-carousel-next" id="catNext" aria-label="Next page">
+                <i class="bi bi-chevron-right"></i>
+            </button>
+        </div>
+
+        <!-- Dots indicator -->
+        <div class="cat-carousel-dots">
+            <button class="cat-dot active" data-page="0" aria-label="Page 1"></button>
+            <button class="cat-dot" data-page="1" aria-label="Page 2"></button>
+            <button class="cat-dot" data-page="2" aria-label="Page 3"></button>
         </div>
     </div>
 </section>
@@ -196,7 +259,55 @@
 
 <footer th:replace="~{fragments/footer :: footer}"></footer>
 
+<style>
+/* Category Carousel - inline to bypass cache */
+.cat-carousel-wrapper{position:relative;display:flex;align-items:center;gap:0}
+.cat-carousel-viewport{flex:1;overflow:hidden;position:relative}
+.cat-carousel-page{display:none;grid-template-columns:repeat(3,1fr);gap:2px}
+.cat-carousel-page.active{display:grid}
+.cat-carousel-arrow{flex-shrink:0;width:48px;height:48px;border-radius:50%;border:1.5px solid #ccc;background:#fff;color:#222;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:1.2rem;transition:background .2s,color .2s;z-index:2;margin:0 12px}
+.cat-carousel-arrow:hover{background:#222;color:#fff;border-color:#222}
+.cat-carousel-arrow:disabled{opacity:.3;cursor:default}
+.cat-carousel-dots{display:flex;justify-content:center;gap:10px;margin-top:28px}
+.cat-dot{width:8px;height:8px;border-radius:50%;border:none;background:#ccc;cursor:pointer;padding:0;transition:background .2s,transform .2s}
+.cat-dot.active{background:#222;transform:scale(1.3)}
+@media(max-width:768px){.cat-carousel-page{grid-template-columns:repeat(2,1fr)}.cat-carousel-arrow{width:36px;height:36px;font-size:1rem;margin:0 6px}}
+@media(max-width:480px){.cat-carousel-page{grid-template-columns:1fr}}
+</style>
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script src="/static/js/main.js"></script>
+
+<script>
+/* Category Carousel - inline to bypass cache */
+(function(){
+    var pages=document.querySelectorAll('.cat-carousel-page');
+    var dots=document.querySelectorAll('.cat-dot');
+    var prevBtn=document.getElementById('catPrev');
+    var nextBtn=document.getElementById('catNext');
+    if(!pages.length||!prevBtn||!nextBtn)return;
+    var current=0,total=pages.length,animating=false;
+    function goTo(idx,dir){
+        if(animating||idx===current)return;
+        animating=true;
+        pages[current].classList.remove('active');
+        pages[current].style.display='none';
+        pages[idx].style.display='grid';
+        pages[idx].classList.add('active');
+        dots[current].classList.remove('active');
+        dots[idx].classList.add('active');
+        current=idx;
+        updateBtns();
+        animating=false;
+    }
+    function updateBtns(){prevBtn.disabled=(current===0);nextBtn.disabled=(current===total-1);}
+    prevBtn.addEventListener('click',function(){if(current>0)goTo(current-1,'prev');});
+    nextBtn.addEventListener('click',function(){if(current<total-1)goTo(current+1,'next');});
+    dots.forEach(function(d){d.addEventListener('click',function(){var i=parseInt(this.getAttribute('data-page'),10);goTo(i,i>current?'next':'prev');});});
+    var sx=0,vp=document.getElementById('catCarouselViewport');
+    if(vp){vp.addEventListener('touchstart',function(e){sx=e.changedTouches[0].clientX;},{passive:true});vp.addEventListener('touchend',function(e){var dx=e.changedTouches[0].clientX-sx;if(Math.abs(dx)>50){if(dx<0&&current<total-1)goTo(current+1,'next');if(dx>0&&current>0)goTo(current-1,'prev');}},{passive:true});}
+    updateBtns();
+})();
+</script>
 </body>
 </html>

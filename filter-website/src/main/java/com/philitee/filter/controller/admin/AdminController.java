@@ -1,9 +1,6 @@
 package com.philitee.filter.controller.admin;
 
-import com.philitee.filter.service.ImageService;
-import com.philitee.filter.service.ProductCategoryService;
-import com.philitee.filter.service.ProductService;
-import com.philitee.filter.service.ProductTagService;
+import com.philitee.filter.service.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -22,6 +19,8 @@ public class AdminController {
     private final ProductCategoryService categoryService;
     private final ProductTagService tagService;
     private final ImageService imageService;
+    private final AdminUserService adminUserService;
+    private final InquiryService inquiryService;
 
     /**
      * 后台登录页
@@ -40,7 +39,8 @@ public class AdminController {
         model.addAttribute("categoryCount", categoryService.count());
         model.addAttribute("tagCount", tagService.count());
         model.addAttribute("imageCount", imageService.count());
+        model.addAttribute("userCount", adminUserService.count());
+        model.addAttribute("inquiryCount", inquiryService.count());
         return "admin/dashboard";
     }
-
 }
