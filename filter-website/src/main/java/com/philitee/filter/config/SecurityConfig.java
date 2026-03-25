@@ -45,10 +45,8 @@ public class SecurityConfig {
                         .logoutSuccessUrl("/admin/login?logout=true")
                         .permitAll()
                 )
-                .csrf(csrf -> csrf
-                        // 后台API关闭CSRF（方便AJAX请求）
-                        .ignoringRequestMatchers("/admin/api/**")
-                );
+                // 完全禁用CSRF - 前台B2B展示站无需CSRF保护
+                .csrf(csrf -> csrf.disable());
 
         return http.build();
     }
