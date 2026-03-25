@@ -1,70 +1,74 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 
-<!-- Pagination Fragment -->
-<div th:fragment="pagination(pageData, baseUrl)" class="pagination-wrapper mt-4" th:if="${pageData != null and pageData.pages > 1}">
-    <div class="d-flex flex-column flex-md-row justify-content-between align-items-center gap-3">
+<!-- Pagination Fragment (Aesop-style: clean, minimal) -->
+<div th:fragment="pagination(pageData, baseUrl)" class="pagination-wrapper" th:if="${pageData != null and pageData.pages > 1}">
+    <div class="pagination-inner">
         <!-- Page Info -->
-        <div class="page-info text-muted">
+        <div class="pagination-info">
             <span th:text="#{pagination.showing}">Showing</span>
-            <strong th:text="${(pageData.current - 1) * pageData.size + 1}">1</strong>-<strong th:text="${pageData.current * pageData.size > pageData.total ? pageData.total : pageData.current * pageData.size}">12</strong>
+            <span th:text="${(pageData.current - 1) * pageData.size + 1}">1</span>&ndash;<span th:text="${pageData.current * pageData.size > pageData.total ? pageData.total : pageData.current * pageData.size}">12</span>
             <span th:text="#{pagination.of}">of</span>
-            <strong th:text="${pageData.total}">100</strong>
+            <span th:text="${pageData.total}">100</span>
             <span th:text="#{pagination.products}">products</span>
         </div>
 
         <!-- Pagination Nav -->
-        <nav>
-            <ul class="pagination mb-0">
-                <!-- Previous -->
-                <li class="page-item" th:classappend="${pageData.current <= 1} ? 'disabled'">
-                    <a class="page-link" th:href="@{${baseUrl}(page=${pageData.current - 1}, size=${pageData.size})}"
-                       th:text="#{pagination.previous}">Previous</a>
-                </li>
+        <nav class="pagination-nav">
+            <!-- Previous -->
+            <a class="pagination-btn pagination-prev"
+               th:if="${pageData.current > 1}"
+               th:href="@{${baseUrl}(page=${pageData.current - 1}, size=${pageData.size})}">
+                <i class="bi bi-arrow-left"></i>
+                <span th:text="#{pagination.previous}">Previous</span>
+            </a>
+            <span class="pagination-btn pagination-prev disabled" th:if="${pageData.current <= 1}">
+                <i class="bi bi-arrow-left"></i>
+                <span th:text="#{pagination.previous}">Previous</span>
+            </span>
 
-                <!-- Page Numbers -->
+            <!-- Page Numbers -->
+            <div class="pagination-numbers">
                 <th:block th:with="startPage=${pageData.current - 2 > 0 ? pageData.current - 2 : 1},
                                    endPage=${pageData.current + 2 < pageData.pages ? pageData.current + 2 : pageData.pages}">
 
                     <!-- First page + ellipsis -->
-                    <li class="page-item" th:if="${startPage > 1}">
-                        <a class="page-link" th:href="@{${baseUrl}(page=1, size=${pageData.size})}">1</a>
-                    </li>
-                    <li class="page-item disabled" th:if="${startPage > 2}">
-                        <span class="page-link">...</span>
-                    </li>
+                    <a class="pagination-num" th:if="${startPage > 1}"
+                       th:href="@{${baseUrl}(page=1, size=${pageData.size})}">1</a>
+                    <span class="pagination-ellipsis" th:if="${startPage > 2}">&hellip;</span>
 
                     <!-- Page range -->
                     <th:block th:each="i : ${#numbers.sequence(startPage, endPage)}">
-                        <li class="page-item" th:classappend="${i == pageData.current} ? 'active'">
-                            <a class="page-link" th:href="@{${baseUrl}(page=${i}, size=${pageData.size})}"
-                               th:text="${i}">1</a>
-                        </li>
+                        <a class="pagination-num" th:classappend="${i == pageData.current} ? ' active'"
+                           th:href="@{${baseUrl}(page=${i}, size=${pageData.size})}"
+                           th:text="${i}">1</a>
                     </th:block>
 
                     <!-- Last page + ellipsis -->
-                    <li class="page-item disabled" th:if="${endPage < pageData.pages - 1}">
-                        <span class="page-link">...</span>
-                    </li>
-                    <li class="page-item" th:if="${endPage < pageData.pages}">
-                        <a class="page-link" th:href="@{${baseUrl}(page=${pageData.pages}, size=${pageData.size})}"
-                           th:text="${pageData.pages}">99</a>
-                    </li>
+                    <span class="pagination-ellipsis" th:if="${endPage < pageData.pages - 1}">&hellip;</span>
+                    <a class="pagination-num" th:if="${endPage < pageData.pages}"
+                       th:href="@{${baseUrl}(page=${pageData.pages}, size=${pageData.size})}"
+                       th:text="${pageData.pages}">99</a>
                 </th:block>
+            </div>
 
-                <!-- Next -->
-                <li class="page-item" th:classappend="${pageData.current >= pageData.pages} ? 'disabled'">
-                    <a class="page-link" th:href="@{${baseUrl}(page=${pageData.current + 1}, size=${pageData.size})}"
-                       th:text="#{pagination.next}">Next</a>
-                </li>
-            </ul>
+            <!-- Next -->
+            <a class="pagination-btn pagination-next"
+               th:if="${pageData.current < pageData.pages}"
+               th:href="@{${baseUrl}(page=${pageData.current + 1}, size=${pageData.size})}">
+                <span th:text="#{pagination.next}">Next</span>
+                <i class="bi bi-arrow-right"></i>
+            </a>
+            <span class="pagination-btn pagination-next disabled" th:if="${pageData.current >= pageData.pages}">
+                <span th:text="#{pagination.next}">Next</span>
+                <i class="bi bi-arrow-right"></i>
+            </span>
         </nav>
 
         <!-- Per Page Selector -->
-        <div class="per-page-selector d-flex align-items-center gap-2">
-            <span class="text-muted" th:text="#{pagination.per_page}">Per Page</span>
-            <select class="form-select form-select-sm" style="width: auto"
-                    onchange="window.location.href=this.value">
+        <div class="pagination-per-page">
+            <span th:text="#{pagination.per_page}">Per Page</span>
+            <select onchange="window.location.href=this.value">
                 <option th:each="s : ${ {12, 24, 48} }"
                         th:value="@{${baseUrl}(page=1, size=${s})}"
                         th:text="${s}"

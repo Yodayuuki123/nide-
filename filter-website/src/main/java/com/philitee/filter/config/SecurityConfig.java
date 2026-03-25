@@ -24,6 +24,7 @@ public class SecurityConfig {
                                 "/sitemap.xml", "/robots.txt").permitAll()
                         // 静态资源开放
                         .requestMatchers("/static/**", "/wp-content/uploads/**",
+                                "/wordpress/wp-content/uploads/**",
                                 "/css/**", "/js/**", "/images/**", "/favicon.ico").permitAll()
                         // 语言切换开放
                         .requestMatchers("/lang/**").permitAll()

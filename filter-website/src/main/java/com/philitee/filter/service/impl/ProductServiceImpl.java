@@ -55,8 +55,8 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
                 .orderByDesc(Product::getCreatedAt);
         IPage<Product> result = this.page(page, wrapper);
 
-        // 填充主图信息
-        result.getRecords().forEach(this::fillMainImage);
+        // 填充主图和分类信息
+        result.getRecords().forEach(this::fillMainImageAndCategories);
         return result;
     }
 
@@ -65,22 +65,22 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
         Page<Product> page = new Page<>(pageNum, pageSize);
         IPage<Product> result = baseMapper.selectPageByCategoryId(page, categoryId);
 
-        // 填充主图信息
-        result.getRecords().forEach(this::fillMainImage);
+        // 填充主图和分类信息
+        result.getRecords().forEach(this::fillMainImageAndCategories);
         return result;
     }
 
     @Override
     public List<Product> getProductsByTag(Long tagId) {
         List<Product> products = baseMapper.selectByTagId(tagId);
-        products.forEach(this::fillMainImage);
+        products.forEach(this::fillMainImageAndCategories);
         return products;
     }
 
     @Override
     public List<Product> searchProducts(String keyword) {
         List<Product> products = baseMapper.searchByKeyword(keyword);
-        products.forEach(this::fillMainImage);
+        products.forEach(this::fillMainImageAndCategories);
         return products;
     }
 
@@ -91,7 +91,7 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
                 .orderByDesc(Product::getCreatedAt)
                 .last("LIMIT " + limit);
         List<Product> products = this.list(wrapper);
-        products.forEach(this::fillMainImage);
+        products.forEach(this::fillMainImageAndCategories);
         return products;
     }
 
@@ -186,6 +186,16 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
         // 产品标签
         List<ProductTag> tags = tagMapper.selectByProductId(product.getId());
         product.setTags(tags);
+    }
+
+    /**
+     * 填充主图和分类信息（用于列表页、搜索页等需要显示分类名称的场景）
+     */
+    private void fillMainImageAndCategories(Product product) {
+        fillMainImage(product);
+        // 填充分类信息，便于列表页显示分类名称
+        List<ProductCategory> categories = categoryMapper.selectByProductId(product.getId());
+        product.setCategories(categories);
     }
 
     /**

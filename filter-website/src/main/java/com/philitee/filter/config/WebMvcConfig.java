@@ -14,7 +14,7 @@ import java.util.Locale;
 
 /**
  * Web MVC 配置类
- * 1. 静态资源映射（WordPress图片目录）
+ * 1. 静态资源映射（WordPress图片目录 - 双目录支持）
  * 2. 国际化配置
  */
 @Configuration
@@ -23,15 +23,37 @@ public class WebMvcConfig implements WebMvcConfigurer {
     @Value("${upload.base-path}")
     private String uploadBasePath;
 
+    @Value("${upload.static-web-path:}")
+    private String staticWebPath;
+
     /**
      * 配置静态资源映射
      * 将 /wp-content/uploads/** 请求映射到服务器上 WordPress 的物理目录
+     * 支持两个图片来源目录：
+     *   1. /opt/website/wordpress/wp-content/uploads  (原WordPress目录)
+     *   2. /root/static_web/filter.philitee.com/wp-content/uploads (新独立站目录)
      * 实现图片文件原地不动，新系统直接读取
      */
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         // WordPress 图片目录映射（30天缓存）
-        registry.addResourceHandler("/wp-content/uploads/**")
+        // 同时搜索两个目录，优先查找 uploadBasePath，其次查找 staticWebPath
+        if (staticWebPath != null && !staticWebPath.isEmpty()) {
+            registry.addResourceHandler("/wp-content/uploads/**")
+                    .addResourceLocations(
+                            "file:" + uploadBasePath + "/",
+                            "file:" + staticWebPath + "/"
+                    )
+                    .setCachePeriod(2592000);
+        } else {
+            registry.addResourceHandler("/wp-content/uploads/**")
+                    .addResourceLocations("file:" + uploadBasePath + "/")
+                    .setCachePeriod(2592000);
+        }
+
+        // 兼容旧URL中带 /wordpress/ 前缀的图片路径
+        // 如：/wordpress/wp-content/uploads/2024/08/xxx.jpg
+        registry.addResourceHandler("/wordpress/wp-content/uploads/**")
                 .addResourceLocations("file:" + uploadBasePath + "/")
                 .setCachePeriod(2592000);
 
