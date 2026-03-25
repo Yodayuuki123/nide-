@@ -4,23 +4,12 @@
 <body>
 <header th:replace="~{fragments/header :: navbar}"></header>
 
-<!-- Hero Section (Aesop-style: Full-width animated background with centered text) -->
+<!-- Hero Section (Aesop-style: Full-width background image with centered text) -->
 <section class="hero" id="heroSection">
-    <!-- Animated gradient background (fallback when no video) -->
-    <div class="hero-animated-bg"></div>
-    <!-- Optional: Video background - uncomment when video is available -->
-    <!--
+    <!-- Background image -->
     <div class="hero-bg">
-        <video autoplay muted loop playsinline>
-            <source src="/static/videos/hero.mp4" type="video/mp4">
-        </video>
+        <img src="/static/images/hero-bg.jpg" alt="Philitee Filter Factory" loading="eager">
         <div class="hero-bg-overlay"></div>
-    </div>
-    -->
-    <!-- Hero product silhouette (like Aesop bottles) -->
-    <div class="hero-product-silhouette">
-        <img src="/static/images/hero-silhouette.png" alt=""
-             onerror="this.parentElement.style.display='none'">
     </div>
     <!-- Centered content overlay -->
     <div class="hero-content-center">

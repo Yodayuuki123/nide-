@@ -685,13 +685,7 @@ img {
 
 /* Hero product silhouette (like Aesop's bottle silhouettes) */
 .hero-product-silhouette {
-    position: absolute;
-    bottom: 10%;
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: 2;
-    opacity: 0.15;
-    max-width: 400px;
+    display: none;
 }
 
 /* Hero split layout (kept for inner pages) */
@@ -2731,8 +2725,7 @@ img {
 }
 
 .parallax-image img {
-    transition: transform 0.1s linear;
-    will-change: transform;
+    transition: transform 0.3s ease-out;
 }
 
 /* ===== Mobile Menu ===== */
