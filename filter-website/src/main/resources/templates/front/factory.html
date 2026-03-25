@@ -2,169 +2,144 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head th:replace="~{fragments/header :: htmlHead(#{factory.title}, #{factory.subtitle})}"></head>
 <body>
-<div th:replace="~{fragments/header :: navbar}"></div>
+<header th:replace="~{fragments/header :: navbar}"></header>
 
-<!-- Page Hero -->
-<section class="page-hero">
-    <div class="container">
-        <h1 th:text="#{factory.title}">Our Factory</h1>
-        <p th:text="#{factory.subtitle}">State-of-the-art Manufacturing Facilities</p>
-        <nav aria-label="breadcrumb">
-            <ol class="breadcrumb mb-0">
-                <li class="breadcrumb-item"><a href="/" th:text="#{breadcrumb.home}">Home</a></li>
-                <li class="breadcrumb-item active" th:text="#{factory.title}">Our Factory</li>
-            </ol>
+<!-- Page Header (Aesop-style) -->
+<section class="page-header">
+    <div class="aesop-container">
+        <h1 th:text="#{factory.title}" class="fade-in">Our Factory</h1>
+        <p th:text="#{factory.subtitle}" class="fade-in">State-of-the-art Manufacturing Facilities</p>
+        <nav class="breadcrumb-nav">
+            <a th:href="@{/}" th:text="#{breadcrumb.home}">Home</a>
+            <span class="separator">/</span>
+            <span class="current" th:text="#{factory.title}">Factory</span>
         </nav>
     </div>
 </section>
 
-<!-- Factory Overview -->
-<section class="section-padding">
-    <div class="container">
-        <div class="row align-items-center g-5">
-            <div class="col-lg-6">
-                <h2 th:text="#{factory.overview.title}">Factory Overview</h2>
-                <p class="text-muted" th:text="#{factory.overview.desc}">Factory description</p>
-                <div class="row g-3 mt-3">
-                    <div class="col-6">
-                        <div class="d-flex align-items-center">
-                            <i class="bi bi-building fs-3 text-primary me-3"></i>
-                            <div>
-                                <strong>20,000+</strong>
-                                <div class="text-muted small">sqm Factory Area</div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-6">
-                        <div class="d-flex align-items-center">
-                            <i class="bi bi-gear fs-3 text-primary me-3"></i>
-                            <div>
-                                <strong>50+</strong>
-                                <div class="text-muted small">Production Lines</div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-6">
-                        <div class="d-flex align-items-center">
-                            <i class="bi bi-people fs-3 text-primary me-3"></i>
-                            <div>
-                                <strong>200+</strong>
-                                <div class="text-muted small">Employees</div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-6">
-                        <div class="d-flex align-items-center">
-                            <i class="bi bi-clipboard-check fs-3 text-primary me-3"></i>
-                            <div>
-                                <strong>ISO 9001</strong>
-                                <div class="text-muted small">Certified</div>
-                            </div>
-                        </div>
-                    </div>
+<!-- Factory Overview (Aesop-style editorial split) -->
+<section class="editorial-section">
+    <div class="editorial-image parallax-image fade-in-left">
+        <img src="/static/images/placeholder.jpg" alt="Factory Overview"
+             onerror="this.parentElement.style.background='var(--bg-tertiary)'">
+    </div>
+    <div class="editorial-content fade-in-right">
+        <span class="eyebrow" th:text="#{factory.overview.eyebrow}">Manufacturing</span>
+        <h2 th:text="#{factory.overview.title}">Factory Overview</h2>
+        <p th:text="#{factory.overview.desc}">Our manufacturing facility spans over 20,000 square meters.</p>
+        <div class="factory-stats">
+            <div class="factory-stat">
+                <div class="factory-stat-icon"><i class="bi bi-building"></i></div>
+                <div>
+                    <strong>20,000+ sqm</strong>
+                    <span>Factory Area</span>
                 </div>
             </div>
-            <div class="col-lg-6">
-                <img src="/static/images/placeholder.jpg" alt="Factory" class="img-fluid rounded shadow">
+            <div class="factory-stat">
+                <div class="factory-stat-icon"><i class="bi bi-gear"></i></div>
+                <div>
+                    <strong>50+ Lines</strong>
+                    <span>Production Lines</span>
+                </div>
+            </div>
+            <div class="factory-stat">
+                <div class="factory-stat-icon"><i class="bi bi-people"></i></div>
+                <div>
+                    <strong>200+</strong>
+                    <span>Employees</span>
+                </div>
+            </div>
+            <div class="factory-stat">
+                <div class="factory-stat-icon"><i class="bi bi-clipboard-check"></i></div>
+                <div>
+                    <strong>ISO 9001</strong>
+                    <span>Certified</span>
+                </div>
             </div>
         </div>
     </div>
 </section>
 
-<!-- Manufacturing Process -->
-<section class="section-padding bg-light">
-    <div class="container">
-        <div class="text-center mb-5">
+<!-- Manufacturing Process (Aesop-style) -->
+<section class="section section-cream">
+    <div class="aesop-container">
+        <div class="section-header fade-in">
+            <div class="eyebrow" th:text="#{factory.process.eyebrow}">How We Make</div>
             <h2 th:text="#{factory.process.title}">Manufacturing Process</h2>
         </div>
-        <div class="process-timeline">
-            <div class="row g-4">
-                <div class="col-md-6 col-lg-3">
-                    <div class="process-step text-center">
-                        <div class="process-step-number">01</div>
-                        <h5>Raw Material Selection</h5>
-                        <p class="text-muted mb-0">Strict quality inspection of all raw materials before production begins.</p>
-                    </div>
-                </div>
-                <div class="col-md-6 col-lg-3">
-                    <div class="process-step text-center">
-                        <div class="process-step-number">02</div>
-                        <h5>Cutting & Sewing</h5>
-                        <p class="text-muted mb-0">Precision cutting and professional sewing with advanced equipment.</p>
-                    </div>
-                </div>
-                <div class="col-md-6 col-lg-3">
-                    <div class="process-step text-center">
-                        <div class="process-step-number">03</div>
-                        <h5>Quality Testing</h5>
-                        <p class="text-muted mb-0">Comprehensive testing including tensile strength, air permeability, and filtration efficiency.</p>
-                    </div>
-                </div>
-                <div class="col-md-6 col-lg-3">
-                    <div class="process-step text-center">
-                        <div class="process-step-number">04</div>
-                        <h5>Packaging & Shipping</h5>
-                        <p class="text-muted mb-0">Professional packaging to ensure safe delivery to customers worldwide.</p>
-                    </div>
-                </div>
+        <div class="process-grid">
+            <div class="process-step fade-in stagger-1">
+                <div class="process-number">01</div>
+                <h5 th:text="#{factory.step1.title}">Raw Material Selection</h5>
+                <p th:text="#{factory.step1.desc}">Strict quality inspection of all raw materials.</p>
+            </div>
+            <div class="process-step fade-in stagger-2">
+                <div class="process-number">02</div>
+                <h5 th:text="#{factory.step2.title}">Cutting &amp; Sewing</h5>
+                <p th:text="#{factory.step2.desc}">Precision cutting and professional sewing.</p>
+            </div>
+            <div class="process-step fade-in stagger-3">
+                <div class="process-number">03</div>
+                <h5 th:text="#{factory.step3.title}">Quality Testing</h5>
+                <p th:text="#{factory.step3.desc}">Comprehensive testing for all parameters.</p>
+            </div>
+            <div class="process-step fade-in stagger-4">
+                <div class="process-number">04</div>
+                <h5 th:text="#{factory.step4.title}">Packaging &amp; Shipping</h5>
+                <p th:text="#{factory.step4.desc}">Professional packaging for safe delivery.</p>
             </div>
         </div>
     </div>
 </section>
 
-<!-- Factory Gallery -->
-<section class="section-padding">
-    <div class="container">
-        <div class="text-center mb-5">
+<!-- Factory Gallery (Aesop-style grid) -->
+<section class="section">
+    <div class="aesop-container">
+        <div class="section-header fade-in">
+            <div class="eyebrow" th:text="#{factory.gallery.eyebrow}">Inside Our Facility</div>
             <h2 th:text="#{factory.gallery.title}">Factory Gallery</h2>
         </div>
-        <div class="row g-3">
-            <div class="col-6 col-md-4">
-                <div class="factory-gallery-item rounded overflow-hidden">
-                    <img src="/static/images/placeholder.jpg" alt="Factory Equipment" class="img-fluid">
-                </div>
+        <div class="gallery-grid">
+            <div class="gallery-item scale-in stagger-1">
+                <img src="/static/images/placeholder.jpg" alt="Factory Equipment"
+                     onerror="this.parentElement.style.background='var(--bg-tertiary)'">
             </div>
-            <div class="col-6 col-md-4">
-                <div class="factory-gallery-item rounded overflow-hidden">
-                    <img src="/static/images/placeholder.jpg" alt="Production Line" class="img-fluid">
-                </div>
+            <div class="gallery-item scale-in stagger-2">
+                <img src="/static/images/placeholder.jpg" alt="Production Line"
+                     onerror="this.parentElement.style.background='var(--bg-secondary)'">
             </div>
-            <div class="col-6 col-md-4">
-                <div class="factory-gallery-item rounded overflow-hidden">
-                    <img src="/static/images/placeholder.jpg" alt="Quality Control" class="img-fluid">
-                </div>
+            <div class="gallery-item scale-in stagger-3">
+                <img src="/static/images/placeholder.jpg" alt="Quality Control"
+                     onerror="this.parentElement.style.background='var(--bg-tertiary)'">
             </div>
-            <div class="col-6 col-md-4">
-                <div class="factory-gallery-item rounded overflow-hidden">
-                    <img src="/static/images/placeholder.jpg" alt="Warehouse" class="img-fluid">
-                </div>
+            <div class="gallery-item scale-in stagger-4">
+                <img src="/static/images/placeholder.jpg" alt="Warehouse"
+                     onerror="this.parentElement.style.background='var(--bg-secondary)'">
             </div>
-            <div class="col-6 col-md-4">
-                <div class="factory-gallery-item rounded overflow-hidden">
-                    <img src="/static/images/placeholder.jpg" alt="Testing Lab" class="img-fluid">
-                </div>
+            <div class="gallery-item scale-in stagger-5">
+                <img src="/static/images/placeholder.jpg" alt="Testing Lab"
+                     onerror="this.parentElement.style.background='var(--bg-tertiary)'">
             </div>
-            <div class="col-6 col-md-4">
-                <div class="factory-gallery-item rounded overflow-hidden">
-                    <img src="/static/images/placeholder.jpg" alt="Shipping" class="img-fluid">
-                </div>
+            <div class="gallery-item scale-in stagger-6">
+                <img src="/static/images/placeholder.jpg" alt="Shipping"
+                     onerror="this.parentElement.style.background='var(--bg-secondary)'">
             </div>
         </div>
     </div>
 </section>
 
 <!-- CTA -->
-<section class="cta-strip">
-    <div class="container text-center">
-        <h3 th:text="#{cta.title}">Need Industrial Filtration Solutions?</h3>
-        <p class="mb-4" th:text="#{cta.subtitle}">Contact our team</p>
-        <a href="/contact" class="btn btn-accent btn-lg">
-            <i class="bi bi-envelope"></i> <span th:text="#{cta.button}">Get In Touch</span>
-        </a>
+<section class="cta-banner">
+    <div class="aesop-container">
+        <h3 class="fade-in" th:text="#{cta.title}">Need Custom Filtration Solutions?</h3>
+        <p class="fade-in" th:text="#{cta.subtitle}">Contact our team for professional consultation</p>
+        <div class="fade-in">
+            <a th:href="@{/contact}" class="btn-aesop" th:text="#{cta.button}">Get in Touch</a>
+        </div>
     </div>
 </section>
 
-<div th:replace="~{fragments/footer :: footer}"></div>
+<footer th:replace="~{fragments/footer :: footer}"></footer>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script src="/static/js/main.js"></script>

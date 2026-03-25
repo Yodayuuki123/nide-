@@ -2,182 +2,159 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head th:replace="~{fragments/header :: htmlHead(${product.name}, ${product.shortDescription})}"></head>
 <body>
-<div th:replace="~{fragments/header :: navbar}"></div>
+<header th:replace="~{fragments/header :: navbar}"></header>
 
-<!-- Page Hero -->
-<section class="page-hero page-hero-sm">
-    <div class="container">
-        <nav aria-label="breadcrumb">
-            <ol class="breadcrumb mb-0">
-                <li class="breadcrumb-item"><a href="/" th:text="#{breadcrumb.home}">Home</a></li>
-                <li class="breadcrumb-item"><a href="/products" th:text="#{breadcrumb.products}">Products</a></li>
-                <li class="breadcrumb-item" th:if="${product.categories != null and !product.categories.isEmpty()}">
-                    <a th:href="@{/categories/{slug}(slug=${product.categories[0].slug})}"
-                       th:text="${product.categories[0].name}">Category</a>
-                </li>
-                <li class="breadcrumb-item active" th:text="${product.name}">Product Name</li>
-            </ol>
+<!-- Breadcrumb (Aesop-style: minimal, left-aligned) -->
+<div class="section-sm" style="padding-bottom:0;">
+    <div class="aesop-container">
+        <nav class="breadcrumb-nav" style="justify-content:flex-start;">
+            <a th:href="@{/}" th:text="#{breadcrumb.home}">Home</a>
+            <span class="separator">/</span>
+            <a th:href="@{/products}" th:text="#{breadcrumb.products}">Products</a>
+            <th:block th:if="${product.categories != null and !product.categories.isEmpty()}">
+                <span class="separator">/</span>
+                <a th:href="@{/categories/{slug}(slug=${product.categories[0].slug})}"
+                   th:text="${product.categories[0].name}">Category</a>
+            </th:block>
+            <span class="separator">/</span>
+            <span class="current" th:text="${product.name}">Product Name</span>
         </nav>
     </div>
-</section>
+</div>
 
-<!-- Product Detail -->
-<section class="section-padding">
-    <div class="container">
-        <div class="row g-5">
+<!-- Product Detail (Aesop-style: gallery left, info right) -->
+<section class="section">
+    <div class="aesop-container">
+        <div class="product-detail">
             <!-- Left: Image Gallery -->
-            <div class="col-lg-6">
-                <div class="product-gallery">
-                    <!-- Main Image -->
-                    <div class="product-gallery-main mb-3">
-                        <img th:if="${product.mainImage != null}"
-                             th:src="${product.mainImage.url}"
-                             th:alt="${product.name}"
-                             id="galleryMainImage"
-                             class="img-fluid rounded">
-                        <div th:unless="${product.mainImage != null}"
-                             class="product-gallery-placeholder rounded d-flex align-items-center justify-content-center"
-                             style="height: 400px; background: #f0f2f5;">
-                            <i class="bi bi-image" style="font-size: 4rem; color: #adb5bd;"></i>
-                        </div>
+            <div class="product-gallery fade-in-left">
+                <div class="product-gallery-main" id="galleryMainContainer">
+                    <img th:if="${product.mainImage != null}"
+                         th:src="${product.mainImage.url}"
+                         th:alt="${product.name}"
+                         id="galleryMainImage">
+                    <div th:unless="${product.mainImage != null}" class="product-gallery-placeholder">
+                        <i class="bi bi-image"></i>
                     </div>
-                    <!-- Thumbnail Strip -->
-                    <div class="product-gallery-thumbs" th:if="${product.images != null and !product.images.isEmpty()}">
-                        <!-- Main image as first thumb -->
-                        <div th:if="${product.mainImage != null}" class="gallery-thumb active"
-                             th:data-img="${product.mainImage.url}">
-                            <img th:src="${product.mainImage.url}" th:alt="${product.name}">
-                        </div>
-                        <!-- Gallery images -->
-                        <div th:each="img : ${product.images}" class="gallery-thumb"
-                             th:data-img="${img.url}">
-                            <img th:src="${img.url}" th:alt="${img.altText} ?: ${product.name}">
-                        </div>
+                </div>
+                <!-- Thumbnails -->
+                <div class="product-gallery-thumbs" th:if="${product.images != null and !product.images.isEmpty()}">
+                    <div th:if="${product.mainImage != null}" class="gallery-thumb active"
+                         th:data-img="${product.mainImage.url}" onclick="switchGalleryImage(this)">
+                        <img th:src="${product.mainImage.url}" th:alt="${product.name}">
+                    </div>
+                    <div th:each="img : ${product.images}" class="gallery-thumb"
+                         th:data-img="${img.url}" onclick="switchGalleryImage(this)">
+                        <img th:src="${img.url}" th:alt="${img.altText} ?: ${product.name}">
                     </div>
                 </div>
             </div>
 
             <!-- Right: Product Info -->
-            <div class="col-lg-6">
-                <h1 class="h3 mb-3" th:text="${product.name}">Product Name</h1>
+            <div class="product-info fade-in-right">
+                <!-- Category eyebrow -->
+                <div class="eyebrow" th:if="${product.categories != null and !product.categories.isEmpty()}"
+                     th:text="${product.categories[0].name}">Category</div>
+
+                <h1 th:text="${product.name}">Product Name</h1>
 
                 <!-- SKU -->
-                <div th:if="${product.sku != null}" class="mb-3">
-                    <span class="text-muted">SKU:</span>
-                    <strong th:text="${product.sku}">ABC-123</strong>
-                </div>
+                <div th:if="${product.sku != null}" class="product-sku" th:text="'SKU: ' + ${product.sku}">SKU: ABC-123</div>
 
                 <!-- Short Description -->
-                <div th:if="${product.shortDescription != null}" class="mb-4 text-muted" th:utext="${product.shortDescription}">
+                <div th:if="${product.shortDescription != null}" class="product-short-desc" th:utext="${product.shortDescription}">
                     Short description here
                 </div>
 
-                <!-- Categories -->
-                <div th:if="${product.categories != null and !product.categories.isEmpty()}" class="mb-3">
-                    <span class="text-muted me-2" th:text="#{product.category} + ':'">Categories:</span>
-                    <span th:each="cat,iter : ${product.categories}">
-                        <a th:href="@{/categories/{slug}(slug=${cat.slug})}"
-                           class="badge bg-primary text-decoration-none"
-                           th:text="${cat.name}">Category</a>
-                    </span>
+                <!-- Meta List -->
+                <ul class="product-meta-list">
+                    <li th:if="${product.categories != null and !product.categories.isEmpty()}">
+                        <span class="label" th:text="#{product.category}">Category</span>
+                        <span class="value">
+                            <span th:each="cat,iter : ${product.categories}">
+                                <a th:href="@{/categories/{slug}(slug=${cat.slug})}" th:text="${cat.name}">Cat</a>
+                                <span th:if="${!iter.last}">, </span>
+                            </span>
+                        </span>
+                    </li>
+                    <li th:if="${product.tags != null and !product.tags.isEmpty()}">
+                        <span class="label" th:text="#{product.tags}">Tags</span>
+                        <span class="value">
+                            <span th:each="tag,iter : ${product.tags}">
+                                <a th:href="@{/tags/{slug}(slug=${tag.slug})}" th:text="${tag.name}">Tag</a>
+                                <span th:if="${!iter.last}">, </span>
+                            </span>
+                        </span>
+                    </li>
+                    <li th:if="${product.stockQuantity != null}">
+                        <span class="label" th:text="#{product.in_stock}">Stock</span>
+                        <span class="value"
+                              th:text="${product.stockQuantity > 0} ? #{product.in_stock} : 'Out of Stock'"
+                              th:style="${product.stockQuantity > 0} ? 'color:#2d5a2d' : 'color:#7a2d2d'">In Stock</span>
+                    </li>
+                </ul>
+
+                <!-- Price -->
+                <div th:if="${product.price != null}" class="product-price">
+                    <span th:if="${product.salePrice != null}" class="original"
+                          th:text="'$' + ${#numbers.formatDecimal(product.price, 1, 2)}">$100.00</span>
+                    <span th:text="'$' + ${#numbers.formatDecimal(product.salePrice ?: product.price, 1, 2)}">$89.00</span>
                 </div>
 
-                <!-- Tags -->
-                <div th:if="${product.tags != null and !product.tags.isEmpty()}" class="mb-3">
-                    <span class="text-muted me-2" th:text="#{product.tags} + ':'">Tags:</span>
-                    <span th:each="tag : ${product.tags}">
-                        <a th:href="@{/tags/{slug}(slug=${tag.slug})}"
-                           class="badge bg-light text-dark text-decoration-none"
-                           th:text="${tag.name}">Tag</a>
-                    </span>
-                </div>
-
-                <!-- Price (if applicable) -->
-                <div th:if="${product.price != null}" class="mb-4">
-                    <div class="d-flex align-items-center gap-2">
-                        <span th:if="${product.salePrice != null}" class="text-decoration-line-through text-muted"
-                              th:text="'$' + ${#numbers.formatDecimal(product.price, 1, 2)}">$100.00</span>
-                        <span class="h4 text-primary mb-0"
-                              th:text="'$' + ${#numbers.formatDecimal(product.salePrice ?: product.price, 1, 2)}">$89.00</span>
-                    </div>
-                </div>
-
-                <!-- Inquiry Button -->
-                <div class="d-flex gap-3 mb-4">
-                    <a href="/contact" class="btn btn-accent btn-lg">
-                        <i class="bi bi-envelope"></i> <span th:text="#{product.send_inquiry}">Send Inquiry</span>
-                    </a>
-                </div>
-
-                <!-- Quick Specs -->
-                <div class="product-quick-specs p-3 bg-light rounded">
-                    <div class="row g-2">
-                        <div class="col-6" th:if="${product.stockQuantity != null}">
-                            <small class="text-muted">Stock:</small>
-                            <span th:text="${product.stockQuantity > 0} ? 'In Stock' : 'Out of Stock'"
-                                  th:class="${product.stockQuantity > 0} ? 'text-success' : 'text-danger'">In Stock</span>
-                        </div>
-                        <div class="col-6" th:if="${product.sku != null}">
-                            <small class="text-muted">Model:</small>
-                            <span th:text="${product.sku}">SKU</span>
-                        </div>
-                    </div>
-                </div>
+                <!-- Inquiry Button (Aesop-style full-width) -->
+                <a th:href="@{/contact}" class="btn-aesop-accent" style="width:100%;justify-content:center;">
+                    <i class="bi bi-envelope"></i>
+                    <span th:text="#{product.send_inquiry}">Send Inquiry</span>
+                </a>
             </div>
         </div>
 
-        <!-- Description Tabs -->
-        <div class="mt-5">
-            <ul class="nav nav-tabs" role="tablist">
-                <li class="nav-item">
-                    <a class="nav-link active" data-bs-toggle="tab" href="#tabDescription"
-                       th:text="#{product.description}">Description</a>
-                </li>
-            </ul>
-            <div class="tab-content p-4 border border-top-0 rounded-bottom">
-                <div class="tab-pane fade show active" id="tabDescription">
-                    <div th:if="${product.description != null}" th:utext="${product.description}">
-                        Product description
-                    </div>
-                    <p th:unless="${product.description != null}" class="text-muted">No description available.</p>
-                </div>
+        <!-- Description Section (Aesop-style: clean typography) -->
+        <div th:if="${product.description != null}" class="product-description-section fade-in">
+            <h3 th:text="#{product.description}">Product Description</h3>
+            <div class="product-description-content" th:utext="${product.description}">
+                Product description content
             </div>
         </div>
 
-        <!-- Related Products -->
-        <div th:if="${relatedProducts != null and !relatedProducts.isEmpty()}" class="mt-5">
-            <h3 class="mb-4" th:text="#{product.related}">Related Products</h3>
-            <div class="row g-4">
-                <div class="col-6 col-md-3" th:each="rp : ${relatedProducts}">
-                    <div class="product-card">
-                        <a th:href="@{/products/{slug}(slug=${rp.slug})}" class="product-card-img">
-                            <img th:if="${rp.mainImage != null}" th:src="${rp.mainImage.url}"
-                                 th:alt="${rp.name}">
-                            <div th:unless="${rp.mainImage != null}" class="product-placeholder">
-                                <i class="bi bi-image"></i>
-                            </div>
-                        </a>
-                        <div class="product-card-body">
-                            <h6 class="product-card-title">
-                                <a th:href="@{/products/{slug}(slug=${rp.slug})}"
-                                   th:text="${rp.name}">Product Name</a>
-                            </h6>
-                        </div>
-                        <div class="product-card-footer">
-                            <a th:href="@{/products/{slug}(slug=${rp.slug})}" class="btn btn-sm btn-outline-primary w-100">
-                                <i class="bi bi-eye"></i> <span th:text="#{product.view_detail}">View Details</span>
-                            </a>
+        <!-- Related Products (Aesop-style carousel) -->
+        <div th:if="${relatedProducts != null and !relatedProducts.isEmpty()}" class="related-products">
+            <h3 th:text="#{product.related}" class="fade-in">Related Products</h3>
+            <div class="product-grid">
+                <a th:each="rp,iter : ${relatedProducts}" th:if="${iter.index < 4}"
+                   th:href="@{/products/{slug}(slug=${rp.slug})}"
+                   class="product-card fade-in"
+                   th:classappend="'stagger-' + ${iter.index + 1}">
+                    <div class="product-card-image">
+                        <img th:if="${rp.mainImage != null}" th:src="${rp.mainImage.url}" th:alt="${rp.name}" loading="lazy">
+                        <div th:unless="${rp.mainImage != null}" class="product-placeholder">
+                            <i class="bi bi-image"></i>
                         </div>
                     </div>
-                </div>
+                    <div class="product-card-info">
+                        <span class="product-card-category"
+                              th:if="${rp.categories != null and !rp.categories.isEmpty()}"
+                              th:text="${rp.categories[0].name}">Category</span>
+                        <div class="product-card-title" th:text="${rp.name}">Product Name</div>
+                    </div>
+                </a>
             </div>
         </div>
     </div>
 </section>
 
+<!-- CTA Banner -->
+<section class="cta-banner">
+    <div class="aesop-container">
+        <h3 class="fade-in" th:text="#{cta.title}">Need Custom Filtration Solutions?</h3>
+        <p class="fade-in" th:text="#{cta.subtitle}">Contact our team for professional consultation</p>
+        <div class="fade-in">
+            <a th:href="@{/contact}" class="btn-aesop" th:text="#{cta.button}">Get in Touch</a>
+        </div>
+    </div>
+</section>
+
 <!-- JSON-LD Structured Data -->
-<script type="application/ld+json" th:inline="none" th:with="productName=${product.name},productDesc=${product.shortDescription},productSku=${product.sku},productImg=${product.mainImage != null ? product.mainImage.url : ''}">
-</script>
 <script th:inline="javascript">
     var ldJson = {
         "@context": "https://schema.org",
@@ -193,7 +170,7 @@
     document.head.appendChild(script);
 </script>
 
-<div th:replace="~{fragments/footer :: footer}"></div>
+<footer th:replace="~{fragments/footer :: footer}"></footer>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script src="/static/js/main.js"></script>

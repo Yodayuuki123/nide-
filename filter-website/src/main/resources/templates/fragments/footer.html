@@ -2,106 +2,95 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
 <footer th:fragment="footer" class="site-footer">
-    <!-- Main Footer -->
-    <div class="footer-main">
-        <div class="container">
-            <div class="row g-4">
-                <!-- Company Info -->
-                <div class="col-lg-3 col-md-6">
-                    <div class="footer-brand">
-                        <img src="/static/images/logo.png" alt="Philitee Filter" class="footer-logo"
-                             onerror="this.style.display='none'">
-                        <h5 th:text="#{site.name}">Philitee Filter</h5>
-                    </div>
-                    <p class="footer-desc" th:text="#{site.description}">
-                        Professional manufacturer of industrial filter bags, filter cloth, filter cartridges and related products.
-                    </p>
-                    <div class="footer-social d-flex gap-3 mt-3">
-                        <a href="#" title="Facebook"><i class="bi bi-facebook"></i></a>
-                        <a href="#" title="LinkedIn"><i class="bi bi-linkedin"></i></a>
-                        <a href="#" title="YouTube"><i class="bi bi-youtube"></i></a>
-                    </div>
-                </div>
-
-                <!-- Quick Links -->
-                <div class="col-lg-2 col-md-6">
-                    <h5 class="footer-title" th:text="'Quick Links'">Quick Links</h5>
-                    <ul class="footer-links">
-                        <li><a th:href="@{/}" th:text="#{nav.home}">Home</a></li>
-                        <li><a th:href="@{/products}" th:text="#{nav.products}">Products</a></li>
-                        <li><a th:href="@{/about}" th:text="#{nav.about}">About Us</a></li>
-                        <li><a th:href="@{/factory}" th:text="#{nav.factory}">Our Factory</a></li>
-                        <li><a th:href="@{/contact}" th:text="#{nav.contact}">Contact Us</a></li>
-                    </ul>
-                </div>
-
-                <!-- Product Categories -->
-                <div class="col-lg-4 col-md-6">
-                    <h5 class="footer-title" th:text="#{home.categories.title}">Product Categories</h5>
-                    <div class="row">
-                        <div class="col-6">
-                            <ul class="footer-links">
-                                <th:block th:each="cat,iter : ${globalCategoryTree}" th:if="${iter.index < 4}">
-                                    <li>
-                                        <a th:href="@{/categories/{slug}(slug=${cat.slug})}"
-                                           th:text="${cat.name}">Category</a>
-                                    </li>
-                                </th:block>
-                            </ul>
-                        </div>
-                        <div class="col-6">
-                            <ul class="footer-links">
-                                <th:block th:each="cat,iter : ${globalCategoryTree}"
-                                          th:if="${iter.index >= 4 and iter.index < 8}">
-                                    <li>
-                                        <a th:href="@{/categories/{slug}(slug=${cat.slug})}"
-                                           th:text="${cat.name}">Category</a>
-                                    </li>
-                                </th:block>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Contact Info -->
-                <div class="col-lg-3 col-md-6">
-                    <h5 class="footer-title" th:text="#{footer.contact}">Contact Information</h5>
-                    <ul class="footer-contact">
-                        <li>
-                            <i class="bi bi-geo-alt"></i>
-                            <span th:text="#{footer.address}">Address</span>
-                        </li>
-                        <li>
-                            <i class="bi bi-envelope"></i>
-                            <a href="mailto:info@philitee.com">info@philitee.com</a>
-                        </li>
-                        <li>
-                            <i class="bi bi-telephone"></i>
-                            <a href="tel:+86-XXX-XXXX-XXXX">+86-XXX-XXXX-XXXX</a>
-                        </li>
-                        <li>
-                            <i class="bi bi-whatsapp"></i>
-                            <span>WhatsApp: +86-XXX-XXXX-XXXX</span>
-                        </li>
-                        <li>
-                            <i class="bi bi-wechat"></i>
-                            <span>WeChat: philitee</span>
-                        </li>
-                    </ul>
-                </div>
-            </div>
+    <!-- Footer Quote Section (Aesop-style) -->
+    <div class="footer-quote-section">
+        <div class="aesop-container">
+            <blockquote class="footer-quote fade-in">
+                <p th:text="#{footer.quote.text}">'Quality is not an act, it is a habit.'</p>
+                <cite th:text="#{footer.quote.author}">Aristotle</cite>
+            </blockquote>
         </div>
     </div>
 
-    <!-- Footer Bottom -->
-    <div class="footer-bottom">
-        <div class="container d-flex flex-column flex-md-row justify-content-between align-items-center">
-            <p class="mb-0">
+    <div class="aesop-container">
+        <div class="footer-grid">
+            <!-- Brand -->
+            <div class="footer-brand">
+                <a href="/" class="logo footer-logo">
+                    <img src="/static/images/logo.png" alt="Philitee Filter"
+                         class="footer-logo-img"
+                         onerror="this.style.display='none'">
+                    <span th:text="#{site.name}">PHILITEE FILTER</span>
+                </a>
+                <p th:text="#{site.description}">Professional manufacturer of industrial filter bags, filter cloth, filter cartridges and related products.</p>
+                <div class="footer-social">
+                    <a href="#" title="Facebook"><i class="bi bi-facebook"></i></a>
+                    <a href="#" title="LinkedIn"><i class="bi bi-linkedin"></i></a>
+                    <a href="#" title="YouTube"><i class="bi bi-youtube"></i></a>
+                </div>
+            </div>
+
+            <!-- Quick Links -->
+            <div>
+                <div class="footer-title" th:text="#{nav.quick_links}">Navigation</div>
+                <ul class="footer-links">
+                    <li><a th:href="@{/}" th:text="#{nav.home}">Home</a></li>
+                    <li><a th:href="@{/products}" th:text="#{nav.products}">Products</a></li>
+                    <li><a th:href="@{/about}" th:text="#{nav.about}">About</a></li>
+                    <li><a th:href="@{/factory}" th:text="#{nav.factory}">Factory</a></li>
+                    <li><a th:href="@{/contact}" th:text="#{nav.contact}">Contact</a></li>
+                </ul>
+            </div>
+
+            <!-- Product Categories -->
+            <div>
+                <div class="footer-title" th:text="#{nav.products}">Products</div>
+                <ul class="footer-links">
+                    <th:block th:each="cat,iter : ${globalCategoryTree}" th:if="${iter.index < 8}">
+                        <li>
+                            <a th:href="@{/categories/{slug}(slug=${cat.slug})}"
+                               th:text="${cat.name}">Category</a>
+                        </li>
+                    </th:block>
+                </ul>
+            </div>
+
+            <!-- Contact -->
+            <div>
+                <div class="footer-title" th:text="#{footer.contact}">Contact</div>
+                <ul class="footer-contact-list">
+                    <li>
+                        <i class="bi bi-geo-alt"></i>
+                        <span th:text="#{footer.address}">Zhejiang Province, China</span>
+                    </li>
+                    <li>
+                        <i class="bi bi-envelope"></i>
+                        <a href="mailto:info@philitee.com">info@philitee.com</a>
+                    </li>
+                    <li>
+                        <i class="bi bi-telephone"></i>
+                        <a href="tel:+86-XXX-XXXX-XXXX">+86-XXX-XXXX-XXXX</a>
+                    </li>
+                    <li>
+                        <i class="bi bi-whatsapp"></i>
+                        <span>WhatsApp: +86-XXX-XXXX-XXXX</span>
+                    </li>
+                    <li>
+                        <i class="bi bi-wechat"></i>
+                        <span>WeChat: philitee</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Footer Bottom -->
+        <div class="footer-bottom">
+            <p>
                 &copy; <span th:text="${#dates.format(#dates.createNow(), 'yyyy')}">2026</span>
                 <span th:text="#{site.name}">Philitee Filter</span>.
                 <span th:text="#{footer.rights}">All Rights Reserved</span>.
             </p>
-            <p class="mb-0 footer-powered">Powered by Philitee</p>
+            <p>Powered by Philitee</p>
         </div>
     </div>
 </footer>
