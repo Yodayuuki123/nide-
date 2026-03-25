@@ -58,6 +58,7 @@ public class ProductCategoryServiceImpl extends ServiceImpl<ProductCategoryMappe
     }
 
     @Override
+    @Cacheable(value = "topLevelCategories", unless = "#result == null")
     public List<ProductCategory> getTopLevelCategories() {
         List<ProductCategory> categories = baseMapper.selectTopLevel();
         categories.forEach(category -> {

@@ -26,36 +26,37 @@ public class WebMvcConfig implements WebMvcConfigurer {
     @Value("${upload.static-web-path:}")
     private String staticWebPath;
 
+    @Value("${upload.proxy-enabled:false}")
+    private boolean proxyEnabled;
+
     /**
      * 配置静态资源映射
-     * 将 /wp-content/uploads/** 请求映射到服务器上 WordPress 的物理目录
-     * 支持两个图片来源目录：
-     *   1. /opt/website/wordpress/wp-content/uploads  (原WordPress目录)
-     *   2. /root/static_web/filter.philitee.com/wp-content/uploads (新独立站目录)
-     * 实现图片文件原地不动，新系统直接读取
+     * proxy模式下不注册 /wp-content/uploads/** 的本地映射，
+     * 全部交给 ImageProxyController 从远程服务器获取图片。
+     * 非proxy模式（部署到服务器后）走本地文件映射。
      */
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        // WordPress 图片目录映射（30天缓存）
-        // 同时搜索两个目录，优先查找 uploadBasePath，其次查找 staticWebPath
-        if (staticWebPath != null && !staticWebPath.isEmpty()) {
-            registry.addResourceHandler("/wp-content/uploads/**")
-                    .addResourceLocations(
-                            "file:" + uploadBasePath + "/",
-                            "file:" + staticWebPath + "/"
-                    )
-                    .setCachePeriod(2592000);
-        } else {
-            registry.addResourceHandler("/wp-content/uploads/**")
+        if (!proxyEnabled) {
+            // 服务器部署模式：本地文件映射
+            if (staticWebPath != null && !staticWebPath.isEmpty()) {
+                registry.addResourceHandler("/wp-content/uploads/**")
+                        .addResourceLocations(
+                                "file:" + uploadBasePath + "/",
+                                "file:" + staticWebPath + "/"
+                        )
+                        .setCachePeriod(2592000);
+            } else {
+                registry.addResourceHandler("/wp-content/uploads/**")
+                        .addResourceLocations("file:" + uploadBasePath + "/")
+                        .setCachePeriod(2592000);
+            }
+
+            registry.addResourceHandler("/wordpress/wp-content/uploads/**")
                     .addResourceLocations("file:" + uploadBasePath + "/")
                     .setCachePeriod(2592000);
         }
-
-        // 兼容旧URL中带 /wordpress/ 前缀的图片路径
-        // 如：/wordpress/wp-content/uploads/2024/08/xxx.jpg
-        registry.addResourceHandler("/wordpress/wp-content/uploads/**")
-                .addResourceLocations("file:" + uploadBasePath + "/")
-                .setCachePeriod(2592000);
+        // proxy模式下：/wp-content/uploads/** 由 ImageProxyController 处理
 
         // 静态资源（CSS/JS/Images）（30天缓存）
         registry.addResourceHandler("/static/**")

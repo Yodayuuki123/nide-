@@ -8,6 +8,8 @@ import com.philitee.filter.entity.*;
 import com.philitee.filter.mapper.*;
 import com.philitee.filter.service.ProductService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -85,6 +87,7 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
     }
 
     @Override
+    @Cacheable(value = "featuredProducts", key = "#limit", unless = "#result == null")
     public List<Product> getFeaturedProducts(int limit) {
         LambdaQueryWrapper<Product> wrapper = new LambdaQueryWrapper<>();
         wrapper.eq(Product::getStatus, "publish")
@@ -97,6 +100,7 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
 
     @Override
     @Transactional(rollbackFor = Exception.class)
+    @CacheEvict(value = "featuredProducts", allEntries = true)
     public boolean saveProduct(Product product, List<Long> categoryIds, List<Long> tagIds, List<Long> imageIds) {
         // 保存产品
         this.save(product);
@@ -132,6 +136,7 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
 
     @Override
     @Transactional(rollbackFor = Exception.class)
+    @CacheEvict(value = "featuredProducts", allEntries = true)
     public boolean updateProduct(Product product, List<Long> categoryIds, List<Long> tagIds, List<Long> imageIds) {
         // 更新产品
         this.updateById(product);

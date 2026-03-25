@@ -8,7 +8,7 @@
 <section class="page-header">
     <div class="aesop-container">
         <h1 th:text="#{factory.title}" class="fade-in">Our Factory</h1>
-        <p th:text="#{factory.subtitle}" class="fade-in">State-of-the-art Manufacturing Facilities</p>
+        <p th:text="#{factory.subtitle}" class="fade-in">Vertically integrated manufacturing from raw materials to finished products</p>
         <nav class="breadcrumb-nav">
             <a th:href="@{/}" th:text="#{breadcrumb.home}">Home</a>
             <span class="separator">/</span>
@@ -20,40 +20,40 @@
 <!-- Factory Overview (Aesop-style editorial split) -->
 <section class="editorial-section">
     <div class="editorial-image parallax-image fade-in-left">
-        <img src="/static/images/placeholder.jpg" alt="Factory Overview"
+        <img src="/static/images/factory-overview.jpg" alt="Factory Overview"
              onerror="this.parentElement.style.background='var(--bg-tertiary)'">
     </div>
     <div class="editorial-content fade-in-right">
         <span class="eyebrow" th:text="#{factory.overview.eyebrow}">Manufacturing</span>
         <h2 th:text="#{factory.overview.title}">Factory Overview</h2>
-        <p th:text="#{factory.overview.desc}">Our manufacturing facility spans over 20,000 square meters.</p>
+        <p th:text="#{factory.overview.desc}">Our vertically integrated manufacturing campus combines needle punched felt production, woven filter cloth weaving, filter bag cutting and sewing, and bag cage manufacturing under one roof.</p>
         <div class="factory-stats">
             <div class="factory-stat">
                 <div class="factory-stat-icon"><i class="bi bi-building"></i></div>
                 <div>
                     <strong>20,000+ sqm</strong>
-                    <span>Factory Area</span>
+                    <span th:text="#{factory.stat.area}">Factory Area</span>
                 </div>
             </div>
             <div class="factory-stat">
                 <div class="factory-stat-icon"><i class="bi bi-gear"></i></div>
                 <div>
                     <strong>50+ Lines</strong>
-                    <span>Production Lines</span>
+                    <span th:text="#{factory.stat.lines}">Production Lines</span>
                 </div>
             </div>
             <div class="factory-stat">
                 <div class="factory-stat-icon"><i class="bi bi-people"></i></div>
                 <div>
                     <strong>200+</strong>
-                    <span>Employees</span>
+                    <span th:text="#{factory.stat.employees}">Skilled Workers</span>
                 </div>
             </div>
             <div class="factory-stat">
                 <div class="factory-stat-icon"><i class="bi bi-clipboard-check"></i></div>
                 <div>
                     <strong>ISO 9001</strong>
-                    <span>Certified</span>
+                    <span th:text="#{factory.stat.cert}">Quality System</span>
                 </div>
             </div>
         </div>
@@ -70,23 +70,23 @@
         <div class="process-grid">
             <div class="process-step fade-in stagger-1">
                 <div class="process-number">01</div>
-                <h5 th:text="#{factory.step1.title}">Raw Material Selection</h5>
-                <p th:text="#{factory.step1.desc}">Strict quality inspection of all raw materials.</p>
+                <h5 th:text="#{factory.step1.title}">Raw Material Inspection</h5>
+                <p th:text="#{factory.step1.desc}">Every batch of fiber, yarn and base cloth is inspected for weight, tensile strength and chemical composition before production.</p>
             </div>
             <div class="process-step fade-in stagger-2">
                 <div class="process-number">02</div>
-                <h5 th:text="#{factory.step2.title}">Cutting &amp; Sewing</h5>
-                <p th:text="#{factory.step2.desc}">Precision cutting and professional sewing.</p>
+                <h5 th:text="#{factory.step2.title}">Felt &amp; Fabric Production</h5>
+                <p th:text="#{factory.step2.desc}">Advanced needle looms and air-jet weaving machines produce filter media with precise control of weight, thickness and permeability.</p>
             </div>
             <div class="process-step fade-in stagger-3">
                 <div class="process-number">03</div>
-                <h5 th:text="#{factory.step3.title}">Quality Testing</h5>
-                <p th:text="#{factory.step3.desc}">Comprehensive testing for all parameters.</p>
+                <h5 th:text="#{factory.step3.title}">Cutting, Sewing &amp; Finishing</h5>
+                <p th:text="#{factory.step3.desc}">CNC cutting ensures dimensional accuracy. Automated sewing lines guarantee seam quality. Post-treatment includes PTFE membrane, singeing and calendering.</p>
             </div>
             <div class="process-step fade-in stagger-4">
                 <div class="process-number">04</div>
-                <h5 th:text="#{factory.step4.title}">Packaging &amp; Shipping</h5>
-                <p th:text="#{factory.step4.desc}">Professional packaging for safe delivery.</p>
+                <h5 th:text="#{factory.step4.title}">QC &amp; Shipping</h5>
+                <p th:text="#{factory.step4.desc}">100% inspection of dimensions, weight and appearance. Qualified products are professionally packed in PE bags and cartons for safe global delivery.</p>
             </div>
         </div>
     </div>
@@ -101,28 +101,34 @@
         </div>
         <div class="gallery-grid">
             <div class="gallery-item scale-in stagger-1">
-                <img src="/static/images/placeholder.jpg" alt="Factory Equipment"
+                <img src="/static/images/factory-gallery-1.jpg" th:alt="#{factory.gallery.item1}"
                      onerror="this.parentElement.style.background='var(--bg-tertiary)'">
+                <div class="gallery-caption" th:text="#{factory.gallery.item1}">Needle Punching Production Line</div>
             </div>
             <div class="gallery-item scale-in stagger-2">
-                <img src="/static/images/placeholder.jpg" alt="Production Line"
+                <img src="/static/images/factory-gallery-2.jpg" th:alt="#{factory.gallery.item2}"
                      onerror="this.parentElement.style.background='var(--bg-secondary)'">
+                <div class="gallery-caption" th:text="#{factory.gallery.item2}">Automated Filter Bag Sewing Workshop</div>
             </div>
             <div class="gallery-item scale-in stagger-3">
-                <img src="/static/images/placeholder.jpg" alt="Quality Control"
+                <img src="/static/images/factory-gallery-3.jpg" th:alt="#{factory.gallery.item3}"
                      onerror="this.parentElement.style.background='var(--bg-tertiary)'">
+                <div class="gallery-caption" th:text="#{factory.gallery.item3}">Woven Fabric Weaving Center</div>
             </div>
             <div class="gallery-item scale-in stagger-4">
-                <img src="/static/images/placeholder.jpg" alt="Warehouse"
+                <img src="/static/images/factory-gallery-4.jpg" th:alt="#{factory.gallery.item4}"
                      onerror="this.parentElement.style.background='var(--bg-secondary)'">
+                <div class="gallery-caption" th:text="#{factory.gallery.item4}">Quality Testing Laboratory</div>
             </div>
             <div class="gallery-item scale-in stagger-5">
-                <img src="/static/images/placeholder.jpg" alt="Testing Lab"
+                <img src="/static/images/factory-gallery-5.jpg" th:alt="#{factory.gallery.item5}"
                      onerror="this.parentElement.style.background='var(--bg-tertiary)'">
+                <div class="gallery-caption" th:text="#{factory.gallery.item5}">Finished Goods Warehouse</div>
             </div>
             <div class="gallery-item scale-in stagger-6">
-                <img src="/static/images/placeholder.jpg" alt="Shipping"
+                <img src="/static/images/factory-gallery-6.jpg" th:alt="#{factory.gallery.item6}"
                      onerror="this.parentElement.style.background='var(--bg-secondary)'">
+                <div class="gallery-caption" th:text="#{factory.gallery.item6}">Container Loading &amp; Shipping</div>
             </div>
         </div>
     </div>
