@@ -238,12 +238,11 @@ img {
 }
 
 .logo-img {
-    height: 36px;
+    height: 50px;
     width: auto;
 }
-
 .logo-img.logo-img-large {
-    height: 52px;
+    height: 72px;
     width: auto;
 }
 
