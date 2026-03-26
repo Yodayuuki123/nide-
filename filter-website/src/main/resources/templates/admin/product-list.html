@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{fragments/admin-layout :: adminHead(#{admin.products})}"></head>
+<head th:replace="~{fragments/admin-layout :: adminHead('产品管理')}"></head>
 <body class="admin-body">
 <div class="admin-wrapper">
     <div th:replace="~{fragments/admin-layout :: adminSidebar}"></div>
@@ -9,7 +9,7 @@
         <div th:replace="~{fragments/admin-layout :: adminTopbar}"></div>
 
         <div class="admin-main">
-            <!-- Flash Messages -->
+            <!-- Flash 留言内容s -->
             <div th:if="${message}" class="alert alert-success alert-dismissible fade show">
                 <span th:text="${message}"></span>
                 <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
@@ -21,17 +21,17 @@
 
             <div class="d-flex justify-content-between align-items-center mb-4">
                 <div>
-                    <h4 style="font-size: 1.8rem; margin-bottom: 4px;" th:text="#{admin.products}">Products</h4>
-                    <p style="color: var(--admin-text-tertiary); font-size: 13px; margin: 0;">Manage your product catalog</p>
+                    <h4 style="font-size: 1.8rem; margin-bottom: 4px;">产品管理</h4>
+                    <p style="color: var(--admin-text-tertiary); font-size: 13px; margin: 0;">管理您的产品目录</p>
                 </div>
                 <a href="/admin/products/add" class="btn btn-primary btn-sm">
-                    <i class="bi bi-plus-circle"></i> <span th:text="#{admin.add}">Add New</span>
+                    <i class="bi bi-plus-circle"></i> 新增产品
                 </a>
             </div>
 
             <div class="admin-card">
                 <div class="admin-card-header">
-                    <h5>All Products</h5>
+                    <h5>全部产品</h5>
                 </div>
                 <div class="admin-card-body">
                     <div class="table-responsive">
@@ -39,13 +39,13 @@
                             <thead>
                             <tr>
                                 <th>ID</th>
-                                <th>Image</th>
-                                <th>Name</th>
+                                <th>图片</th>
+                                <th>产品名称</th>
                                 <th>SKU</th>
-                                <th>Status</th>
-                                <th>Categories</th>
-                                <th>Created</th>
-                                <th th:text="#{admin.actions}">Actions</th>
+                                <th>状态</th>
+                                <th>所属分类</th>
+                                <th>创建时间</th>
+                                <th>操作</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -63,18 +63,18 @@
                                 </td>
                                 <td>
                                     <a th:href="@{/admin/products/edit/{id}(id=${product.id})}"
-                                       th:text="${product.name}" class="fw-medium">Product Name</a>
+                                       th:text="${product.name}" class="fw-medium">产品名称</a>
                                 </td>
                                 <td th:text="${product.sku} ?: '-'" class="text-muted">SKU</td>
                                 <td>
                                     <span class="badge status-badge"
                                           th:classappend="${product.status == 'publish'} ? 'bg-success' : 'bg-secondary'"
-                                          th:text="${product.status}">publish</span>
+                                          th:text="${product.status == 'publish'} ? '已发布' : '草稿'">已发布</span>
                                 </td>
                                 <td>
                                     <span th:each="cat,iter : ${product.categories}"
                                           th:if="${iter.index < 2}">
-                                        <span class="badge" style="background: var(--admin-bg-secondary); color: var(--admin-text-secondary);" th:text="${cat.name}">Cat</span>
+                                        <span class="badge" style="background: var(--admin-bg-secondary); color: var(--admin-text-secondary);" th:text="${cat.name}">分类</span>
                                     </span>
                                     <span th:if="${product.categories != null and product.categories.size() > 2}"
                                           class="text-muted">+<span th:text="${product.categories.size() - 2}">1</span></span>
@@ -82,20 +82,20 @@
                                 <td class="text-muted" th:text="${product.createdAt != null} ? ${#temporals.format(product.createdAt, 'yyyy-MM-dd')} : '-'">2026-01-01</td>
                                 <td class="actions">
                                     <a th:href="@{/admin/products/edit/{id}(id=${product.id})}"
-                                       class="btn btn-sm btn-outline-primary me-1" title="Edit">
+                                       class="btn btn-sm btn-outline-primary me-1" title="编辑">
                                         <i class="bi bi-pencil"></i>
                                     </a>
                                     <button type="button" class="btn btn-sm btn-outline-danger"
                                             th:data-id="${product.id}"
                                             th:data-name="${product.name}"
                                             data-bs-toggle="modal" data-bs-target="#deleteModal"
-                                            onclick="prepareDelete(this)">
+                                            onclick="prepare删除(this)">
                                         <i class="bi bi-trash"></i>
                                     </button>
                                 </td>
                             </tr>
                             <tr th:if="${productPage.records.isEmpty()}">
-                                <td colspan="8" class="text-center text-muted py-4">No products found.</td>
+                                <td colspan="8" class="text-center text-muted py-4">暂无产品数据。</td>
                             </tr>
                             </tbody>
                         </table>
@@ -106,7 +106,7 @@
                         <nav>
                             <ul class="pagination mb-0 justify-content-center">
                                 <li class="page-item" th:classappend="${productPage.current <= 1} ? 'disabled'">
-                                    <a class="page-link" th:href="@{/admin/products(page=${productPage.current - 1}, size=${productPage.size})}">Previous</a>
+                                    <a class="page-link" th:href="@{/admin/products(page=${productPage.current - 1}, size=${productPage.size})}">上一页</a>
                                 </li>
                                 <th:block th:each="i : ${#numbers.sequence(1, productPage.pages)}">
                                     <li class="page-item" th:classappend="${i == productPage.current} ? 'active'">
@@ -114,7 +114,7 @@
                                     </li>
                                 </th:block>
                                 <li class="page-item" th:classappend="${productPage.current >= productPage.pages} ? 'disabled'">
-                                    <a class="page-link" th:href="@{/admin/products(page=${productPage.current + 1}, size=${productPage.size})}">Next</a>
+                                    <a class="page-link" th:href="@{/admin/products(page=${productPage.current + 1}, size=${productPage.size})}">下一页</a>
                                 </li>
                             </ul>
                         </nav>
@@ -125,22 +125,22 @@
     </div>
 </div>
 
-<!-- Delete Confirmation Modal -->
+<!-- 删除确认弹窗 -->
 <div class="modal fade" id="deleteModal" tabindex="-1">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Confirm Delete</h5>
+                <h5 class="modal-title">确认删除</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body">
-                <p th:text="#{admin.confirm_delete}">Are you sure you want to delete this item?</p>
-                <p class="fw-medium" id="deleteItemName"></p>
+                <p>确定要删除以下产品吗？此操作不可撤销。</p>
+                <p class="fw-medium" id="deleteItem名称"></p>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" th:text="#{admin.cancel}">Cancel</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
                 <form id="deleteForm" method="post" class="d-inline">
-                    <button type="submit" class="btn btn-outline-danger" th:text="#{admin.delete}">Delete</button>
+                    <button type="submit" class="btn btn-outline-danger">确认删除</button>
                 </form>
             </div>
         </div>
@@ -149,8 +149,8 @@
 
 <div th:replace="~{fragments/admin-layout :: adminScripts}"></div>
 <script>
-    function prepareDelete(btn) {
-        document.getElementById('deleteItemName').textContent = btn.getAttribute('data-name');
+    function prepare删除(btn) {
+        document.getElementById('deleteItem名称').textContent = btn.getAttribute('data-name');
         document.getElementById('deleteForm').action = '/admin/products/delete/' + btn.getAttribute('data-id');
     }
 </script>

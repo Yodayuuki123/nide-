@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-<head th:replace="~{fragments/admin-layout :: adminHead('User Management')}"></head>
+<head th:replace="~{fragments/admin-layout :: adminHead('用户管理')}"></head>
 <body class="admin-body">
 <div class="admin-wrapper">
     <div th:replace="~{fragments/admin-layout :: adminSidebar}"></div>
@@ -9,7 +9,7 @@
         <div th:replace="~{fragments/admin-layout :: adminTopbar}"></div>
 
         <div class="admin-main">
-            <!-- Flash Messages -->
+            <!-- Flash 留言内容s -->
             <div th:if="${message}" class="alert alert-success alert-dismissible fade show">
                 <span th:text="${message}"></span>
                 <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
@@ -21,17 +21,17 @@
 
             <div class="d-flex justify-content-between align-items-center mb-4">
                 <div>
-                    <h4 style="font-size: 1.8rem; margin-bottom: 4px;">User Management</h4>
-                    <p style="color: var(--admin-text-tertiary); font-size: 13px; margin: 0;">Manage administrator accounts and access</p>
+                    <h4 style="font-size: 1.8rem; margin-bottom: 4px;">用户管理</h4>
+                    <p style="color: var(--admin-text-tertiary); font-size: 13px; margin: 0;">管理管理员账号和权限</p>
                 </div>
                 <a href="/admin/users/add" class="btn btn-primary btn-sm">
-                    <i class="bi bi-plus-circle"></i> Add User
+                    <i class="bi bi-plus-circle"></i> 新增用户
                 </a>
             </div>
 
             <div class="admin-card">
                 <div class="admin-card-header">
-                    <h5>All Users</h5>
+                    <h5>全部用户</h5>
                 </div>
                 <div class="admin-card-body">
                     <table class="table admin-table">

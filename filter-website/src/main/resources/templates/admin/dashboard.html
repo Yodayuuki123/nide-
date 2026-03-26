@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-<head th:replace="~{fragments/admin-layout :: adminHead(#{admin.dashboard})}"></head>
+<head th:replace="~{fragments/admin-layout :: adminHead('控制台')}"></head>
 <body class="admin-body">
 <div class="admin-wrapper">
     <div th:replace="~{fragments/admin-layout :: adminSidebar}"></div>
@@ -9,15 +9,15 @@
         <div th:replace="~{fragments/admin-layout :: adminTopbar}"></div>
 
         <div class="admin-main">
-            <!-- Flash Messages -->
+            <!-- Flash 留言内容s -->
             <div th:if="${message}" class="alert alert-success alert-dismissible fade show">
                 <span th:text="${message}"></span>
                 <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
             </div>
 
             <div class="mb-5">
-                <h4 style="font-size: 2rem; margin-bottom: 4px;" th:text="#{admin.dashboard}">Dashboard</h4>
-                <p style="color: var(--admin-text-tertiary); font-size: 13px; margin: 0;">Overview of your website content and activity</p>
+                <h4 style="font-size: 2rem; margin-bottom: 4px;">控制台</h4>
+                <p style="color: var(--admin-text-tertiary); font-size: 13px; margin: 0;">网站内容与数据概览</p>
             </div>
 
             <!-- Stats Cards Row 1 -->
@@ -29,7 +29,7 @@
                         </div>
                         <div class="stat-card-info">
                             <h3 th:text="${productCount}">0</h3>
-                            <p th:text="#{admin.products}">Products</p>
+                            <p>产品管理</p>
                         </div>
                     </div>
                 </div>
@@ -40,7 +40,7 @@
                         </div>
                         <div class="stat-card-info">
                             <h3 th:text="${categoryCount}">0</h3>
-                            <p th:text="#{admin.categories}">Categories</p>
+                            <p>分类管理</p>
                         </div>
                     </div>
                 </div>
@@ -51,7 +51,7 @@
                         </div>
                         <div class="stat-card-info">
                             <h3 th:text="${imageCount}">0</h3>
-                            <p th:text="#{admin.images}">Images</p>
+                            <p>图片管理</p>
                         </div>
                     </div>
                 </div>
@@ -62,38 +62,38 @@
                         </div>
                         <div class="stat-card-info">
                             <h3 th:text="${inquiryCount ?: 0}">0</h3>
-                            <p>Inquiries</p>
+                            <p>询盘管理</p>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Quick Actions -->
+            <!-- Quick 操作 -->
             <div class="admin-card">
                 <div class="admin-card-header">
-                    <h5>Quick Actions</h5>
+                    <h5>快捷操作</h5>
                 </div>
                 <div class="admin-card-body p-4">
                     <div class="d-flex flex-wrap gap-3">
                         <a href="/admin/products/add" class="btn btn-primary">
-                            <i class="bi bi-plus-circle"></i> Add Product
+                            <i class="bi bi-plus-circle"></i> 新增产品
                         </a>
                         <a href="/admin/categories/add" class="btn btn-outline-primary">
-                            <i class="bi bi-folder-plus"></i> Add Category
+                            <i class="bi bi-folder-plus"></i> 新增分类
                         </a>
                         <a href="/admin/images" class="btn btn-outline-primary">
-                            <i class="bi bi-cloud-upload"></i> Upload Images
+                            <i class="bi bi-cloud-upload"></i> 上传图片
                         </a>
                         <a href="/admin/menus" class="btn btn-outline-secondary">
-                            <i class="bi bi-list-nested"></i> Manage Menus
+                            <i class="bi bi-list-nested"></i> 菜单管理
                         </a>
                         <a href="/admin/settings" class="btn btn-outline-secondary"
                            sec:authorize="hasAnyAuthority('setting:view', 'setting:edit')">
-                            <i class="bi bi-gear"></i> Site Settings
+                            <i class="bi bi-gear"></i> 网站设置
                         </a>
                         <a href="/admin/users" class="btn btn-outline-secondary"
                            sec:authorize="hasRole('ADMIN')">
-                            <i class="bi bi-people"></i> Manage Users
+                            <i class="bi bi-people"></i> 用户管理
                         </a>
                     </div>
                 </div>

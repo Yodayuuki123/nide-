@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{fragments/admin-layout :: adminHead(${role.id != null} ? 'Edit Role' : 'Add Role')}"></head>
+<head th:replace="~{fragments/admin-layout :: adminHead(${role.id != null} ? '编辑角色' : '新增角色')}"></head>
 <body class="admin-body">
 <div class="admin-wrapper">
     <div th:replace="~{fragments/admin-layout :: adminSidebar}"></div>
@@ -11,11 +11,11 @@
         <div class="admin-main">
             <div class="d-flex justify-content-between align-items-center mb-4">
                 <div>
-                    <h4 style="font-size: 1.8rem; margin-bottom: 4px;" th:text="${role.id != null} ? 'Edit Role' : 'Add Role'">Role Form</h4>
-                    <p style="color: var(--admin-text-tertiary); font-size: 13px; margin: 0;" th:text="${role.id != null} ? 'Update role information and permission assignments' : 'Create a new role with specific permissions'">Subtitle</p>
+                    <h4 style="font-size: 1.8rem; margin-bottom: 4px;" th:text="${role.id != null} ? '编辑角色' : '新增角色'">Role Form</h4>
+                    <p style="color: var(--admin-text-tertiary); font-size: 13px; margin: 0;" th:text="${role.id != null} ? '更新角色信息和权限分配' : '创建具有特定权限的新角色'">Subtitle</p>
                 </div>
                 <a href="/admin/roles" class="btn btn-outline-secondary btn-sm">
-                    <i class="bi bi-arrow-left"></i> Back
+                    <i class="bi bi-arrow-left"></i> 返回
                 </a>
             </div>
 

@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{fragments/admin-layout :: adminHead(${category.id != null} ? 'Edit Category' : 'Add Category')}"></head>
+<head th:replace="~{fragments/admin-layout :: adminHead(${category.id != null} ? '编辑 Category' : '新增分类')}"></head>
 <body class="admin-body">
 <div class="admin-wrapper">
     <div th:replace="~{fragments/admin-layout :: adminSidebar}"></div>
@@ -11,11 +11,11 @@
         <div class="admin-main">
             <div class="d-flex justify-content-between align-items-center mb-4">
                 <div>
-                    <h4 style="font-size: 1.8rem; margin-bottom: 4px;" th:text="${category.id != null} ? 'Edit Category' : 'Add Category'">Category Form</h4>
-                    <p style="color: var(--admin-text-tertiary); font-size: 13px; margin: 0;" th:text="${category.id != null} ? 'Update category details and hierarchy' : 'Create a new product category'">Subtitle</p>
+                    <h4 style="font-size: 1.8rem; margin-bottom: 4px;" th:text="${category.id != null} ? '编辑 Category' : '新增分类'">Category Form</h4>
+                    <p style="color: var(--admin-text-tertiary); font-size: 13px; margin: 0;" th:text="${category.id != null} ? 'Update category details and hierarchy' : '创建新产品 category'">Subtitle</p>
                 </div>
                 <a href="/admin/categories" class="btn btn-outline-secondary btn-sm">
-                    <i class="bi bi-arrow-left"></i> <span th:text="#{admin.back}">Back</span>
+                    <i class="bi bi-arrow-left"></i> <span th:text="#{admin.back}">返回</span>
                 </a>
             </div>
 
@@ -25,45 +25,45 @@
                         <input type="hidden" name="id" th:value="${category.id}">
 
                         <div class="mb-3">
-                            <label class="form-label">Category Name <span class="text-danger">*</span></label>
+                            <label class="form-label">Category 名称 <span class="text-danger">*</span></label>
                             <input type="text" name="name" class="form-control" th:value="${category.name}"
-                                   required id="categoryName" placeholder="Enter category name">
+                                   required id="category名称" placeholder="Enter category name">
                         </div>
 
                         <div class="mb-3">
-                            <label class="form-label">Slug (URL)</label>
+                            <label class="form-label">URL别名</label>
                             <input type="text" name="slug" class="form-control" th:value="${category.slug}"
-                                   id="categorySlug" placeholder="auto-generated-from-name">
+                                   id="categoryURL别名" placeholder="auto-generated-from-name">
                         </div>
 
                         <div class="mb-3">
-                            <label class="form-label">Parent Category</label>
+                            <label class="form-label">父级分类</label>
                             <select name="parentId" class="form-select">
-                                <option value="">— None (Top Level) —</option>
-                                <option th:each="parent : ${parentCategories}"
+                                <option value="">— 无（顶级分类） —</option>
+                                <option th:each="parent : ${parent所属分类}"
                                         th:value="${parent.id}"
                                         th:text="${parent.name}"
-                                        th:selected="${category.parentId != null and category.parentId == parent.id}">Parent</option>
+                                        th:selected="${category.parentId != null and category.parentId == parent.id}">父级</option>
                             </select>
                         </div>
 
                         <div class="mb-3">
-                            <label class="form-label">Description</label>
+                            <label class="form-label">描述</label>
                             <textarea name="description" class="form-control" rows="4"
                                       th:text="${category.description}" placeholder="Category description (optional)"></textarea>
                         </div>
 
                         <div class="mb-3">
-                            <label class="form-label">Image ID</label>
+                            <label class="form-label">图片 ID</label>
                             <input type="number" name="imageId" class="form-control" th:value="${category.imageId}"
-                                   placeholder="Image ID (optional)">
+                                   placeholder="图片 ID (optional)">
                         </div>
 
                         <div class="d-flex gap-2">
                             <button type="submit" class="btn btn-primary">
-                                <i class="bi bi-check-circle"></i> <span th:text="#{admin.save}">Save</span>
+                                <i class="bi bi-check-circle"></i> <span th:text="#{admin.save}">保存</span>
                             </button>
-                            <a href="/admin/categories" class="btn btn-outline-secondary" th:text="#{admin.cancel}">Cancel</a>
+                            <a href="/admin/categories" class="btn btn-outline-secondary" th:text="#{admin.cancel}">取消</a>
                         </div>
                     </form>
                 </div>

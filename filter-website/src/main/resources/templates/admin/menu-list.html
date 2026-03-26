@@ -9,7 +9,7 @@
         <div th:replace="~{fragments/admin-layout :: adminTopbar}"></div>
 
         <div class="admin-main">
-            <!-- Flash Messages -->
+            <!-- Flash 留言内容s -->
             <div th:if="${message}" class="alert alert-success alert-dismissible fade show">
                 <span th:text="${message}"></span>
                 <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
@@ -39,11 +39,11 @@
                                     <thead>
                                     <tr>
                                         <th>ID</th>
-                                        <th>Name</th>
+                                        <th>名称</th>
                                         <th>Location</th>
                                         <th>Items</th>
-                                        <th>Created</th>
-                                        <th th:text="#{admin.actions}">Actions</th>
+                                        <th>创建时间</th>
+                                        <th th:text="#{admin.actions}">操作</th>
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -81,7 +81,7 @@
                 <!-- Add Menu Form -->
                 <div class="col-lg-4">
                     <div class="admin-form">
-                        <h6 class="mb-3">Add New Menu</h6>
+                        <h6 class="mb-3">新增 Menu</h6>
                         <form th:action="@{/admin/menus/save}" method="post">
                             <div class="mb-3">
                                 <label class="form-label">Menu Name <span class="text-danger">*</span></label>

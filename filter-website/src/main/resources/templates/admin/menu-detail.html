@@ -9,7 +9,7 @@
         <div th:replace="~{fragments/admin-layout :: adminTopbar}"></div>
 
         <div class="admin-main">
-            <!-- Flash Messages -->
+            <!-- Flash 留言内容s -->
             <div th:if="${message}" class="alert alert-success alert-dismissible fade show">
                 <span th:text="${message}"></span>
                 <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
@@ -28,16 +28,16 @@
                     <p style="color: var(--admin-text-tertiary); font-size: 13px; margin: 0;">Manage menu items and structure</p>
                 </div>
                 <a href="/admin/menus" class="btn btn-outline-secondary btn-sm">
-                    <i class="bi bi-arrow-left"></i> <span th:text="#{admin.back}">Back</span>
+                    <i class="bi bi-arrow-left"></i> <span th:text="#{admin.back}">返回</span>
                 </a>
             </div>
 
             <div class="row g-4">
-                <!-- Menu Items Tree -->
+                <!-- 菜单项 Tree -->
                 <div class="col-lg-8">
                     <div class="admin-card">
                         <div class="admin-card-header">
-                            <h5>Menu Items</h5>
+                            <h5>菜单项</h5>
                         </div>
                         <div class="admin-card-body">
                             <div class="table-responsive">
@@ -48,7 +48,7 @@
                                         <th>URL</th>
                                         <th>Type</th>
                                         <th>Sort</th>
-                                        <th th:text="#{admin.actions}">Actions</th>
+                                        <th th:text="#{admin.actions}">操作</th>
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -71,7 +71,7 @@
                                             <td class="actions">
                                                 <form th:action="@{/admin/menus/items/delete/{id}(id=${item.id})}"
                                                       method="post" class="d-inline"
-                                                      onsubmit="return confirm('Delete this menu item?')">
+                                                      onsubmit="return confirm('删除 this menu item?')">
                                                     <input type="hidden" name="menuId" th:value="${menu.id}">
                                                     <button type="submit" class="btn btn-sm btn-outline-danger">
                                                         <i class="bi bi-trash"></i>
@@ -96,7 +96,7 @@
                                                 <td class="actions">
                                                     <form th:action="@{/admin/menus/items/delete/{id}(id=${child.id})}"
                                                           method="post" class="d-inline"
-                                                          onsubmit="return confirm('Delete this menu item?')">
+                                                          onsubmit="return confirm('删除 this menu item?')">
                                                         <input type="hidden" name="menuId" th:value="${menu.id}">
                                                         <button type="submit" class="btn btn-sm btn-outline-danger">
                                                             <i class="bi bi-trash"></i>
@@ -116,10 +116,10 @@
                     </div>
                 </div>
 
-                <!-- Add Menu Item Form -->
+                <!-- 新增菜单项 Form -->
                 <div class="col-lg-4">
                     <div class="admin-form">
-                        <h6 class="mb-3">Add Menu Item</h6>
+                        <h6 class="mb-3">新增菜单项</h6>
                         <form th:action="@{/admin/menus/items/save}" method="post">
                             <input type="hidden" name="menuId" th:value="${menu.id}">
 
@@ -144,9 +144,9 @@
                             </div>
 
                             <div class="mb-3">
-                                <label class="form-label">Parent Item</label>
+                                <label class="form-label">父级 Item</label>
                                 <select name="parentId" class="form-select">
-                                    <option value="">— None (Top Level) —</option>
+                                    <option value="">— 无（顶级分类） —</option>
                                     <th:block th:each="item : ${menu.menuItems}">
                                         <option th:if="${item.parentId == null or item.parentId == 0}"
                                                 th:value="${item.id}"
@@ -156,7 +156,7 @@
                             </div>
 
                             <div class="mb-3">
-                                <label class="form-label">Sort Order</label>
+                                <label class="form-label">排序</label>
                                 <input type="number" name="sortOrder" class="form-control" value="0" placeholder="0">
                             </div>
 
@@ -166,7 +166,7 @@
                         </form>
                     </div>
 
-                    <!-- Edit Menu Info -->
+                    <!-- 编辑 Menu Info -->
                     <div class="admin-form mt-4">
                         <h6 class="mb-3">Menu Settings</h6>
                         <form th:action="@{/admin/menus/save}" method="post">
