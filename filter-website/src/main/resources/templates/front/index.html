@@ -66,7 +66,7 @@
 <!-- Feature Banner 1 (Aesop-style: image + text split) -->
 <section class="feature-banner fade-in">
     <div class="feature-banner-image parallax-image">
-        <img src="/static/images/feature-quality.jpg" alt="Quality Manufacturing"
+        <img src="/static/images/feature-quality.jpg?v=5" alt="Quality Manufacturing"
              onerror="this.parentElement.style.background='var(--bg-tertiary)'">
     </div>
     <div class="feature-banner-content">
@@ -219,6 +219,23 @@
                 <p th:text="#{cert.global.text}">Reliable shipping to over 50 countries with professional packaging and timely delivery.</p>
             </div>
         </div>
+    </div>
+</section>
+
+<!-- How PTFE Filter Bags Work - Animated GIF Section -->
+<section class="feature-banner fade-in">
+    <div class="feature-banner-image">
+        <img src="/static/images/ptfe-how-it-works.gif" alt="How PTFE Membrane Filter Bag Works"
+             style="width:100%;height:100%;object-fit:cover;">
+    </div>
+    <div class="feature-banner-content">
+        <span class="eyebrow">Technology</span>
+        <h2>How PTFE Membrane Filter Bags Work</h2>
+        <p>Our PTFE membrane filter bags use advanced ePTFE technology to achieve surface filtration. The microporous membrane captures particles on the surface rather than within the filter media, resulting in lower pressure drop, higher efficiency, and longer service life.</p>
+        <a th:href="@{/products}" class="btn-text-link">
+            <span>Explore Products</span>
+            <span class="arrow">&rarr;</span>
+        </a>
     </div>
 </section>
 

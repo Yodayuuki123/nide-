@@ -63,18 +63,14 @@
             <!-- Center: Logo -->
             <div class="nav-center">
                 <a th:href="@{/}" class="logo" aria-label="Philitee Filter - Home">
-                    <img src="/static/images/logo.png" alt="Philitee Filter" class="logo-img"
+                    <img src="/static/images/logo.png" alt="Philitee Filter" class="logo-img logo-img-large"
                          onerror="this.style.display='none';this.nextElementSibling.style.display='inline'">
                     <span class="logo-text" style="display:none" th:text="#{site.name}">PHILITEE</span>
                 </a>
             </div>
 
-            <!-- Right: Search + Mobile Toggle -->
+            <!-- Right: Mobile Toggle only -->
             <div class="nav-right">
-                <button class="nav-icon-btn" onclick="openSearch()" aria-label="Search">
-                    <i class="bi bi-search"></i>
-                    <span class="nav-icon-label">Search...</span>
-                </button>
                 <button class="mobile-toggle" onclick="openMobileMenu()" aria-label="Menu">
                     <span></span><span></span><span></span>
                 </button>

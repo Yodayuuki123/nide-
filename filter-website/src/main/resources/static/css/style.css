@@ -132,15 +132,11 @@ img {
 }
 
 .announcement-bar-inner {
-    animation: announcementSlide 20s linear infinite;
+    /* Removed jittery animation */
 }
 
 @keyframes announcementSlide {
     0%, 100% { opacity: 1; }
-    45% { opacity: 1; }
-    50% { opacity: 0; transform: translateY(-100%); }
-    55% { opacity: 0; transform: translateY(100%); }
-    60% { opacity: 1; transform: translateY(0); }
 }
 
 .announcement-bar a {
@@ -243,6 +239,11 @@ img {
 
 .logo-img {
     height: 36px;
+    width: auto;
+}
+
+.logo-img.logo-img-large {
+    height: 52px;
     width: auto;
 }
 
