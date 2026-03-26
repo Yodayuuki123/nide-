@@ -17,6 +17,8 @@
     </div>
 </section>
 
+
+
 <section class="section">
     <div class="aesop-container">
         <!-- Alerts -->
@@ -89,6 +91,8 @@
                 <div class="contact-info-block">
                     <h6 th:text="#{contact.wechat}">WeChat</h6>
                     <p>philitee</p>
+                    <img src="/static/images/wechat-qr.png" alt="WeChat QR Code"
+                         style="width:140px;height:140px;margin-top:12px;border-radius:8px;border:1px solid var(--border-light);">
                 </div>
                 <div class="contact-info-block" style="margin-top:48px;padding-top:32px;border-top:1px solid var(--border-light);">
                     <h6 th:text="#{contact.hours.label}">Business Hours</h6>
@@ -100,9 +104,23 @@
     </div>
 </section>
 
+<!-- Global Business Map -->
+<section class="section section-cream">
+    <div class="aesop-container">
+        <div class="section-header fade-in">
+            <h2>Global Business Coverage</h2>
+            <p>Philippines · South Africa · Saudi Arabia · New Zealand · South Korea · and 100+ countries worldwide</p>
+        </div>
+        <div class="fade-in" style="width:100%;overflow:hidden;">
+            <img src="/static/images/world-map.jpg" alt="Worldwide Coverage Map" style="width:100%;height:auto;display:block;">
+        </div>
+    </div>
+</section>
+
 <footer th:replace="~{fragments/footer :: footer}"></footer>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script src="/static/js/main.js"></script>
+<script src="/static/js/slideshow.js?v=3"></script>
 </body>
 </html>
