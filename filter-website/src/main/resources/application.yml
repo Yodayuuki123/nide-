@@ -21,7 +21,7 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://127.0.0.1:3306/web_site?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true&connectTimeout=5000&socketTimeout=30000
     username: root
-    password: Root@1234
+    password: 123456
     druid:
       initial-size: 5
       min-idle: 5
@@ -68,10 +68,10 @@ mybatis-plus:
 
 # 图片上传目录（WordPress 原始目录）
 upload:
-  base-path: /home/ubuntu/nide-/filter-website/src/main/resources/static/wp-content/uploads
+  base-path: /home/ubuntu/project_nide/nide--master/static_extracted/filter.philitee.com/wp-content/uploads
   url-prefix: /wp-content/uploads
-  static-web-path:
-  # 本地开发：图片已在本地，关闭远程代理
+  static-web-path: /home/ubuntu/project_nide/nide--master/filter-website/src/main/resources/static/wp-content/uploads
+  # 本地开发：直接使用本地图片目录
   proxy-enabled: false
   proxy-remote-host: https://47.251.117.119
 
