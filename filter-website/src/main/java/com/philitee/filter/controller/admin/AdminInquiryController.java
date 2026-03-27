@@ -30,13 +30,31 @@ public class AdminInquiryController {
         return "admin/inquiry-list";
     }
 
+    /**
+     * 标记询盘为已读
+     */
+    @PostMapping("/mark-read/{id}")
+    public String markRead(@PathVariable Long id, RedirectAttributes redirectAttributes) {
+        try {
+            Inquiry inquiry = inquiryService.getById(id);
+            if (inquiry != null) {
+                inquiry.setIsRead(true);
+                inquiryService.updateById(inquiry);
+            }
+            redirectAttributes.addFlashAttribute("message", "已标记为已读");
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("error", "操作失败: " + e.getMessage());
+        }
+        return "redirect:/admin/inquiries";
+    }
+
     @PostMapping("/delete/{id}")
     public String delete(@PathVariable Long id, RedirectAttributes redirectAttributes) {
         try {
             inquiryService.removeById(id);
-            redirectAttributes.addFlashAttribute("message", "Inquiry deleted successfully");
+            redirectAttributes.addFlashAttribute("message", "询盘已删除");
         } catch (Exception e) {
-            redirectAttributes.addFlashAttribute("error", "Delete failed: " + e.getMessage());
+            redirectAttributes.addFlashAttribute("error", "删除失败: " + e.getMessage());
         }
         return "redirect:/admin/inquiries";
     }

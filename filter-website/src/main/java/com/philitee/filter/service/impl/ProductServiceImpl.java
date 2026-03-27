@@ -102,6 +102,12 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
     @Transactional(rollbackFor = Exception.class)
     @CacheEvict(value = "featuredProducts", allEntries = true)
     public boolean saveProduct(Product product, List<Long> categoryIds, List<Long> tagIds, List<Long> imageIds) {
+        // 自动填充时间戳
+        java.time.LocalDateTime now = java.time.LocalDateTime.now();
+        if (product.getCreatedAt() == null) {
+            product.setCreatedAt(now);
+        }
+        product.setUpdatedAt(now);
         // 保存产品
         this.save(product);
         Long productId = product.getId();
@@ -138,6 +144,8 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
     @Transactional(rollbackFor = Exception.class)
     @CacheEvict(value = "featuredProducts", allEntries = true)
     public boolean updateProduct(Product product, List<Long> categoryIds, List<Long> tagIds, List<Long> imageIds) {
+        // 自动更新时间戳
+        product.setUpdatedAt(java.time.LocalDateTime.now());
         // 更新产品
         this.updateById(product);
         Long productId = product.getId();

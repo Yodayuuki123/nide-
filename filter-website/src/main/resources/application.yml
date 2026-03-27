@@ -59,9 +59,7 @@ mybatis-plus:
   global-config:
     db-config:
       id-type: auto
-      logic-delete-field: deleted
-      logic-delete-value: 1
-      logic-not-delete-value: 0
+      # logic-delete-field: deleted  # 已禁用：实体类无此字段，启用会导致所有查询500错误
   configuration:
     map-underscore-to-camel-case: true
     #log-impl: org.apache.ibatis.logging.stdout.StdOutImpl

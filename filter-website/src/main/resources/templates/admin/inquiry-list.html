@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{fragments/admin-layout :: adminHead('询盘列表')}"></head>
+<head th:replace="~{fragments/admin-layout :: adminHead('询盘管理')}"></head>
 <body class="admin-body">
 <div class="admin-wrapper">
     <div th:replace="~{fragments/admin-layout :: adminSidebar}"></div>
@@ -9,7 +9,7 @@
         <div th:replace="~{fragments/admin-layout :: adminTopbar}"></div>
 
         <div class="admin-main">
-            <!-- Flash 留言内容s -->
+            <!-- Flash Messages -->
             <div th:if="${message}" class="alert alert-success alert-dismissible fade show">
                 <span th:text="${message}"></span>
                 <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
@@ -21,15 +21,15 @@
 
             <div class="d-flex justify-content-between align-items-center mb-4">
                 <div>
-                    <h4 style="font-size: 1.8rem; margin-bottom: 4px;">Customer 询盘列表</h4>
-                    <p style="color: var(--admin-text-tertiary); font-size: 13px; margin: 0;">View and manage customer contact requests</p>
+                    <h4 style="font-size: 1.8rem; margin-bottom: 4px;">询盘管理</h4>
+                    <p style="color: var(--admin-text-tertiary); font-size: 13px; margin: 0;">查看和管理客户询盘信息</p>
                 </div>
-                <span class="badge bg-primary" th:text="${inquiryPage.total} + ' total'">0 total</span>
+                <span class="badge bg-primary fs-6" th:text="${inquiryPage.total} + ' 条询盘'">0 条询盘</span>
             </div>
 
             <div class="admin-card">
                 <div class="admin-card-header">
-                    <h5>All 询盘列表</h5>
+                    <h5>全部询盘</h5>
                 </div>
                 <div class="admin-card-body">
                     <div class="table-responsive">
@@ -37,42 +37,66 @@
                             <thead>
                             <tr>
                                 <th>ID</th>
-                                <th>名称</th>
+                                <th>状态</th>
+                                <th>姓名</th>
                                 <th>邮箱</th>
                                 <th>公司</th>
-                                <th>Product Interest</th>
-                                <th>留言内容</th>
-                                <th>Date</th>
+                                <th>感兴趣产品</th>
+                                <th>留言摘要</th>
+                                <th>时间</th>
                                 <th th:text="#{admin.actions}">操作</th>
                             </tr>
                             </thead>
                             <tbody>
+                            <!-- FIX: is已读 → isRead -->
                             <tr th:each="inq : ${inquiryPage.records}"
-                                th:class="${inq.is已读 != null and !inq.is已读} ? 'fw-medium' : ''">
+                                th:class="${inq.isRead != null and !inq.isRead} ? 'fw-medium table-warning' : ''">
                                 <td th:text="${inq.id}">1</td>
-                                <td th:text="${inq.name}">名称</td>
+                                <td>
+                                    <span th:if="${inq.isRead == null or !inq.isRead}"
+                                          class="badge bg-warning text-dark">未读</span>
+                                    <span th:if="${inq.isRead != null and inq.isRead}"
+                                          class="badge bg-secondary">已读</span>
+                                </td>
+                                <td th:text="${inq.name}">姓名</td>
                                 <td>
                                     <a th:href="'mailto:' + ${inq.email}" th:text="${inq.email}">email@example.com</a>
                                 </td>
                                 <td th:text="${inq.company} ?: '-'" class="text-muted">公司</td>
-                                <td th:text="${inq.productInterest} ?: '-'" class="text-muted">Product</td>
+                                <td th:text="${inq.productInterest} ?: '-'" class="text-muted">产品</td>
                                 <td>
-                                    <span th:text="${#strings.abbreviate(inq.message, 50)}" class="text-muted">留言内容 preview...</span>
+                                    <span th:text="${#strings.abbreviate(inq.message, 40)}" class="text-muted">留言摘要...</span>
                                 </td>
                                 <td class="text-muted text-nowrap"
                                     th:text="${inq.createdTime != null} ? ${#temporals.format(inq.createdTime, 'yyyy-MM-dd HH:mm')} : '-'">2026-01-01</td>
                                 <td class="actions">
+                                    <button type="button" class="btn btn-sm btn-outline-primary me-1"
+                                            th:data-id="${inq.id}"
+                                            th:data-name="${inq.name}"
+                                            th:data-email="${inq.email}"
+                                            th:data-phone="${inq.phone}"
+                                            th:data-company="${inq.company}"
+                                            th:data-product="${inq.productInterest}"
+                                            th:data-message="${inq.message}"
+                                            th:data-time="${inq.createdTime != null} ? ${#temporals.format(inq.createdTime, 'yyyy-MM-dd HH:mm')} : '-'"
+                                            onclick="viewInquiry(this)"
+                                            title="查看详情">
+                                        <i class="bi bi-eye"></i>
+                                    </button>
                                     <form th:action="@{/admin/inquiries/delete/{id}(id=${inq.id})}"
                                           method="post" class="d-inline"
-                                          onsubmit="return confirm('删除 this inquiry?')">
-                                        <button type="submit" class="btn btn-sm btn-outline-danger">
+                                          onsubmit="return confirm('确定删除此询盘？')">
+                                        <button type="submit" class="btn btn-sm btn-outline-danger" title="删除">
                                             <i class="bi bi-trash"></i>
                                         </button>
                                     </form>
                                 </td>
                             </tr>
                             <tr th:if="${inquiryPage.records.isEmpty()}">
-                                <td colspan="8" class="text-center text-muted py-4">No inquiries yet.</td>
+                                <td colspan="9" class="text-center text-muted py-5">
+                                    <i class="bi bi-chat-dots fs-1 d-block mb-2"></i>
+                                    暂无询盘数据
+                                </td>
                             </tr>
                             </tbody>
                         </table>
@@ -102,6 +126,76 @@
     </div>
 </div>
 
+<!-- 询盘详情 Modal -->
+<div class="modal fade" id="inquiryDetailModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">询盘详情</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <label class="form-label text-muted small">姓名</label>
+                        <p class="fw-medium mb-0" id="detailName">-</p>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label text-muted small">邮箱</label>
+                        <p class="mb-0"><a id="detailEmailLink" href="#"><span id="detailEmail">-</span></a></p>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label text-muted small">电话</label>
+                        <p class="mb-0" id="detailPhone">-</p>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label text-muted small">公司</label>
+                        <p class="mb-0" id="detailCompany">-</p>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label text-muted small">感兴趣产品</label>
+                        <p class="mb-0" id="detailProduct">-</p>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label text-muted small">提交时间</label>
+                        <p class="mb-0 text-muted" id="detailTime">-</p>
+                    </div>
+                    <div class="col-12">
+                        <label class="form-label text-muted small">留言内容</label>
+                        <div class="p-3 bg-light rounded" id="detailMessage" style="white-space: pre-wrap; min-height: 80px;">-</div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <form id="markReadForm" method="post" class="me-auto">
+                    <button type="submit" class="btn btn-outline-success btn-sm">
+                        <i class="bi bi-check2"></i> 标记为已读
+                    </button>
+                </form>
+                <a id="replyEmailBtn" href="#" class="btn btn-primary btn-sm">
+                    <i class="bi bi-reply"></i> 回复邮件
+                </a>
+                <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">关闭</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div th:replace="~{fragments/admin-layout :: adminScripts}"></div>
+<script>
+    function viewInquiry(btn) {
+        document.getElementById('detailName').textContent = btn.dataset.name || '-';
+        document.getElementById('detailEmail').textContent = btn.dataset.email || '-';
+        document.getElementById('detailEmailLink').href = 'mailto:' + (btn.dataset.email || '');
+        document.getElementById('detailPhone').textContent = btn.dataset.phone || '-';
+        document.getElementById('detailCompany').textContent = btn.dataset.company || '-';
+        document.getElementById('detailProduct').textContent = btn.dataset.product || '-';
+        document.getElementById('detailMessage').textContent = btn.dataset.message || '-';
+        document.getElementById('detailTime').textContent = btn.dataset.time || '-';
+        document.getElementById('replyEmailBtn').href = 'mailto:' + (btn.dataset.email || '');
+        document.getElementById('markReadForm').action = '/admin/inquiries/mark-read/' + btn.dataset.id;
+        new bootstrap.Modal(document.getElementById('inquiryDetailModal')).show();
+    }
+</script>
 </body>
 </html>

@@ -11,8 +11,8 @@
         <div class="admin-main">
             <div class="d-flex justify-content-between align-items-center mb-4">
                 <div>
-                    <h4 style="font-size: 1.8rem; margin-bottom: 4px;" th:text="${product.id != null} ? '编辑 Product' : '新增产品'">Product Form</h4>
-                    <p style="color: var(--admin-text-tertiary); font-size: 13px; margin: 0;" th:text="${product.id != null} ? 'Update product details, images and rich content' : '创建新产品 with descriptions and media'">Subtitle</p>
+                    <h4 style="font-size: 1.8rem; margin-bottom: 4px;" th:text="${product.id != null} ? '编辑产品' : '新增产品'">产品表单</h4>
+                    <p style="color: var(--admin-text-tertiary); font-size: 13px; margin: 0;" th:text="${product.id != null} ? '修改产品信息、图片和内容' : '创建新产品'">副标题</p>
                 </div>
                 <a href="/admin/products" class="btn btn-outline-secondary btn-sm">
                     <i class="bi bi-arrow-left"></i> <span th:text="#{admin.back}">返回</span>
@@ -52,8 +52,8 @@
                                 </div>
                                 <div class="col-md-4">
                                     <label class="form-label">Sale 价格</label>
-                                    <input type="number" name="sale价格" class="form-control" step="0.01"
-                                           th:value="${product.sale价格}" placeholder="0.00">
+                                    <input type="number" name="salePrice" class="form-control" step="0.01"
+                                           th:value="${product.salePrice}" placeholder="0.00">
                                 </div>
                             </div>
                             <div class="row g-3 mt-0">
@@ -84,8 +84,8 @@
                                 此部分显示在产品详情页的产品信息区域，支持图文混排。建议包含产品亮点、核心参数等。
                             </p>
                             <div class="tinymce-wrapper">
-                                <textarea name="short描述" id="short描述" rows="8"
-                                          th:utext="${product.short描述}"></textarea>
+                                <textarea name="shortDescription" id="shortDescription" rows="8"
+                                          th:utext="${product.shortDescription}"></textarea>
                             </div>
                         </div>
 
@@ -264,12 +264,12 @@
     // Override the default TinyMCE init from admin.js with enhanced config
     if (typeof tinymce !== 'undefined') {
         // Remove any existing instances first
-        tinymce.remove('#short描述');
+        tinymce.remove('#shortDescription');
         tinymce.remove('#description');
 
         // 简短描述 editor (第一部分 - compact)
         tinymce.init({
-            selector: '#short描述',
+            selector: '#shortDescription',
             height: 350,
             menubar: false,
             plugins: 'lists link image table code fullscreen preview media hr anchor charmap',
@@ -370,7 +370,7 @@
     if (form) {
         form.addEventListener('submit', function() {
             if (typeof tinymce !== 'undefined') {
-                tinymce.trigger保存();
+                tinymce.triggerSave();
             }
         });
     }
