@@ -18,7 +18,7 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://127.0.0.1:3306/web_site?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true
     username: root
-    password: Root@1234
+    password: 123456
     druid:
       initial-size: 5
       min-idle: 5
@@ -41,7 +41,7 @@ mybatis-plus:
   configuration:
     map-underscore-to-camel-case: true
 upload:
-  base-path: /home/ubuntu/nide-/filter-website/src/main/resources/static/wp-content/uploads
+  base-path: /home/ubuntu/project_nide/nide--master/filter-website/src/main/resources/static/wp-content/uploads
   url-prefix: /wp-content/uploads
   static-web-path:
   proxy-enabled: false

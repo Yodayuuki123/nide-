@@ -57,7 +57,7 @@
                     </div>
                     <div>
                         <label th:text="#{contact.form.product}">Product Interest</label>
-                        <input type="text" name="productInterest" placeholder="e.g. Filter Bags, Filter Cloth, Filter Cartridges">
+                        <input type="text" name="productInterest" th:placeholder="#{contact.form.product.placeholder}">
                     </div>
                     <div>
                         <label th:text="#{contact.form.message}">Message</label>
@@ -108,8 +108,8 @@
 <section class="section section-cream">
     <div class="aesop-container">
         <div class="section-header fade-in">
-            <h2>Global Business Coverage</h2>
-            <p>Philippines · South Africa · Saudi Arabia · New Zealand · South Korea · and 100+ countries worldwide</p>
+            <h2 th:text="#{contact.global.title}">Global Business Coverage</h2>
+            <p th:text="#{contact.global.regions}">Philippines · South Africa · Saudi Arabia · New Zealand · South Korea · and 100+ countries worldwide</p>
         </div>
         <div class="fade-in" style="width:100%;overflow:hidden;">
             <img src="/static/images/world-map.jpg" alt="Worldwide Coverage Map" style="width:100%;height:auto;display:block;">

@@ -65,12 +65,10 @@
 
 <!-- Feature Banner 1 (Aesop-style: image + text split) -->
 <section class="feature-banner fade-in">
-    <div class="feature-banner-image parallax-image" style="position:relative;overflow:hidden;">
-        <img src="/static/images/feature-quality-1.jpg?v=1" alt="Manufacturing Line" class="feature-slide active" style="width:100%;height:100%;object-fit:cover;position:absolute;top:0;left:0;opacity:1;transition:opacity 0.6s ease;">
-        <img src="/static/images/feature-quality-2.jpg?v=1" alt="Factory Floor" class="feature-slide" style="width:100%;height:100%;object-fit:cover;position:absolute;top:0;left:0;opacity:0;transition:opacity 0.6s ease;">
-        <div style="position:absolute;bottom:20px;left:50%;transform:translateX(-50%);display:flex;gap:10px;z-index:10;">
-            <button onclick="switchFeatureSlide(0)" class="feature-dot active" style="width:12px;height:12px;border-radius:50%;border:2px solid #fff;background:#fff;cursor:pointer;transition:background 0.3s;"></button>
-            <button onclick="switchFeatureSlide(1)" class="feature-dot" style="width:12px;height:12px;border-radius:50%;border:2px solid #fff;background:transparent;cursor:pointer;transition:background 0.3s;"></button>
+    <div class="feature-banner-image parallax-image">
+        <div class="module-slideshow">
+            <img src="/static/images/feature-quality-1.jpg" alt="Manufacturing Line">
+            <img src="/static/images/feature-quality-2.jpg" alt="Factory Floor">
         </div>
     </div>
     <div class="feature-banner-content">
@@ -102,8 +100,9 @@
 
             <!-- Pages container -->
             <div class="cat-carousel-viewport" id="catCarouselViewport">
+              <div class="cat-carousel-track" id="catCarouselTrack">
                 <!-- Page 1: index 0-5 -->
-                <div class="cat-carousel-page active">
+                <div class="cat-carousel-page">
                     <th:block th:each="cat,iter : ${categories}" th:if="${iter.index >= 0 and iter.index < 6}">
                         <a th:href="@{/categories/{slug}(slug=${cat.slug})}" class="category-card fade-in">
                             <!-- Try cover image from category-covers directory by slug -->
@@ -157,6 +156,7 @@
                         </a>
                     </th:block>
                 </div>
+              </div><!-- end track -->
             </div>
 
             <!-- Right arrow -->
@@ -177,8 +177,11 @@
 <!-- Feature Banner 2 (Reversed - Aesop-style) -->
 <section class="feature-banner reverse fade-in">
     <div class="feature-banner-image parallax-image">
-        <img src="/static/images/feature-factory.jpg" alt="Our Factory"
-             onerror="this.parentElement.style.background='var(--bg-tertiary)'">
+        <div class="module-slideshow">
+            <img src="/static/images/feature-factory.jpg" alt="Our Factory">
+            <img src="/static/images/factory-overview.jpg" alt="Factory Overview">
+            <img src="/static/images/factory-gallery-1.jpg" alt="Production Line">
+        </div>
     </div>
     <div class="feature-banner-content">
         <span class="eyebrow" th:text="#{home.factory_teaser.eyebrow}">Manufacturing</span>
@@ -233,11 +236,11 @@
              style="width:100%;height:100%;object-fit:cover;">
     </div>
     <div class="feature-banner-content">
-        <span class="eyebrow">Technology</span>
-        <h2>How PTFE Membrane Filter Bags Work</h2>
-        <p>Our PTFE membrane filter bags use advanced ePTFE technology to achieve surface filtration. The microporous membrane captures particles on the surface rather than within the filter media, resulting in lower pressure drop, higher efficiency, and longer service life.</p>
+        <span class="eyebrow" th:text="#{home.ptfe.eyebrow}">Technology</span>
+        <h2 th:text="#{home.ptfe.title}">How PTFE Membrane Filter Bags Work</h2>
+        <p th:text="#{home.ptfe.text}">Our PTFE membrane filter bags use advanced ePTFE technology to achieve surface filtration.</p>
         <a th:href="@{/products}" class="btn-text-link">
-            <span>Explore Products</span>
+            <span th:text="#{home.ptfe.cta}">Explore Products</span>
             <span class="arrow">&rarr;</span>
         </a>
     </div>
@@ -281,14 +284,14 @@
 <footer th:replace="~{fragments/footer :: footer}"></footer>
 
 <style>
-/* Category Carousel - inline to bypass cache */
+/* Category Carousel - slide animation */
 .cat-carousel-wrapper{position:relative;display:flex;align-items:center;gap:0}
 .cat-carousel-viewport{flex:1;overflow:hidden;position:relative}
-.cat-carousel-page{display:none;grid-template-columns:repeat(3,1fr);gap:2px}
-.cat-carousel-page.active{display:grid}
+.cat-carousel-track{display:flex;transition:transform 0.5s cubic-bezier(0.4,0,0.2,1);will-change:transform}
+.cat-carousel-page{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;flex:0 0 auto;box-sizing:border-box}
 .cat-carousel-arrow{flex-shrink:0;width:48px;height:48px;border-radius:50%;border:1.5px solid #ccc;background:#fff;color:#222;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:1.2rem;transition:background .2s,color .2s;z-index:2;margin:0 12px}
 .cat-carousel-arrow:hover{background:#222;color:#fff;border-color:#222}
-.cat-carousel-arrow:disabled{opacity:.3;cursor:default}
+.cat-carousel-arrow:disabled{opacity:.3;cursor:default;pointer-events:none}
 .cat-carousel-dots{display:flex;justify-content:center;gap:10px;margin-top:28px}
 .cat-dot{width:8px;height:8px;border-radius:50%;border:none;background:#ccc;cursor:pointer;padding:0;transition:background .2s,transform .2s}
 .cat-dot.active{background:#222;transform:scale(1.3)}
@@ -298,61 +301,72 @@
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script src="/static/js/main.js"></script>
+<script src="/static/js/slideshow.js?v=3"></script>
 
 <script>
-/* Category Carousel - inline to bypass cache */
+/* Category Carousel - smooth slide animation */
 (function(){
+    var track=document.getElementById('catCarouselTrack');
+    var vp=document.getElementById('catCarouselViewport');
     var pages=document.querySelectorAll('.cat-carousel-page');
     var dots=document.querySelectorAll('.cat-dot');
     var prevBtn=document.getElementById('catPrev');
     var nextBtn=document.getElementById('catNext');
-    if(!pages.length||!prevBtn||!nextBtn)return;
+    if(!track||!vp||!pages.length||!prevBtn||!nextBtn)return;
     var current=0,total=pages.length,animating=false;
-    function goTo(idx,dir){
-        if(animating||idx===current)return;
+
+    /* Set each page width = viewport width */
+    function sizePages(){
+        var w=vp.offsetWidth;
+        pages.forEach(function(p){p.style.width=w+'px';});
+        track.style.transform='translateX(-'+(current*w)+'px)';
+    }
+    sizePages();
+    window.addEventListener('resize',function(){
+        track.style.transition='none';
+        sizePages();
+        /* re-enable transition after layout */
+        requestAnimationFrame(function(){
+            requestAnimationFrame(function(){
+                track.style.transition='transform 0.5s cubic-bezier(0.4,0,0.2,1)';
+            });
+        });
+    });
+
+    function goTo(idx){
+        if(animating||idx===current||idx<0||idx>=total)return;
         animating=true;
-        pages[current].classList.remove('active');
-        pages[current].style.display='none';
-        pages[idx].style.display='grid';
-        pages[idx].classList.add('active');
+        var w=vp.offsetWidth;
+        track.style.transform='translateX(-'+(idx*w)+'px)';
         dots[current].classList.remove('active');
         dots[idx].classList.add('active');
         current=idx;
         updateBtns();
-        animating=false;
+        setTimeout(function(){animating=false;},550);
     }
-    function updateBtns(){prevBtn.disabled=(current===0);nextBtn.disabled=(current===total-1);}
-    prevBtn.addEventListener('click',function(){if(current>0)goTo(current-1,'prev');});
-    nextBtn.addEventListener('click',function(){if(current<total-1)goTo(current+1,'next');});
-    dots.forEach(function(d){d.addEventListener('click',function(){var i=parseInt(this.getAttribute('data-page'),10);goTo(i,i>current?'next':'prev');});});
-    var sx=0,vp=document.getElementById('catCarouselViewport');
-    if(vp){vp.addEventListener('touchstart',function(e){sx=e.changedTouches[0].clientX;},{passive:true});vp.addEventListener('touchend',function(e){var dx=e.changedTouches[0].clientX-sx;if(Math.abs(dx)>50){if(dx<0&&current<total-1)goTo(current+1,'next');if(dx>0&&current>0)goTo(current-1,'prev');}},{passive:true});}
+    function updateBtns(){
+        prevBtn.disabled=(current===0);
+        nextBtn.disabled=(current===total-1);
+    }
+    prevBtn.addEventListener('click',function(){goTo(current-1);});
+    nextBtn.addEventListener('click',function(){goTo(current+1);});
+    dots.forEach(function(d){d.addEventListener('click',function(){
+        var i=parseInt(this.getAttribute('data-page'),10);
+        goTo(i);
+    });});
+    /* Touch swipe */
+    var sx=0;
+    vp.addEventListener('touchstart',function(e){sx=e.changedTouches[0].clientX;},{passive:true});
+    vp.addEventListener('touchend',function(e){
+        var dx=e.changedTouches[0].clientX-sx;
+        if(Math.abs(dx)>50){
+            if(dx<0)goTo(current+1);
+            if(dx>0)goTo(current-1);
+        }
+    },{passive:true});
     updateBtns();
 })();
 </script>
 
-<script>
-/* Feature Banner Image Slideshow */
-function switchFeatureSlide(idx) {
-    var slides = document.querySelectorAll('.feature-slide');
-    var dots = document.querySelectorAll('.feature-dot');
-    slides.forEach(function(s, i) {
-        s.style.opacity = (i === idx) ? '1' : '0';
-    });
-    dots.forEach(function(d, i) {
-        d.style.background = (i === idx) ? '#fff' : 'transparent';
-    });
-}
-/* Auto-rotate every 4 seconds */
-(function() {
-    var current = 0;
-    var total = document.querySelectorAll('.feature-slide').length;
-    if (total < 2) return;
-    setInterval(function() {
-        current = (current + 1) % total;
-        switchFeatureSlide(current);
-    }, 4000);
-})();
-</script>
 </body>
 </html>
