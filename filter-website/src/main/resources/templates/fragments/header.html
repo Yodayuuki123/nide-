@@ -30,9 +30,9 @@
     <!-- Bootstrap Icons -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="stylesheet" href="/static/css/style.css?v=4">
     <!-- Slideshow CSS -->
-    <link rel="stylesheet" href="/static/css/slideshow.css">
+    <link rel="stylesheet" href="/static/css/slideshow.css?v=4">
 </head>
 
 <!-- ===== Navbar Fragment (Aesop-style: centered logo, category nav below) ===== -->
@@ -65,7 +65,7 @@
             <!-- Center: Logo -->
             <div class="nav-center">
                 <a th:href="@{/}" class="logo" aria-label="Philitee Filter - Home">
-                    <img src="/static/images/logo.png" alt="Philitee Filter" class="logo-img logo-img-large"
+                    <img src="/static/images/logo-transparent.png" alt="Philitee Filter" class="logo-img logo-img-large"
                          onerror="this.style.display='none';this.nextElementSibling.style.display='inline'">
                     <span class="logo-text" style="display:none" th:text="#{site.name}">PHILITEE</span>
                 </a>

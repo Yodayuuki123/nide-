@@ -172,12 +172,12 @@ img {
     position: sticky;
     top: 0;
     z-index: 1000;
-    background: var(--bg-primary);
+    background: #1a1917;
     transition: var(--transition);
 }
 
 .site-header.scrolled {
-    box-shadow: 0 1px 10px rgba(37,36,34,0.06);
+    box-shadow: 0 2px 16px rgba(0,0,0,0.3);
 }
 
 .site-header.scrolled .category-nav {
@@ -188,7 +188,7 @@ img {
 }
 
 .main-nav {
-    border-bottom: 1px solid var(--border-light);
+    border-bottom: 1px solid rgba(255,255,255,0.08);
 }
 
 .nav-wrapper {
@@ -209,12 +209,11 @@ img {
     font-size: 12px;
     letter-spacing: 0.08em;
     text-transform: uppercase;
-    color: var(--text-secondary);
+    color: rgba(255,253,247,0.6);
     font-weight: 400;
 }
-
 .nav-util-link:hover {
-    color: var(--text-primary);
+    color: #FFFDF7;
 }
 
 .nav-center {
@@ -227,14 +226,13 @@ img {
     font-size: 1.6rem;
     font-weight: 600;
     letter-spacing: 0.08em;
-    color: var(--text-primary);
+    color: #FFFDF7;
     text-decoration: none;
     white-space: nowrap;
     text-transform: uppercase;
 }
-
 .logo:hover {
-    color: var(--text-primary);
+    color: #FFFDF7;
 }
 
 .logo-img {
@@ -242,7 +240,7 @@ img {
     width: auto;
 }
 .logo-img.logo-img-large {
-    height: 72px;
+    height: 80px;
     width: auto;
 }
 
@@ -293,24 +291,22 @@ img {
 }
 
 .lang-switch a {
-    color: var(--text-tertiary);
+    color: rgba(255,253,247,0.55);
     text-transform: uppercase;
     font-weight: 400;
 }
-
 .lang-switch a.active {
-    color: var(--text-primary);
+    color: #FFFDF7;
     font-weight: 500;
 }
-
 .lang-divider {
-    color: var(--border);
+    color: rgba(255,253,247,0.3);
     font-size: 10px;
 }
 
 /* Category Navigation Bar (Aesop-style centered links below logo) */
 .category-nav {
-    border-top: 1px solid var(--border-light);
+    border-top: 1px solid rgba(255,255,255,0.08);
     transition: max-height 0.4s ease, opacity 0.3s ease, padding 0.4s ease;
     max-height: 60px;
     opacity: 1;
@@ -332,7 +328,7 @@ img {
     font-weight: 400;
     letter-spacing: 0.08em;
     text-transform: uppercase;
-    color: var(--text-primary);
+    color: rgba(255,253,247,0.75);
     text-decoration: none;
     padding: 4px 0;
     position: relative;
@@ -345,7 +341,7 @@ img {
     left: 0;
     width: 0;
     height: 1px;
-    background: var(--text-primary);
+    background: #FFFDF7;
     transition: width 0.3s ease;
 }
 
