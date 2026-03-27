@@ -30,12 +30,12 @@
     <!-- Bootstrap Icons -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="/static/css/style.css?v=4">
+    <link rel="stylesheet" href="/static/css/style.css?v=5">
     <!-- Slideshow CSS -->
-    <link rel="stylesheet" href="/static/css/slideshow.css?v=4">
+    <link rel="stylesheet" href="/static/css/slideshow.css?v=5">
 </head>
 
-<!-- ===== Navbar Fragment (Aesop-style: centered logo, category nav below) ===== -->
+<!-- ===== Navbar Fragment (Left logo + right nav links) ===== -->
 <header th:fragment="navbar" class="site-header" id="siteHeader">
     <!-- Announcement Bar -->
     <div class="announcement-bar" id="announcementBar">
@@ -47,23 +47,12 @@
         </button>
     </div>
 
-    <!-- Main Navigation -->
+    <!-- Main Navigation: Left Logo + Right Nav -->
     <nav class="main-nav" id="mainNav">
         <div class="nav-wrapper aesop-container">
-            <!-- Left: Utility links -->
-            <div class="nav-left">
-                <a th:href="@{/contact}" class="nav-util-link" th:text="#{nav.contact}">Contact</a>
-                <div class="lang-switch">
-                    <a th:href="@{${currentUrl}(lang='en')}"
-                       th:classappend="${#locale.language == 'en'} ? 'active' : ''">EN</a>
-                    <span class="lang-divider">/</span>
-                    <a th:href="@{${currentUrl}(lang='zh_CN')}"
-                       th:classappend="${#locale.language == 'zh'} ? 'active' : ''">CN</a>
-                </div>
-            </div>
 
-            <!-- Center: Logo -->
-            <div class="nav-center">
+            <!-- Left: Logo -->
+            <div class="nav-left">
                 <a th:href="@{/}" class="logo" aria-label="Philitee Filter - Home">
                     <img src="/static/images/logo-transparent.png" alt="Philitee Filter" class="logo-img logo-img-large"
                          onerror="this.style.display='none';this.nextElementSibling.style.display='inline'">
@@ -71,18 +60,9 @@
                 </a>
             </div>
 
-            <!-- Right: Mobile Toggle only -->
+            <!-- Right: Nav links + lang switch + mobile toggle -->
             <div class="nav-right">
-                <button class="mobile-toggle" onclick="openMobileMenu()" aria-label="Menu">
-                    <span></span><span></span><span></span>
-                </button>
-            </div>
-        </div>
-
-        <!-- Category Navigation Bar (Aesop-style centered links) -->
-        <div class="category-nav" id="categoryNav">
-            <div class="aesop-container">
-                <ul class="category-nav-list">
+                <ul class="header-nav-list">
                     <li>
                         <a th:href="@{/}"
                            th:classappend="${currentUrl == '/'} ? 'active' : ''"
@@ -136,6 +116,16 @@
                            th:text="#{nav.contact}">Contact</a>
                     </li>
                 </ul>
+                <div class="lang-switch">
+                    <a th:href="@{${currentUrl}(lang='en')}"
+                       th:classappend="${#locale.language == 'en'} ? 'active' : ''">EN</a>
+                    <span class="lang-divider">|</span>
+                    <a th:href="@{${currentUrl}(lang='zh_CN')}"
+                       th:classappend="${#locale.language == 'zh'} ? 'active' : ''">CN</a>
+                </div>
+                <button class="mobile-toggle" onclick="openMobileMenu()" aria-label="Menu">
+                    <span></span><span></span><span></span>
+                </button>
             </div>
         </div>
     </nav>
