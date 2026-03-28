@@ -35,6 +35,7 @@ public class SecurityConfig {
                         // 前台页面完全开放
                         .requestMatchers("/", "/products/**", "/categories/**", "/tags/**",
                                 "/about", "/factory", "/contact", "/search",
+                                "/news/**", "/solutions",
                                 "/sitemap.xml", "/robots.txt").permitAll()
                         // 静态资源开放
                         .requestMatchers("/static/**", "/wp-content/uploads/**",

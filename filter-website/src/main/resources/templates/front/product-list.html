@@ -7,7 +7,7 @@
 <body>
 <header th:replace="~{fragments/header :: navbar}"></header>
 
-<!-- Page Header (Aesop-style: clean, centered, with subtle animation) -->
+<!-- Page Header with Breadcrumb -->
 <section class="page-header">
     <div class="aesop-container">
         <h1 th:if="${currentCategory != null}" th:text="${currentCategory.name}" class="fade-in">Category Name</h1>
@@ -31,7 +31,7 @@
 
 <section class="section">
     <div class="aesop-container">
-        <!-- Child Categories (Aesop-style pills) -->
+        <!-- Child Categories Pills -->
         <div th:if="${childCategories != null and !childCategories.isEmpty()}" class="child-categories fade-in">
             <a th:each="child : ${childCategories}"
                th:href="@{/categories/{slug}(slug=${child.slug})}"
@@ -41,46 +41,56 @@
             </a>
         </div>
 
-        <div class="product-list-layout">
-            <!-- Sidebar (desktop only) -->
-            <div class="d-none d-lg-block">
-                <aside th:replace="~{fragments/sidebar :: productSidebar(${categoryTree}, ${currentCategory})}"></aside>
-            </div>
-
-            <!-- Product Content -->
-            <div class="product-list-content">
-                <!-- Toolbar -->
-                <div class="product-toolbar" th:if="${productPage != null}">
-                    <div class="result-count">
+        <div class="pl-layout">
+            <!-- Left: Product Content -->
+            <div class="pl-main">
+                <!-- Toolbar: result count + view toggle + page size -->
+                <div class="pl-toolbar" th:if="${productPage != null}">
+                    <div class="pl-toolbar-left">
                         <span th:text="#{pagination.showing}">Showing</span>
                         <strong th:text="${productPage.total}">0</strong>
                         <span th:text="#{pagination.results}">results</span>
                     </div>
-                    <select onchange="changePageSize(this.value)">
-                        <option value="12" th:selected="${productPage.size == 12}">12 / page</option>
-                        <option value="24" th:selected="${productPage.size == 24}">24 / page</option>
-                        <option value="48" th:selected="${productPage.size == 48}">48 / page</option>
-                    </select>
+                    <div class="pl-toolbar-right">
+                        <div class="pl-view-toggle">
+                            <button class="pl-view-btn active" data-cols="4" onclick="setGridCols(4, this)" title="4 columns">
+                                <i class="bi bi-grid-3x3-gap"></i>
+                            </button>
+                            <button class="pl-view-btn" data-cols="2" onclick="setGridCols(2, this)" title="2 columns">
+                                <i class="bi bi-grid"></i>
+                            </button>
+                            <button class="pl-view-btn" data-cols="1" onclick="setGridCols(1, this)" title="List view">
+                                <i class="bi bi-list-ul"></i>
+                            </button>
+                        </div>
+                        <select class="pl-page-size" onchange="changePageSize(this.value)">
+                            <option value="16" th:selected="${productPage.size == 16}">16 / page</option>
+                            <option value="32" th:selected="${productPage.size == 32}">32 / page</option>
+                            <option value="48" th:selected="${productPage.size == 48}">48 / page</option>
+                        </select>
+                    </div>
                 </div>
 
                 <!-- Product Grid (Paged) -->
-                <div th:if="${productPage != null}" class="product-grid product-grid-3">
+                <div th:if="${productPage != null}" class="pl-grid pl-grid-4" id="productGrid">
                     <a th:each="product,iter : ${productPage.records}"
                        th:href="@{/products/{slug}(slug=${product.slug})}"
-                       class="product-card fade-in"
-                       th:classappend="'stagger-' + ${(iter.index % 6) + 1}">
-                        <div class="product-card-image">
+                       class="pl-product-card fade-in">
+                        <div class="pl-product-img">
                             <img th:if="${product.mainImage != null}" th:src="${product.mainImage.url}" th:alt="${product.name}" loading="lazy">
                             <div th:unless="${product.mainImage != null}" class="product-placeholder">
                                 <i class="bi bi-image"></i>
                             </div>
                         </div>
-                        <div class="product-card-info">
-                            <span class="product-card-category"
-                                  th:if="${product.categories != null and !product.categories.isEmpty()}"
-                                  th:text="${product.categories[0].name}">Category</span>
-                            <div class="product-card-title" th:text="${product.name}">Product Name</div>
-                            <div class="product-card-sku" th:if="${product.sku != null}" th:text="'SKU: ' + ${product.sku}">SKU</div>
+                        <div class="pl-product-info">
+                            <span class="pl-product-tags"
+                                  th:if="${product.categories != null and !product.categories.isEmpty()}">
+                                <th:block th:each="cat,catIter : ${product.categories}" th:if="${catIter.index < 2}">
+                                    <span class="pl-tag" th:text="${cat.name}">Category</span>
+                                </th:block>
+                            </span>
+                            <h6 class="pl-product-title" th:text="${product.name}">Product Name</h6>
+                            <div class="pl-product-sku" th:if="${product.sku != null}" th:text="'SKU: ' + ${product.sku}">SKU</div>
                         </div>
                     </a>
                 </div>
@@ -90,32 +100,25 @@
                     <i class="bi bi-inbox"></i>
                     <h4 th:text="#{search.no_results}">No products found</h4>
                     <p th:text="#{search.try_again}">Try browsing our categories</p>
-                    <a th:href="@{/products}" class="btn-aesop" th:text="#{nav.products}">Browse All Products</a>
+                    <a th:href="@{/products}" class="btn btn-accent" th:text="#{nav.products}">Browse All Products</a>
                 </div>
 
                 <!-- Product Grid (Non-paged, for tags) -->
-                <div th:if="${productPage == null and products != null}" class="product-grid product-grid-3">
+                <div th:if="${productPage == null and products != null}" class="pl-grid pl-grid-4" id="productGrid">
                     <a th:each="product,iter : ${products}"
                        th:href="@{/products/{slug}(slug=${product.slug})}"
-                       class="product-card fade-in"
-                       th:classappend="'stagger-' + ${(iter.index % 6) + 1}">
-                        <div class="product-card-image">
+                       class="pl-product-card fade-in">
+                        <div class="pl-product-img">
                             <img th:if="${product.mainImage != null}" th:src="${product.mainImage.url}" th:alt="${product.name}" loading="lazy">
                             <div th:unless="${product.mainImage != null}" class="product-placeholder">
                                 <i class="bi bi-image"></i>
                             </div>
                         </div>
-                        <div class="product-card-info">
-                            <div class="product-card-title" th:text="${product.name}">Product Name</div>
-                            <div class="product-card-sku" th:if="${product.sku != null}" th:text="'SKU: ' + ${product.sku}">SKU</div>
+                        <div class="pl-product-info">
+                            <h6 class="pl-product-title" th:text="${product.name}">Product Name</h6>
+                            <div class="pl-product-sku" th:if="${product.sku != null}" th:text="'SKU: ' + ${product.sku}">SKU</div>
                         </div>
                     </a>
-                </div>
-
-                <!-- Empty State (Non-paged) -->
-                <div th:if="${productPage == null and products != null and products.isEmpty()}" class="empty-state">
-                    <i class="bi bi-inbox"></i>
-                    <h4 th:text="#{search.no_results}">No products found</h4>
                 </div>
 
                 <!-- Pagination -->
@@ -124,17 +127,50 @@
                         ${currentCategory != null} ? '/categories/' + ${currentCategory.slug} : '/products')}"></nav>
                 </div>
             </div>
-        </div>
-    </div>
-</section>
 
-<!-- CTA Banner -->
-<section class="cta-banner">
-    <div class="aesop-container">
-        <h3 class="fade-in" th:text="#{cta.title}">Need Custom Filtration Solutions?</h3>
-        <p class="fade-in" th:text="#{cta.subtitle}">Contact our team for professional consultation</p>
-        <div class="fade-in">
-            <a th:href="@{/contact}" class="btn-aesop" th:text="#{cta.button}">Get in Touch</a>
+            <!-- Right Sidebar -->
+            <aside class="pl-sidebar">
+                <!-- Search Widget -->
+                <div class="pl-sidebar-widget">
+                    <h5 class="pl-widget-title">Search Products</h5>
+                    <form th:action="@{/search}" method="get" class="pl-search-form">
+                        <input type="text" name="keyword" placeholder="Search..." class="form-control">
+                        <button type="submit" class="btn btn-accent"><i class="bi bi-search"></i></button>
+                    </form>
+                </div>
+
+                <!-- Category List Widget -->
+                <div class="pl-sidebar-widget" th:if="${categoryTree != null or globalCategoryTree != null}">
+                    <h5 class="pl-widget-title">Product Categories</h5>
+                    <ul class="pl-category-list">
+                        <li th:each="cat : ${categoryTree != null ? categoryTree : globalCategoryTree}">
+                            <a th:href="@{/categories/{slug}(slug=${cat.slug})}"
+                               th:classappend="${currentCategory != null and currentCategory.id == cat.id} ? 'active' : ''">
+                                <span th:text="${cat.name}">Category</span>
+                                <span class="pl-cat-count" th:if="${cat.productCount != null}" th:text="${cat.productCount}">0</span>
+                            </a>
+                            <ul th:if="${cat.children != null and !cat.children.isEmpty()}" class="pl-category-sub">
+                                <li th:each="child : ${cat.children}">
+                                    <a th:href="@{/categories/{slug}(slug=${child.slug})}"
+                                       th:classappend="${currentCategory != null and currentCategory.id == child.id} ? 'active' : ''">
+                                        <span th:text="${child.name}">Sub Category</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Contact Widget -->
+                <div class="pl-sidebar-widget pl-contact-widget">
+                    <h5 class="pl-widget-title">Need Help?</h5>
+                    <p>Contact us for product consultation</p>
+                    <ul class="pl-contact-list">
+                        <li><i class="bi bi-envelope"></i> <a href="mailto:info@philiteefilter.com">info@philiteefilter.com</a></li>
+                        <li><i class="bi bi-whatsapp"></i> <a href="https://wa.me/8618057358206" target="_blank">+86-18057358206</a></li>
+                    </ul>
+                </div>
+            </aside>
         </div>
     </div>
 </section>
@@ -150,6 +186,29 @@
         url.searchParams.set('page', '1');
         window.location.href = url.toString();
     }
+
+    function setGridCols(cols, btn) {
+        var grid = document.getElementById('productGrid');
+        if (!grid) return;
+        grid.className = 'pl-grid pl-grid-' + cols;
+        var btns = document.querySelectorAll('.pl-view-btn');
+        btns.forEach(function(b) { b.classList.remove('active'); });
+        btn.classList.add('active');
+        // Save preference
+        try { localStorage.setItem('plGridCols', cols); } catch(e) {}
+    }
+
+    // Restore grid preference
+    (function() {
+        try {
+            var saved = localStorage.getItem('plGridCols');
+            if (saved) {
+                var grid = document.getElementById('productGrid');
+                var btn = document.querySelector('.pl-view-btn[data-cols="' + saved + '"]');
+                if (grid && btn) setGridCols(parseInt(saved), btn);
+            }
+        } catch(e) {}
+    })();
 </script>
 </body>
 </html>

@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/header :: htmlHead('Solutions', 'Complete filtration solutions for every industry')}"></head>
+<body>
+<header th:replace="~{fragments/header :: navbar}"></header>
+
+<!-- Page Header -->
+<section class="page-header">
+    <div class="aesop-container">
+        <h1 class="fade-in">Filtration Solutions</h1>
+        <p class="fade-in">Complete filtration solutions tailored to your industry needs</p>
+        <nav class="breadcrumb-nav">
+            <a th:href="@{/}">Home</a>
+            <span class="separator">/</span>
+            <span class="current">Solutions</span>
+        </nav>
+    </div>
+</section>
+
+<!-- Industry Solutions -->
+<section class="section">
+    <div class="aesop-container">
+        <div class="section-header text-center fade-in">
+            <span class="section-eyebrow">Industry Solutions</span>
+            <h2>Tailored Filtration for Every Industry</h2>
+            <p>We provide customized filtration solutions based on your specific working conditions and requirements</p>
+        </div>
+
+        <div class="solutions-grid">
+            <div class="solution-card fade-in">
+                <div class="solution-icon"><i class="bi bi-building"></i></div>
+                <h4>Cement Industry</h4>
+                <p>High-temperature resistant filter bags for kiln, clinker cooler, raw mill, and cement mill dust collection systems. Our PTFE membrane and fiberglass solutions handle temperatures up to 280C.</p>
+                <ul class="solution-features">
+                    <li>Kiln tail dust collection</li>
+                    <li>Clinker cooler filtration</li>
+                    <li>Raw mill & cement mill bags</li>
+                    <li>Coal mill explosion-proof bags</li>
+                </ul>
+            </div>
+
+            <div class="solution-card fade-in">
+                <div class="solution-icon"><i class="bi bi-fire"></i></div>
+                <h4>Steel & Smelting</h4>
+                <p>Durable filter solutions for electric arc furnaces, blast furnaces, sintering machines, and converter gas cleaning. Resistant to high temperatures and chemical corrosion.</p>
+                <ul class="solution-features">
+                    <li>EAF & BOF dust collection</li>
+                    <li>Sintering machine filtration</li>
+                    <li>Blast furnace gas cleaning</li>
+                    <li>Ladle furnace dust removal</li>
+                </ul>
+            </div>
+
+            <div class="solution-card fade-in">
+                <div class="solution-icon"><i class="bi bi-lightning"></i></div>
+                <h4>Power Generation</h4>
+                <p>Advanced filtration for coal-fired power plants, biomass energy, and waste-to-energy facilities. Our solutions meet the strictest emission standards worldwide.</p>
+                <ul class="solution-features">
+                    <li>Coal-fired boiler flue gas</li>
+                    <li>Biomass power plant filtration</li>
+                    <li>CFB boiler filter bags</li>
+                    <li>Ultra-low emission solutions</li>
+                </ul>
+            </div>
+
+            <div class="solution-card fade-in">
+                <div class="solution-icon"><i class="bi bi-recycle"></i></div>
+                <h4>Waste Incineration</h4>
+                <p>Specialized filter bags for municipal solid waste (MSW) and hazardous waste incineration, with excellent resistance to acid, alkali, and dioxin.</p>
+                <ul class="solution-features">
+                    <li>MSW incineration flue gas</li>
+                    <li>Hazardous waste treatment</li>
+                    <li>Dioxin adsorption filtration</li>
+                    <li>Acid/alkali resistant bags</li>
+                </ul>
+            </div>
+
+            <div class="solution-card fade-in">
+                <div class="solution-icon"><i class="bi bi-droplet"></i></div>
+                <h4>Chemical & Pharmaceutical</h4>
+                <p>Corrosion-resistant filter solutions for chemical processing, pharmaceutical production, and fine chemical manufacturing with various material options.</p>
+                <ul class="solution-features">
+                    <li>Chemical plant dust collection</li>
+                    <li>Pharmaceutical filtration</li>
+                    <li>Carbon black collection</li>
+                    <li>Titanium dioxide filtration</li>
+                </ul>
+            </div>
+
+            <div class="solution-card fade-in">
+                <div class="solution-icon"><i class="bi bi-water"></i></div>
+                <h4>Liquid Filtration</h4>
+                <p>Complete liquid filtration solutions for water treatment, food & beverage, oil processing, and industrial wastewater treatment applications.</p>
+                <ul class="solution-features">
+                    <li>Water treatment filtration</li>
+                    <li>Food & beverage processing</li>
+                    <li>Oil & grease removal</li>
+                    <li>Industrial wastewater</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Why Our Solutions -->
+<section class="home-whychoose-section" style="background:var(--bg-secondary);">
+    <div class="aesop-container">
+        <div class="section-header text-center fade-in">
+            <span class="section-eyebrow">Our Approach</span>
+            <h2>Why Our Solutions Work</h2>
+        </div>
+        <div class="whychoose-grid">
+            <div class="whychoose-card fade-in">
+                <div class="whychoose-icon"><i class="bi bi-clipboard-data"></i></div>
+                <h5>Site Assessment</h5>
+                <p>We analyze your working conditions, temperature, dust type, and emission requirements to design the optimal solution</p>
+            </div>
+            <div class="whychoose-card fade-in">
+                <div class="whychoose-icon"><i class="bi bi-puzzle"></i></div>
+                <h5>Material Selection</h5>
+                <p>Choose from 20+ filter media materials including PPS, PTFE, P84, Nomex, fiberglass, and more</p>
+            </div>
+            <div class="whychoose-card fade-in">
+                <div class="whychoose-icon"><i class="bi bi-graph-up-arrow"></i></div>
+                <h5>Performance Guarantee</h5>
+                <p>Our solutions are backed by performance data and field-tested results from 20+ years of industry experience</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CTA -->
+<section class="home-cta-section">
+    <div class="aesop-container text-center">
+        <h3 class="fade-in">Need a Custom Filtration Solution?</h3>
+        <p class="fade-in">Our engineers will design the optimal solution for your specific requirements</p>
+        <div class="fade-in">
+            <a th:href="@{/contact}" class="btn btn-accent btn-lg">Get Free Consultation</a>
+        </div>
+    </div>
+</section>
+
+<footer th:replace="~{fragments/footer :: footer}"></footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="/static/js/main.js"></script>
+</body>
+</html>

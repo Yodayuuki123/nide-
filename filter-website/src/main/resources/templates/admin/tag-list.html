@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/admin-layout :: adminHead('标签管理')}"></head>
+<body class="admin-body">
+<div class="admin-wrapper">
+    <div th:replace="~{fragments/admin-layout :: adminSidebar}"></div>
+
+    <div class="admin-content">
+        <div th:replace="~{fragments/admin-layout :: adminTopbar}"></div>
+
+        <div class="admin-main">
+            <div th:if="${message}" class="alert alert-success alert-dismissible fade show">
+                <span th:text="${message}"></span>
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+            <div th:if="${error}" class="alert alert-danger alert-dismissible fade show">
+                <span th:text="${error}"></span>
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <div>
+                    <h4 style="font-size: 1.8rem; margin-bottom: 4px;">标签管理</h4>
+                    <p style="color: var(--admin-text-tertiary); font-size: 13px; margin: 0;">管理产品标签，可用于产品分类筛选</p>
+                </div>
+                <a href="/admin/tags/add" class="btn btn-primary btn-sm">
+                    <i class="bi bi-plus-circle"></i> 新增标签
+                </a>
+            </div>
+
+            <div class="admin-card">
+                <div class="admin-card-header">
+                    <h5>所有标签 <span class="badge bg-secondary ms-1" th:text="${tagPage.total}">0</span></h5>
+                </div>
+                <div class="admin-card-body">
+                    <div class="table-responsive">
+                        <table class="table admin-table mb-0">
+                            <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>标签名称</th>
+                                <th>URL别名</th>
+                                <th>创建时间</th>
+                                <th>操作</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="tag : ${tagPage.records}">
+                                <td th:text="${tag.id}">1</td>
+                                <td>
+                                    <i class="bi bi-tag text-primary me-1"></i>
+                                    <strong th:text="${tag.name}">Tag</strong>
+                                </td>
+                                <td class="text-muted" th:text="${tag.slug}">slug</td>
+                                <td class="text-muted" th:text="${tag.createdTime != null} ? ${#temporals.format(tag.createdTime, 'yyyy-MM-dd HH:mm')} : '-'">2026-01-01</td>
+                                <td class="actions">
+                                    <a th:href="@{/admin/tags/edit/{id}(id=${tag.id})}"
+                                       class="btn btn-sm btn-outline-primary me-1" title="编辑">
+                                        <i class="bi bi-pencil"></i>
+                                    </a>
+                                    <button type="button" class="btn btn-sm btn-outline-danger"
+                                            th:data-id="${tag.id}"
+                                            th:data-name="${tag.name}"
+                                            data-bs-toggle="modal" data-bs-target="#deleteModal"
+                                            onclick="prepareDelete(this)">
+                                        <i class="bi bi-trash"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr th:if="${tagPage.records == null or tagPage.records.isEmpty()}">
+                                <td colspan="5" class="text-center text-muted py-4">暂无标签数据。</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- 分页 -->
+                    <div th:if="${tagPage.pages > 1}" class="d-flex justify-content-center mt-3">
+                        <nav>
+                            <ul class="pagination pagination-sm mb-0">
+                                <li class="page-item" th:classappend="${tagPage.current == 1} ? 'disabled'">
+                                    <a class="page-link" th:href="@{/admin/tags(page=${tagPage.current - 1})}">上一页</a>
+                                </li>
+                                <li th:each="i : ${#numbers.sequence(1, tagPage.pages)}" class="page-item"
+                                    th:classappend="${i == tagPage.current} ? 'active'">
+                                    <a class="page-link" th:href="@{/admin/tags(page=${i})}" th:text="${i}">1</a>
+                                </li>
+                                <li class="page-item" th:classappend="${tagPage.current == tagPage.pages} ? 'disabled'">
+                                    <a class="page-link" th:href="@{/admin/tags(page=${tagPage.current + 1})}">下一页</a>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 删除确认 Modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">确认删除</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <p>确定要删除此标签吗？此操作不可撤销。</p>
+                <p class="fw-medium" id="deleteItemName"></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+                <form id="deleteForm" method="post" class="d-inline">
+                    <button type="submit" class="btn btn-danger">删除</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div th:replace="~{fragments/admin-layout :: adminScripts}"></div>
+<script>
+    function prepareDelete(btn) {
+        document.getElementById('deleteItemName').textContent = btn.getAttribute('data-name');
+        document.getElementById('deleteForm').action = '/admin/tags/delete/' + btn.getAttribute('data-id');
+    }
+</script>
+</body>
+</html>

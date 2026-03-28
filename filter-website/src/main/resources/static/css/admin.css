@@ -7,30 +7,30 @@
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600;700&family=Noto+Serif+SC:wght@400;500;600;700&display=swap');
 
 :root {
-    /* Aesop warm earthy palette */
-    --admin-bg: #FFFDF7;
-    --admin-bg-secondary: #F0EBE3;
-    --admin-bg-tertiary: #E8E2D9;
-    --admin-bg-dark: #252422;
-    --admin-bg-dark-secondary: #333130;
-    --admin-bg-dark-hover: #3D3B39;
+    /* WordPress-inspired blue palette */
+    --admin-bg: #f0f0f1;
+    --admin-bg-secondary: #e5e5e6;
+    --admin-bg-tertiary: #dcdcde;
+    --admin-bg-dark: #1d2327;
+    --admin-bg-dark-secondary: #2c3338;
+    --admin-bg-dark-hover: #3c434a;
 
-    --admin-text: #252422;
-    --admin-text-secondary: #6B6560;
-    --admin-text-tertiary: #9B9490;
-    --admin-text-inverse: #FFFDF7;
+    --admin-text: #1d2327;
+    --admin-text-secondary: #50575e;
+    --admin-text-tertiary: #8c8f94;
+    --admin-text-inverse: #ffffff;
 
-    --admin-accent: #8B6F4E;
-    --admin-accent-hover: #725A3D;
-    --admin-accent-light: #A8906E;
+    --admin-accent: #2271b1;
+    --admin-accent-hover: #135e96;
+    --admin-accent-light: #3582c4;
 
-    --admin-border: #D4CDC4;
-    --admin-border-light: #E8E2D9;
+    --admin-border: #c3c4c7;
+    --admin-border-light: #dcdcde;
 
-    --admin-success: #5A7A5A;
-    --admin-danger: #8B4A4A;
-    --admin-warning: #8B7A4A;
-    --admin-info: #4A6A8B;
+    --admin-success: #00a32a;
+    --admin-danger: #d63638;
+    --admin-warning: #dba617;
+    --admin-info: #72aee6;
 
     --admin-sidebar-width: 260px;
     --admin-topbar-height: 60px;
@@ -112,13 +112,13 @@ body.admin-body h5, body.admin-body h6 {
     background: transparent;
 }
 .admin-sidebar::-webkit-scrollbar-thumb {
-    background: rgba(255,253,247,0.15);
+    background: rgba(255,255,255,0.15);
     border-radius: 2px;
 }
 
 .admin-sidebar-header {
     padding: 28px 24px;
-    border-bottom: 1px solid rgba(255,253,247,0.06);
+    border-bottom: 1px solid rgba(255,255,255,0.06);
 }
 
 .admin-logo {
@@ -160,7 +160,7 @@ body.admin-body h5, body.admin-body h6 {
     align-items: center;
     gap: 14px;
     padding: 11px 24px;
-    color: rgba(255,253,247,0.5);
+    color: rgba(255,255,255,0.5);
     text-decoration: none;
     font-size: 12px;
     font-weight: 400;
@@ -171,13 +171,13 @@ body.admin-body h5, body.admin-body h6 {
 }
 
 .admin-nav li a:hover {
-    color: rgba(255,253,247,0.85);
-    background: rgba(255,253,247,0.03);
+    color: rgba(255,255,255,0.85);
+    background: rgba(255,255,255,0.03);
 }
 
 .admin-nav li.active a {
     color: var(--admin-text-inverse);
-    background: rgba(139,111,78,0.12);
+    background: rgba(34,113,177,0.12);
     border-left-color: var(--admin-accent-light);
 }
 
@@ -199,19 +199,19 @@ body.admin-body h5, body.admin-body h6 {
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.15em;
-    color: rgba(255,253,247,0.25);
+    color: rgba(255,255,255,0.25);
     font-family: var(--font-body);
     pointer-events: none;
 }
 
 .admin-sidebar-footer {
     padding: 20px 24px;
-    border-top: 1px solid rgba(255,253,247,0.06);
+    border-top: 1px solid rgba(255,255,255,0.06);
 }
 
 .admin-sidebar-footer .btn-outline-light {
-    border-color: rgba(255,253,247,0.15);
-    color: rgba(255,253,247,0.6);
+    border-color: rgba(255,255,255,0.15);
+    color: rgba(255,255,255,0.6);
     font-size: 11px;
     letter-spacing: 0.05em;
     text-transform: uppercase;
@@ -221,14 +221,14 @@ body.admin-body h5, body.admin-body h6 {
 }
 
 .admin-sidebar-footer .btn-outline-light:hover {
-    border-color: rgba(255,253,247,0.3);
+    border-color: rgba(255,255,255,0.3);
     color: var(--admin-text-inverse);
-    background: rgba(255,253,247,0.05);
+    background: rgba(255,255,255,0.05);
 }
 
 .admin-sidebar-footer .btn-outline-danger {
     border-color: rgba(139,74,74,0.4);
-    color: rgba(255,253,247,0.5);
+    color: rgba(255,255,255,0.5);
     font-size: 11px;
     letter-spacing: 0.05em;
     text-transform: uppercase;
@@ -474,7 +474,7 @@ body.admin-body h5, body.admin-body h6 {
 .admin-form .form-control:focus,
 .admin-form .form-select:focus {
     border-color: var(--admin-accent);
-    box-shadow: 0 0 0 3px rgba(139,111,78,0.08);
+    box-shadow: 0 0 0 3px rgba(34,113,177,0.08);
 }
 
 .admin-form .form-control::placeholder {
@@ -705,7 +705,7 @@ body.admin-body h5, body.admin-body h6 {
 .upload-zone:hover,
 .upload-zone.dragover {
     border-color: var(--admin-accent);
-    background: rgba(139,111,78,0.04);
+    background: rgba(34,113,177,0.04);
 }
 
 .upload-zone i {
@@ -746,7 +746,7 @@ body.admin-body h5, body.admin-body h6 {
 
 .image-picker-item.selected {
     border-color: var(--admin-accent);
-    box-shadow: 0 0 0 2px rgba(139,111,78,0.2);
+    box-shadow: 0 0 0 2px rgba(34,113,177,0.2);
 }
 
 .image-picker-item img {
@@ -802,7 +802,7 @@ body.admin-body h5, body.admin-body h6 {
     left: -50%;
     width: 200%;
     height: 200%;
-    background: radial-gradient(ellipse at 30% 50%, rgba(139,111,78,0.08) 0%, transparent 60%);
+    background: radial-gradient(ellipse at 30% 50%, rgba(34,113,177,0.08) 0%, transparent 60%);
     pointer-events: none;
 }
 
@@ -859,7 +859,7 @@ body.admin-body h5, body.admin-body h6 {
 
 .login-card .form-control:focus {
     border-color: var(--admin-accent);
-    box-shadow: 0 0 0 3px rgba(139,111,78,0.08);
+    box-shadow: 0 0 0 3px rgba(34,113,177,0.08);
 }
 
 .login-card .input-group-text {
@@ -975,7 +975,7 @@ small.text-muted, .small.text-muted {
 
 code {
     color: var(--admin-accent);
-    background: rgba(139,111,78,0.06);
+    background: rgba(34,113,177,0.06);
     padding: 2px 6px;
     border-radius: 2px;
     font-size: 12px;

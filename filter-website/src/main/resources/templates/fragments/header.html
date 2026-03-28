@@ -30,27 +30,40 @@
     <!-- Bootstrap Icons -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="/static/css/style.css?v=5">
+    <link rel="stylesheet" href="/static/css/style.css?v=6">
     <!-- Slideshow CSS -->
     <link rel="stylesheet" href="/static/css/slideshow.css?v=5">
 </head>
 
-<!-- ===== Navbar Fragment (Left logo + right nav links) ===== -->
+<!-- ===== Navbar Fragment ===== -->
 <header th:fragment="navbar" class="site-header" id="siteHeader">
-    <!-- Announcement Bar -->
-    <div class="announcement-bar" id="announcementBar">
-        <div class="announcement-bar-inner">
-            <span th:text="#{site.announcement}">Professional Industrial Filtration Solutions &mdash; 20+ Years of Excellence</span>
+    <!-- Top Info Bar: Email, Phone, Social Media -->
+    <div class="top-info-bar">
+        <div class="aesop-container d-flex justify-content-between align-items-center">
+            <div class="top-info-left">
+                <span><i class="bi bi-envelope"></i> info@philiteefilter.com</span>
+                <span class="ms-3"><i class="bi bi-telephone"></i> +86-18057358206</span>
+            </div>
+            <div class="top-info-right d-flex align-items-center gap-2">
+                <a href="#" class="social-icon" title="Facebook"><i class="bi bi-facebook"></i></a>
+                <a href="#" class="social-icon" title="LinkedIn"><i class="bi bi-linkedin"></i></a>
+                <a href="#" class="social-icon" title="Twitter"><i class="bi bi-twitter-x"></i></a>
+                <a href="#" class="social-icon" title="YouTube"><i class="bi bi-youtube"></i></a>
+                <a href="#" class="social-icon" title="WhatsApp"><i class="bi bi-whatsapp"></i></a>
+                <div class="lang-switch ms-2">
+                    <a th:href="@{${currentUrl}(lang='en')}"
+                       th:classappend="${#locale.language == 'en'} ? 'active' : ''">EN</a>
+                    <span class="lang-divider">|</span>
+                    <a th:href="@{${currentUrl}(lang='zh_CN')}"
+                       th:classappend="${#locale.language == 'zh'} ? 'active' : ''">CN</a>
+                </div>
+            </div>
         </div>
-        <button class="announcement-close" onclick="document.getElementById('announcementBar').style.display='none'" aria-label="Close">
-            <i class="bi bi-x"></i>
-        </button>
     </div>
 
-    <!-- Main Navigation: Left Logo + Right Nav -->
+    <!-- Main Navigation -->
     <nav class="main-nav" id="mainNav">
         <div class="nav-wrapper aesop-container">
-
             <!-- Left: Logo -->
             <div class="nav-left">
                 <a th:href="@{/}" class="logo" aria-label="Philitee Filter - Home">
@@ -60,7 +73,7 @@
                 </a>
             </div>
 
-            <!-- Right: Nav links + lang switch + mobile toggle -->
+            <!-- Right: Nav links -->
             <div class="nav-right">
                 <ul class="header-nav-list">
                     <li>
@@ -101,14 +114,16 @@
                         </div>
                     </li>
                     <li>
-                        <a th:href="@{/about}"
-                           th:classappend="${currentUrl == '/about'} ? 'active' : ''"
-                           th:text="#{nav.about}">About</a>
+                        <a th:href="@{/solutions}"
+                           th:classappend="${currentUrl == '/solutions'} ? 'active' : ''">Solutions</a>
                     </li>
                     <li>
-                        <a th:href="@{/factory}"
-                           th:classappend="${currentUrl == '/factory'} ? 'active' : ''"
-                           th:text="#{nav.factory}">Factory</a>
+                        <a th:href="@{/about}"
+                           th:classappend="${currentUrl == '/about'} ? 'active' : ''">About Us</a>
+                    </li>
+                    <li>
+                        <a th:href="@{/news}"
+                           th:classappend="${currentUrl != null and #strings.startsWith(currentUrl, '/news')} ? 'active' : ''">News</a>
                     </li>
                     <li>
                         <a th:href="@{/contact}"
@@ -116,13 +131,6 @@
                            th:text="#{nav.contact}">Contact</a>
                     </li>
                 </ul>
-                <div class="lang-switch">
-                    <a th:href="@{${currentUrl}(lang='en')}"
-                       th:classappend="${#locale.language == 'en'} ? 'active' : ''">EN</a>
-                    <span class="lang-divider">|</span>
-                    <a th:href="@{${currentUrl}(lang='zh_CN')}"
-                       th:classappend="${#locale.language == 'zh'} ? 'active' : ''">CN</a>
-                </div>
                 <button class="mobile-toggle" onclick="openMobileMenu()" aria-label="Menu">
                     <span></span><span></span><span></span>
                 </button>
@@ -130,7 +138,7 @@
         </div>
     </nav>
 
-    <!-- Search Overlay (Aesop-style) -->
+    <!-- Search Overlay -->
     <div class="search-overlay" id="searchOverlay" onclick="closeSearch(event)">
         <div class="search-panel" onclick="event.stopPropagation()">
             <div class="search-panel-inner aesop-container">
@@ -168,8 +176,9 @@
                     </li>
                 </ul>
             </li>
-            <li><a th:href="@{/about}" th:text="#{nav.about}">About</a></li>
-            <li><a th:href="@{/factory}" th:text="#{nav.factory}">Factory</a></li>
+            <li><a th:href="@{/solutions}">Solutions</a></li>
+            <li><a th:href="@{/about}">About Us</a></li>
+            <li><a th:href="@{/news}">News</a></li>
             <li><a th:href="@{/contact}" th:text="#{nav.contact}">Contact</a></li>
         </ul>
         <div class="mobile-menu-bottom">

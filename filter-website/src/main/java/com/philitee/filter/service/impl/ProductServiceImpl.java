@@ -80,6 +80,16 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
     }
 
     @Override
+    public List<Product> getProductsByTagId(Long tagId, int limit) {
+        List<Product> products = baseMapper.selectByTagId(tagId);
+        if (products.size() > limit) {
+            products = products.subList(0, limit);
+        }
+        products.forEach(this::fillMainImageAndCategories);
+        return products;
+    }
+
+    @Override
     public List<Product> searchProducts(String keyword) {
         List<Product> products = baseMapper.searchByKeyword(keyword);
         products.forEach(this::fillMainImageAndCategories);

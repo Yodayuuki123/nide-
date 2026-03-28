@@ -75,6 +75,18 @@
                     <span>菜单管理</span>
                 </a>
             </li>
+            <li th:classappend="${#strings.startsWith(currentUri, '/admin/tags')} ? 'active'">
+                <a href="/admin/tags">
+                    <i class="bi bi-tags"></i>
+                    <span>标签管理</span>
+                </a>
+            </li>
+            <li th:classappend="${#strings.startsWith(currentUri, '/admin/news')} ? 'active'">
+                <a href="/admin/news">
+                    <i class="bi bi-newspaper"></i>
+                    <span>新闻管理</span>
+                </a>
+            </li>
             <li th:classappend="${#strings.startsWith(currentUri, '/admin/inquiries')} ? 'active'">
                 <a href="/admin/inquiries">
                     <i class="bi bi-chat-dots"></i>
