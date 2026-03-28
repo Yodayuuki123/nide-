@@ -102,7 +102,7 @@
 </div>
 
 <!-- 图片 Picker Modal (reuse from admin.js) -->
-<div class="modal fade" id="setting图片PickerModal" tabindex="-1">
+<div class="modal fade" id="settingImagePickerModal" tabindex="-1">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
@@ -110,13 +110,13 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body">
-                <div id="setting图片Grid" class="image-picker-grid">
+                <div id="settingImageGrid" class="image-picker-grid">
                     <p class="text-muted text-center py-4">加载中...</p>
                 </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
-                <button type="button" class="btn btn-primary" id="confirmSetting图片" disabled>确定</button>
+                <button type="button" class="btn btn-primary" id="confirmSettingImage" disabled>确定</button>
             </div>
         </div>
     </div>
@@ -125,30 +125,30 @@
 <div th:replace="~{fragments/admin-layout :: adminScripts}"></div>
 
 <script>
-    var setting图片Target = null;
+    var settingImageTarget = null;
     var settingSelectedUrl = null;
 
     function openSettingImagePicker(settingKey) {
-        setting图片Target = settingKey;
+        settingImageTarget = settingKey;
         settingSelectedUrl = null;
-        document.getElementById('confirmSetting图片').disabled = true;
+        document.getElementById('confirmSettingImage').disabled = true;
 
         fetch('/admin/api/images/list?page=1&size=40')
             .then(function(r) { return r.json(); })
             .then(function(data) {
-                var grid = document.getElementById('setting图片Grid');
+                var grid = document.getElementById('settingImageGrid');
                 grid.innerHTML = '';
                 if (data.records && data.records.length > 0) {
                     data.records.forEach(function(img) {
                         var url = img.url || ('/wp-content/uploads' + img.filePath);
                         var div = document.createElement('div');
-                        div.class名称 = 'image-picker-item';
+                        div.className = 'image-picker-item';
                         div.innerHTML = '<img src="' + url + '" alt="' + (img.altText || img.fileName) + '">';
                         div.addEventListener('click', function() {
                             grid.querySelectorAll('.image-picker-item').forEach(function(i) { i.classList.remove('selected'); });
                             div.classList.add('selected');
                             settingSelectedUrl = url;
-                            document.getElementById('confirmSetting图片').disabled = false;
+                            document.getElementById('confirmSettingImage').disabled = false;
                         });
                         grid.appendChild(div);
                     });
@@ -157,13 +157,13 @@
                 }
             });
 
-        new bootstrap.Modal(document.getElementById('setting图片PickerModal')).show();
+        new bootstrap.Modal(document.getElementById('settingImagePickerModal')).show();
     }
 
-    document.getElementById('confirmSetting图片').addEventListener('click', function() {
-        if (setting图片Target && settingSelectedUrl) {
-            document.getElementById('setting_' + setting图片Target).value = settingSelectedUrl;
-            bootstrap.Modal.getInstance(document.getElementById('setting图片PickerModal')).hide();
+    document.getElementById('confirmSettingImage').addEventListener('click', function() {
+        if (settingImageTarget && settingSelectedUrl) {
+            document.getElementById('setting_' + settingImageTarget).value = settingSelectedUrl;
+            bootstrap.Modal.getInstance(document.getElementById('settingImagePickerModal')).hide();
         }
     });
 </script>

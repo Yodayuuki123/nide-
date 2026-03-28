@@ -157,8 +157,42 @@
     </div>
 </div>
 
+<!-- TinyMCE -->
+<script src="https://cdn.jsdelivr.net/npm/tinymce@6.8.3/tinymce.min.js"></script>
 <div th:replace="~{fragments/admin-layout :: adminScripts}"></div>
 <script>
+    // TinyMCE 初始化
+    if (typeof tinymce !== 'undefined') {
+        tinymce.init({
+            selector: '#newsContent',
+            height: 500,
+            menubar: 'file edit view insert format table',
+            plugins: 'lists link image table code fullscreen preview media hr anchor charmap wordcount',
+            toolbar: [
+                'undo redo | blocks fontsize | bold italic underline strikethrough | forecolor backcolor removeformat',
+                'alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image media table | hr charmap | code fullscreen'
+            ],
+            content_style: 'body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; font-size: 14px; line-height: 1.8; padding: 16px; }',
+            images_upload_handler: function(blobInfo) {
+                return new Promise(function(resolve, reject) {
+                    var formData = new FormData();
+                    formData.append('file', blobInfo.blob(), blobInfo.filename());
+                    fetch('/admin/api/images/upload', { method: 'POST', body: formData })
+                        .then(function(resp) { return resp.json(); })
+                        .then(function(data) {
+                            if (data.success) { resolve(data.url); }
+                            else { reject('上传失败: ' + (data.message || '未知错误')); }
+                        })
+                        .catch(function(err) { reject('上传失败: ' + err.message); });
+                });
+            },
+            promotion: false,
+            branding: false,
+            convert_urls: false,
+            relative_urls: false
+        });
+    }
+
     // 自动生成 slug
     document.getElementById('newsTitle').addEventListener('input', function() {
         var slugField = document.getElementById('newsSlug');
@@ -232,6 +266,11 @@
             preview.innerHTML = '<span><i class="bi bi-image fs-3 d-block text-center mb-1"></i>暂无封面图</span>';
         }
     }
+    // 表单提交前同步TinyMCE内容
+    document.querySelector('form').addEventListener('submit', function() {
+        if (typeof tinymce !== 'undefined') { tinymce.triggerSave(); }
+    });
+
     function uploadAndSelectImage(input) {
         if (!input.files || !input.files[0]) return;
         var formData = new FormData();

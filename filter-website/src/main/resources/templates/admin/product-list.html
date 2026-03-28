@@ -89,7 +89,7 @@
                                             th:data-id="${product.id}"
                                             th:data-name="${product.name}"
                                             data-bs-toggle="modal" data-bs-target="#deleteModal"
-                                            onclick="prepare删除(this)">
+                                            onclick="prepareDelete(this)">
                                         <i class="bi bi-trash"></i>
                                     </button>
                                 </td>
@@ -135,7 +135,7 @@
             </div>
             <div class="modal-body">
                 <p>确定要删除以下产品吗？此操作不可撤销。</p>
-                <p class="fw-medium" id="deleteItem名称"></p>
+                <p class="fw-medium" id="deleteItemName"></p>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
@@ -149,8 +149,8 @@
 
 <div th:replace="~{fragments/admin-layout :: adminScripts}"></div>
 <script>
-    function prepare删除(btn) {
-        document.getElementById('deleteItem名称').textContent = btn.getAttribute('data-name');
+    function prepareDelete(btn) {
+        document.getElementById('deleteItemName').textContent = btn.getAttribute('data-name');
         document.getElementById('deleteForm').action = '/admin/products/delete/' + btn.getAttribute('data-id');
     }
 </script>
