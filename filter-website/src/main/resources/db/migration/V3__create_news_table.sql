@@ -1,15 +1,17 @@
--- 新闻表
+-- News table
 CREATE TABLE IF NOT EXISTS `news` (
-    `id` BIGINT NOT NULL AUTO_INCREMENT,
-    `title` VARCHAR(255) NOT NULL COMMENT '新闻标题',
-    `slug` VARCHAR(255) COMMENT 'URL别名',
-    `summary` TEXT COMMENT '新闻摘要',
-    `content` LONGTEXT COMMENT '新闻正文（HTML）',
-    `cover_image_id` BIGINT COMMENT '封面图ID',
-    `status` VARCHAR(20) NOT NULL DEFAULT 'draft' COMMENT '状态：publish/draft',
-    `published_at` DATETIME COMMENT '发布时间',
-    `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    `updated_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    PRIMARY KEY (`id`),
-    UNIQUE KEY `uk_slug` (`slug`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='新闻表';
+    `id` BIGINT AUTO_INCREMENT PRIMARY KEY,
+    `title` VARCHAR(255) NOT NULL,
+    `slug` VARCHAR(255) NOT NULL UNIQUE,
+    `summary` TEXT,
+    `content` LONGTEXT,
+    `cover_image` VARCHAR(500),
+    `status` VARCHAR(20) DEFAULT 'draft' COMMENT 'draft, published',
+    `view_count` INT DEFAULT 0,
+    `deleted` TINYINT(1) DEFAULT 0,
+    `created_time` DATETIME DEFAULT CURRENT_TIMESTAMP,
+    `updated_time` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    INDEX `idx_slug` (`slug`),
+    INDEX `idx_status` (`status`),
+    INDEX `idx_created_time` (`created_time`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='News articles';

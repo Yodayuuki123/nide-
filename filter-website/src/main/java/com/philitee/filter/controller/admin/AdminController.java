@@ -21,6 +21,7 @@ public class AdminController {
     private final ImageService imageService;
     private final AdminUserService adminUserService;
     private final InquiryService inquiryService;
+    private final NewsService newsService;
 
     /**
      * 后台登录页
@@ -41,6 +42,7 @@ public class AdminController {
         model.addAttribute("imageCount", imageService.count());
         model.addAttribute("userCount", adminUserService.count());
         model.addAttribute("inquiryCount", inquiryService.count());
+        model.addAttribute("newsCount", newsService.count());
         return "admin/dashboard";
     }
 }

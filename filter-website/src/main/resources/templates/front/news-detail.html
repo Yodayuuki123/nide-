@@ -4,100 +4,118 @@
 <body>
 <header th:replace="~{fragments/header :: navbar}"></header>
 
-<!-- Breadcrumb -->
+<!-- Breadcrumb (Aesop-style: minimal, left-aligned) -->
 <div class="section-sm" style="padding-bottom:0;">
     <div class="aesop-container">
         <nav class="breadcrumb-nav" style="justify-content:flex-start;">
-            <a th:href="@{/}">Home</a>
+            <a th:href="@{/}" th:text="#{breadcrumb.home}">Home</a>
             <span class="separator">/</span>
-            <a th:href="@{/news}">News</a>
+            <a th:href="@{/news}" th:text="#{news.title}">News</a>
             <span class="separator">/</span>
             <span class="current" th:text="${news.title}">Article Title</span>
         </nav>
     </div>
 </div>
 
+<!-- News Detail Section -->
 <section class="section">
     <div class="aesop-container">
-        <div class="news-layout">
+        <div class="product-detail" style="align-items:flex-start;">
             <!-- Left: Article Content -->
-            <div class="news-main">
-                <article class="news-article">
-                    <header class="news-article-header">
-                        <h1 th:text="${news.title}">Article Title</h1>
-                        <div class="news-article-meta">
-                            <span class="news-article-date">
-                                <i class="bi bi-calendar3"></i>
-                                <span th:text="${news.publishedAt != null} ? ${#temporals.format(news.publishedAt, 'MMMM dd, yyyy')} : ${#temporals.format(news.createdAt, 'MMMM dd, yyyy')}">January 01, 2026</span>
-                            </span>
-                        </div>
-                    </header>
+            <div class="product-gallery fade-in-left" style="flex:2;">
+                <!-- Title -->
+                <h1 style="font-size:2rem;font-weight:600;line-height:1.3;margin-bottom:1rem;" th:text="${news.title}">Article Title</h1>
 
-                    <!-- Cover Image -->
-                    <div class="news-article-cover" th:if="${news.coverImage != null}">
-                        <img th:src="${news.coverImage.url}" th:alt="${news.title}">
-                    </div>
+                <!-- Meta Info -->
+                <div style="display:flex;align-items:center;gap:1.5rem;margin-bottom:2rem;font-size:0.85rem;color:var(--text-tertiary);border-bottom:1px solid var(--border-color);padding-bottom:1rem;">
+                    <span><i class="bi bi-calendar3"></i> <span th:text="${#temporals.format(news.publishDate, 'yyyy-MM-dd')}">2026-01-01</span></span>
+                    <span><i class="bi bi-eye"></i> <span th:text="${news.viewCount}">0</span> <span th:text="#{news.views}">views</span></span>
+                    <span th:if="${news.author != null}"><i class="bi bi-person"></i> <span th:text="${news.author}">Author</span></span>
+                </div>
 
-                    <!-- Article Content -->
-                    <div class="news-article-content" th:utext="${news.content}">
-                        Article content here...
-                    </div>
-                </article>
+                <!-- Cover Image -->
+                <div th:if="${news.coverImage != null}" style="margin-bottom:2rem;border-radius:4px;overflow:hidden;">
+                    <img th:src="${news.coverImage}" th:alt="${news.title}"
+                         style="width:100%;height:auto;display:block;" loading="lazy">
+                </div>
 
-                <!-- Back to News -->
-                <div class="news-back">
-                    <a th:href="@{/news}" class="btn btn-outline-accent">
-                        <i class="bi bi-arrow-left"></i> Back to News
+                <!-- Article Content -->
+                <div class="product-description-content" th:utext="${news.content}" style="font-size:1rem;line-height:1.8;color:var(--text-secondary);">
+                    Article content goes here...
+                </div>
+
+                <!-- Share / Back -->
+                <div style="margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border-color);display:flex;justify-content:space-between;align-items:center;">
+                    <a th:href="@{/news}" style="font-size:0.9rem;color:var(--text-primary);text-decoration:none;display:inline-flex;align-items:center;gap:0.3rem;">
+                        <i class="bi bi-arrow-left"></i>
+                        <span th:text="#{news.backToList}">Back to News</span>
                     </a>
                 </div>
             </div>
 
-            <!-- Right Sidebar -->
-            <aside class="news-sidebar">
-                <!-- Search -->
-                <div class="pl-sidebar-widget">
-                    <h5 class="pl-widget-title">Search News</h5>
-                    <form th:action="@{/news}" method="get" class="pl-search-form">
-                        <input type="text" name="keyword" placeholder="Search..." class="form-control">
-                        <button type="submit" class="btn btn-accent"><i class="bi bi-search"></i></button>
+            <!-- Right: Sidebar -->
+            <div class="product-info fade-in-right" style="flex:1;min-width:280px;max-width:320px;">
+                <!-- Search Box -->
+                <div style="margin-bottom:2rem;">
+                    <form th:action="@{/news}" method="get" style="display:flex;gap:0.5rem;">
+                        <input type="text" name="keyword"
+                               th:placeholder="#{news.search}"
+                               style="flex:1;border:1px solid var(--border-color);padding:0.6rem 0.75rem;font-size:0.85rem;">
+                        <button type="submit" class="btn-aesop" style="padding:0.6rem 1rem;font-size:0.85rem;">
+                            <i class="bi bi-search"></i>
+                        </button>
                     </form>
                 </div>
 
                 <!-- Recent News -->
-                <div class="pl-sidebar-widget" th:if="${recentNews != null and !recentNews.isEmpty()}">
-                    <h5 class="pl-widget-title">Recent News</h5>
-                    <ul class="news-recent-list">
-                        <li th:each="item : ${recentNews}">
-                            <a th:href="@{/news/{slug}(slug=${item.slug})}">
-                                <div class="news-recent-img" th:if="${item.coverImage != null}">
-                                    <img th:src="${item.coverImage.url}" th:alt="${item.title}">
+                <div>
+                    <div class="eyebrow" th:text="#{news.recent}">Recent News</div>
+                    <h5 style="margin-bottom:1rem;" th:text="#{news.latestArticles}">Latest Articles</h5>
+                    <div th:if="${recentNews != null}" style="display:flex;flex-direction:column;gap:1rem;">
+                        <a th:each="item,iter : ${recentNews}" th:if="${iter.index < 5}"
+                           th:href="@{/news/{slug}(slug=${item.slug})}"
+                           style="display:flex;gap:0.75rem;text-decoration:none;color:inherit;padding-bottom:1rem;border-bottom:1px solid var(--border-color);">
+                            <!-- Thumbnail -->
+                            <div style="width:70px;height:70px;flex-shrink:0;border-radius:4px;overflow:hidden;background:var(--bg-tertiary);">
+                                <img th:if="${item.coverImage != null}" th:src="${item.coverImage}" th:alt="${item.title}"
+                                     style="width:100%;height:100%;object-fit:cover;" loading="lazy">
+                                <div th:unless="${item.coverImage != null}" style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;color:var(--text-tertiary);">
+                                    <i class="bi bi-newspaper"></i>
                                 </div>
-                                <div class="news-recent-info">
-                                    <span class="news-recent-title" th:text="${item.title}">Title</span>
-                                    <span class="news-recent-date"
-                                          th:text="${item.publishedAt != null} ? ${#temporals.format(item.publishedAt, 'MMM dd, yyyy')} : ''">Date</span>
+                            </div>
+                            <!-- Info -->
+                            <div style="flex:1;min-width:0;">
+                                <div style="font-size:0.85rem;font-weight:500;line-height:1.4;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;"
+                                     th:text="${item.title}">Recent Article Title</div>
+                                <div style="font-size:0.75rem;color:var(--text-tertiary);margin-top:0.3rem;">
+                                    <span th:text="${#temporals.format(item.publishDate, 'yyyy-MM-dd')}">2026-01-01</span>
                                 </div>
-                            </a>
-                        </li>
-                    </ul>
+                            </div>
+                        </a>
+                    </div>
+                    <div th:if="${recentNews == null or recentNews.isEmpty()}" style="font-size:0.85rem;color:var(--text-tertiary);">
+                        <span th:text="#{news.noRecentNews}">No recent articles</span>
+                    </div>
                 </div>
+            </div>
+        </div>
+    </div>
+</section>
 
-                <!-- Contact Widget -->
-                <div class="pl-sidebar-widget pl-contact-widget">
-                    <h5 class="pl-widget-title">Contact Us</h5>
-                    <ul class="pl-contact-list">
-                        <li><i class="bi bi-envelope"></i> <a href="mailto:info@philiteefilter.com">info@philiteefilter.com</a></li>
-                        <li><i class="bi bi-whatsapp"></i> <a href="https://wa.me/8618057358206" target="_blank">+86-18057358206</a></li>
-                    </ul>
-                </div>
-            </aside>
+<!-- CTA Banner -->
+<section class="cta-banner">
+    <div class="aesop-container">
+        <h3 class="fade-in" th:text="#{cta.title}">Need Custom Filtration Solutions?</h3>
+        <p class="fade-in" th:text="#{cta.subtitle}">Contact our team for professional consultation</p>
+        <div class="fade-in">
+            <a th:href="@{/contact}" class="btn-aesop" th:text="#{cta.button}">Get in Touch</a>
         </div>
     </div>
 </section>
 
 <footer th:replace="~{fragments/footer :: footer}"></footer>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-<script src="/static/js/main.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" defer></script>
+<script src="/static/js/main.js" defer></script>
 </body>
 </html>

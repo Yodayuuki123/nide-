@@ -55,11 +55,6 @@ public interface ProductService extends IService<Product> {
     List<Product> getProductsByTag(Long tagId);
 
     /**
-     * 根据标签ID查询产品（限制数量）
-     */
-    List<Product> getProductsByTagId(Long tagId, int limit);
-
-    /**
      * 搜索产品
      *
      * @param keyword 关键词

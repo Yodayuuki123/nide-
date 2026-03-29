@@ -20,9 +20,8 @@
 <!-- Editorial Section: Company Story (Aesop-style split) -->
 <section class="editorial-section">
     <div class="editorial-image parallax-image fade-in-left">
-        <div class="module-slideshow">
-            <img src="/static/images/about-company-generated.jpg" alt="Philite Environment Technology">
-        </div>
+        <img src="/static/images/about-company.jpg" alt="Philite Environment Technology"
+             onerror="this.parentElement.style.background='var(--bg-tertiary)'">
     </div>
     <div class="editorial-content fade-in-right">
         <span class="eyebrow" th:text="#{about.company.eyebrow}">Our Story</span>
@@ -88,26 +87,6 @@
     </div>
 </section>
 
-<!-- Technical Support Showcase -->
-<section class="editorial-section">
-    <div class="editorial-image parallax-image fade-in-left">
-        <div class="module-slideshow">
-            <img src="/static/images/service-technical.jpg" alt="Technical Support">
-        </div>
-    </div>
-    <div class="editorial-content fade-in-right">
-        <span class="eyebrow" th:text="#{about.support.eyebrow}">Support</span>
-        <h2 th:text="#{about.support.title}">Professional Technical Service</h2>
-        <p th:text="#{about.support.desc}">Our engineering team provides comprehensive technical support from product selection to installation guidance and after-sales service.</p>
-        <ul class="about-feature-list">
-            <li th:text="#{about.support.point1}">Free technical consultation and product selection</li>
-            <li th:text="#{about.support.point2}">On-site installation guidance available</li>
-            <li th:text="#{about.support.point3}">24/7 engineer support for urgent issues</li>
-            <li th:text="#{about.support.point4}">Regular maintenance and replacement programs</li>
-        </ul>
-    </div>
-</section>
-
 <!-- Service Process Section -->
 <section class="section section-cream">
     <div class="aesop-container">
@@ -153,9 +132,8 @@
 <!-- OEM Section (Aesop-style editorial) -->
 <section class="editorial-section">
     <div class="editorial-image parallax-image fade-in-left">
-        <div class="module-slideshow">
-            <img src="/static/images/oem-service.jpg" alt="OEM Manufacturing">
-        </div>
+        <img src="/static/images/oem-service.jpg" alt="OEM Manufacturing"
+             onerror="this.parentElement.style.background='var(--bg-tertiary)'">
     </div>
     <div class="editorial-content fade-in-right">
         <span class="eyebrow" th:text="#{about.oem.eyebrow}">OEM Service</span>
@@ -173,9 +151,8 @@
 <!-- Distributorship Section -->
 <section class="editorial-section reverse">
     <div class="editorial-image parallax-image fade-in-right">
-        <div class="module-slideshow">
-            <img src="/static/images/about-dist-3.jpg" alt="Dornier Weaving Machine">
-        </div>
+        <img src="/static/images/global-network.jpg" alt="Global Distribution Network"
+             onerror="this.parentElement.style.background='var(--bg-secondary)'">
     </div>
     <div class="editorial-content fade-in-left" style="background:var(--bg-secondary);">
         <span class="eyebrow" th:text="#{about.dist.eyebrow}">Partnership</span>
@@ -210,7 +187,7 @@
             </div>
             <div class="vip-card vip-card-premium fade-in stagger-2">
                 <div class="vip-badge vip-badge-premium">VVIP</div>
-                <h4 th:text="#{about.vip.level2}" style="color:#ffffff !important;">VVIP (Annual $1,000,000+)</h4>
+                <h4 th:text="#{about.vip.level2}">VVIP (Annual $1,000,000+)</h4>
                 <ul class="vip-benefits">
                     <li><i class="bi bi-cash-coin"></i> <span th:text="#{about.vip.level2.funds}">60-day credit terms</span></li>
                     <li><i class="bi bi-truck"></i> <span th:text="#{about.vip.level2.delivery}">20GP: 10 days | 40GP: 15 days</span></li>
@@ -221,14 +198,11 @@
     </div>
 </section>
 
-<!-- Application Scenes Slideshow (removed) -->
-
 <!-- Mission Editorial (Reversed, Aesop-style) -->
 <section class="editorial-section reverse">
     <div class="editorial-image parallax-image fade-in-right">
-        <div class="module-slideshow">
-            <img src="/static/images/mission.jpg" alt="Our Mission">
-        </div>
+        <img src="/static/images/mission.jpg" alt="Our Mission"
+             onerror="this.parentElement.style.background='var(--bg-secondary)'">
     </div>
     <div class="editorial-content fade-in-left" style="background:var(--bg-secondary);">
         <span class="eyebrow" th:text="#{about.mission.eyebrow}">Our Commitment</span>
@@ -243,15 +217,14 @@
         <h3 class="fade-in" th:text="#{cta.title}">Need Custom Filtration Solutions?</h3>
         <p class="fade-in" th:text="#{cta.subtitle}">Contact our team for professional consultation</p>
         <div class="fade-in">
-            <a th:href="@{/contact}" class="btn btn-accent" th:text="#{cta.button}">Get in Touch</a>
+            <a th:href="@{/contact}" class="btn-aesop" th:text="#{cta.button}">Get in Touch</a>
         </div>
     </div>
 </section>
 
 <footer th:replace="~{fragments/footer :: footer}"></footer>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-<script src="/static/js/main.js"></script>
-<script src="/static/js/slideshow.js?v=3"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" defer></script>
+<script src="/static/js/main.js" defer></script>
 </body>
 </html>

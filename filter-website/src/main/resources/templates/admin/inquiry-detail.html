@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/admin-layout :: adminHead('询盘详情')}"></head>
+<body class="admin-body">
+<div class="admin-wrapper">
+    <div th:replace="~{fragments/admin-layout :: adminSidebar}"></div>
+
+    <div class="admin-content">
+        <div th:replace="~{fragments/admin-layout :: adminTopbar}"></div>
+
+        <div class="admin-main">
+            <!-- Flash 留言内容s -->
+            <div th:if="${message}" class="alert alert-success alert-dismissible fade show">
+                <span th:text="${message}"></span>
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+            <div th:if="${error}" class="alert alert-danger alert-dismissible fade show">
+                <span th:text="${error}"></span>
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <div>
+                    <h4 style="font-size: 1.8rem; margin-bottom: 4px;">询盘详情</h4>
+                    <p style="color: var(--admin-text-tertiary); font-size: 13px; margin: 0;">View inquiry details from customer</p>
+                </div>
+                <div class="d-flex gap-2">
+                    <a th:href="@{/admin/inquiries/edit/{id}(id=${inquiry.id})}" class="btn btn-outline-primary btn-sm">
+                        <i class="bi bi-pencil"></i> 编辑
+                    </a>
+                    <a href="/admin/inquiries" class="btn btn-outline-secondary btn-sm">
+                        <i class="bi bi-arrow-left"></i> <span th:text="#{admin.back}">返回</span>
+                    </a>
+                    <button type="button" class="btn btn-outline-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteModal">
+                        <i class="bi bi-trash"></i> 删除
+                    </button>
+                </div>
+            </div>
+
+            <div class="admin-card">
+                <div class="admin-card-header">
+                    <h5>询盘信息</h5>
+                </div>
+                <div class="admin-card-body">
+                    <div class="row g-4">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label text-muted">名称</label>
+                                <div th:text="${inquiry.name}" class="fw-medium">Name</div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label text-muted">邮箱</label>
+                                <div>
+                                    <a th:href="'mailto:' + ${inquiry.email}" th:text="${inquiry.email}">email@example.com</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label text-muted">电话</label>
+                                <div th:text="${inquiry.phone} ?: '-'" class="text-muted">Phone</div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label text-muted">公司</label>
+                                <div th:text="${inquiry.company} ?: '-'" class="text-muted">Company</div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label text-muted">Product Interest</label>
+                                <div th:text="${inquiry.productInterest} ?: '-'" class="text-muted">Product</div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label text-muted">Created Time</label>
+                                <div class="text-muted"
+                                     th:text="${inquiry.createdTime != null} ? ${#temporals.format(inquiry.createdTime, 'yyyy-MM-dd HH:mm:ss')} : '-'">2026-01-01</div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label text-muted">Read Status</label>
+                                <div>
+                                    <span th:if="${inquiry.isRead != null and inquiry.isRead}" class="badge bg-success">已读</span>
+                                    <span th:unless="${inquiry.isRead != null and inquiry.isRead}" class="badge bg-warning text-dark">未读</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="mb-3">
+                                <label class="form-label text-muted">留言内容</label>
+                                <pre style="white-space: pre-wrap; word-break: break-word; background: #f8f9fa; padding: 1rem; border-radius: 6px; border: 1px solid #dee2e6; font-family: inherit; margin: 0;"
+                                     th:text="${inquiry.message} ?: '-'">Message content here...</pre>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Delete Confirmation Modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">确认删除</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <p>确定要删除这条询盘记录吗？此操作不可恢复。</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+                <form th:action="@{/admin/inquiries/delete/{id}(id=${inquiry.id})}" method="post" class="d-inline">
+                    <button type="submit" class="btn btn-danger">
+                        <i class="bi bi-trash"></i> 删除
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div th:replace="~{fragments/admin-layout :: adminScripts}"></div>
+</body>
+</html>

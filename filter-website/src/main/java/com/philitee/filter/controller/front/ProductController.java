@@ -33,7 +33,7 @@ public class ProductController {
     @GetMapping("/products")
     public String productList(
             @RequestParam(defaultValue = "1") int page,
-            @RequestParam(defaultValue = "16") int size,
+            @RequestParam(defaultValue = "12") int size,
             Model model) {
 
         IPage<Product> productPage = productService.getPublishedProducts(page, size);
@@ -53,7 +53,7 @@ public class ProductController {
     public String productsByCategory(
             @PathVariable String slug,
             @RequestParam(defaultValue = "1") int page,
-            @RequestParam(defaultValue = "16") int size,
+            @RequestParam(defaultValue = "12") int size,
             Model model) {
 
         ProductCategory category = categoryService.getCategoryBySlug(slug);

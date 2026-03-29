@@ -2,45 +2,16 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
 <footer th:fragment="footer" class="site-footer">
-    <!-- Footer Inquiry Section -->
-    <div class="footer-inquiry-section">
+    <!-- Footer Quote Section (Aesop-style) -->
+    <div class="footer-quote-section">
         <div class="aesop-container">
-            <div class="row align-items-center">
-                <div class="col-lg-5 mb-4 mb-lg-0">
-                    <h3 class="footer-inquiry-title">Get In Touch</h3>
-                    <p class="footer-inquiry-desc">Have questions about our products? Send us an inquiry and we'll get back to you within 24 hours.</p>
-                </div>
-                <div class="col-lg-7">
-                    <form th:action="@{/contact}" method="post" class="footer-inquiry-form">
-                        <div class="row g-2">
-                            <div class="col-md-6">
-                                <input type="text" name="name" class="form-control" placeholder="Your Name *" required>
-                            </div>
-                            <div class="col-md-6">
-                                <input type="email" name="email" class="form-control" placeholder="Your Email *" required>
-                            </div>
-                            <div class="col-md-6">
-                                <input type="text" name="phone" class="form-control" placeholder="Phone">
-                            </div>
-                            <div class="col-md-6">
-                                <input type="text" name="company" class="form-control" placeholder="Company">
-                            </div>
-                            <div class="col-12">
-                                <textarea name="message" class="form-control" rows="3" placeholder="Your Message *" required></textarea>
-                            </div>
-                            <div class="col-12">
-                                <button type="submit" class="btn btn-accent w-100">
-                                    <i class="bi bi-send"></i> Send Inquiry
-                                </button>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
+            <blockquote class="footer-quote fade-in">
+                <p th:text="#{footer.quote.text}">'Quality is not an act, it is a habit.'</p>
+                <cite th:text="#{footer.quote.author}">Aristotle</cite>
+            </blockquote>
         </div>
     </div>
 
-    <!-- Main Footer -->
     <div class="aesop-container">
         <div class="footer-grid">
             <!-- Brand -->
@@ -51,33 +22,31 @@
                          onerror="this.style.display='none'">
                     <span th:text="#{site.name}">PHILITEE FILTER</span>
                 </a>
-                <p th:text="#{footer.desc}">Philite - Specializing in industrial filter bags, needle punched felt, woven filter cloth, and complete filtration system solutions.</p>
+                <p th:text="#{footer.desc}">Philite® — Specializing in industrial filter bags, needle punched felt, woven filter cloth, filter bag making machines, and complete filtration system solutions.</p>
                 <div class="footer-social">
-                    <a href="#" title="Facebook" target="_blank"><i class="bi bi-facebook"></i></a>
-                    <a href="#" title="LinkedIn" target="_blank"><i class="bi bi-linkedin"></i></a>
-                    <a href="#" title="Twitter" target="_blank"><i class="bi bi-twitter-x"></i></a>
-                    <a href="#" title="YouTube" target="_blank"><i class="bi bi-youtube"></i></a>
-                    <a href="https://wa.me/8618057358206" title="WhatsApp" target="_blank"><i class="bi bi-whatsapp"></i></a>
-                    <a href="mailto:info@philiteefilter.com" title="Email"><i class="bi bi-envelope-fill"></i></a>
+                    <a href="https://wa.me/8613636563667" title="WhatsApp" target="_blank"><i class="bi bi-whatsapp"></i></a>
+                    <a href="mailto:sales888@philitee.com" title="Email"><i class="bi bi-envelope-fill"></i></a>
+                    <a href="#" title="LinkedIn"><i class="bi bi-linkedin"></i></a>
                 </div>
             </div>
 
             <!-- Quick Links -->
             <div>
-                <div class="footer-title">Quick Links</div>
+                <div class="footer-title" th:text="#{nav.quick_links}">Navigation</div>
                 <ul class="footer-links">
-                    <li><a th:href="@{/}">Home</a></li>
-                    <li><a th:href="@{/products}">Products</a></li>
-                    <li><a th:href="@{/solutions}">Solutions</a></li>
-                    <li><a th:href="@{/about}">About Us</a></li>
-                    <li><a th:href="@{/news}">News</a></li>
-                    <li><a th:href="@{/contact}">Contact</a></li>
+                    <li><a th:href="@{/}" th:text="#{nav.home}">Home</a></li>
+                    <li><a th:href="@{/products}" th:text="#{nav.products}">Products</a></li>
+                    <li><a th:href="@{/about}" th:text="#{nav.about}">About</a></li>
+                    <li><a th:href="@{/solutions}" th:text="#{nav.solutions}">Solutions</a></li>
+                    <li><a th:href="@{/news}" th:text="#{nav.news}">News</a></li>
+                    <li><a th:href="@{/factory}" th:text="#{nav.factory}">Factory</a></li>
+                    <li><a th:href="@{/contact}" th:text="#{nav.contact}">Contact</a></li>
                 </ul>
             </div>
 
             <!-- Product Categories -->
             <div>
-                <div class="footer-title">Products</div>
+                <div class="footer-title" th:text="#{nav.products}">Products</div>
                 <ul class="footer-links">
                     <th:block th:each="cat,iter : ${globalCategoryTree}" th:if="${iter.index < 8}">
                         <li>
@@ -90,7 +59,7 @@
 
             <!-- Contact -->
             <div>
-                <div class="footer-title">Contact Us</div>
+                <div class="footer-title" th:text="#{footer.contact}">Contact</div>
                 <ul class="footer-contact-list">
                     <li>
                         <i class="bi bi-geo-alt"></i>
@@ -98,15 +67,15 @@
                     </li>
                     <li>
                         <i class="bi bi-envelope"></i>
-                        <a href="mailto:info@philiteefilter.com">info@philiteefilter.com</a>
+                        <a href="mailto:sales888@philitee.com">sales888@philitee.com</a>
                     </li>
                     <li>
                         <i class="bi bi-telephone"></i>
-                        <a href="tel:+8618057358206">+86-18057358206</a>
+                        <a href="tel:+8613636563667">+86 136 3656 3667</a>
                     </li>
                     <li>
                         <i class="bi bi-whatsapp"></i>
-                        <a href="https://wa.me/8618057358206" target="_blank">WhatsApp</a>
+                        <a href="https://wa.me/8613636563667" target="_blank">WhatsApp: +86 136 3656 3667</a>
                     </li>
                 </ul>
             </div>
@@ -117,8 +86,9 @@
             <p>
                 &copy; <span th:text="${#dates.format(#dates.createNow(), 'yyyy')}">2026</span>
                 <span th:text="#{site.name}">Philitee Filter</span>.
-                All Rights Reserved.
+                <span th:text="#{footer.rights}">All Rights Reserved</span>.
             </p>
+            <p>Powered by Philite Environment Technology</p>
         </div>
     </div>
 </footer>

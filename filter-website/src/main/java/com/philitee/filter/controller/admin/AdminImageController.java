@@ -61,6 +61,26 @@ public class AdminImageController {
     }
 
     /**
+     * 视频上传接口（AJAX调用）
+     */
+    @PostMapping("/api/media/upload")
+    @ResponseBody
+    public ResponseEntity<Map<String, Object>> uploadMedia(@RequestParam("file") MultipartFile file) {
+        Map<String, Object> result = new HashMap<>();
+        try {
+            Image media = imageService.uploadImage(file);
+            result.put("success", true);
+            result.put("media", media);
+            result.put("url", media.getUrl());
+            return ResponseEntity.ok(result);
+        } catch (Exception e) {
+            result.put("success", false);
+            result.put("message", "Upload failed: " + e.getMessage());
+            return ResponseEntity.badRequest().body(result);
+        }
+    }
+
+    /**
      * 图片列表JSON接口（供产品表单图片选择器AJAX调用）
      */
     @GetMapping("/api/images/list")

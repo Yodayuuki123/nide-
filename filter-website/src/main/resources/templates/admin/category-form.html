@@ -9,22 +9,10 @@
         <div th:replace="~{fragments/admin-layout :: adminTopbar}"></div>
 
         <div class="admin-main">
-            <!-- Flash Messages -->
-            <div th:if="${message}" class="alert alert-success alert-dismissible fade show">
-                <span th:text="${message}"></span>
-                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-            </div>
-            <div th:if="${error}" class="alert alert-danger alert-dismissible fade show">
-                <span th:text="${error}"></span>
-                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-            </div>
-
             <div class="d-flex justify-content-between align-items-center mb-4">
                 <div>
-                    <h4 style="font-size: 1.8rem; margin-bottom: 4px;"
-                        th:text="${category.id != null} ? '编辑分类' : '新增分类'">分类表单</h4>
-                    <p style="color: var(--admin-text-tertiary); font-size: 13px; margin: 0;"
-                       th:text="${category.id != null} ? '修改分类信息' : '创建新产品分类'">副标题</p>
+                    <h4 style="font-size: 1.8rem; margin-bottom: 4px;" th:text="${category.id != null} ? '编辑分类' : '新增分类'">分类表单</h4>
+                    <p style="color: var(--admin-text-tertiary); font-size: 13px; margin: 0;" th:text="${category.id != null} ? '修改分类详情和层级结构' : '创建新的产品分类'">副标题</p>
                 </div>
                 <a href="/admin/categories" class="btn btn-outline-secondary btn-sm">
                     <i class="bi bi-arrow-left"></i> <span th:text="#{admin.back}">返回</span>
@@ -33,72 +21,42 @@
 
             <div class="row">
                 <div class="col-lg-8">
-                    <form th:action="@{/admin/categories/save}" method="post" class="admin-form" id="categoryForm">
+                    <form th:action="@{/admin/categories/save}" method="post" class="admin-form">
                         <input type="hidden" name="id" th:value="${category.id}">
 
-                        <div class="admin-card mb-3">
-                            <div class="admin-card-header"><h6 class="mb-0">基本信息</h6></div>
-                            <div class="admin-card-body">
-                                <div class="mb-3">
-                                    <label class="form-label">分类名称 <span class="text-danger">*</span></label>
-                                    <input type="text" name="name" class="form-control" th:value="${category.name}"
-                                           required id="categoryName" placeholder="请输入分类名称">
-                                </div>
-
-                                <div class="mb-3">
-                                    <label class="form-label">URL 别名</label>
-                                    <input type="text" name="slug" class="form-control" th:value="${category.slug}"
-                                           id="categorySlug" placeholder="留空则自动生成（如：industrial-filter-bags）">
-                                    <div class="form-text">用于 URL，只允许小写字母、数字和连字符</div>
-                                </div>
-
-                                <div class="mb-3">
-                                    <label class="form-label">父级分类</label>
-                                    <select name="parentId" class="form-select">
-                                        <option value="">— 无（顶级分类） —</option>
-                                        <!-- FIX: 变量名从 parent所属分类 修正为 parentCategories -->
-                                        <option th:each="parent : ${parentCategories}"
-                                                th:value="${parent.id}"
-                                                th:text="${parent.name}"
-                                                th:selected="${category.parentId != null and category.parentId == parent.id}">父级</option>
-                                    </select>
-                                </div>
-
-                                <div class="mb-3">
-                                    <label class="form-label">描述</label>
-                                    <textarea name="description" class="form-control" rows="4"
-                                              th:text="${category.description}" placeholder="分类描述（可选）"></textarea>
-                                </div>
-                            </div>
+                        <div class="mb-3">
+                            <label class="form-label">分类名称 <span class="text-danger">*</span></label>
+                            <input type="text" name="name" class="form-control" th:value="${category.name}"
+                                   required id="categoryName" placeholder="请输入分类名称">
                         </div>
 
-                        <!-- 分类封面图 -->
-                        <div class="admin-card mb-3">
-                            <div class="admin-card-header"><h6 class="mb-0">分类封面图</h6></div>
-                            <div class="admin-card-body">
-                                <input type="hidden" name="imageId" id="categoryImageId" th:value="${category.imageId}">
-                                <div id="categoryImagePreview" class="mb-2"
-                                     th:if="${category.image != null}">
-                                    <img th:src="${category.image.url}" class="rounded"
-                                         style="max-width: 200px; max-height: 200px; object-fit: cover; border: 1px solid #dee2e6;">
-                                </div>
-                                <div id="categoryImagePreviewEmpty" class="mb-2"
-                                     th:if="${category.image == null}"
-                                     style="width: 200px; height: 150px; background: #f8f9fa; border: 2px dashed #dee2e6; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: #adb5bd;">
-                                    <span><i class="bi bi-image fs-3 d-block text-center mb-1"></i>暂无封面图</span>
-                                </div>
-                                <div class="d-flex gap-2 mt-2">
-                                    <button type="button" class="btn btn-outline-primary btn-sm"
-                                            onclick="openCategoryImagePicker()">
-                                        <i class="bi bi-images"></i> 选择图片
-                                    </button>
-                                    <button type="button" class="btn btn-outline-secondary btn-sm"
-                                            onclick="clearCategoryImage()" th:if="${category.imageId != null}">
-                                        <i class="bi bi-x"></i> 清除图片
-                                    </button>
-                                </div>
-                                <div class="form-text mt-1">建议尺寸：600×400 像素</div>
-                            </div>
+                        <div class="mb-3">
+                            <label class="form-label">URL 别名</label>
+                            <input type="text" name="slug" class="form-control" th:value="${category.slug}"
+                                   id="categorySlug" placeholder="自动根据名称生成">
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">父级分类</label>
+                            <select name="parentId" class="form-select">
+                                <option value="">— 无（顶级分类） —</option>
+                                <option th:each="parent : ${parentCategories}"
+                                        th:value="${parent.id}"
+                                        th:text="${parent.name}"
+                                        th:selected="${category.parentId != null and category.parentId == parent.id}">父级</option>
+                            </select>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">描述</label>
+                            <textarea name="description" class="form-control" rows="4"
+                                      th:text="${category.description}" placeholder="分类描述（可选）"></textarea>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">图片 ID</label>
+                            <input type="number" name="imageId" class="form-control" th:value="${category.imageId}"
+                                   placeholder="图片 ID（可选）">
                         </div>
 
                         <div class="d-flex gap-2">
@@ -114,130 +72,6 @@
     </div>
 </div>
 
-<!-- 图片选择器 Modal -->
-<div class="modal fade" id="imagePickerModal" tabindex="-1">
-    <div class="modal-dialog modal-xl">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">选择图片</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-            </div>
-            <div class="modal-body">
-                <!-- 上传新图片 -->
-                <div class="mb-3 p-3 bg-light rounded">
-                    <label class="form-label fw-medium">上传新图片</label>
-                    <input type="file" id="pickerFileInput" accept="image/*" class="form-control"
-                           onchange="uploadAndSelectImage(this)">
-                </div>
-                <!-- 图片库 -->
-                <div id="pickerImageGrid" class="image-grid" style="max-height: 450px; overflow-y: auto;">
-                    <div class="text-center text-muted py-4">
-                        <div class="spinner-border spinner-border-sm" role="status"></div>
-                        <span class="ms-2">加载中...</span>
-                    </div>
-                </div>
-                <!-- 分页 -->
-                <div id="pickerPagination" class="mt-3 d-flex justify-content-center gap-2"></div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
-            </div>
-        </div>
-    </div>
-</div>
-
 <div th:replace="~{fragments/admin-layout :: adminScripts}"></div>
-<script>
-    // 自动生成 slug
-    document.getElementById('categoryName').addEventListener('input', function() {
-        var slugField = document.getElementById('categorySlug');
-        if (!slugField.value || slugField.dataset.autoGenerated === 'true') {
-            slugField.value = this.value
-                .toLowerCase()
-                .replace(/[^a-z0-9\u4e00-\u9fa5\s-]/g, '')
-                .replace(/[\s]+/g, '-')
-                .replace(/-+/g, '-');
-            slugField.dataset.autoGenerated = 'true';
-        }
-    });
-    document.getElementById('categorySlug').addEventListener('input', function() {
-        this.dataset.autoGenerated = 'false';
-    });
-
-    // 分类图片选择器
-    var pickerCurrentPage = 1;
-    function openCategoryImagePicker() {
-        var modal = new bootstrap.Modal(document.getElementById('imagePickerModal'));
-        modal.show();
-        loadPickerImages(1);
-    }
-    function loadPickerImages(page) {
-        pickerCurrentPage = page;
-        fetch('/admin/api/images/list?page=' + page + '&size=24')
-            .then(function(r) { return r.json(); })
-            .then(function(data) {
-                var grid = document.getElementById('pickerImageGrid');
-                grid.innerHTML = '';
-                if (!data.records || data.records.length === 0) {
-                    grid.innerHTML = '<p class="text-center text-muted py-4">暂无图片，请先上传</p>';
-                    return;
-                }
-                data.records.forEach(function(img) {
-                    var item = document.createElement('div');
-                    item.className = 'image-grid-item';
-                    item.style.cursor = 'pointer';
-                    item.innerHTML = '<div class="image-grid-thumb"><img src="' + (img.url || '/wp-content/uploads' + img.filePath) + '" alt="' + (img.fileName || '') + '"></div>' +
-                        '<div class="image-grid-info"><small class="text-truncate d-block">' + (img.fileName || '') + '</small></div>';
-                    item.onclick = function() { selectCategoryImage(img); };
-                    grid.appendChild(item);
-                });
-                // 分页
-                var pag = document.getElementById('pickerPagination');
-                pag.innerHTML = '';
-                if (data.pages > 1) {
-                    for (var i = 1; i <= data.pages; i++) {
-                        var btn = document.createElement('button');
-                        btn.className = 'btn btn-sm ' + (i === data.current ? 'btn-primary' : 'btn-outline-secondary');
-                        btn.textContent = i;
-                        btn.onclick = (function(p) { return function() { loadPickerImages(p); }; })(i);
-                        pag.appendChild(btn);
-                    }
-                }
-            });
-    }
-    function selectCategoryImage(img) {
-        document.getElementById('categoryImageId').value = img.id;
-        var preview = document.getElementById('categoryImagePreview') || document.getElementById('categoryImagePreviewEmpty');
-        if (preview) {
-            preview.id = 'categoryImagePreview';
-            preview.style = '';
-            preview.innerHTML = '<img src="' + (img.url || '/wp-content/uploads' + img.filePath) + '" class="rounded" style="max-width: 200px; max-height: 200px; object-fit: cover; border: 1px solid #dee2e6;">';
-        }
-        bootstrap.Modal.getInstance(document.getElementById('imagePickerModal')).hide();
-    }
-    function clearCategoryImage() {
-        document.getElementById('categoryImageId').value = '';
-        var preview = document.getElementById('categoryImagePreview');
-        if (preview) {
-            preview.id = 'categoryImagePreviewEmpty';
-            preview.style = 'width: 200px; height: 150px; background: #f8f9fa; border: 2px dashed #dee2e6; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: #adb5bd;';
-            preview.innerHTML = '<span><i class="bi bi-image fs-3 d-block text-center mb-1"></i>暂无封面图</span>';
-        }
-    }
-    function uploadAndSelectImage(input) {
-        if (!input.files || !input.files[0]) return;
-        var formData = new FormData();
-        formData.append('file', input.files[0]);
-        fetch('/admin/api/images/upload', { method: 'POST', body: formData })
-            .then(function(r) { return r.json(); })
-            .then(function(data) {
-                if (data.success) {
-                    selectCategoryImage(data.image);
-                } else {
-                    alert('上传失败: ' + (data.message || '未知错误'));
-                }
-            });
-    }
-</script>
 </body>
 </html>

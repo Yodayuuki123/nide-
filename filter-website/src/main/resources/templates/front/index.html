@@ -4,450 +4,355 @@
 <body>
 <header th:replace="~{fragments/header :: navbar}"></header>
 
-<!-- ========== 1. Hero Carousel (Full-width slideshow) ========== -->
-<section class="hero-carousel" id="heroCarousel">
-    <div class="hero-slides">
-        <div class="hero-slide active" style="background-image:url('/static/images/hero-bg.jpg')">
-            <div class="hero-slide-overlay"></div>
-            <div class="hero-slide-content aesop-container">
-                <h1>Industrial Filter Bags</h1>
-                <p>Premium quality dust collector bags for every industrial application</p>
-                <a th:href="@{/products}" class="btn btn-accent btn-lg">View Products</a>
-            </div>
-        </div>
-        <div class="hero-slide" style="background-image:url('/static/images/feature-factory.jpg')">
-            <div class="hero-slide-overlay"></div>
-            <div class="hero-slide-content aesop-container">
-                <h1>Complete Filtration Solutions</h1>
-                <p>Needle punched felt, woven filter cloth, and filtration system solutions</p>
-                <a th:href="@{/solutions}" class="btn btn-accent btn-lg">Our Solutions</a>
-            </div>
-        </div>
-        <div class="hero-slide" style="background-image:url('/static/images/factory-overview.jpg')">
-            <div class="hero-slide-overlay"></div>
-            <div class="hero-slide-content aesop-container">
-                <h1>20+ Years of Experience</h1>
-                <p>Trusted by customers in over 100 countries worldwide</p>
-                <a th:href="@{/about}" class="btn btn-accent btn-lg">About Us</a>
-            </div>
-        </div>
+<!-- Hero Section (Aesop-style: Full-width background image with centered text) -->
+<section class="hero" id="heroSection">
+    <!-- Background image -->
+    <div class="hero-bg">
+        <img src="/static/images/hero-bg.jpg" alt="Philitee Filter Factory" loading="eager">
+        <div class="hero-bg-overlay"></div>
     </div>
-    <button class="hero-arrow hero-prev" onclick="heroSlide(-1)"><i class="bi bi-chevron-left"></i></button>
-    <button class="hero-arrow hero-next" onclick="heroSlide(1)"><i class="bi bi-chevron-right"></i></button>
-    <div class="hero-dots">
-        <span class="hero-dot active" onclick="heroGoTo(0)"></span>
-        <span class="hero-dot" onclick="heroGoTo(1)"></span>
-        <span class="hero-dot" onclick="heroGoTo(2)"></span>
-    </div>
-</section>
-
-<!-- ========== 2. About Us Section + Factory Images ========== -->
-<section class="home-about-section">
-    <div class="aesop-container">
-        <div class="home-about-grid">
-            <div class="home-about-text fade-in">
-                <span class="section-eyebrow">About Us</span>
-                <h2>Philitee Filter Technology</h2>
-                <p>With over 20 years of experience in industrial filtration, Philitee Filter specializes in the design, manufacture, and supply of high-quality filter bags, needle punched felt, woven filter cloth, and complete filtration system solutions.</p>
-                <p>Our state-of-the-art facility features advanced production lines including automated sewing machines, heat-setting equipment, and precision cutting systems. We serve customers in over 100 countries across industries including cement, steel, power generation, waste incineration, and chemical processing.</p>
-                <a th:href="@{/about}" class="btn btn-outline-accent">Learn More <i class="bi bi-arrow-right"></i></a>
-            </div>
-            <div class="home-about-gallery fade-in">
-                <div class="about-gallery-main">
-                    <img id="aboutMainImg" src="/static/images/factory/factory1.jpg" alt="Philitee Factory">
-                </div>
-                <div class="about-gallery-thumbs">
-                    <img src="/static/images/factory/factory1.jpg" alt="Factory" class="active" onclick="switchAboutImg(this)">
-                    <img src="/static/images/factory/factory2.jpg" alt="Factory" onclick="switchAboutImg(this)">
-                    <img src="/static/images/factory/factory3.jpg" alt="Factory" onclick="switchAboutImg(this)">
-                    <img src="/static/images/factory/factory4.jpg" alt="Factory" onclick="switchAboutImg(this)">
-                </div>
-            </div>
+    <!-- Centered content overlay -->
+    <div class="hero-content-center">
+        <span class="hero-eyebrow" th:text="#{hero.eyebrow}">Established Since 2003</span>
+        <h1 class="hero-title" th:text="#{hero.title}">Industrial Filtration Engineered for Excellence</h1>
+        <p class="hero-subtitle" th:text="#{hero.subtitle}">Providing precision-engineered filter solutions for industries worldwide. Two decades of expertise in every product.</p>
+        <div class="hero-cta">
+            <a th:href="@{/products}" class="btn-aesop btn-aesop-light" th:text="#{hero.view_products}">Explore Products</a>
         </div>
     </div>
 </section>
 
-<!-- ========== 3. Product Categories (9 cards with banner) ========== -->
-<section class="home-categories-section" th:if="${categories != null and !categories.isEmpty()}">
+<!-- Product Carousel Section (Aesop-style: "New and notable" horizontal scroll) -->
+<section class="product-carousel-section" th:if="${featuredProducts != null and !featuredProducts.isEmpty()}">
     <div class="aesop-container">
-        <div class="section-header text-center fade-in">
-            <span class="section-eyebrow">Our Range</span>
-            <h2>Product Categories</h2>
-            <p>Comprehensive filtration solutions for every industrial application</p>
+        <div class="carousel-header">
+            <div>
+                <h2 th:text="#{home.featured.title}">Selected Products</h2>
+                <p class="carousel-subtitle" th:text="#{home.featured.subtitle}">Our most popular filtration products trusted by industries worldwide</p>
+            </div>
+            <div class="carousel-controls">
+                <button class="carousel-btn" id="carouselPrev" aria-label="Previous">
+                    <i class="bi bi-arrow-left"></i>
+                </button>
+                <button class="carousel-btn" id="carouselNext" aria-label="Next">
+                    <i class="bi bi-arrow-right"></i>
+                </button>
+            </div>
         </div>
-        <div class="home-categories-grid">
-            <th:block th:each="cat,iter : ${categories}" th:if="${iter.index < 9}">
-                <a th:href="@{/categories/{slug}(slug=${cat.slug})}" class="home-category-card fade-in">
-                    <div class="home-category-img">
-                        <img th:src="'/wp-content/uploads/category-covers/' + ${cat.slug} + '.jpg'"
-                             th:alt="${cat.name}" loading="lazy"
-                             onerror="this.src='/wp-content/uploads/category-covers/'+this.dataset.slug+'.jpeg'; this.onerror=function(){this.src='/wp-content/uploads/category-covers/'+this.dataset.slug+'.png'; this.onerror=function(){this.style.display='none';this.nextElementSibling.style.display='flex';};};"
-                             th:data-slug="${cat.slug}">
-                        <div class="category-placeholder" style="display:none;"><i class="bi bi-funnel"></i></div>
+        <div class="carousel-track-wrapper">
+            <div class="carousel-track" id="productCarousel">
+                <a th:each="product : ${featuredProducts}"
+                   th:href="@{/products/{slug}(slug=${product.slug})}"
+                   class="product-card">
+                    <div class="product-card-image">
+                        <img th:if="${product.mainImage != null}" th:src="${product.mainImage.url}" th:alt="${product.name}" loading="lazy">
+                        <div th:unless="${product.mainImage != null}" class="product-placeholder">
+                            <i class="bi bi-image"></i>
+                        </div>
                     </div>
-                    <div class="home-category-overlay">
-                        <h5 th:text="${cat.name}">Category Name</h5>
+                    <div class="product-card-info">
+                        <span class="product-card-category"
+                              th:if="${product.categories != null and !product.categories.isEmpty()}"
+                              th:text="${product.categories[0].name}">Category</span>
+                        <div class="product-card-title" th:text="${product.name}">Product Name</div>
+                        <div class="product-card-sku" th:if="${product.sku != null}" th:text="'SKU: ' + ${product.sku}">SKU: XXX</div>
                     </div>
                 </a>
-            </th:block>
+            </div>
         </div>
     </div>
 </section>
 
-<!-- ========== 4. Products by Tag (Tab switching, 12 per tag, 4 per row) ========== -->
-<section class="home-products-section" th:if="${tagProducts != null and !tagProducts.isEmpty()}">
+<!-- Feature Banner 1 (Aesop-style: image + text split) -->
+<section class="feature-banner fade-in">
+    <div class="feature-banner-image parallax-image" style="position:relative;overflow:hidden;">
+        <img src="/static/images/feature-quality-1.jpg?v=1" alt="Manufacturing Line" class="feature-slide active" style="width:100%;height:100%;object-fit:cover;position:absolute;top:0;left:0;opacity:1;transition:opacity 0.6s ease;">
+        <img src="/static/images/feature-quality-2.jpg?v=1" alt="Factory Floor" class="feature-slide" style="width:100%;height:100%;object-fit:cover;position:absolute;top:0;left:0;opacity:0;transition:opacity 0.6s ease;">
+        <div style="position:absolute;bottom:20px;left:50%;transform:translateX(-50%);display:flex;gap:10px;z-index:10;">
+            <button onclick="switchFeatureSlide(0)" class="feature-dot active" style="width:12px;height:12px;border-radius:50%;border:2px solid #fff;background:#fff;cursor:pointer;transition:background 0.3s;"></button>
+            <button onclick="switchFeatureSlide(1)" class="feature-dot" style="width:12px;height:12px;border-radius:50%;border:2px solid #fff;background:transparent;cursor:pointer;transition:background 0.3s;"></button>
+        </div>
+    </div>
+    <div class="feature-banner-content">
+        <span class="eyebrow" th:text="#{home.about.eyebrow}">Our Story</span>
+        <h2 th:text="#{home.about.title}">About Philitee Filter</h2>
+        <p th:text="#{home.about.text}">With over 20 years of experience in industrial filtration, we combine precision engineering with dedication to deliver superior filter products to customers across the globe.</p>
+        <a th:href="@{/about}" class="btn-text-link">
+            <span th:text="#{home.learn_more}">Learn More</span>
+            <span class="arrow">&rarr;</span>
+        </a>
+    </div>
+</section>
+
+<!-- Product Categories Carousel (3 pages x 6 cards, left/right navigation) -->
+<section class="section category-carousel-section" th:if="${categories != null and !categories.isEmpty()}">
     <div class="aesop-container">
-        <div class="section-header text-center fade-in">
-            <span class="section-eyebrow">Our Products</span>
-            <h2>Featured Products</h2>
+        <div class="section-header fade-in">
+            <div class="eyebrow" th:text="#{home.categories.eyebrow}">Our Range</div>
+            <h2 th:text="#{home.categories.title}">Product Categories</h2>
+            <p th:text="#{home.categories.subtitle}">Comprehensive filtration solutions for every industrial application</p>
         </div>
-        <!-- Tag tabs -->
-        <div class="product-tabs fade-in">
-            <th:block th:each="entry,iter : ${tagProducts}">
-                <button class="product-tab" th:classappend="${iter.index == 0} ? ' active' : ''"
-                        th:data-tab="${'tag-' + entry.key.id}"
-                        onclick="switchProductTab(this)"
-                        th:text="${entry.key.name}">Tag Name</button>
-            </th:block>
-        </div>
-        <!-- Tab content panels -->
-        <th:block th:each="entry,iter : ${tagProducts}">
-            <div class="product-tab-panel" th:id="${'tag-' + entry.key.id}"
-                 th:classappend="${iter.index == 0} ? ' active' : ''">
-                <div class="home-products-grid">
-                    <th:block th:each="product,piter : ${entry.value}" th:if="${piter.index < 12}">
-                        <a th:href="@{/products/{slug}(slug=${product.slug})}" class="home-product-card">
-                            <div class="home-product-img">
-                                <img th:if="${product.mainImage != null}"
-                                     th:src="${product.mainImage.url}"
-                                     th:alt="${product.name}" loading="lazy">
-                                <div th:unless="${product.mainImage != null}" class="product-placeholder">
-                                    <i class="bi bi-image"></i>
-                                </div>
+
+        <!-- Carousel wrapper -->
+        <div class="cat-carousel-wrapper">
+            <!-- Left arrow -->
+            <button class="cat-carousel-arrow cat-carousel-prev" id="catPrev" aria-label="Previous page">
+                <i class="bi bi-chevron-left"></i>
+            </button>
+
+            <!-- Pages container -->
+            <div class="cat-carousel-viewport" id="catCarouselViewport">
+                <!-- Page 1: index 0-5 -->
+                <div class="cat-carousel-page active">
+                    <th:block th:each="cat,iter : ${categories}" th:if="${iter.index >= 0 and iter.index < 6}">
+                        <a th:href="@{/categories/{slug}(slug=${cat.slug})}" class="category-card fade-in">
+                            <!-- Try cover image from category-covers directory by slug -->
+                            <img th:src="'/wp-content/uploads/category-covers/' + ${cat.slug} + '.jpg'"
+                                 th:alt="${cat.name}"
+                                 loading="lazy"
+                                 onerror="this.src='/wp-content/uploads/category-covers/'+this.dataset.slug+'.jpeg'; this.onerror=function(){this.src='/wp-content/uploads/category-covers/'+this.dataset.slug+'.png'; this.onerror=function(){this.style.display='none';this.nextElementSibling.style.display='flex';};}"
+                                 th:data-slug="${cat.slug}">
+                            <div class="category-placeholder" style="display:none;"><i class="bi bi-funnel"></i></div>
+                            <div class="category-card-content">
+                                <h5 th:text="${cat.name}">Category Name</h5>
+                                <span th:if="${cat.productCount != null}"
+                                      th:text="${cat.productCount} + ' ' + #{home.products_count}">12 Products</span>
                             </div>
-                            <div class="home-product-info">
-                                <span class="home-product-category"
-                                      th:if="${product.categories != null and !product.categories.isEmpty()}"
-                                      th:text="${product.categories[0].name}">Category</span>
-                                <h6 th:text="${product.name}">Product Name</h6>
+                        </a>
+                    </th:block>
+                </div>
+                <!-- Page 2: index 6-11 -->
+                <div class="cat-carousel-page">
+                    <th:block th:each="cat,iter : ${categories}" th:if="${iter.index >= 6 and iter.index < 12}">
+                        <a th:href="@{/categories/{slug}(slug=${cat.slug})}" class="category-card fade-in">
+                            <img th:src="'/wp-content/uploads/category-covers/' + ${cat.slug} + '.jpg'"
+                                 th:alt="${cat.name}"
+                                 loading="lazy"
+                                 onerror="this.src='/wp-content/uploads/category-covers/'+this.dataset.slug+'.jpeg'; this.onerror=function(){this.src='/wp-content/uploads/category-covers/'+this.dataset.slug+'.png'; this.onerror=function(){this.style.display='none';this.nextElementSibling.style.display='flex';};}"
+                                 th:data-slug="${cat.slug}">
+                            <div class="category-placeholder" style="display:none;"><i class="bi bi-funnel"></i></div>
+                            <div class="category-card-content">
+                                <h5 th:text="${cat.name}">Category Name</h5>
+                                <span th:if="${cat.productCount != null}"
+                                      th:text="${cat.productCount} + ' ' + #{home.products_count}">12 Products</span>
+                            </div>
+                        </a>
+                    </th:block>
+                </div>
+                <!-- Page 3: index 12-17 -->
+                <div class="cat-carousel-page">
+                    <th:block th:each="cat,iter : ${categories}" th:if="${iter.index >= 12 and iter.index < 18}">
+                        <a th:href="@{/categories/{slug}(slug=${cat.slug})}" class="category-card fade-in">
+                            <img th:src="'/wp-content/uploads/category-covers/' + ${cat.slug} + '.jpg'"
+                                 th:alt="${cat.name}"
+                                 loading="lazy"
+                                 onerror="this.src='/wp-content/uploads/category-covers/'+this.dataset.slug+'.jpeg'; this.onerror=function(){this.src='/wp-content/uploads/category-covers/'+this.dataset.slug+'.png'; this.onerror=function(){this.style.display='none';this.nextElementSibling.style.display='flex';};}"
+                                 th:data-slug="${cat.slug}">
+                            <div class="category-placeholder" style="display:none;"><i class="bi bi-funnel"></i></div>
+                            <div class="category-card-content">
+                                <h5 th:text="${cat.name}">Category Name</h5>
+                                <span th:if="${cat.productCount != null}"
+                                      th:text="${cat.productCount} + ' ' + #{home.products_count}">12 Products</span>
                             </div>
                         </a>
                     </th:block>
                 </div>
             </div>
-        </th:block>
+
+            <!-- Right arrow -->
+            <button class="cat-carousel-arrow cat-carousel-next" id="catNext" aria-label="Next page">
+                <i class="bi bi-chevron-right"></i>
+            </button>
+        </div>
+
+        <!-- Dots indicator -->
+        <div class="cat-carousel-dots">
+            <button class="cat-dot active" data-page="0" aria-label="Page 1"></button>
+            <button class="cat-dot" data-page="1" aria-label="Page 2"></button>
+            <button class="cat-dot" data-page="2" aria-label="Page 3"></button>
+        </div>
     </div>
 </section>
 
-<!-- ========== 5. Application Scenarios ========== -->
-<section class="home-applications-section">
+<!-- Feature Banner 2 (Reversed - Aesop-style) -->
+<section class="feature-banner reverse fade-in">
+    <div class="feature-banner-image parallax-image">
+        <img src="/static/images/feature-factory.jpg" alt="Our Factory"
+             onerror="this.parentElement.style.background='var(--bg-tertiary)'">
+    </div>
+    <div class="feature-banner-content">
+        <span class="eyebrow" th:text="#{home.factory_teaser.eyebrow}">Manufacturing</span>
+        <h2 th:text="#{home.factory_teaser.title}">Precision Engineering</h2>
+        <p th:text="#{home.factory_teaser.text}">Our state-of-the-art manufacturing facility ensures every product meets the highest standards of quality and performance.</p>
+        <a th:href="@{/factory}" class="btn-text-link">
+            <span th:text="#{nav.factory}">Factory Tour</span>
+            <span class="arrow">&rarr;</span>
+        </a>
+    </div>
+</section>
+
+<!-- Browse by Category (Aesop-style text list) -->
+<section class="browse-categories" th:if="${categories != null and !categories.isEmpty()}">
     <div class="aesop-container">
-        <div class="section-header text-center fade-in">
-            <span class="section-eyebrow">Applications</span>
-            <h2>Application Scenarios</h2>
-            <p>Our filtration products are widely used across various industries</p>
+        <div class="browse-categories-header fade-in">
+            <h2 th:text="#{home.browse_by_category}">Browse by category</h2>
         </div>
-        <div class="applications-grid">
-            <div class="application-card fade-in">
-                <div class="application-icon"><i class="bi bi-building"></i></div>
-                <h5>Cement Industry</h5>
-                <p>Kiln and clinker cooler dust collection, raw mill and cement mill filtration</p>
-            </div>
-            <div class="application-card fade-in">
-                <div class="application-icon"><i class="bi bi-fire"></i></div>
-                <h5>Steel & Smelting</h5>
-                <p>EAF and BOF dust collection, sintering machine and blast furnace gas cleaning</p>
-            </div>
-            <div class="application-card fade-in">
-                <div class="application-icon"><i class="bi bi-lightning"></i></div>
-                <h5>Power Generation</h5>
-                <p>Coal-fired boiler flue gas filtration, biomass power plant dust removal</p>
-            </div>
-            <div class="application-card fade-in">
-                <div class="application-icon"><i class="bi bi-recycle"></i></div>
-                <h5>Waste Incineration</h5>
-                <p>MSW incineration flue gas treatment, hazardous waste incineration filtration</p>
-            </div>
-            <div class="application-card fade-in">
-                <div class="application-icon"><i class="bi bi-droplet"></i></div>
-                <h5>Chemical Processing</h5>
-                <p>Chemical plant dust collection, pharmaceutical and fine chemical filtration</p>
-            </div>
-            <div class="application-card fade-in">
-                <div class="application-icon"><i class="bi bi-tree"></i></div>
-                <h5>Woodworking</h5>
-                <p>Sawdust and wood chip collection, furniture manufacturing dust removal</p>
-            </div>
+        <div class="browse-categories-list fade-in">
+            <a th:each="cat : ${categories}"
+               th:href="@{/categories/{slug}(slug=${cat.slug})}"
+               class="browse-category-link"
+               th:text="${cat.name}">Category Name</a>
         </div>
     </div>
 </section>
 
-<!-- ========== 6. Why Choose Us ========== -->
-<section class="home-whychoose-section">
+<!-- Certifications Section (Aesop-style) -->
+<section class="certifications-section">
     <div class="aesop-container">
-        <div class="section-header text-center fade-in">
-            <span class="section-eyebrow">Our Advantages</span>
-            <h2>Why Choose Philitee Filter</h2>
-        </div>
-        <div class="whychoose-grid">
-            <div class="whychoose-card fade-in">
-                <div class="whychoose-icon"><i class="bi bi-award"></i></div>
-                <h5>20+ Years Experience</h5>
-                <p>Two decades of expertise in industrial filtration manufacturing and R&D</p>
+        <div class="certifications-grid">
+            <div class="certification-item fade-in stagger-1">
+                <h5 th:text="#{cert.iso.title}">ISO 9001 Certified</h5>
+                <p th:text="#{cert.iso.text}">We meet the highest verified standards of quality management, ensuring consistent product excellence.</p>
             </div>
-            <div class="whychoose-card fade-in">
-                <div class="whychoose-icon"><i class="bi bi-gear"></i></div>
-                <h5>Advanced Equipment</h5>
-                <p>State-of-the-art production lines with automated sewing and heat-setting machines</p>
+            <div class="certification-item fade-in stagger-2">
+                <h5 th:text="#{cert.oem.title}">OEM/ODM Services</h5>
+                <p th:text="#{cert.oem.text}">Custom manufacturing solutions tailored to your specific filtration requirements and specifications.</p>
             </div>
-            <div class="whychoose-card fade-in">
-                <div class="whychoose-icon"><i class="bi bi-shield-check"></i></div>
-                <h5>ISO 9001 Certified</h5>
-                <p>Strict quality management system ensuring consistent product excellence</p>
-            </div>
-            <div class="whychoose-card fade-in">
-                <div class="whychoose-icon"><i class="bi bi-tools"></i></div>
-                <h5>OEM/ODM Service</h5>
-                <p>Custom manufacturing solutions tailored to your specific requirements</p>
-            </div>
-            <div class="whychoose-card fade-in">
-                <div class="whychoose-icon"><i class="bi bi-truck"></i></div>
-                <h5>Fast Delivery</h5>
-                <p>Reliable global shipping with professional packaging and timely delivery</p>
-            </div>
-            <div class="whychoose-card fade-in">
-                <div class="whychoose-icon"><i class="bi bi-headset"></i></div>
-                <h5>Technical Support</h5>
-                <p>Professional technical consultation and after-sales service worldwide</p>
+            <div class="certification-item fade-in stagger-3">
+                <h5 th:text="#{cert.global.title}">Global Delivery</h5>
+                <p th:text="#{cert.global.text}">Reliable shipping to over 50 countries with professional packaging and timely delivery.</p>
             </div>
         </div>
     </div>
 </section>
 
-<!-- ========== 7. Global Sales Network (Custom Map) ========== -->
-<section class="home-global-section">
+<!-- How PTFE Filter Bags Work - Animated GIF Section -->
+<section class="feature-banner fade-in">
+    <div class="feature-banner-image">
+        <img src="/static/images/ptfe-how-it-works.gif" alt="How PTFE Membrane Filter Bag Works"
+             style="width:100%;height:100%;object-fit:cover;">
+    </div>
+    <div class="feature-banner-content">
+        <span class="eyebrow">Technology</span>
+        <h2>How PTFE Membrane Filter Bags Work</h2>
+        <p>Our PTFE membrane filter bags use advanced ePTFE technology to achieve surface filtration. The microporous membrane captures particles on the surface rather than within the filter media, resulting in lower pressure drop, higher efficiency, and longer service life.</p>
+        <a th:href="@{/products}" class="btn-text-link">
+            <span>Explore Products</span>
+            <span class="arrow">&rarr;</span>
+        </a>
+    </div>
+</section>
+
+<!-- Stats Bar -->
+<section class="stats-bar section-cream">
     <div class="aesop-container">
-        <div class="section-header text-center fade-in">
-            <span class="section-eyebrow">Global Reach</span>
-            <h2>Global Sales Network</h2>
-            <p>Our products are exported to over 100 countries and regions worldwide</p>
-        </div>
-        <div class="global-map-wrapper fade-in">
-            <svg class="global-map" viewBox="0 0 1000 500" xmlns="http://www.w3.org/2000/svg">
-                <!-- Simplified world map paths -->
-                <g fill="#e8f5e9" stroke="#4CAF50" stroke-width="0.5">
-                    <!-- North America -->
-                    <path d="M150,120 L200,80 L260,85 L280,110 L270,150 L250,170 L220,200 L190,210 L160,200 L140,170 L130,140Z"/>
-                    <!-- South America -->
-                    <path d="M220,250 L260,230 L280,260 L290,310 L280,370 L260,400 L240,410 L220,390 L210,350 L200,300 L210,270Z"/>
-                    <!-- Europe -->
-                    <path d="M440,90 L480,80 L520,85 L530,100 L520,130 L500,140 L470,145 L450,130 L440,110Z"/>
-                    <!-- Africa -->
-                    <path d="M450,170 L500,160 L530,180 L540,230 L530,300 L510,350 L480,370 L460,350 L440,300 L430,230 L440,190Z"/>
-                    <!-- Asia -->
-                    <path d="M550,60 L650,50 L750,70 L800,100 L810,140 L790,170 L750,180 L700,190 L650,180 L600,160 L560,140 L540,110Z"/>
-                    <!-- Southeast Asia -->
-                    <path d="M700,200 L740,190 L780,200 L800,220 L790,250 L760,260 L730,250 L710,230Z"/>
-                    <!-- Australia -->
-                    <path d="M760,330 L820,310 L860,330 L870,370 L850,400 L810,410 L770,390 L760,360Z"/>
-                    <!-- Middle East -->
-                    <path d="M540,150 L580,140 L610,155 L600,180 L570,185 L545,170Z"/>
-                </g>
-                <!-- Active market dots -->
-                <g fill="#4CAF50">
-                    <!-- North America -->
-                    <circle cx="200" cy="140" r="5"><animate attributeName="r" values="4;6;4" dur="2s" repeatCount="indefinite"/></circle>
-                    <circle cx="250" cy="160" r="4"/>
-                    <!-- South America -->
-                    <circle cx="250" cy="300" r="4"/>
-                    <circle cx="260" cy="350" r="4"/>
-                    <!-- Europe -->
-                    <circle cx="470" cy="110" r="5"><animate attributeName="r" values="4;6;4" dur="2s" repeatCount="indefinite"/></circle>
-                    <circle cx="500" cy="105" r="4"/>
-                    <circle cx="520" cy="115" r="4"/>
-                    <!-- Africa -->
-                    <circle cx="480" cy="250" r="4"/>
-                    <circle cx="500" cy="300" r="4"/>
-                    <!-- Middle East -->
-                    <circle cx="570" cy="165" r="5"><animate attributeName="r" values="4;6;4" dur="2s" repeatCount="indefinite"/></circle>
-                    <!-- Asia (China - HQ) -->
-                    <circle cx="720" cy="140" r="7" fill="#388E3C"><animate attributeName="r" values="6;8;6" dur="2s" repeatCount="indefinite"/></circle>
-                    <circle cx="680" cy="120" r="4"/>
-                    <circle cx="700" cy="170" r="4"/>
-                    <!-- Southeast Asia -->
-                    <circle cx="750" cy="220" r="5"><animate attributeName="r" values="4;6;4" dur="2s" repeatCount="indefinite"/></circle>
-                    <!-- Australia -->
-                    <circle cx="810" cy="360" r="4"/>
-                </g>
-                <!-- HQ Label -->
-                <text x="720" y="125" font-size="10" fill="#1a2e1a" text-anchor="middle" font-weight="bold">HQ</text>
-            </svg>
-        </div>
-        <div class="global-stats fade-in">
-            <div class="global-stat">
-                <div class="global-stat-number" data-count="100">100+</div>
-                <div class="global-stat-label">Countries Served</div>
+        <div class="stats-grid">
+            <div class="stat-item fade-in stagger-1">
+                <div class="stat-number" data-count="20">20+</div>
+                <div class="stat-label" th:text="#{stats.years}">Years Experience</div>
             </div>
-            <div class="global-stat">
-                <div class="global-stat-number" data-count="20">20+</div>
-                <div class="global-stat-label">Years Experience</div>
+            <div class="stat-item fade-in stagger-2">
+                <div class="stat-number" data-count="100">100+</div>
+                <div class="stat-label" th:text="#{stats.countries}">Countries Served</div>
             </div>
-            <div class="global-stat">
-                <div class="global-stat-number" data-count="295">295+</div>
-                <div class="global-stat-label">Products Available</div>
+            <div class="stat-item fade-in stagger-3">
+                <div class="stat-number" data-count="295">295+</div>
+                <div class="stat-label" th:text="#{stats.products}">Products Available</div>
             </div>
-            <div class="global-stat">
-                <div class="global-stat-number">ISO</div>
-                <div class="global-stat-label">Certified Quality</div>
+            <div class="stat-item fade-in stagger-4">
+                <div class="stat-number">ISO</div>
+                <div class="stat-label" th:text="#{stats.certifications}">Certified Quality</div>
             </div>
         </div>
     </div>
 </section>
 
-<!-- ========== 8. Exhibition Photos (4 visible, carousel of 10) ========== -->
-<section class="home-exhibition-section">
+<!-- CTA Banner -->
+<section class="cta-banner">
     <div class="aesop-container">
-        <div class="section-header text-center fade-in">
-            <span class="section-eyebrow">Events</span>
-            <h2>Exhibition Gallery</h2>
-            <p>We actively participate in international trade shows and exhibitions</p>
-        </div>
-        <div class="exhibition-carousel-wrapper">
-            <button class="exhibition-arrow exhibition-prev" onclick="exhibitionSlide(-1)"><i class="bi bi-chevron-left"></i></button>
-            <div class="exhibition-track-viewport">
-                <div class="exhibition-track" id="exhibitionTrack">
-                    <div class="exhibition-item"><img src="/static/images/factory/factory1.jpg" alt="Exhibition 1" loading="lazy"></div>
-                    <div class="exhibition-item"><img src="/static/images/factory/factory2.jpg" alt="Exhibition 2" loading="lazy"></div>
-                    <div class="exhibition-item"><img src="/static/images/factory/factory3.jpg" alt="Exhibition 3" loading="lazy"></div>
-                    <div class="exhibition-item"><img src="/static/images/factory/factory4.jpg" alt="Exhibition 4" loading="lazy"></div>
-                    <div class="exhibition-item"><img src="/static/images/factory/sewing-workshop-1.jpg" alt="Exhibition 5" loading="lazy"></div>
-                    <div class="exhibition-item"><img src="/static/images/factory/sewing-workshop-2.jpg" alt="Exhibition 6" loading="lazy"></div>
-                    <div class="exhibition-item"><img src="/static/images/factory/sewing-workshop-3.jpg" alt="Exhibition 7" loading="lazy"></div>
-                    <div class="exhibition-item"><img src="/static/images/factory/sewing-line.jpg" alt="Exhibition 8" loading="lazy"></div>
-                    <div class="exhibition-item"><img src="/static/images/factory/sewing-machine.jpg" alt="Exhibition 9" loading="lazy"></div>
-                    <div class="exhibition-item"><img src="/static/images/factory/steel-factory.jpg" alt="Exhibition 10" loading="lazy"></div>
-                </div>
-            </div>
-            <button class="exhibition-arrow exhibition-next" onclick="exhibitionSlide(1)"><i class="bi bi-chevron-right"></i></button>
-        </div>
-    </div>
-</section>
-
-<!-- ========== 9. CTA Banner ========== -->
-<section class="home-cta-section">
-    <div class="aesop-container text-center">
-        <h3 class="fade-in">Need Custom Filtration Solutions?</h3>
-        <p class="fade-in">Contact our team for professional consultation and competitive quotation</p>
+        <h3 class="fade-in" th:text="#{cta.title}">Need Custom Filtration Solutions?</h3>
+        <p class="fade-in" th:text="#{cta.subtitle}">Contact our team for professional consultation and competitive quotation</p>
         <div class="fade-in">
-            <a th:href="@{/contact}" class="btn btn-accent btn-lg">Get in Touch</a>
+            <a th:href="@{/contact}" class="btn-aesop" th:text="#{cta.button}">Get in Touch</a>
         </div>
     </div>
 </section>
 
 <footer th:replace="~{fragments/footer :: footer}"></footer>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-<script src="/static/js/main.js"></script>
+<style>
+/* Category Carousel - inline to bypass cache */
+.cat-carousel-wrapper{position:relative;display:flex;align-items:center;gap:0}
+.cat-carousel-viewport{flex:1;overflow:hidden;position:relative}
+.cat-carousel-page{display:none;grid-template-columns:repeat(3,1fr);gap:2px}
+.cat-carousel-page.active{display:grid}
+.cat-carousel-arrow{flex-shrink:0;width:48px;height:48px;border-radius:50%;border:1.5px solid #ccc;background:#fff;color:#222;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:1.2rem;transition:background .2s,color .2s;z-index:2;margin:0 12px}
+.cat-carousel-arrow:hover{background:#222;color:#fff;border-color:#222}
+.cat-carousel-arrow:disabled{opacity:.3;cursor:default}
+.cat-carousel-dots{display:flex;justify-content:center;gap:10px;margin-top:28px}
+.cat-dot{width:8px;height:8px;border-radius:50%;border:none;background:#ccc;cursor:pointer;padding:0;transition:background .2s,transform .2s}
+.cat-dot.active{background:#222;transform:scale(1.3)}
+@media(max-width:768px){.cat-carousel-page{grid-template-columns:repeat(2,1fr)}.cat-carousel-arrow{width:36px;height:36px;font-size:1rem;margin:0 6px}}
+@media(max-width:480px){.cat-carousel-page{grid-template-columns:1fr}}
+</style>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" defer></script>
+<script src="/static/js/main.js" defer></script>
 
 <script>
-/* ===== Hero Carousel ===== */
+/* Category Carousel - inline to bypass cache */
 (function(){
-    var slides = document.querySelectorAll('.hero-slide');
-    var dots = document.querySelectorAll('.hero-dot');
-    var current = 0;
-    var total = slides.length;
-    var autoTimer;
-
-    window.heroGoTo = function(idx) {
-        slides[current].classList.remove('active');
+    var pages=document.querySelectorAll('.cat-carousel-page');
+    var dots=document.querySelectorAll('.cat-dot');
+    var prevBtn=document.getElementById('catPrev');
+    var nextBtn=document.getElementById('catNext');
+    if(!pages.length||!prevBtn||!nextBtn)return;
+    var current=0,total=pages.length,animating=false;
+    function goTo(idx,dir){
+        if(animating||idx===current)return;
+        animating=true;
+        pages[current].classList.remove('active');
+        pages[current].style.display='none';
+        pages[idx].style.display='grid';
+        pages[idx].classList.add('active');
         dots[current].classList.remove('active');
-        current = (idx + total) % total;
-        slides[current].classList.add('active');
-        dots[current].classList.add('active');
-        resetAutoPlay();
-    };
-
-    window.heroSlide = function(dir) {
-        heroGoTo(current + dir);
-    };
-
-    function autoPlay() {
-        autoTimer = setInterval(function() { heroGoTo(current + 1); }, 5000);
+        dots[idx].classList.add('active');
+        current=idx;
+        updateBtns();
+        animating=false;
     }
-    function resetAutoPlay() {
-        clearInterval(autoTimer);
-        autoPlay();
-    }
-    autoPlay();
-})();
-
-/* ===== About Gallery Image Switch ===== */
-window.switchAboutImg = function(thumb) {
-    var main = document.getElementById('aboutMainImg');
-    if (main) {
-        main.style.opacity = '0';
-        setTimeout(function() {
-            main.src = thumb.src;
-            main.style.opacity = '1';
-        }, 200);
-    }
-    var thumbs = thumb.parentElement.querySelectorAll('img');
-    thumbs.forEach(function(t) { t.classList.remove('active'); });
-    thumb.classList.add('active');
-};
-
-/* ===== Product Tag Tab Switching ===== */
-window.switchProductTab = function(btn) {
-    var tabs = document.querySelectorAll('.product-tab');
-    var panels = document.querySelectorAll('.product-tab-panel');
-    tabs.forEach(function(t) { t.classList.remove('active'); });
-    panels.forEach(function(p) { p.classList.remove('active'); });
-    btn.classList.add('active');
-    var targetId = btn.getAttribute('data-tab');
-    var targetPanel = document.getElementById(targetId);
-    if (targetPanel) targetPanel.classList.add('active');
-};
-
-/* ===== Exhibition Carousel ===== */
-(function(){
-    var track = document.getElementById('exhibitionTrack');
-    if (!track) return;
-    var items = track.querySelectorAll('.exhibition-item');
-    var currentOffset = 0;
-    var visibleCount = 4;
-
-    function getItemWidth() {
-        if (window.innerWidth <= 576) return track.parentElement.offsetWidth;
-        if (window.innerWidth <= 768) return track.parentElement.offsetWidth / 2;
-        if (window.innerWidth <= 992) return track.parentElement.offsetWidth / 3;
-        return track.parentElement.offsetWidth / 4;
-    }
-
-    function updateTrack() {
-        var w = getItemWidth();
-        items.forEach(function(item) { item.style.minWidth = w + 'px'; item.style.maxWidth = w + 'px'; });
-        track.style.transform = 'translateX(-' + (currentOffset * w) + 'px)';
-    }
-
-    window.exhibitionSlide = function(dir) {
-        var vc = window.innerWidth <= 576 ? 1 : window.innerWidth <= 768 ? 2 : window.innerWidth <= 992 ? 3 : 4;
-        var maxOffset = Math.max(0, items.length - vc);
-        currentOffset = Math.max(0, Math.min(currentOffset + dir, maxOffset));
-        updateTrack();
-    };
-
-    updateTrack();
-    window.addEventListener('resize', function() { updateTrack(); });
-
-    // Touch support
-    var sx = 0;
-    track.parentElement.addEventListener('touchstart', function(e) { sx = e.changedTouches[0].clientX; }, {passive:true});
-    track.parentElement.addEventListener('touchend', function(e) {
-        var dx = e.changedTouches[0].clientX - sx;
-        if (Math.abs(dx) > 50) exhibitionSlide(dx < 0 ? 1 : -1);
-    }, {passive:true});
+    function updateBtns(){prevBtn.disabled=(current===0);nextBtn.disabled=(current===total-1);}
+    prevBtn.addEventListener('click',function(){if(current>0)goTo(current-1,'prev');});
+    nextBtn.addEventListener('click',function(){if(current<total-1)goTo(current+1,'next');});
+    dots.forEach(function(d){d.addEventListener('click',function(){var i=parseInt(this.getAttribute('data-page'),10);goTo(i,i>current?'next':'prev');});});
+    var sx=0,vp=document.getElementById('catCarouselViewport');
+    if(vp){vp.addEventListener('touchstart',function(e){sx=e.changedTouches[0].clientX;},{passive:true});vp.addEventListener('touchend',function(e){var dx=e.changedTouches[0].clientX-sx;if(Math.abs(dx)>50){if(dx<0&&current<total-1)goTo(current+1,'next');if(dx>0&&current>0)goTo(current-1,'prev');}},{passive:true});}
+    updateBtns();
 })();
 </script>
 
+<script>
+/* Feature Banner Image Slideshow */
+function switchFeatureSlide(idx) {
+    var slides = document.querySelectorAll('.feature-slide');
+    var dots = document.querySelectorAll('.feature-dot');
+    slides.forEach(function(s, i) {
+        s.style.opacity = (i === idx) ? '1' : '0';
+    });
+    dots.forEach(function(d, i) {
+        d.style.background = (i === idx) ? '#fff' : 'transparent';
+    });
+}
+/* Auto-rotate every 4 seconds */
+(function() {
+    var current = 0;
+    var total = document.querySelectorAll('.feature-slide').length;
+    if (total < 2) return;
+    setInterval(function() {
+        current = (current + 1) % total;
+        switchFeatureSlide(current);
+    }, 4000);
+})();
+</script>
 </body>
 </html>

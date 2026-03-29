@@ -4,7 +4,7 @@
 <body>
 <header th:replace="~{fragments/header :: navbar}"></header>
 
-<!-- Page Header -->
+<!-- Page Header (Aesop-style) -->
 <section class="page-header">
     <div class="aesop-container">
         <h1 th:text="#{factory.title}" class="fade-in">Our Factory</h1>
@@ -17,16 +17,11 @@
     </div>
 </section>
 
-<!-- Factory Overview with Slideshow -->
+<!-- Factory Overview (Aesop-style editorial split) -->
 <section class="editorial-section">
     <div class="editorial-image parallax-image fade-in-left">
-        <div class="module-slideshow">
-            <img src="/static/images/factory-overview.jpg" alt="Factory Overview">
-            <img src="/static/images/factory/factory1.jpg" alt="Factory Building 1">
-            <img src="/static/images/factory/factory2.jpg" alt="Factory Building 2">
-            <img src="/static/images/factory/factory3.jpg" alt="Factory Building 3">
-            <img src="/static/images/factory/factory4.jpg" alt="Factory Building 4">
-        </div>
+        <img src="/static/images/factory-overview.jpg" alt="Factory Overview"
+             onerror="this.parentElement.style.background='var(--bg-tertiary)'">
     </div>
     <div class="editorial-content fade-in-right">
         <span class="eyebrow" th:text="#{factory.overview.eyebrow}">Manufacturing</span>
@@ -65,70 +60,7 @@
     </div>
 </section>
 
-<!-- Filter Bag Production (Reversed editorial with slideshow) -->
-<section class="editorial-section reverse">
-    <div class="editorial-image parallax-image fade-in-right">
-        <div class="module-slideshow">
-            <img src="/static/images/factory/sewing-workshop-1.jpg" alt="Filter Bag Sewing Workshop">
-            <img src="/static/images/factory/sewing-workshop-2.jpg" alt="CNC Cutting Machine">
-            <img src="/static/images/factory/sewing-workshop-3.jpg" alt="Finished Filter Bags">
-        </div>
-    </div>
-    <div class="editorial-content fade-in-left" style="background:var(--bg-secondary);">
-        <span class="eyebrow" th:text="#{factory.sewing.eyebrow}">Sewing &amp; Assembly</span>
-        <h2 th:text="#{factory.sewing.title}">Filter Bag Production</h2>
-        <p th:text="#{factory.sewing.desc}">Our automated sewing lines use proprietary heat-welding technology to produce filter bags with superior seam strength.</p>
-        <ul class="about-feature-list">
-            <li th:text="#{factory.sewing.point1}">Automated CNC cutting for precise dimensions</li>
-            <li th:text="#{factory.sewing.point2}">Heat-welded seams for maximum durability</li>
-            <li th:text="#{factory.sewing.point3}">Multi-needle industrial sewing machines</li>
-            <li th:text="#{factory.sewing.point4}">Capacity: 100,000+ bags per month</li>
-        </ul>
-    </div>
-</section>
-
-<!-- Needle Felt & Fabric Production -->
-<section class="editorial-section">
-    <div class="editorial-image parallax-image fade-in-left">
-        <div class="module-slideshow">
-            <img src="/static/images/factory/needle-felt-factory.jpg" alt="Needle Felt Factory">
-        </div>
-    </div>
-    <div class="editorial-content fade-in-right">
-        <span class="eyebrow" th:text="#{factory.felt.eyebrow}">Felt &amp; Fabric</span>
-        <h2 th:text="#{factory.felt.title}">Needle Felt Production</h2>
-        <p th:text="#{factory.felt.desc}">Advanced needle looms and air-jet weaving machines produce filter media with precise control of weight, thickness and air permeability.</p>
-        <ul class="about-feature-list">
-            <li th:text="#{factory.felt.point1}">Needle punch felts: PPS, P84, PTFE, Aramid, Fiberglass</li>
-            <li th:text="#{factory.felt.point2}">Woven filter cloths for press filter applications</li>
-            <li th:text="#{factory.felt.point3}">Controlled weight, thickness and permeability</li>
-            <li th:text="#{factory.felt.point4}">Annual output: 10 million+ sqm of filter media</li>
-        </ul>
-    </div>
-</section>
-
-<!-- Special Materials Section -->
-<section class="editorial-section reverse">
-    <div class="editorial-image parallax-image fade-in-right">
-        <div class="module-slideshow">
-            <img src="/static/images/factory/acrylic-factory.jpg" alt="Acrylic Fiber Production">
-            <img src="/static/images/factory/acrylic-factory-2.jpg" alt="Acrylic Factory Area">
-        </div>
-    </div>
-    <div class="editorial-content fade-in-left" style="background:var(--bg-secondary);">
-        <span class="eyebrow" th:text="#{factory.material.eyebrow}">Raw Materials</span>
-        <h2 th:text="#{factory.material.title}">Special Material Processing</h2>
-        <p th:text="#{factory.material.desc}">From acrylic and carbon fiber to PTFE membrane lamination, our facility processes a full range of filtration materials.</p>
-        <ul class="about-feature-list">
-            <li th:text="#{factory.material.point1}">Acrylic fiber processing for moderate temperatures</li>
-            <li th:text="#{factory.material.point2}">Carbon-infused media for odor control</li>
-            <li th:text="#{factory.material.point3}">PTFE membrane lamination for fine particle capture</li>
-            <li th:text="#{factory.material.point4}">Complete material traceability system</li>
-        </ul>
-    </div>
-</section>
-
-<!-- Manufacturing Process -->
+<!-- Manufacturing Process (Aesop-style) -->
 <section class="section section-cream">
     <div class="aesop-container">
         <div class="section-header fade-in">
@@ -139,41 +71,64 @@
             <div class="process-step fade-in stagger-1">
                 <div class="process-number">01</div>
                 <h5 th:text="#{factory.step1.title}">Raw Material Inspection</h5>
-                <p th:text="#{factory.step1.desc}">Every batch of fiber, yarn and base cloth is inspected.</p>
+                <p th:text="#{factory.step1.desc}">Every batch of fiber, yarn and base cloth is inspected for weight, tensile strength and chemical composition before production.</p>
             </div>
             <div class="process-step fade-in stagger-2">
                 <div class="process-number">02</div>
                 <h5 th:text="#{factory.step2.title}">Felt &amp; Fabric Production</h5>
-                <p th:text="#{factory.step2.desc}">Advanced needle looms and air-jet weaving machines.</p>
+                <p th:text="#{factory.step2.desc}">Advanced needle looms and air-jet weaving machines produce filter media with precise control of weight, thickness and permeability.</p>
             </div>
             <div class="process-step fade-in stagger-3">
                 <div class="process-number">03</div>
                 <h5 th:text="#{factory.step3.title}">Cutting, Sewing &amp; Finishing</h5>
-                <p th:text="#{factory.step3.desc}">CNC cutting ensures dimensional accuracy.</p>
+                <p th:text="#{factory.step3.desc}">CNC cutting ensures dimensional accuracy. Automated sewing lines guarantee seam quality. Post-treatment includes PTFE membrane, singeing and calendering.</p>
             </div>
             <div class="process-step fade-in stagger-4">
                 <div class="process-number">04</div>
                 <h5 th:text="#{factory.step4.title}">QC &amp; Shipping</h5>
-                <p th:text="#{factory.step4.desc}">100% inspection of dimensions, weight and appearance.</p>
+                <p th:text="#{factory.step4.desc}">100% inspection of dimensions, weight and appearance. Qualified products are professionally packed in PE bags and cartons for safe global delivery.</p>
             </div>
         </div>
     </div>
 </section>
 
-<!-- Factory Gallery Slideshow -->
-<section class="section section-cream">
+<!-- Factory Gallery (Aesop-style grid) -->
+<section class="section">
     <div class="aesop-container">
         <div class="section-header fade-in">
             <div class="eyebrow" th:text="#{factory.gallery.eyebrow}">Inside Our Facility</div>
             <h2 th:text="#{factory.gallery.title}">Factory Gallery</h2>
         </div>
-        <div class="fade-in" style="border-radius:12px;overflow:hidden;height:420px;">
-            <div class="module-slideshow">
-                <img src="/static/images/factory-gallery-4-new.jpg" alt="Quality Testing Laboratory">
-                <img src="/static/images/factory-gallery-5-new.jpg" alt="Finished Goods Warehouse">
-                <img src="/static/images/factory-gallery-6-new.jpg" alt="Container Loading">
-                <img src="/static/images/factory/dust-removal-application.jpg" alt="Dust Removal Application">
-                <img src="/static/images/factory/felts-export.jpg" alt="Felts Export Packaging">
+        <div class="gallery-grid">
+            <div class="gallery-item scale-in stagger-1">
+                <img src="/static/images/factory-gallery-1.jpg" th:alt="#{factory.gallery.item1}"
+                     onerror="this.parentElement.style.background='var(--bg-tertiary)'">
+                <div class="gallery-caption" th:text="#{factory.gallery.item1}">Needle Punching Production Line</div>
+            </div>
+            <div class="gallery-item scale-in stagger-2">
+                <img src="/static/images/factory-gallery-2.jpg" th:alt="#{factory.gallery.item2}"
+                     onerror="this.parentElement.style.background='var(--bg-secondary)'">
+                <div class="gallery-caption" th:text="#{factory.gallery.item2}">Automated Filter Bag Sewing Workshop</div>
+            </div>
+            <div class="gallery-item scale-in stagger-3">
+                <img src="/static/images/factory-gallery-3.jpg" th:alt="#{factory.gallery.item3}"
+                     onerror="this.parentElement.style.background='var(--bg-tertiary)'">
+                <div class="gallery-caption" th:text="#{factory.gallery.item3}">Woven Fabric Weaving Center</div>
+            </div>
+            <div class="gallery-item scale-in stagger-4">
+                <img src="/static/images/factory-gallery-4.jpg" th:alt="#{factory.gallery.item4}"
+                     onerror="this.parentElement.style.background='var(--bg-secondary)'">
+                <div class="gallery-caption" th:text="#{factory.gallery.item4}">Quality Testing Laboratory</div>
+            </div>
+            <div class="gallery-item scale-in stagger-5">
+                <img src="/static/images/factory-gallery-5.jpg" th:alt="#{factory.gallery.item5}"
+                     onerror="this.parentElement.style.background='var(--bg-tertiary)'">
+                <div class="gallery-caption" th:text="#{factory.gallery.item5}">Finished Goods Warehouse</div>
+            </div>
+            <div class="gallery-item scale-in stagger-6">
+                <img src="/static/images/factory-gallery-6.jpg" th:alt="#{factory.gallery.item6}"
+                     onerror="this.parentElement.style.background='var(--bg-secondary)'">
+                <div class="gallery-caption" th:text="#{factory.gallery.item6}">Container Loading &amp; Shipping</div>
             </div>
         </div>
     </div>
@@ -192,8 +147,7 @@
 
 <footer th:replace="~{fragments/footer :: footer}"></footer>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-<script src="/static/js/main.js"></script>
-<script src="/static/js/slideshow.js?v=3"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" defer></script>
+<script src="/static/js/main.js" defer></script>
 </body>
 </html>

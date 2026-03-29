@@ -13,7 +13,10 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 /**
@@ -28,6 +31,23 @@ public class ImageServiceImpl extends ServiceImpl<ImageMapper, Image> implements
     @Value("${upload.url-prefix}")
     private String urlPrefix;
 
+    /** 允许上传的文件扩展名（图片 + 视频） */
+    private static final Set<String> ALLOWED_EXTENSIONS = new HashSet<>(Arrays.asList(
+            // 图片格式
+            "jpg", "jpeg", "png", "gif", "bmp", "webp", "svg", "ico", "tiff",
+            // 视频格式
+            "mp4", "webm", "avi", "mov", "mkv"
+    ));
+
+    /** 允许上传的MIME类型（图片 + 视频） */
+    private static final Set<String> ALLOWED_CONTENT_TYPES = new HashSet<>(Arrays.asList(
+            // 图片类型
+            "image/jpeg", "image/png", "image/gif", "image/bmp", "image/webp",
+            "image/svg+xml", "image/x-icon", "image/tiff",
+            // 视频类型
+            "video/mp4", "video/webm", "video/avi", "video/quicktime", "video/x-matroska"
+    ));
+
     @Override
     public List<Image> getImagesByProductId(Long productId) {
         return baseMapper.selectByProductId(productId);
@@ -35,6 +55,21 @@ public class ImageServiceImpl extends ServiceImpl<ImageMapper, Image> implements
 
     @Override
     public Image uploadImage(MultipartFile file) {
+        // 校验文件扩展名（支持图片和视频）
+        String originalFilename = file.getOriginalFilename();
+        if (originalFilename != null && originalFilename.contains(".")) {
+            String ext = originalFilename.substring(originalFilename.lastIndexOf(".") + 1).toLowerCase();
+            if (!ALLOWED_EXTENSIONS.contains(ext)) {
+                throw new RuntimeException("不支持的文件格式: " + ext
+                        + "，允许的格式: " + ALLOWED_EXTENSIONS);
+            }
+        }
+        // 校验Content-Type（支持图片和视频）
+        String contentType = file.getContentType();
+        if (contentType != null && !ALLOWED_CONTENT_TYPES.contains(contentType)) {
+            throw new RuntimeException("不支持的文件类型: " + contentType);
+        }
+
         // 按WordPress规则生成存储路径：/年/月/文件名
         LocalDate now = LocalDate.now();
         String yearMonth = now.format(DateTimeFormatter.ofPattern("yyyy/MM"));
@@ -47,11 +82,6 @@ public class ImageServiceImpl extends ServiceImpl<ImageMapper, Image> implements
         }
 
         // 生成文件名（保留原始文件名，避免重复加UUID前缀）
-        String originalFilename = file.getOriginalFilename();
-        String extension = "";
-        if (originalFilename != null && originalFilename.contains(".")) {
-            extension = originalFilename.substring(originalFilename.lastIndexOf("."));
-        }
         String fileName = UUID.randomUUID().toString().substring(0, 8) + "-" + originalFilename;
 
         // 保存文件

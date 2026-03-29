@@ -1,40 +1,24 @@
 package com.philitee.filter.entity;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.*;
 import lombok.Data;
-
 import java.time.LocalDateTime;
 
 @Data
 @TableName("news")
 public class News {
-
     @TableId(value = "id", type = IdType.AUTO)
     private Long id;
-
     private String title;
-
     private String slug;
-
     private String summary;
-
+    @TableField("content")
     private String content;
-
-    private Long coverImageId;
-
-    private String status;
-
-    private LocalDateTime publishedAt;
-
-    private LocalDateTime createdAt;
-
-    private LocalDateTime updatedAt;
-
-    /** 非数据库字段：封面图对象 */
-    @TableField(exist = false)
-    private Image coverImage;
-
+    private String coverImage;
+    private String status; // draft, published
+    private Integer viewCount;
+    @TableLogic
+    private Integer deleted;
+    private LocalDateTime createdTime;
+    private LocalDateTime updatedTime;
 }

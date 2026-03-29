@@ -1,134 +1,122 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{fragments/header :: htmlHead('News', 'Latest news and updates from Philitee Filter')}"></head>
+<head th:replace="~{fragments/header :: htmlHead(#{news.title}, #{news.subtitle})}"></head>
 <body>
 <header th:replace="~{fragments/header :: navbar}"></header>
 
-<!-- Page Header -->
+<!-- Page Header (Aesop-style) -->
 <section class="page-header">
     <div class="aesop-container">
-        <h1 class="fade-in">News</h1>
-        <p class="fade-in">Latest news, industry insights, and company updates</p>
+        <h1 th:text="#{news.title}" class="fade-in">News</h1>
+        <p th:text="#{news.subtitle}" class="fade-in">Industry insights, company updates, and filtration knowledge</p>
         <nav class="breadcrumb-nav">
-            <a th:href="@{/}">Home</a>
+            <a th:href="@{/}" th:text="#{breadcrumb.home}">Home</a>
             <span class="separator">/</span>
-            <span class="current">News</span>
+            <span class="current" th:text="#{news.title}">News</span>
         </nav>
     </div>
 </section>
 
+<!-- News List Section -->
 <section class="section">
     <div class="aesop-container">
-        <div class="news-layout">
-            <!-- Left: News List -->
-            <div class="news-main">
-                <!-- Search bar (mobile-visible, also in sidebar on desktop) -->
-                <div class="news-search-mobile d-lg-none mb-4">
-                    <form th:action="@{/news}" method="get" class="pl-search-form">
-                        <input type="text" name="keyword" th:value="${keyword}" placeholder="Search news..." class="form-control">
-                        <button type="submit" class="btn btn-accent"><i class="bi bi-search"></i></button>
-                    </form>
+        <!-- Search & Filter Toolbar -->
+        <div class="product-toolbar fade-in" style="flex-wrap:wrap;gap:1rem;">
+            <form th:action="@{/news}" method="get" style="display:flex;flex-wrap:wrap;gap:0.75rem;align-items:center;width:100%;">
+                <!-- Search Input -->
+                <div style="flex:1;min-width:200px;">
+                    <input type="text" name="keyword" th:value="${keyword}"
+                           th:placeholder="#{news.search}"
+                           class="form-control"
+                           style="border:1px solid var(--border-color);padding:0.6rem 1rem;font-size:0.9rem;width:100%;">
                 </div>
-
-                <!-- Search result indicator -->
-                <div th:if="${keyword != null}" class="news-search-info mb-3">
-                    <span>Search results for: <strong th:text="${keyword}">keyword</strong></span>
-                    <a th:href="@{/news}" class="ms-2"><i class="bi bi-x-circle"></i> Clear</a>
+                <!-- Date Range -->
+                <div style="display:flex;gap:0.5rem;align-items:center;">
+                    <input type="date" name="startDate" th:value="${startDate}"
+                           class="form-control"
+                           style="border:1px solid var(--border-color);padding:0.6rem 0.75rem;font-size:0.9rem;"
+                           th:title="#{news.startDate}">
+                    <span style="color:var(--text-secondary);">&ndash;</span>
+                    <input type="date" name="endDate" th:value="${endDate}"
+                           class="form-control"
+                           style="border:1px solid var(--border-color);padding:0.6rem 0.75rem;font-size:0.9rem;"
+                           th:title="#{news.endDate}">
                 </div>
+                <!-- Sort -->
+                <select name="sort" class="form-select"
+                        style="border:1px solid var(--border-color);padding:0.6rem 0.75rem;font-size:0.9rem;min-width:140px;">
+                    <option value="newest" th:selected="${sort == 'newest'}" th:text="#{news.sort.newest}">Newest First</option>
+                    <option value="oldest" th:selected="${sort == 'oldest'}" th:text="#{news.sort.oldest}">Oldest First</option>
+                </select>
+                <!-- Search Button -->
+                <button type="submit" class="btn-aesop" style="padding:0.6rem 1.5rem;font-size:0.9rem;">
+                    <i class="bi bi-search"></i>
+                    <span th:text="#{search.button}">Search</span>
+                </button>
+            </form>
+        </div>
 
-                <!-- News Cards Grid -->
-                <div th:if="${newsPage != null and !newsPage.records.isEmpty()}" class="news-grid">
-                    <a th:each="article : ${newsPage.records}"
-                       th:href="@{/news/{slug}(slug=${article.slug})}"
-                       class="news-card fade-in">
-                        <div class="news-card-img">
-                            <img th:if="${article.coverImage != null}"
-                                 th:src="${article.coverImage.url}"
-                                 th:alt="${article.title}" loading="lazy">
-                            <div th:unless="${article.coverImage != null}" class="news-card-placeholder">
-                                <i class="bi bi-newspaper"></i>
-                            </div>
-                        </div>
-                        <div class="news-card-body">
-                            <div class="news-card-date">
-                                <i class="bi bi-calendar3"></i>
-                                <span th:text="${article.publishedAt != null} ? ${#temporals.format(article.publishedAt, 'MMM dd, yyyy')} : ${#temporals.format(article.createdAt, 'MMM dd, yyyy')}">Jan 01, 2026</span>
-                            </div>
-                            <h5 class="news-card-title" th:text="${article.title}">News Title</h5>
-                            <p class="news-card-summary" th:if="${article.summary != null}" th:text="${article.summary}">Summary text...</p>
-                            <span class="news-read-more">Read More <i class="bi bi-arrow-right"></i></span>
-                        </div>
+        <!-- News Grid -->
+        <div th:if="${newsPage != null and !newsPage.records.isEmpty()}" class="product-grid product-grid-3" style="margin-top:2rem;">
+            <div th:each="news,iter : ${newsPage.records}"
+                 class="product-card fade-in"
+                 th:classappend="'stagger-' + ${(iter.index % 6) + 1}"
+                 style="display:flex;flex-direction:column;">
+                <!-- Cover Image -->
+                <a th:href="@{/news/{slug}(slug=${news.slug})}" class="product-card-image">
+                    <img th:if="${news.coverImage != null}" th:src="${news.coverImage}" th:alt="${news.title}" loading="lazy">
+                    <div th:unless="${news.coverImage != null}" class="product-placeholder">
+                        <i class="bi bi-newspaper"></i>
+                    </div>
+                </a>
+                <!-- Card Info -->
+                <div class="product-card-info" style="flex:1;display:flex;flex-direction:column;">
+                    <div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:0.5rem;font-size:0.8rem;color:var(--text-tertiary);">
+                        <span><i class="bi bi-calendar3"></i> <span th:text="${#temporals.format(news.publishDate, 'yyyy-MM-dd')}">2026-01-01</span></span>
+                        <span><i class="bi bi-eye"></i> <span th:text="${news.viewCount}">0</span></span>
+                    </div>
+                    <a th:href="@{/news/{slug}(slug=${news.slug})}" style="text-decoration:none;color:inherit;">
+                        <div class="product-card-title" th:text="${news.title}">News Title</div>
+                    </a>
+                    <p style="font-size:0.85rem;color:var(--text-secondary);line-height:1.6;margin:0.5rem 0;flex:1;"
+                       th:text="${news.summary}">News summary excerpt goes here...</p>
+                    <a th:href="@{/news/{slug}(slug=${news.slug})}"
+                       style="font-size:0.85rem;color:var(--text-primary);font-weight:500;text-decoration:none;margin-top:auto;display:inline-flex;align-items:center;gap:0.3rem;">
+                        <span th:text="#{news.readMore}">Read More</span>
+                        <i class="bi bi-arrow-right"></i>
                     </a>
                 </div>
-
-                <!-- Empty State -->
-                <div th:if="${newsPage == null or newsPage.records.isEmpty()}" class="empty-state">
-                    <i class="bi bi-newspaper"></i>
-                    <h4>No news articles found</h4>
-                    <p th:if="${keyword != null}">Try a different search term</p>
-                </div>
-
-                <!-- Pagination -->
-                <div th:if="${newsPage != null and newsPage.getPages() > 1}" class="news-pagination">
-                    <nav>
-                        <ul class="pagination justify-content-center">
-                            <li class="page-item" th:classappend="${newsPage.current == 1} ? 'disabled'">
-                                <a class="page-link" th:href="@{/news(page=${newsPage.current - 1}, keyword=${keyword})}">
-                                    <i class="bi bi-chevron-left"></i>
-                                </a>
-                            </li>
-                            <th:block th:each="i : ${#numbers.sequence(1, newsPage.getPages())}">
-                                <li class="page-item" th:classappend="${i == newsPage.current} ? 'active'">
-                                    <a class="page-link" th:href="@{/news(page=${i}, keyword=${keyword})}" th:text="${i}">1</a>
-                                </li>
-                            </th:block>
-                            <li class="page-item" th:classappend="${newsPage.current == newsPage.getPages()} ? 'disabled'">
-                                <a class="page-link" th:href="@{/news(page=${newsPage.current + 1}, keyword=${keyword})}">
-                                    <i class="bi bi-chevron-right"></i>
-                                </a>
-                            </li>
-                        </ul>
-                    </nav>
-                </div>
             </div>
+        </div>
 
-            <!-- Right Sidebar -->
-            <aside class="news-sidebar">
-                <!-- Search -->
-                <div class="pl-sidebar-widget">
-                    <h5 class="pl-widget-title">Search News</h5>
-                    <form th:action="@{/news}" method="get" class="pl-search-form">
-                        <input type="text" name="keyword" th:value="${keyword}" placeholder="Search..." class="form-control">
-                        <button type="submit" class="btn btn-accent"><i class="bi bi-search"></i></button>
-                    </form>
-                </div>
+        <!-- Empty State -->
+        <div th:if="${newsPage == null or newsPage.records.isEmpty()}" class="empty-state">
+            <i class="bi bi-newspaper"></i>
+            <h4 th:text="#{news.noResults}">No news articles found</h4>
+            <p th:text="#{news.tryAgain}">Try adjusting your search criteria</p>
+        </div>
 
-                <!-- Recent News -->
-                <div class="pl-sidebar-widget" th:if="${recentNews != null and !recentNews.isEmpty()}">
-                    <h5 class="pl-widget-title">Recent News</h5>
-                    <ul class="news-recent-list">
-                        <li th:each="item : ${recentNews}">
-                            <a th:href="@{/news/{slug}(slug=${item.slug})}">
-                                <div class="news-recent-img" th:if="${item.coverImage != null}">
-                                    <img th:src="${item.coverImage.url}" th:alt="${item.title}">
-                                </div>
-                                <div class="news-recent-info">
-                                    <span class="news-recent-title" th:text="${item.title}">Title</span>
-                                    <span class="news-recent-date"
-                                          th:text="${item.publishedAt != null} ? ${#temporals.format(item.publishedAt, 'MMM dd, yyyy')} : ''">Date</span>
-                                </div>
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-            </aside>
+        <!-- Pagination -->
+        <div th:if="${newsPage != null and newsPage.pages > 1}">
+            <nav th:replace="~{fragments/pagination :: pagination(${newsPage}, '/news')}"></nav>
+        </div>
+    </div>
+</section>
+
+<!-- CTA Banner -->
+<section class="cta-banner">
+    <div class="aesop-container">
+        <h3 class="fade-in" th:text="#{cta.title}">Need Custom Filtration Solutions?</h3>
+        <p class="fade-in" th:text="#{cta.subtitle}">Contact our team for professional consultation</p>
+        <div class="fade-in">
+            <a th:href="@{/contact}" class="btn-aesop" th:text="#{cta.button}">Get in Touch</a>
         </div>
     </div>
 </section>
 
 <footer th:replace="~{fragments/footer :: footer}"></footer>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-<script src="/static/js/main.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" defer></script>
+<script src="/static/js/main.js" defer></script>
 </body>
 </html>

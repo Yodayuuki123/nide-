@@ -12,7 +12,7 @@
             <div class="d-flex justify-content-between align-items-center mb-4">
                 <div>
                     <h4 style="font-size: 1.8rem; margin-bottom: 4px;" th:text="${product.id != null} ? '编辑产品' : '新增产品'">产品表单</h4>
-                    <p style="color: var(--admin-text-tertiary); font-size: 13px; margin: 0;" th:text="${product.id != null} ? '修改产品信息、图片和内容' : '创建新产品'">副标题</p>
+                    <p style="color: var(--admin-text-tertiary); font-size: 13px; margin: 0;" th:text="${product.id != null} ? '修改产品详情、图片和富文本内容' : '创建新产品，添加描述和媒体资源'">副标题</p>
                 </div>
                 <a href="/admin/products" class="btn btn-outline-secondary btn-sm">
                     <i class="bi bi-arrow-left"></i> <span th:text="#{admin.back}">返回</span>
@@ -52,8 +52,8 @@
                                 </div>
                                 <div class="col-md-4">
                                     <label class="form-label">Sale 价格</label>
-                                    <input type="number" name="salePrice" class="form-control" step="0.01"
-                                           th:value="${product.salePrice}" placeholder="0.00">
+                                    <input type="number" name="sale价格" class="form-control" step="0.01"
+                                           th:value="${product.sale价格}" placeholder="0.00">
                                 </div>
                             </div>
                             <div class="row g-3 mt-0">
@@ -124,7 +124,7 @@
                             </div>
                             <button type="button" class="btn btn-outline-primary btn-sm w-100"
                                     onclick="openImagePicker('main')">
-                                <i class="bi bi-image"></i> Select Image
+                                <i class="bi bi-image"></i> Select 图片
                             </button>
                         </div>
 
@@ -145,7 +145,7 @@
                             </div>
                             <button type="button" class="btn btn-outline-primary btn-sm w-100"
                                     onclick="openImagePicker('gallery')">
-                                <i class="bi bi-images"></i> Add Images
+                                <i class="bi bi-images"></i> Add 图片s
                             </button>
                         </div>
 
@@ -208,17 +208,17 @@
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Select Image</h5>
+                <h5 class="modal-title">Select 图片</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body">
                 <!-- 上传 Tab -->
                 <ul class="nav nav-tabs mb-3">
                     <li class="nav-item">
-                        <a class="nav-link active" data-bs-toggle="tab" href="#tabLibrary">Image Library</a>
+                        <a class="nav-link active" data-bs-toggle="tab" href="#tabLibrary">图片 Library</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" data-bs-toggle="tab" href="#tabUpload">Upload New</a>
+                        <a class="nav-link" data-bs-toggle="tab" href="#tabUpload">上传 New</a>
                     </li>
                 </ul>
                 <div class="tab-content">
@@ -370,7 +370,7 @@
     if (form) {
         form.addEventListener('submit', function() {
             if (typeof tinymce !== 'undefined') {
-                tinymce.triggerSave();
+                tinymce.trigger保存();
             }
         });
     }

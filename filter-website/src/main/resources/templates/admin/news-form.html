@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{fragments/admin-layout :: adminHead(${news.id != null} ? '编辑新闻' : '发布新闻')}"></head>
+<head th:replace="~{fragments/admin-layout :: adminHead(${news.id != null} ? '编辑新闻' : '新增新闻')}"></head>
 <body class="admin-body">
 <div class="admin-wrapper">
     <div th:replace="~{fragments/admin-layout :: adminSidebar}"></div>
@@ -9,112 +9,83 @@
         <div th:replace="~{fragments/admin-layout :: adminTopbar}"></div>
 
         <div class="admin-main">
-            <div th:if="${message}" class="alert alert-success alert-dismissible fade show">
-                <span th:text="${message}"></span>
-                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-            </div>
-            <div th:if="${error}" class="alert alert-danger alert-dismissible fade show">
-                <span th:text="${error}"></span>
-                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-            </div>
-
             <div class="d-flex justify-content-between align-items-center mb-4">
                 <div>
-                    <h4 style="font-size: 1.8rem; margin-bottom: 4px;"
-                        th:text="${news.id != null} ? '编辑新闻' : '发布新闻'">新闻表单</h4>
-                    <p style="color: var(--admin-text-tertiary); font-size: 13px; margin: 0;"
-                       th:text="${news.id != null} ? '修改新闻内容' : '创建新的新闻文章'">副标题</p>
+                    <h4 style="font-size: 1.8rem; margin-bottom: 4px;" th:text="${news.id != null} ? '编辑新闻' : '新增新闻'">News Form</h4>
+                    <p style="color: var(--admin-text-tertiary); font-size: 13px; margin: 0;" th:text="${news.id != null} ? '修改新闻文章内容' : '创建新的新闻文章'">Subtitle</p>
                 </div>
                 <a href="/admin/news" class="btn btn-outline-secondary btn-sm">
                     <i class="bi bi-arrow-left"></i> 返回
                 </a>
             </div>
 
-            <form th:action="@{/admin/news/save}" method="post" class="admin-form">
+            <form th:action="@{/admin/news/save}" method="post" id="newsForm">
+                <!-- Hidden ID for edit mode -->
                 <input type="hidden" name="id" th:value="${news.id}">
 
-                <div class="row">
+                <div class="row g-4">
+                    <!-- Left Column: Main Info -->
                     <div class="col-lg-8">
-                        <!-- 基本信息 -->
-                        <div class="admin-card mb-3">
-                            <div class="admin-card-header"><h6 class="mb-0">基本信息</h6></div>
-                            <div class="admin-card-body">
-                                <div class="mb-3">
-                                    <label class="form-label">新闻标题 <span class="text-danger">*</span></label>
-                                    <input type="text" name="title" class="form-control" th:value="${news.title}"
-                                           required id="newsTitle" placeholder="请输入新闻标题">
-                                </div>
-                                <div class="mb-3">
-                                    <label class="form-label">URL 别名</label>
+                        <!-- Basic Info -->
+                        <div class="admin-form mb-4">
+                            <h6 class="mb-3">基本信息</h6>
+                            <div class="mb-3">
+                                <label class="form-label">标题 <span class="text-danger">*</span></label>
+                                <input type="text" name="title" class="form-control" th:value="${news.title}"
+                                       required id="newsTitle" placeholder="请输入新闻标题">
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">URL别名 <span class="text-danger">*</span></label>
+                                <div class="input-group">
                                     <input type="text" name="slug" class="form-control" th:value="${news.slug}"
-                                           id="newsSlug" placeholder="留空则自动生成">
-                                    <div class="form-text">用于 URL，只允许小写字母、数字和连字符</div>
+                                           required id="newsSlug" placeholder="auto-generated-from-title">
+                                    <button type="button" class="btn btn-outline-secondary" id="generateSlugBtn">
+                                        <i class="bi bi-arrow-repeat"></i> 生成
+                                    </button>
                                 </div>
-                                <div class="mb-3">
-                                    <label class="form-label">新闻摘要</label>
-                                    <textarea name="summary" class="form-control" rows="3"
-                                              th:text="${news.summary}" placeholder="简短描述（会显示在列表页）"></textarea>
-                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">摘要</label>
+                                <textarea name="summary" class="form-control" rows="3"
+                                          th:text="${news.summary}" placeholder="请输入新闻摘要"></textarea>
                             </div>
                         </div>
 
-                        <!-- 新闻内容 -->
-                        <div class="admin-card mb-3">
-                            <div class="admin-card-header"><h6 class="mb-0">新闻内容</h6></div>
-                            <div class="admin-card-body">
-                                <textarea name="content" class="form-control" rows="20" id="newsContent"
-                                          th:text="${news.content}" placeholder="新闻正文内容（支持HTML）"></textarea>
-                                <div class="form-text">支持 HTML 格式，可直接粘贴富文本内容</div>
+                        <!-- Content (Rich Text) -->
+                        <div class="admin-form mb-4">
+                            <h6 class="mb-3">新闻内容</h6>
+                            <div class="tinymce-wrapper">
+                                <textarea name="content" id="newsContent" rows="15"
+                                          th:utext="${news.content}"></textarea>
                             </div>
                         </div>
                     </div>
 
+                    <!-- Right Column: Side Panels -->
                     <div class="col-lg-4">
-                        <!-- 发布设置 -->
-                        <div class="admin-card mb-3">
-                            <div class="admin-card-header"><h6 class="mb-0">发布设置</h6></div>
-                            <div class="admin-card-body">
-                                <div class="mb-3">
-                                    <label class="form-label">状态</label>
-                                    <select name="status" class="form-select">
-                                        <option value="draft" th:selected="${news.status == null or news.status == 'draft'}">草稿</option>
-                                        <option value="publish" th:selected="${news.status == 'publish'}">发布</option>
-                                    </select>
-                                </div>
-                                <div class="mb-3">
-                                    <label class="form-label">发布时间</label>
-                                    <input type="datetime-local" name="publishedAt" class="form-control"
-                                           th:value="${news.publishedAt != null} ? ${#temporals.format(news.publishedAt, 'yyyy-MM-dd''T''HH:mm')} : ''">
-                                    <div class="form-text">留空则发布时自动设置当前时间</div>
-                                </div>
+                        <!-- Cover Image -->
+                        <div class="admin-form mb-4">
+                            <h6 class="mb-3">封面图片</h6>
+                            <div class="mb-3">
+                                <label class="form-label">封面图片URL</label>
+                                <input type="text" name="coverImageUrl" class="form-control"
+                                       th:value="${news.coverImageUrl}" placeholder="https://example.com/image.jpg">
                             </div>
                         </div>
 
-                        <!-- 封面图 -->
-                        <div class="admin-card mb-3">
-                            <div class="admin-card-header"><h6 class="mb-0">封面图</h6></div>
-                            <div class="admin-card-body">
-                                <input type="hidden" name="coverImageId" id="coverImageId" th:value="${news.coverImageId}">
-                                <div id="coverImagePreview" class="mb-2" th:if="${news.coverImage != null}">
-                                    <img th:src="${news.coverImage.url != null} ? ${news.coverImage.url} : '/wp-content/uploads' + ${news.coverImage.filePath}"
-                                         class="rounded" style="max-width: 100%; max-height: 200px; object-fit: cover; border: 1px solid #dee2e6;">
-                                </div>
-                                <div id="coverImagePreviewEmpty" class="mb-2" th:if="${news.coverImage == null}"
-                                     style="width: 100%; height: 150px; background: #f8f9fa; border: 2px dashed #dee2e6; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: #adb5bd;">
-                                    <span><i class="bi bi-image fs-3 d-block text-center mb-1"></i>暂无封面图</span>
-                                </div>
-                                <div class="d-flex gap-2 mt-2">
-                                    <button type="button" class="btn btn-outline-primary btn-sm" onclick="openImagePicker()">
-                                        <i class="bi bi-images"></i> 选择图片
-                                    </button>
-                                    <button type="button" class="btn btn-outline-secondary btn-sm" onclick="clearCoverImage()">
-                                        <i class="bi bi-x"></i> 清除
-                                    </button>
-                                </div>
+                        <!-- Status -->
+                        <div class="admin-form mb-4">
+                            <h6 class="mb-3">发布设置</h6>
+                            <div class="mb-3">
+                                <label class="form-label">状态 <span class="text-danger">*</span></label>
+                                <select name="status" class="form-select" required>
+                                    <option value="draft" th:selected="${news.status == null or news.status == 'draft'}">草稿</option>
+                                    <option value="published" th:selected="${news.status == 'published'}">已发布</option>
+                                </select>
                             </div>
                         </div>
 
-                        <!-- 操作按钮 -->
+                        <!-- Submit -->
                         <div class="d-grid gap-2">
                             <button type="submit" class="btn btn-primary">
                                 <i class="bi bi-check-circle"></i> 保存
@@ -128,163 +99,113 @@
     </div>
 </div>
 
-<!-- 图片选择器 Modal -->
-<div class="modal fade" id="imagePickerModal" tabindex="-1">
-    <div class="modal-dialog modal-xl">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">选择封面图</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-            </div>
-            <div class="modal-body">
-                <div class="mb-3 p-3 bg-light rounded">
-                    <label class="form-label fw-medium">上传新图片</label>
-                    <input type="file" id="pickerFileInput" accept="image/*" class="form-control"
-                           onchange="uploadAndSelectImage(this)">
-                </div>
-                <div id="pickerImageGrid" class="image-grid" style="max-height: 450px; overflow-y: auto;">
-                    <div class="text-center text-muted py-4">
-                        <div class="spinner-border spinner-border-sm" role="status"></div>
-                        <span class="ms-2">加载中...</span>
-                    </div>
-                </div>
-                <div id="pickerPagination" class="mt-3 d-flex justify-content-center gap-2"></div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- TinyMCE -->
+<!-- TinyMCE (free self-hosted via jsDelivr CDN, no API key needed) -->
 <script src="https://cdn.jsdelivr.net/npm/tinymce@6.8.3/tinymce.min.js"></script>
 <div th:replace="~{fragments/admin-layout :: adminScripts}"></div>
+
 <script>
-    // TinyMCE 初始化
+(function() {
+    // Slug generation from title
+    var titleInput = document.getElementById('newsTitle');
+    var slugInput = document.getElementById('newsSlug');
+    var generateBtn = document.getElementById('generateSlugBtn');
+
+    if (generateBtn && titleInput && slugInput) {
+        generateBtn.addEventListener('click', function() {
+            var title = titleInput.value.trim();
+            if (title) {
+                var slug = title.toLowerCase()
+                    .replace(/[^\w\u4e00-\u9fa5\s-]/g, '')
+                    .replace(/[\s_]+/g, '-')
+                    .replace(/^-+|-+$/g, '');
+                slugInput.value = slug;
+            }
+        });
+    }
+
+    // TinyMCE initialization for news content
     if (typeof tinymce !== 'undefined') {
+        tinymce.remove('#newsContent');
+
         tinymce.init({
             selector: '#newsContent',
-            height: 500,
+            height: 550,
             menubar: 'file edit view insert format table',
-            plugins: 'lists link image table code fullscreen preview media hr anchor charmap wordcount',
+            plugins: 'lists link image table code fullscreen preview media hr anchor charmap wordcount visualblocks pagebreak',
             toolbar: [
-                'undo redo | blocks fontsize | bold italic underline strikethrough | forecolor backcolor removeformat',
-                'alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image media table | hr charmap | code fullscreen'
+                'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | forecolor backcolor removeformat',
+                'alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image media table | hr pagebreak charmap | visualblocks code fullscreen'
             ],
-            content_style: 'body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; font-size: 14px; line-height: 1.8; padding: 16px; }',
+            content_style: 'body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; font-size: 14px; line-height: 1.8; padding: 16px; max-width: 900px; margin: 0 auto; } img { max-width: 100%; height: auto; border-radius: 4px; } table { border-collapse: collapse; width: 100%; } table td, table th { border: 1px solid #ddd; padding: 8px; }',
             images_upload_handler: function(blobInfo) {
                 return new Promise(function(resolve, reject) {
                     var formData = new FormData();
                     formData.append('file', blobInfo.blob(), blobInfo.filename());
-                    fetch('/admin/api/images/upload', { method: 'POST', body: formData })
+
+                    fetch('/admin/api/images/upload', {
+                        method: 'POST',
+                        body: formData
+                    })
+                    .then(function(resp) { return resp.json(); })
+                    .then(function(data) {
+                        if (data.success) {
+                            resolve(data.url);
+                        } else {
+                            reject('上传失败: ' + (data.message || '未知错误'));
+                        }
+                    })
+                    .catch(function(err) {
+                        reject('上传失败: ' + err.message);
+                    });
+                });
+            },
+            file_picker_types: 'image',
+            file_picker_callback: function(callback, value, meta) {
+                if (meta.filetype === 'image') {
+                    var input = document.createElement('input');
+                    input.setAttribute('type', 'file');
+                    input.setAttribute('accept', 'image/*');
+                    input.onchange = function() {
+                        var file = this.files[0];
+                        var formData = new FormData();
+                        formData.append('file', file);
+
+                        fetch('/admin/api/images/upload', {
+                            method: 'POST',
+                            body: formData
+                        })
                         .then(function(resp) { return resp.json(); })
                         .then(function(data) {
-                            if (data.success) { resolve(data.url); }
-                            else { reject('上传失败: ' + (data.message || '未知错误')); }
-                        })
-                        .catch(function(err) { reject('上传失败: ' + err.message); });
-                });
+                            if (data.success) {
+                                callback(data.url, { alt: file.name });
+                            }
+                        });
+                    };
+                    input.click();
+                }
             },
             promotion: false,
             branding: false,
             convert_urls: false,
-            relative_urls: false
+            relative_urls: false,
+            placeholder: '请输入新闻内容，支持插入图片、表格、视频等富文本内容...',
+            image_caption: true,
+            image_advtab: true,
+            table_default_styles: { 'border-collapse': 'collapse', 'width': '100%' },
+            table_default_attributes: { border: '1' }
         });
     }
 
-    // 自动生成 slug
-    document.getElementById('newsTitle').addEventListener('input', function() {
-        var slugField = document.getElementById('newsSlug');
-        if (!slugField.value || slugField.dataset.autoGenerated === 'true') {
-            slugField.value = this.value
-                .toLowerCase()
-                .replace(/[^a-z0-9\u4e00-\u9fa5\s-]/g, '')
-                .replace(/[\s]+/g, '-')
-                .replace(/-+/g, '-');
-            slugField.dataset.autoGenerated = 'true';
-        }
-    });
-    document.getElementById('newsSlug').addEventListener('input', function() {
-        this.dataset.autoGenerated = 'false';
-    });
-
-    // 图片选择器
-    function openImagePicker() {
-        var modal = new bootstrap.Modal(document.getElementById('imagePickerModal'));
-        modal.show();
-        loadPickerImages(1);
+    // Ensure TinyMCE content syncs before form submit
+    var form = document.getElementById('newsForm');
+    if (form) {
+        form.addEventListener('submit', function() {
+            if (typeof tinymce !== 'undefined') {
+                tinymce.triggerSave();
+            }
+        });
     }
-    function loadPickerImages(page) {
-        fetch('/admin/api/images/list?page=' + page + '&size=24')
-            .then(function(r) { return r.json(); })
-            .then(function(data) {
-                var grid = document.getElementById('pickerImageGrid');
-                grid.innerHTML = '';
-                if (!data.records || data.records.length === 0) {
-                    grid.innerHTML = '<p class="text-center text-muted py-4">暂无图片，请先上传</p>';
-                    return;
-                }
-                data.records.forEach(function(img) {
-                    var item = document.createElement('div');
-                    item.className = 'image-grid-item';
-                    item.style.cursor = 'pointer';
-                    item.innerHTML = '<div class="image-grid-thumb"><img src="' + (img.url || '/wp-content/uploads' + img.filePath) + '" alt="' + (img.fileName || '') + '"></div>' +
-                        '<div class="image-grid-info"><small class="text-truncate d-block">' + (img.fileName || '') + '</small></div>';
-                    item.onclick = function() { selectCoverImage(img); };
-                    grid.appendChild(item);
-                });
-                var pag = document.getElementById('pickerPagination');
-                pag.innerHTML = '';
-                if (data.pages > 1) {
-                    for (var i = 1; i <= data.pages; i++) {
-                        var btn = document.createElement('button');
-                        btn.className = 'btn btn-sm ' + (i === data.current ? 'btn-primary' : 'btn-outline-secondary');
-                        btn.textContent = i;
-                        btn.onclick = (function(p) { return function() { loadPickerImages(p); }; })(i);
-                        pag.appendChild(btn);
-                    }
-                }
-            });
-    }
-    function selectCoverImage(img) {
-        document.getElementById('coverImageId').value = img.id;
-        var preview = document.getElementById('coverImagePreview') || document.getElementById('coverImagePreviewEmpty');
-        if (preview) {
-            preview.id = 'coverImagePreview';
-            preview.style = '';
-            preview.innerHTML = '<img src="' + (img.url || '/wp-content/uploads' + img.filePath) + '" class="rounded" style="max-width: 100%; max-height: 200px; object-fit: cover; border: 1px solid #dee2e6;">';
-        }
-        bootstrap.Modal.getInstance(document.getElementById('imagePickerModal')).hide();
-    }
-    function clearCoverImage() {
-        document.getElementById('coverImageId').value = '';
-        var preview = document.getElementById('coverImagePreview');
-        if (preview) {
-            preview.id = 'coverImagePreviewEmpty';
-            preview.style = 'width: 100%; height: 150px; background: #f8f9fa; border: 2px dashed #dee2e6; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: #adb5bd;';
-            preview.innerHTML = '<span><i class="bi bi-image fs-3 d-block text-center mb-1"></i>暂无封面图</span>';
-        }
-    }
-    // 表单提交前同步TinyMCE内容
-    document.querySelector('form').addEventListener('submit', function() {
-        if (typeof tinymce !== 'undefined') { tinymce.triggerSave(); }
-    });
-
-    function uploadAndSelectImage(input) {
-        if (!input.files || !input.files[0]) return;
-        var formData = new FormData();
-        formData.append('file', input.files[0]);
-        fetch('/admin/api/images/upload', { method: 'POST', body: formData })
-            .then(function(r) { return r.json(); })
-            .then(function(data) {
-                if (data.success) {
-                    selectCoverImage(data.image);
-                } else {
-                    alert('上传失败: ' + (data.message || '未知错误'));
-                }
-            });
-    }
+})();
 </script>
 </body>
 </html>

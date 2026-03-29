@@ -21,7 +21,7 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://127.0.0.1:3306/web_site?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true&connectTimeout=5000&socketTimeout=30000
     username: root
-    password: 123456
+    password: Root@1234
     druid:
       initial-size: 5
       min-idle: 5
@@ -37,8 +37,8 @@ spring:
   # 文件上传配置
   servlet:
     multipart:
-      max-file-size: 20MB
-      max-request-size: 50MB
+      max-file-size: 100MB
+      max-request-size: 200MB
 
   # 国际化配置
   messages:
@@ -46,11 +46,15 @@ spring:
     encoding: UTF-8
     fallback-to-system-locale: false
 
-  # Spring Security 默认管理员账号（后续可改为数据库存储）
-  security:
-    user:
-      name: admin
-      password: admin123
+  # Flyway 数据库迁移
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+    baseline-on-migrate: true
+    baseline-version: 0
+    validate-on-migrate: false
+
+  # Spring Security - 使用数据库存储管理员账号
 
 # MyBatis-Plus 配置
 mybatis-plus:
@@ -59,17 +63,19 @@ mybatis-plus:
   global-config:
     db-config:
       id-type: auto
-      # logic-delete-field: deleted  # 已禁用：实体类无此字段，启用会导致所有查询500错误
+      logic-delete-field: deleted
+      logic-delete-value: 1
+      logic-not-delete-value: 0
   configuration:
     map-underscore-to-camel-case: true
     #log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 
 # 图片上传目录（WordPress 原始目录）
 upload:
-  base-path: /home/ubuntu/project_nide/nide--master/static_extracted/filter.philitee.com/wp-content/uploads
+  base-path: /home/ubuntu/nide-/filter-website/src/main/resources/static/wp-content/uploads
   url-prefix: /wp-content/uploads
-  static-web-path: /home/ubuntu/project_nide/nide--master/filter-website/src/main/resources/static/wp-content/uploads
-  # 本地开发：直接使用本地图片目录
+  static-web-path:
+  # 本地开发：图片已在本地，关闭远程代理
   proxy-enabled: false
   proxy-remote-host: https://47.251.117.119
 
