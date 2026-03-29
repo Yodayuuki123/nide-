@@ -4,118 +4,75 @@
 <body>
 <header th:replace="~{fragments/header :: navbar}"></header>
 
-<!-- Breadcrumb (Aesop-style: minimal, left-aligned) -->
-<div class="section-sm" style="padding-bottom:0;">
-    <div class="aesop-container">
-        <nav class="breadcrumb-nav" style="justify-content:flex-start;">
-            <a th:href="@{/}" th:text="#{breadcrumb.home}">Home</a>
-            <span class="separator">/</span>
-            <a th:href="@{/news}" th:text="#{news.title}">News</a>
-            <span class="separator">/</span>
-            <span class="current" th:text="${news.title}">Article Title</span>
-        </nav>
-    </div>
-</div>
-
-<!-- News Detail Section -->
-<section class="section">
-    <div class="aesop-container">
-        <div class="product-detail" style="align-items:flex-start;">
+<!-- Article Section -->
+<section class="bf-article-section">
+    <div class="bf-container">
+        <div class="bf-article-layout">
             <!-- Left: Article Content -->
-            <div class="product-gallery fade-in-left" style="flex:2;">
-                <!-- Title -->
-                <h1 style="font-size:2rem;font-weight:600;line-height:1.3;margin-bottom:1rem;" th:text="${news.title}">Article Title</h1>
+            <div class="bf-article-main">
+                <article class="bf-article">
+                    <h1 class="bf-article-title" th:text="${news.title}">Article Title</h1>
+                    <div class="bf-article-meta">
+                        <i class="bi bi-clock"></i>
+                        <span th:text="${#temporals.format(news.createdTime, 'yyyy/ MM-dd')}">2025/ 11-06</span>
+                    </div>
 
-                <!-- Meta Info -->
-                <div style="display:flex;align-items:center;gap:1.5rem;margin-bottom:2rem;font-size:0.85rem;color:var(--text-tertiary);border-bottom:1px solid var(--border-color);padding-bottom:1rem;">
-                    <span><i class="bi bi-calendar3"></i> <span th:text="${#temporals.format(news.publishDate, 'yyyy-MM-dd')}">2026-01-01</span></span>
-                    <span><i class="bi bi-eye"></i> <span th:text="${news.viewCount}">0</span> <span th:text="#{news.views}">views</span></span>
-                    <span th:if="${news.author != null}"><i class="bi bi-person"></i> <span th:text="${news.author}">Author</span></span>
-                </div>
+                    <!-- Cover Image -->
+                    <div class="bf-article-cover" th:if="${news.coverImage != null and news.coverImage != ''}">
+                        <img th:src="${news.coverImage}" th:alt="${news.title}">
+                    </div>
 
-                <!-- Cover Image -->
-                <div th:if="${news.coverImage != null}" style="margin-bottom:2rem;border-radius:4px;overflow:hidden;">
-                    <img th:src="${news.coverImage}" th:alt="${news.title}"
-                         style="width:100%;height:auto;display:block;" loading="lazy">
-                </div>
+                    <!-- Article Content -->
+                    <div class="bf-article-content" th:utext="${news.content}">
+                        Article content here...
+                    </div>
+                </article>
 
-                <!-- Article Content -->
-                <div class="product-description-content" th:utext="${news.content}" style="font-size:1rem;line-height:1.8;color:var(--text-secondary);">
-                    Article content goes here...
-                </div>
-
-                <!-- Share / Back -->
-                <div style="margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border-color);display:flex;justify-content:space-between;align-items:center;">
-                    <a th:href="@{/news}" style="font-size:0.9rem;color:var(--text-primary);text-decoration:none;display:inline-flex;align-items:center;gap:0.3rem;">
-                        <i class="bi bi-arrow-left"></i>
-                        <span th:text="#{news.backToList}">Back to News</span>
+                <!-- Previous / Next Post Navigation -->
+                <div class="bf-post-nav" th:if="${prevNews != null or nextNews != null}">
+                    <a th:if="${prevNews != null}" th:href="@{/news/{slug}(slug=${prevNews.slug})}" class="bf-post-nav-item bf-post-prev">
+                        <span class="bf-post-nav-label"><i class="bi bi-arrow-left"></i> Previous Post</span>
+                        <span class="bf-post-nav-title" th:text="${prevNews.title}">Previous Title</span>
+                    </a>
+                    <a th:if="${nextNews != null}" th:href="@{/news/{slug}(slug=${nextNews.slug})}" class="bf-post-nav-item bf-post-next">
+                        <span class="bf-post-nav-label">Next Post <i class="bi bi-arrow-right"></i></span>
+                        <span class="bf-post-nav-title" th:text="${nextNews.title}">Next Title</span>
                     </a>
                 </div>
             </div>
 
-            <!-- Right: Sidebar -->
-            <div class="product-info fade-in-right" style="flex:1;min-width:280px;max-width:320px;">
-                <!-- Search Box -->
-                <div style="margin-bottom:2rem;">
-                    <form th:action="@{/news}" method="get" style="display:flex;gap:0.5rem;">
-                        <input type="text" name="keyword"
-                               th:placeholder="#{news.search}"
-                               style="flex:1;border:1px solid var(--border-color);padding:0.6rem 0.75rem;font-size:0.85rem;">
-                        <button type="submit" class="btn-aesop" style="padding:0.6rem 1rem;font-size:0.85rem;">
-                            <i class="bi bi-search"></i>
-                        </button>
-                    </form>
+            <!-- Right Sidebar -->
+            <aside class="bf-sidebar">
+                <div class="bf-sidebar-header">
+                    <h3 class="bf-sidebar-title">News</h3>
                 </div>
 
-                <!-- Recent News -->
-                <div>
-                    <div class="eyebrow" th:text="#{news.recent}">Recent News</div>
-                    <h5 style="margin-bottom:1rem;" th:text="#{news.latestArticles}">Latest Articles</h5>
-                    <div th:if="${recentNews != null}" style="display:flex;flex-direction:column;gap:1rem;">
-                        <a th:each="item,iter : ${recentNews}" th:if="${iter.index < 5}"
-                           th:href="@{/news/{slug}(slug=${item.slug})}"
-                           style="display:flex;gap:0.75rem;text-decoration:none;color:inherit;padding-bottom:1rem;border-bottom:1px solid var(--border-color);">
-                            <!-- Thumbnail -->
-                            <div style="width:70px;height:70px;flex-shrink:0;border-radius:4px;overflow:hidden;background:var(--bg-tertiary);">
-                                <img th:if="${item.coverImage != null}" th:src="${item.coverImage}" th:alt="${item.title}"
-                                     style="width:100%;height:100%;object-fit:cover;" loading="lazy">
-                                <div th:unless="${item.coverImage != null}" style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;color:var(--text-tertiary);">
+                <!-- Recent News List -->
+                <div class="bf-sidebar-news-list" th:if="${recentNews != null and !recentNews.isEmpty()}">
+                    <div th:each="item : ${recentNews}" class="bf-sidebar-news-item">
+                        <a th:href="@{/news/{slug}(slug=${item.slug})}" class="bf-sidebar-news-link">
+                            <div class="bf-sidebar-news-img">
+                                <img th:if="${item.coverImage != null and item.coverImage != ''}"
+                                     th:src="${item.coverImage}" th:alt="${item.title}" loading="lazy">
+                                <div th:unless="${item.coverImage != null and item.coverImage != ''}" class="bf-sidebar-news-placeholder">
                                     <i class="bi bi-newspaper"></i>
                                 </div>
                             </div>
-                            <!-- Info -->
-                            <div style="flex:1;min-width:0;">
-                                <div style="font-size:0.85rem;font-weight:500;line-height:1.4;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;"
-                                     th:text="${item.title}">Recent Article Title</div>
-                                <div style="font-size:0.75rem;color:var(--text-tertiary);margin-top:0.3rem;">
-                                    <span th:text="${#temporals.format(item.publishDate, 'yyyy-MM-dd')}">2026-01-01</span>
-                                </div>
+                            <div class="bf-sidebar-news-info">
+                                <span class="bf-sidebar-news-title" th:text="${item.title}">Title</span>
+                                <span class="bf-sidebar-news-date" th:text="${#temporals.format(item.createdTime, 'yyyy/ MM-dd')}">2025/ 11-06</span>
+                                <span class="bf-sidebar-news-comments">0 COMMENTS</span>
                             </div>
                         </a>
                     </div>
-                    <div th:if="${recentNews == null or recentNews.isEmpty()}" style="font-size:0.85rem;color:var(--text-tertiary);">
-                        <span th:text="#{news.noRecentNews}">No recent articles</span>
-                    </div>
                 </div>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- CTA Banner -->
-<section class="cta-banner">
-    <div class="aesop-container">
-        <h3 class="fade-in" th:text="#{cta.title}">Need Custom Filtration Solutions?</h3>
-        <p class="fade-in" th:text="#{cta.subtitle}">Contact our team for professional consultation</p>
-        <div class="fade-in">
-            <a th:href="@{/contact}" class="btn-aesop" th:text="#{cta.button}">Get in Touch</a>
+            </aside>
         </div>
     </div>
 </section>
 
 <footer th:replace="~{fragments/footer :: footer}"></footer>
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" defer></script>
-<script src="/static/js/main.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="/static/js/main.js"></script>
 </body>
 </html>

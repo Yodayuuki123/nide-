@@ -20,5 +20,4 @@ Thumbs.db
 
 # Static uploads (large binary files - tracked separately)
 filter-website/src/main/resources/static/wp-content/uploads/
-!filter-website/src/main/resources/static/wp-content/uploads/category-covers/**
 server_resources/combined.zip

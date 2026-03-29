@@ -1,95 +1,100 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 
-<footer th:fragment="footer" class="site-footer">
-    <!-- Footer Quote Section (Aesop-style) -->
-    <div class="footer-quote-section">
-        <div class="aesop-container">
-            <blockquote class="footer-quote fade-in">
-                <p th:text="#{footer.quote.text}">'Quality is not an act, it is a habit.'</p>
-                <cite th:text="#{footer.quote.author}">Aristotle</cite>
-            </blockquote>
+<footer th:fragment="footer" class="bf-footer">
+    <!-- Footer Main Content -->
+    <div class="bf-footer-main">
+        <div class="bf-container">
+            <div class="bf-footer-grid">
+                <!-- Left: Send A Message Form -->
+                <div class="bf-footer-form-section">
+                    <h3 class="bf-footer-heading"><span class="bf-heading-bar"></span> Send A Message</h3>
+                    <form th:action="@{/contact}" method="post" class="bf-footer-form">
+                        <input type="text" name="name" placeholder="Name*" required>
+                        <input type="email" name="email" placeholder="Email*" required>
+                        <input type="tel" name="phone" placeholder="Tel*">
+                        <input type="text" name="company" placeholder="Country*">
+                        <textarea name="message" placeholder="Message*" rows="5" required></textarea>
+                        <div class="bf-footer-file-row">
+                            <input type="file" name="attachment">
+                        </div>
+                        <button type="submit" class="bf-footer-submit">SUBMIT</button>
+                    </form>
+                </div>
+
+                <!-- Right: Contact Information -->
+                <div class="bf-footer-contact-section">
+                    <h3 class="bf-footer-heading"><span class="bf-heading-bar"></span> Contact Information</h3>
+                    <div class="bf-contact-items">
+                        <!-- Email -->
+                        <div class="bf-contact-item">
+                            <div class="bf-contact-icon bf-icon-email">
+                                <i class="bi bi-envelope-fill"></i>
+                            </div>
+                            <div class="bf-contact-text">
+                                <span class="bf-contact-label">Email:</span>
+                                <a href="mailto:info@philiteefilter.com">info@philiteefilter.com</a>
+                            </div>
+                        </div>
+
+                        <!-- WhatsApp -->
+                        <div class="bf-contact-item">
+                            <div class="bf-contact-icon bf-icon-whatsapp">
+                                <i class="bi bi-whatsapp"></i>
+                            </div>
+                            <div class="bf-contact-text">
+                                <span class="bf-contact-label">WhatsApp:</span>
+                                <a href="https://wa.me/8618057358206" target="_blank">+8618057358206</a>
+                            </div>
+                        </div>
+
+                        <!-- WeChat -->
+                        <div class="bf-contact-item">
+                            <div class="bf-contact-icon bf-icon-wechat">
+                                <i class="bi bi-wechat"></i>
+                            </div>
+                            <div class="bf-contact-text">
+                                <span class="bf-contact-label">WeChat:</span>
+                                <span>philiteefilter</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Useful Links -->
+                    <h3 class="bf-footer-heading" style="margin-top:30px;"><span class="bf-heading-bar"></span> Useful Links</h3>
+                    <ul class="bf-useful-links">
+                        <li><a th:href="@{/}">Home</a></li>
+                        <li><a th:href="@{/products}">Products</a></li>
+                        <li><a th:href="@{/about}">About Us</a></li>
+                        <li><a th:href="@{/news}">News</a></li>
+                        <li><a th:href="@{/contact}">Contact</a></li>
+                    </ul>
+
+                    <!-- Follow Us -->
+                    <h3 class="bf-footer-heading" style="margin-top:30px;"><span class="bf-heading-bar"></span> Follow Us</h3>
+                    <div class="bf-social-icons">
+                        <a href="#" target="_blank" class="bf-social-icon bf-social-facebook" title="Facebook"><i class="bi bi-facebook"></i></a>
+                        <a href="#" target="_blank" class="bf-social-icon bf-social-linkedin" title="LinkedIn"><i class="bi bi-linkedin"></i></a>
+                        <a href="#" target="_blank" class="bf-social-icon bf-social-youtube" title="YouTube"><i class="bi bi-youtube"></i></a>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
-    <div class="aesop-container">
-        <div class="footer-grid">
-            <!-- Brand -->
-            <div class="footer-brand">
-                <a href="/" class="logo footer-logo">
-                    <img src="/static/images/logo.png" alt="Philitee Filter"
-                         class="footer-logo-img"
-                         onerror="this.style.display='none'">
-                    <span th:text="#{site.name}">PHILITEE FILTER</span>
-                </a>
-                <p th:text="#{footer.desc}">Philite® — Specializing in industrial filter bags, needle punched felt, woven filter cloth, filter bag making machines, and complete filtration system solutions.</p>
-                <div class="footer-social">
-                    <a href="https://wa.me/8613636563667" title="WhatsApp" target="_blank"><i class="bi bi-whatsapp"></i></a>
-                    <a href="mailto:sales888@philitee.com" title="Email"><i class="bi bi-envelope-fill"></i></a>
-                    <a href="#" title="LinkedIn"><i class="bi bi-linkedin"></i></a>
-                </div>
-            </div>
+    <!-- Footer Bottom -->
+    <div class="bf-footer-bottom">
+        <p>Copyright - <span th:text="#{site.name}">Philitee Filter</span>&reg;</p>
+    </div>
 
-            <!-- Quick Links -->
-            <div>
-                <div class="footer-title" th:text="#{nav.quick_links}">Navigation</div>
-                <ul class="footer-links">
-                    <li><a th:href="@{/}" th:text="#{nav.home}">Home</a></li>
-                    <li><a th:href="@{/products}" th:text="#{nav.products}">Products</a></li>
-                    <li><a th:href="@{/about}" th:text="#{nav.about}">About</a></li>
-                    <li><a th:href="@{/solutions}" th:text="#{nav.solutions}">Solutions</a></li>
-                    <li><a th:href="@{/news}" th:text="#{nav.news}">News</a></li>
-                    <li><a th:href="@{/factory}" th:text="#{nav.factory}">Factory</a></li>
-                    <li><a th:href="@{/contact}" th:text="#{nav.contact}">Contact</a></li>
-                </ul>
-            </div>
-
-            <!-- Product Categories -->
-            <div>
-                <div class="footer-title" th:text="#{nav.products}">Products</div>
-                <ul class="footer-links">
-                    <th:block th:each="cat,iter : ${globalCategoryTree}" th:if="${iter.index < 8}">
-                        <li>
-                            <a th:href="@{/categories/{slug}(slug=${cat.slug})}"
-                               th:text="${cat.name}">Category</a>
-                        </li>
-                    </th:block>
-                </ul>
-            </div>
-
-            <!-- Contact -->
-            <div>
-                <div class="footer-title" th:text="#{footer.contact}">Contact</div>
-                <ul class="footer-contact-list">
-                    <li>
-                        <i class="bi bi-geo-alt"></i>
-                        <span th:text="#{footer.address}">Zhejiang Province, China</span>
-                    </li>
-                    <li>
-                        <i class="bi bi-envelope"></i>
-                        <a href="mailto:sales888@philitee.com">sales888@philitee.com</a>
-                    </li>
-                    <li>
-                        <i class="bi bi-telephone"></i>
-                        <a href="tel:+8613636563667">+86 136 3656 3667</a>
-                    </li>
-                    <li>
-                        <i class="bi bi-whatsapp"></i>
-                        <a href="https://wa.me/8613636563667" target="_blank">WhatsApp: +86 136 3656 3667</a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-
-        <!-- Footer Bottom -->
-        <div class="footer-bottom">
-            <p>
-                &copy; <span th:text="${#dates.format(#dates.createNow(), 'yyyy')}">2026</span>
-                <span th:text="#{site.name}">Philitee Filter</span>.
-                <span th:text="#{footer.rights}">All Rights Reserved</span>.
-            </p>
-            <p>Powered by Philite Environment Technology</p>
-        </div>
+    <!-- Floating Contact Buttons (right side) -->
+    <div class="bf-floating-buttons">
+        <a href="mailto:info@philiteefilter.com" class="bf-float-btn bf-float-email" title="Email">
+            <i class="bi bi-envelope-fill"></i>
+        </a>
+        <a href="https://wa.me/8618057358206" target="_blank" class="bf-float-btn bf-float-whatsapp" title="WhatsApp">
+            <i class="bi bi-whatsapp"></i>
+        </a>
     </div>
 </footer>
 

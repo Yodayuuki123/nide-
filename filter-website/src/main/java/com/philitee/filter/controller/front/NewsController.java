@@ -1,5 +1,6 @@
 package com.philitee.filter.controller.front;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.philitee.filter.entity.News;
 import com.philitee.filter.service.NewsService;
@@ -16,7 +17,7 @@ public class NewsController {
 
     @GetMapping("/news")
     public String list(@RequestParam(defaultValue = "1") int page,
-                       @RequestParam(defaultValue = "10") int size,
+                       @RequestParam(defaultValue = "12") int size,
                        @RequestParam(required = false) String keyword,
                        @RequestParam(required = false) String startDate,
                        @RequestParam(required = false) String endDate,
@@ -41,9 +42,17 @@ public class NewsController {
         news.setViewCount(news.getViewCount() != null ? news.getViewCount() + 1 : 1);
         newsService.updateById(news);
         model.addAttribute("news", news);
-        // Recent news for sidebar
-        IPage<News> recentNews = newsService.getPublishedNews(1, 5);
+
+        // Recent news for sidebar (8 items like best-filter.com)
+        IPage<News> recentNews = newsService.getPublishedNews(1, 8);
         model.addAttribute("recentNews", recentNews.getRecords());
+
+        // Previous and Next news
+        News prevNews = newsService.getPreviousNews(news.getCreatedTime());
+        News nextNews = newsService.getNextNews(news.getCreatedTime());
+        model.addAttribute("prevNews", prevNews);
+        model.addAttribute("nextNews", nextNews);
+
         return "front/news-detail";
     }
 }

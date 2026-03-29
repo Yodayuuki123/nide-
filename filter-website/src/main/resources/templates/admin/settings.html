@@ -60,7 +60,8 @@
                                        th:value="${setting.settingValue}"
                                        placeholder="图片URL">
                                 <button type="button" class="btn btn-outline-primary"
-                                        th:onclick="'openSettingImagePicker(\'' + ${setting.settingKey} + '\')'">
+                                        th:attr="data-key=${setting.settingKey}"
+                                        onclick="openSettingImagePicker(this.getAttribute('data-key'))">
                                     <i class="bi bi-image"></i> 选择
                                 </button>
                             </div>

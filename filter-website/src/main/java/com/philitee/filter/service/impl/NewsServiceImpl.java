@@ -48,4 +48,24 @@ public class NewsServiceImpl extends ServiceImpl<NewsMapper, News> implements Ne
     public News getBySlug(String slug) {
         return this.getOne(new LambdaQueryWrapper<News>().eq(News::getSlug, slug));
     }
+
+    @Override
+    public News getPreviousNews(LocalDateTime createdTime) {
+        LambdaQueryWrapper<News> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(News::getStatus, "published")
+               .lt(News::getCreatedTime, createdTime)
+               .orderByDesc(News::getCreatedTime)
+               .last("LIMIT 1");
+        return this.getOne(wrapper);
+    }
+
+    @Override
+    public News getNextNews(LocalDateTime createdTime) {
+        LambdaQueryWrapper<News> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(News::getStatus, "published")
+               .gt(News::getCreatedTime, createdTime)
+               .orderByAsc(News::getCreatedTime)
+               .last("LIMIT 1");
+        return this.getOne(wrapper);
+    }
 }
