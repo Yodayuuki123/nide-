@@ -1,12 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" th:lang="${#locale.language}">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title th:text="#{about.title} + ' - Philitee Filter'">About Us - Philitee Filter</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-    <link rel="stylesheet" th:href="@{/static/css/style.css(v=8)}">
-</head>
+<head th:replace="~{fragments/header :: htmlHead(#{about.title}, #{about.subtitle})}"></head>
 <body>
 <header th:replace="~{fragments/header :: navbar}"></header>
 

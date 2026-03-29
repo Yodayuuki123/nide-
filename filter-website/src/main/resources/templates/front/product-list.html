@@ -1,13 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" th:lang="${#locale.language}">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title th:text="${currentCategory != null} ? ${currentCategory.name} + ' - Philitee Filter' : (${currentTag != null} ? ${currentTag.name} + ' - Philitee Filter' : 'Products - Philitee Filter')">Products - Philitee Filter</title>
-    <meta name="description" th:content="${currentCategory != null} ? ${currentCategory.description} : 'Philitee Filter Products'">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-    <link rel="stylesheet" th:href="@{/static/css/style.css(v=8)}">
-</head>
+<head th:replace="~{fragments/header :: htmlHead(${currentCategory != null} ? ${currentCategory.name} : 'Products', ${currentCategory != null} ? ${currentCategory.description} : 'Philitee Filter Products')}"></head>
 <body>
 <header th:replace="~{fragments/header :: navbar}"></header>
 
