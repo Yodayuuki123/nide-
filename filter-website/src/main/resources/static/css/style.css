@@ -6045,132 +6045,392 @@ img {
 }
 
 /* ============================================
-   About Us Page (best-filter.com style)
+   About Us Page (best-filter.com layout clone)
    ============================================ */
-.bf-about-page {
+
+/* --- Shared Section Spacing --- */
+.bf-about-section {
     padding: 60px 0;
 }
-.bf-about-hero {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 60px;
-    align-items: center;
-    margin-bottom: 60px;
+.bf-about-section:nth-child(even) {
+    background: var(--bg-secondary);
 }
-.bf-about-hero-text h2 {
+
+/* --- Centered Section Title --- */
+.bf-section-title-center {
     font-family: var(--font-heading);
     font-size: 2rem;
+    font-weight: 600;
     color: var(--text-primary);
-    margin-bottom: 16px;
-}
-.bf-about-hero-text p {
-    color: var(--text-secondary);
-    line-height: 1.8;
-    margin-bottom: 12px;
-}
-.bf-about-hero-img {
-    border-radius: 8px;
-    overflow: hidden;
-}
-.bf-about-hero-img img {
-    width: 100%;
-    height: auto;
-    display: block;
-}
-.bf-about-stats {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 30px;
-    margin-bottom: 60px;
-}
-.bf-stat-card {
     text-align: center;
-    padding: 30px 20px;
-    background: var(--bg-secondary);
-    border-radius: 8px;
-    border-top: 3px solid var(--accent);
-}
-.bf-stat-number {
-    font-family: var(--font-heading);
-    font-size: 2.5rem;
-    font-weight: 700;
-    color: var(--accent);
-    display: block;
-}
-.bf-stat-label {
-    font-size: 0.9rem;
-    color: var(--text-secondary);
-    margin-top: 8px;
-    display: block;
-}
-.bf-about-section {
-    margin-bottom: 60px;
-}
-.bf-about-section h2 {
-    font-family: var(--font-heading);
-    font-size: 1.8rem;
-    color: var(--text-primary);
-    margin-bottom: 20px;
+    margin-bottom: 30px;
     position: relative;
-    padding-bottom: 12px;
+    padding-bottom: 16px;
 }
-.bf-about-section h2::after {
+.bf-section-title-center::after {
     content: '';
     position: absolute;
     bottom: 0;
-    left: 0;
+    left: 50%;
+    transform: translateX(-50%);
     width: 60px;
     height: 3px;
     background: var(--accent);
 }
-.bf-about-section p {
-    color: var(--text-secondary);
-    line-height: 1.8;
-    margin-bottom: 12px;
-}
-.bf-cert-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 20px;
-    margin-top: 20px;
-}
-.bf-cert-card {
+
+/* --- About Text Paragraph --- */
+.bf-about-text {
+    max-width: 900px;
+    margin: 0 auto 30px;
     text-align: center;
-    padding: 20px;
+    color: var(--text-secondary);
+    line-height: 1.9;
+    font-size: 15px;
+}
+
+/* --- Who We Are --- */
+.bf-who-we-are {
+    padding-top: 50px;
+}
+
+/* --- Our Advantages --- */
+.bf-advantages {
     background: var(--bg-secondary);
+}
+.bf-advantages-grid {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 20px;
+    text-align: center;
+}
+.bf-advantage-item {
+    padding: 24px 12px;
+    background: #fff;
     border-radius: 8px;
     border: 1px solid var(--border-light);
+    transition: var(--transition-fast);
 }
-.bf-cert-card i {
-    font-size: 2rem;
+.bf-advantage-item:hover {
+    border-color: var(--accent);
+    box-shadow: 0 4px 16px rgba(76, 175, 80, 0.12);
+    transform: translateY(-3px);
+}
+.bf-advantage-icon {
+    font-size: 2.2rem;
     color: var(--accent);
-    margin-bottom: 10px;
-    display: block;
+    margin-bottom: 12px;
 }
-.bf-cert-card h5 {
-    font-size: 0.95rem;
+.bf-advantage-label {
+    font-size: 0.85rem;
+    font-weight: 500;
     color: var(--text-primary);
-    margin: 0;
+    line-height: 1.4;
 }
-.bf-factory-grid {
+
+/* --- Our Factory --- */
+.bf-our-factory {
+    background: #fff;
+}
+
+/* --- Gallery Row (shared for factory + team) --- */
+.bf-gallery-row {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 20px;
-    margin-top: 20px;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin-top: 10px;
 }
-.bf-factory-img {
+.bf-gallery-item {
     border-radius: 8px;
     overflow: hidden;
 }
-.bf-factory-img img {
+.bf-gallery-item img {
     width: 100%;
     height: 200px;
     object-fit: cover;
     display: block;
-    transition: transform 0.3s;
+    transition: transform 0.4s;
 }
-.bf-factory-img:hover img {
-    transform: scale(1.05);
+.bf-gallery-item:hover img {
+    transform: scale(1.06);
+}
+
+/* --- What We Offer --- */
+.bf-what-we-offer {
+    background: #fff;
+}
+.bf-offer-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+}
+.bf-offer-card {
+    padding: 36px 28px;
+    border: 1px solid var(--border-light);
+    border-radius: 8px;
+    text-align: center;
+    transition: var(--transition-fast);
+}
+.bf-offer-card:hover {
+    border-color: var(--accent);
+    box-shadow: 0 6px 24px rgba(76, 175, 80, 0.1);
+}
+.bf-offer-icon {
+    font-size: 2.5rem;
+    color: var(--accent);
+    margin-bottom: 16px;
+}
+.bf-offer-card h4 {
+    font-family: var(--font-heading);
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-bottom: 14px;
+    color: var(--text-primary);
+}
+.bf-offer-card p {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    line-height: 1.7;
+    margin: 0;
+}
+
+/* --- Our Service Team --- */
+.bf-service-team {
+    background: var(--bg-secondary);
+}
+
+/* --- Our Service Process --- */
+.bf-service-process {
+    background: #fff;
+}
+.bf-process-timeline {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 30px;
+}
+.bf-process-item {
+    text-align: center;
+    padding: 30px 20px;
+    position: relative;
+}
+.bf-process-num {
+    font-family: var(--font-heading);
+    font-size: 2.4rem;
+    font-weight: 700;
+    color: var(--accent);
+    margin-bottom: 12px;
+}
+.bf-process-item h5 {
+    font-family: var(--font-heading);
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 10px;
+}
+.bf-process-item p {
+    color: var(--text-secondary);
+    font-size: 0.88rem;
+    line-height: 1.7;
+    margin: 0;
+}
+
+/* --- VIP Banner (handshake background) --- */
+.bf-vip-banner {
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    position: relative;
+}
+.bf-vip-banner-overlay {
+    background: rgba(20, 30, 50, 0.75);
+    padding: 80px 0;
+    text-align: center;
+}
+.bf-vip-banner h2 {
+    font-family: var(--font-heading);
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 10px;
+}
+.bf-vip-banner h4 {
+    font-family: var(--font-heading);
+    font-size: 1.3rem;
+    font-weight: 500;
+    color: #fff;
+    margin-bottom: 20px;
+}
+.bf-vip-banner p {
+    color: rgba(255,255,255,0.85);
+    font-size: 1rem;
+    margin-bottom: 6px;
+}
+
+/* --- VIP / VVIP Tiers --- */
+.bf-vip-tiers {
+    padding: 70px 0;
+    background: #fff;
+}
+.bf-vip-tier {
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    gap: 40px;
+    align-items: center;
+    padding: 40px 0;
+    border-bottom: 1px solid var(--border-light);
+}
+.bf-vip-tier:last-child {
+    border-bottom: none;
+}
+.bf-vip-tier-badge {
+    text-align: center;
+}
+.bf-vip-gold-text {
+    font-family: var(--font-heading);
+    font-size: 4rem;
+    font-weight: 700;
+    background: linear-gradient(135deg, #c9a84c, #f0d875, #c9a84c);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    display: block;
+    line-height: 1;
+}
+.bf-vip-crown {
+    font-size: 2.5rem;
+    display: block;
+    margin-bottom: 4px;
+}
+.bf-vip-tier-title {
+    font-family: var(--font-heading);
+    font-size: 1.4rem;
+    font-weight: 600;
+    color: var(--accent);
+    margin-bottom: 10px;
+}
+.bf-vip-tier-content p {
+    color: var(--text-secondary);
+    line-height: 1.8;
+    margin-bottom: 12px;
+}
+.bf-vip-tier-content ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+.bf-vip-tier-content ul li {
+    padding: 8px 0;
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+}
+.bf-vip-tier-content ul li i {
+    color: var(--accent);
+    margin-top: 3px;
+    flex-shrink: 0;
+}
+
+/* --- Distributorship --- */
+.bf-distributorship {
+    background: var(--bg-secondary);
+    padding: 70px 0;
+}
+.bf-dist-benefits {
+    max-width: 700px;
+    margin: 0 auto 40px;
+}
+.bf-dist-benefit-item {
+    padding: 10px 0;
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.bf-dist-benefit-item i {
+    color: var(--accent);
+    flex-shrink: 0;
+}
+.bf-guarantee-title {
+    font-family: var(--font-heading);
+    font-size: 1.6rem;
+    font-weight: 600;
+    text-align: center;
+    color: var(--text-primary);
+    margin-bottom: 30px;
+}
+.bf-guarantee-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+}
+.bf-guarantee-card {
+    text-align: center;
+    padding: 30px 20px;
+    background: #fff;
+    border-radius: 8px;
+    border: 1px solid var(--border-light);
+    transition: var(--transition-fast);
+}
+.bf-guarantee-card:hover {
+    border-color: var(--accent);
+    box-shadow: 0 4px 16px rgba(76, 175, 80, 0.1);
+}
+.bf-guarantee-icon {
+    font-size: 2rem;
+    color: var(--accent);
+    margin-bottom: 12px;
+}
+.bf-guarantee-card h5 {
+    font-family: var(--font-heading);
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 8px;
+}
+.bf-guarantee-card p {
+    color: var(--text-secondary);
+    font-size: 0.85rem;
+    line-height: 1.6;
+    margin: 0;
+}
+
+/* --- About CTA --- */
+.bf-about-cta-section {
+    background: #fff;
+    padding: 60px 0;
+}
+.bf-about-cta {
+    text-align: center;
+    background: var(--bg-dark);
+    color: #fff;
+    padding: 50px 40px;
+    border-radius: 12px;
+}
+.bf-about-cta h3 {
+    font-family: var(--font-heading);
+    color: #fff;
+    font-size: 1.8rem;
+    margin-bottom: 10px;
+}
+.bf-about-cta p {
+    color: rgba(255,255,255,0.8);
+    margin-bottom: 24px;
+}
+.bf-about-cta .bf-btn-primary {
+    background: var(--accent);
+    color: #fff;
+    border: none;
+    padding: 12px 36px;
+    border-radius: 6px;
+    font-size: 1rem;
+    text-decoration: none;
+    display: inline-block;
+    transition: var(--transition-fast);
+}
+.bf-about-cta .bf-btn-primary:hover {
+    background: var(--accent-hover);
 }
 
 /* ============================================
@@ -6761,14 +7021,24 @@ img {
         grid-template-columns: 1fr;
         gap: 40px;
     }
-    .bf-about-hero {
-        grid-template-columns: 1fr;
-        gap: 30px;
+    /* About Us responsive */
+    .bf-advantages-grid {
+        grid-template-columns: repeat(3, 1fr);
     }
-    .bf-about-stats {
+    .bf-gallery-row {
         grid-template-columns: repeat(2, 1fr);
     }
-    .bf-cert-grid {
+    .bf-offer-grid {
+        grid-template-columns: 1fr;
+    }
+    .bf-process-timeline {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    .bf-vip-tier {
+        grid-template-columns: 1fr;
+        text-align: center;
+    }
+    .bf-guarantee-grid {
         grid-template-columns: repeat(2, 1fr);
     }
 }
@@ -6784,8 +7054,20 @@ img {
     .bf-form-row {
         grid-template-columns: 1fr;
     }
-    .bf-factory-grid {
+    .bf-advantages-grid {
         grid-template-columns: repeat(2, 1fr);
+    }
+    .bf-process-timeline {
+        grid-template-columns: 1fr;
+    }
+    .bf-guarantee-grid {
+        grid-template-columns: 1fr;
+    }
+    .bf-vip-banner-overlay {
+        padding: 50px 0;
+    }
+    .bf-vip-banner h2 {
+        font-size: 1.6rem;
     }
 }
 @media (max-width: 480px) {
@@ -6796,7 +7078,10 @@ img {
     .bf-pd-related-grid {
         grid-template-columns: 1fr;
     }
-    .bf-about-stats {
+    .bf-advantages-grid {
+        grid-template-columns: 1fr;
+    }
+    .bf-gallery-row {
         grid-template-columns: 1fr;
     }
 }

@@ -7,183 +7,261 @@
 <!-- Breadcrumb -->
 <div th:replace="~{fragments/breadcrumb :: breadcrumb(${breadcrumbItems})}"></div>
 
-<!-- About Page -->
-<section class="bf-about-page">
+<!-- ========== ABOUT US PAGE (best-filter.com layout) ========== -->
+
+<!-- Section 1: Who We Are -->
+<section class="bf-about-section bf-who-we-are">
     <div class="bf-container">
-        <h1 class="bf-page-title" th:text="#{about.title}">About Us</h1>
+        <h2 class="bf-section-title-center">Who We Are?</h2>
+        <p class="bf-about-text">
+            Philitee Filter is committed to providing first-grade filter solutions. After years of development,
+            we have established close business relationships with our customers in more than 100 countries and
+            regions around the world. The key to our rapid growth and development comes from our management's
+            ethos of premium quality, innovation and being customer-focused. Our company is a leader in the
+            filter material industry, and is one of the top suppliers of industrial filtration products.
+        </p>
+    </div>
+</section>
 
-        <!-- Company Introduction (left text + right image) -->
-        <div class="bf-about-intro">
-            <div class="bf-about-intro-text">
-                <h2 class="bf-section-heading"><span class="bf-heading-bar"></span> <span th:text="#{about.company.title}">Who We Are</span></h2>
-                <p th:text="#{about.company.desc}">Philitee Filter is a professional manufacturer specializing in industrial filtration products.</p>
-                <p th:text="#{about.company.desc2}">Our products are trusted by industries across 100+ countries.</p>
+<!-- Section 2: Our Advantages -->
+<section class="bf-about-section bf-advantages">
+    <div class="bf-container">
+        <h2 class="bf-section-title-center">Our Advantages</h2>
+        <div class="bf-advantages-grid">
+            <div class="bf-advantage-item">
+                <div class="bf-advantage-icon"><i class="bi bi-gem"></i></div>
+                <div class="bf-advantage-label">Premium Material</div>
             </div>
-            <div class="bf-about-intro-image">
-                <img src="/static/images/about-company-generated.jpg" alt="Philitee Factory" loading="lazy">
+            <div class="bf-advantage-item">
+                <div class="bf-advantage-icon"><i class="bi bi-gear-wide-connected"></i></div>
+                <div class="bf-advantage-label">High Quality Equipment</div>
+            </div>
+            <div class="bf-advantage-item">
+                <div class="bf-advantage-icon"><i class="bi bi-clock-history"></i></div>
+                <div class="bf-advantage-label">Timely Production</div>
+            </div>
+            <div class="bf-advantage-item">
+                <div class="bf-advantage-icon"><i class="bi bi-shield-check"></i></div>
+                <div class="bf-advantage-label">Consistent Quality</div>
+            </div>
+            <div class="bf-advantage-item">
+                <div class="bf-advantage-icon"><i class="bi bi-award"></i></div>
+                <div class="bf-advantage-label">Rich Experience</div>
+            </div>
+            <div class="bf-advantage-item">
+                <div class="bf-advantage-icon"><i class="bi bi-headset"></i></div>
+                <div class="bf-advantage-label">Prompt Customer Service</div>
             </div>
         </div>
+    </div>
+</section>
 
-        <!-- Stats Bar -->
-        <div class="bf-stats-bar">
-            <div class="bf-stat-item">
-                <div class="bf-stat-number">20+</div>
-                <div class="bf-stat-label" th:text="#{stats.years}">Years Experience</div>
+<!-- Section 3: Our Factory -->
+<section class="bf-about-section bf-our-factory">
+    <div class="bf-container">
+        <h2 class="bf-section-title-center">Our Factory</h2>
+        <p class="bf-about-text">
+            Philitee Filter factory is equipped with advanced filter raw material production equipment.
+            We customize products according to customer needs, which can meet a large number of product
+            demands. We strictly control the quality of products, and each batch of products has passed
+            through multiple inspection systems. At the same time, we invest significantly every year in
+            the research and development of new filtration solutions to meet the evolving needs of our customers.
+        </p>
+        <div class="bf-gallery-row">
+            <div class="bf-gallery-item">
+                <img src="/static/images/factory/factory1.jpg" alt="Factory Production Line" loading="lazy">
             </div>
-            <div class="bf-stat-item">
-                <div class="bf-stat-number">100+</div>
-                <div class="bf-stat-label" th:text="#{stats.countries}">Countries Served</div>
+            <div class="bf-gallery-item">
+                <img src="/static/images/factory/factory2.jpg" alt="Factory Workshop" loading="lazy">
             </div>
-            <div class="bf-stat-item">
-                <div class="bf-stat-number">295+</div>
-                <div class="bf-stat-label" th:text="#{stats.products}">Products</div>
+            <div class="bf-gallery-item">
+                <img src="/static/images/factory/sewing-workshop-1.jpg" alt="Sewing Workshop" loading="lazy">
             </div>
-            <div class="bf-stat-item">
-                <div class="bf-stat-number">ISO</div>
-                <div class="bf-stat-label" th:text="#{stats.certifications}">Certified</div>
+            <div class="bf-gallery-item">
+                <img src="/static/images/factory/factory4.jpg" alt="Quality Control" loading="lazy">
             </div>
         </div>
+    </div>
+</section>
 
-        <!-- Why Choose Us -->
-        <div class="bf-about-features">
-            <h2 class="bf-section-heading bf-center"><span class="bf-heading-bar"></span> Why Choose Philitee</h2>
-            <div class="bf-features-grid">
-                <div class="bf-feature-card">
-                    <div class="bf-feature-icon"><i class="bi bi-shield-check"></i></div>
-                    <h4 th:text="#{about.value.quality}">Quality Assurance</h4>
-                    <p th:text="#{about.value.quality.desc}">Every batch passes multiple inspection systems.</p>
-                </div>
-                <div class="bf-feature-card">
-                    <div class="bf-feature-icon"><i class="bi bi-headset"></i></div>
-                    <h4 th:text="#{about.value.innovation}">Technical Support</h4>
-                    <p th:text="#{about.value.innovation.desc}">Engineers with 20 years of experience.</p>
-                </div>
-                <div class="bf-feature-card">
-                    <div class="bf-feature-icon"><i class="bi bi-gear-wide-connected"></i></div>
-                    <h4 th:text="#{about.value.service}">Production Solutions</h4>
-                    <p th:text="#{about.value.service.desc}">Proprietary technology for filter bag sewing.</p>
-                </div>
-                <div class="bf-feature-card">
-                    <div class="bf-feature-icon"><i class="bi bi-cart-check"></i></div>
-                    <h4 th:text="#{about.value.global}">One-Stop Sourcing</h4>
-                    <p th:text="#{about.value.global.desc}">Save time with our complete product range.</p>
-                </div>
+<!-- Section 4: What We Offer -->
+<section class="bf-about-section bf-what-we-offer">
+    <div class="bf-container">
+        <h2 class="bf-section-title-center">What We Offer?</h2>
+        <div class="bf-offer-grid">
+            <div class="bf-offer-card">
+                <div class="bf-offer-icon"><i class="bi bi-tools"></i></div>
+                <h4>Technical Support</h4>
+                <p>Many clients are confused about how to choose the right fabric and accessories, and feel helpless about lowering the cost of bag filtration. Our engineers, with 20 years of experience, can provide a series of consulting, support and advice. All these services are free.</p>
+            </div>
+            <div class="bf-offer-card">
+                <div class="bf-offer-icon"><i class="bi bi-gear-wide-connected"></i></div>
+                <h4>Production Solution</h4>
+                <p>As a manufacturer, you surely know the higher the efficiency, the lower the costs. We developed unique technological achievements to improve the efficiency of the filter bag sewing machine and hot welding machine. We are continuing to improve this service for our clients.</p>
+            </div>
+            <div class="bf-offer-card">
+                <div class="bf-offer-icon"><i class="bi bi-cart-check"></i></div>
+                <h4>One-Stop Purchasing</h4>
+                <p>There are so many filtration products, and a lot of our clients had troubles during purchasing. We can help you save time — all you have to do is send us the details of the products. Especially for filter bag accessories, we suggest choosing our "one-stop purchasing".</p>
             </div>
         </div>
+    </div>
+</section>
 
-        <!-- Service Process -->
-        <div class="bf-about-process">
-            <h2 class="bf-section-heading bf-center"><span class="bf-heading-bar"></span> <span th:text="#{about.process.title}">Our Service Process</span></h2>
-            <div class="bf-process-grid">
-                <div class="bf-process-step">
-                    <div class="bf-process-number">01</div>
-                    <h5 th:text="#{about.process.step1.title}">Design Solution</h5>
-                    <p th:text="#{about.process.step1.desc}">Provide design solutions based on your needs.</p>
-                </div>
-                <div class="bf-process-step">
-                    <div class="bf-process-number">02</div>
-                    <h5 th:text="#{about.process.step2.title}">Configuration</h5>
-                    <p th:text="#{about.process.step2.desc}">Adjust configuration based on conditions.</p>
-                </div>
-                <div class="bf-process-step">
-                    <div class="bf-process-number">03</div>
-                    <h5 th:text="#{about.process.step3.title}">Quotation</h5>
-                    <p th:text="#{about.process.step3.desc}">Provide specific quotation.</p>
-                </div>
-                <div class="bf-process-step">
-                    <div class="bf-process-number">04</div>
-                    <h5 th:text="#{about.process.step4.title}">Manufacturing</h5>
-                    <p th:text="#{about.process.step4.desc}">Production with strict quality control.</p>
-                </div>
-                <div class="bf-process-step">
-                    <div class="bf-process-number">05</div>
-                    <h5 th:text="#{about.process.step5.title}">Installation</h5>
-                    <p th:text="#{about.process.step5.desc}">On-site installation and training.</p>
-                </div>
-                <div class="bf-process-step">
-                    <div class="bf-process-number">06</div>
-                    <h5 th:text="#{about.process.step6.title}">After-Sales</h5>
-                    <p th:text="#{about.process.step6.desc}">Warranty and 24/7 support.</p>
-                </div>
+<!-- Section 5: Our Service Team -->
+<section class="bf-about-section bf-service-team">
+    <div class="bf-container">
+        <h2 class="bf-section-title-center">Our Service Team</h2>
+        <p class="bf-about-text">
+            Philitee Filter serves the global market. At present, our business covers Europe, North America,
+            South America, Southeast Asia, Africa, Middle East, Central Asia and other regions. We have a
+            professional team serving international customers. Welcome friends from all over the world to
+            visit our company!
+        </p>
+        <div class="bf-gallery-row">
+            <div class="bf-gallery-item">
+                <img src="/static/images/about/team-exhibition-1.jpg" alt="Exhibition Booth" loading="lazy">
+            </div>
+            <div class="bf-gallery-item">
+                <img src="/static/images/about/team-exhibition-2.jpg" alt="Our Team" loading="lazy">
+            </div>
+            <div class="bf-gallery-item">
+                <img src="/static/images/about/team-exhibition-3.jpg" alt="Meeting Clients" loading="lazy">
+            </div>
+            <div class="bf-gallery-item">
+                <img src="/static/images/about/team-exhibition-4.jpg" alt="Product Display" loading="lazy">
             </div>
         </div>
+    </div>
+</section>
 
-        <!-- OEM/ODM Section (left text + right image) -->
-        <div class="bf-about-oem">
-            <div class="bf-oem-content">
-                <h2 class="bf-section-heading"><span class="bf-heading-bar"></span> <span th:text="#{about.oem.title}">Custom Manufacturing</span></h2>
-                <p th:text="#{about.oem.desc}">We can produce products according to your designs and requirements.</p>
-                <ul class="bf-oem-list">
-                    <li><i class="bi bi-check-circle-fill"></i> <span th:text="#{about.oem.point1}">Custom filter bags in multiple materials</span></li>
-                    <li><i class="bi bi-check-circle-fill"></i> <span th:text="#{about.oem.point2}">Custom sizes and specifications</span></li>
-                    <li><i class="bi bi-check-circle-fill"></i> <span th:text="#{about.oem.point3}">Custom branding and packaging</span></li>
-                    <li><i class="bi bi-check-circle-fill"></i> <span th:text="#{about.oem.point4}">Flexible MOQ</span></li>
+<!-- Section 6: Our Service Process -->
+<section class="bf-about-section bf-service-process">
+    <div class="bf-container">
+        <h2 class="bf-section-title-center">Our Service Process</h2>
+        <div class="bf-process-timeline">
+            <div class="bf-process-item">
+                <div class="bf-process-num">01</div>
+                <h5>Sketching</h5>
+                <p>First of all, we offer a design plan according to your demand of the production. Then adjust the configuration until we can ensure the project on the basis of your production base's circumstance and special demands.</p>
+            </div>
+            <div class="bf-process-item">
+                <div class="bf-process-num">02</div>
+                <h5>Confirmation</h5>
+                <p>We can offer a specific quotation depending on the original design project and finish the final design project through negotiation. Next step is starting production.</p>
+            </div>
+            <div class="bf-process-item">
+                <div class="bf-process-num">03</div>
+                <h5>Construction</h5>
+                <p>Our engineer will arrive at your production base and start to help install, debug and train employees when our equipment arrives.</p>
+            </div>
+            <div class="bf-process-item">
+                <div class="bf-process-num">04</div>
+                <h5>Customer Service</h5>
+                <p>In addition to an adequate warranty period, we have prepared a lot of quality supplies. To provide further assistance, our sales engineers are ready to give you online assistance 24/7.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Section 7: VIP Customer Service Banner -->
+<section class="bf-vip-banner" style="background-image: url('/static/images/about/vip-handshake-banner.jpg');">
+    <div class="bf-vip-banner-overlay">
+        <div class="bf-container">
+            <h2>VIP Customer Service</h2>
+            <h4>We Know Your Concern</h4>
+            <p>Do you dissatisfy with the speed of the delivery?</p>
+            <p>Do you dissatisfy with the stress of funds?</p>
+            <p>Do you dissatisfy with the stock of your products?</p>
+        </div>
+    </div>
+</section>
+
+<!-- Section 8: VIP Customers -->
+<section class="bf-about-section bf-vip-tiers">
+    <div class="bf-container">
+        <div class="bf-vip-tier">
+            <div class="bf-vip-tier-badge">
+                <span class="bf-vip-gold-text">VIP</span>
+            </div>
+            <div class="bf-vip-tier-content">
+                <h3 class="bf-vip-tier-title">VIP Customers</h3>
+                <p>We appreciate your business so much we've created a VIP program for you.</p>
+                <p>If your purchase quantity reaches <strong>500,000 USD</strong>, you can get the following VIP support:</p>
+                <ul>
+                    <li><i class="bi bi-check-circle-fill"></i> For solving your stress of funds, we can give you <strong>30 days</strong> of credit debt from bill date</li>
+                    <li><i class="bi bi-check-circle-fill"></i> For solving your speed of delivery, 20GP: <strong>15 days</strong>. 40GP: <strong>20 days</strong></li>
+                    <li><i class="bi bi-check-circle-fill"></i> For solving your stock problem, we can make a <strong>20GP stock</strong> for you, and send products in <strong>24 hours</strong></li>
                 </ul>
             </div>
-            <div class="bf-oem-image">
-                <img src="/static/images/oem-service.jpg" alt="OEM Service" loading="lazy">
-            </div>
         </div>
 
-        <!-- Distributorship (left image + right text) -->
-        <div class="bf-about-dist">
-            <div class="bf-dist-image">
-                <img src="/static/images/about-dist-3.jpg" alt="Partnership" loading="lazy">
+        <div class="bf-vip-tier bf-vvip-tier">
+            <div class="bf-vip-tier-badge">
+                <span class="bf-vip-crown">&#x1F451;</span>
+                <span class="bf-vip-gold-text">VVIP</span>
             </div>
-            <div class="bf-dist-content">
-                <h2 class="bf-section-heading"><span class="bf-heading-bar"></span> <span th:text="#{about.dist.title}">Become Our Distributor</span></h2>
-                <p th:text="#{about.dist.desc}">We are looking for global distributors.</p>
-                <ul class="bf-oem-list">
-                    <li><i class="bi bi-check-circle-fill"></i> <span th:text="#{about.dist.marketing}">Marketing support</span></li>
-                    <li><i class="bi bi-check-circle-fill"></i> <span th:text="#{about.dist.technical}">Technical support</span></li>
-                    <li><i class="bi bi-check-circle-fill"></i> <span th:text="#{about.dist.funds}">Financial support</span></li>
-                    <li><i class="bi bi-check-circle-fill"></i> <span th:text="#{about.dist.stocks}">Stock support</span></li>
+            <div class="bf-vip-tier-content">
+                <h3 class="bf-vip-tier-title">VVIP Customers</h3>
+                <p>If your purchase quantity reaches <strong>1,000,000 USD</strong>, Congratulations! You can get the following VVIP support:</p>
+                <ul>
+                    <li><i class="bi bi-check-circle-fill"></i> <strong>60 days</strong> of credit debt from bill date (double compared with VIP)</li>
+                    <li><i class="bi bi-check-circle-fill"></i> 20GP: <strong>10 days</strong>. 40GP: <strong>15 days</strong> (faster than VIP)</li>
+                    <li><i class="bi bi-check-circle-fill"></i> <strong>40GP stock</strong> reserved for you, send products in <strong>12 hours</strong></li>
                 </ul>
             </div>
         </div>
+    </div>
+</section>
 
-        <!-- VIP Customer Program -->
-        <div class="bf-about-vip">
-            <h2 class="bf-section-heading bf-center"><span class="bf-heading-bar"></span> <span th:text="#{about.vip.title}">VIP Customer Program</span></h2>
-            <p class="bf-vip-desc" th:text="#{about.vip.desc}">We understand your concerns.</p>
-            <div class="bf-vip-grid">
-                <div class="bf-vip-card">
-                    <div class="bf-vip-badge">VIP</div>
-                    <h4 th:text="#{about.vip.level1}">VIP (Annual $500,000+)</h4>
-                    <ul>
-                        <li><i class="bi bi-cash-coin"></i> <span th:text="#{about.vip.level1.funds}">30-day credit terms</span></li>
-                        <li><i class="bi bi-truck"></i> <span th:text="#{about.vip.level1.delivery}">20GP: 15 days</span></li>
-                        <li><i class="bi bi-box-seam"></i> <span th:text="#{about.vip.level1.stock}">20GP reserved stock</span></li>
-                    </ul>
-                </div>
-                <div class="bf-vip-card bf-vip-premium">
-                    <div class="bf-vip-badge bf-vip-badge-premium">VVIP</div>
-                    <h4 th:text="#{about.vip.level2}">VVIP (Annual $1,000,000+)</h4>
-                    <ul>
-                        <li><i class="bi bi-cash-coin"></i> <span th:text="#{about.vip.level2.funds}">60-day credit terms</span></li>
-                        <li><i class="bi bi-truck"></i> <span th:text="#{about.vip.level2.delivery}">20GP: 10 days</span></li>
-                        <li><i class="bi bi-box-seam"></i> <span th:text="#{about.vip.level2.stock}">40GP reserved stock</span></li>
-                    </ul>
-                </div>
-            </div>
+<!-- Section 9: Distributorship -->
+<section class="bf-about-section bf-distributorship">
+    <div class="bf-container">
+        <h2 class="bf-section-title-center">Distributorship</h2>
+        <p class="bf-about-text">
+            To become a distributor — Our products are great demonstration products:
+        </p>
+        <div class="bf-dist-benefits">
+            <div class="bf-dist-benefit-item"><i class="bi bi-check-circle-fill"></i> Easy and fast sales</div>
+            <div class="bf-dist-benefit-item"><i class="bi bi-check-circle-fill"></i> Unbelievably high mark-up</div>
+            <div class="bf-dist-benefit-item"><i class="bi bi-check-circle-fill"></i> Diverse product line to a wide range of customers</div>
+            <div class="bf-dist-benefit-item"><i class="bi bi-check-circle-fill"></i> Sales material — filter materials</div>
+            <div class="bf-dist-benefit-item"><i class="bi bi-check-circle-fill"></i> Manufacturer warranty and after-sale service</div>
         </div>
 
-        <!-- Mission -->
-        <div class="bf-about-mission">
-            <div class="bf-mission-image">
-                <img src="/static/images/mission.jpg" alt="Our Mission" loading="lazy">
+        <h3 class="bf-guarantee-title">We Guarantee</h3>
+        <div class="bf-guarantee-grid">
+            <div class="bf-guarantee-card">
+                <div class="bf-guarantee-icon"><i class="bi bi-megaphone"></i></div>
+                <h5>Marketing Support</h5>
+                <p>Sharing local customers to help you grow</p>
             </div>
-            <div class="bf-mission-content">
-                <h2 class="bf-section-heading"><span class="bf-heading-bar"></span> <span th:text="#{about.mission.title}">Cleaner Air, Better Industry</span></h2>
-                <p th:text="#{about.mission.desc}">We believe every factory deserves access to high-performance filtration products.</p>
+            <div class="bf-guarantee-card">
+                <div class="bf-guarantee-icon"><i class="bi bi-wrench-adjustable"></i></div>
+                <h5>Technical Support</h5>
+                <p>Solving questions put forward by customers</p>
+            </div>
+            <div class="bf-guarantee-card">
+                <div class="bf-guarantee-icon"><i class="bi bi-cash-coin"></i></div>
+                <h5>Funds Support</h5>
+                <p>Offering long account period for special supporting</p>
+            </div>
+            <div class="bf-guarantee-card">
+                <div class="bf-guarantee-icon"><i class="bi bi-box-seam"></i></div>
+                <h5>Stocks Support</h5>
+                <p>Having warehouse in main continents</p>
             </div>
         </div>
+    </div>
+</section>
 
-        <!-- CTA -->
+<!-- CTA -->
+<section class="bf-about-section bf-about-cta-section">
+    <div class="bf-container">
         <div class="bf-about-cta">
-            <h3 th:text="#{cta.title}">Need Custom Filtration Solutions?</h3>
-            <p th:text="#{cta.subtitle}">Contact our team for professional consultation</p>
-            <a th:href="@{/contact}" class="bf-btn bf-btn-primary" th:text="#{cta.button}">Get in Touch</a>
+            <h3>Need Custom Filtration Solutions?</h3>
+            <p>Contact our team for professional consultation</p>
+            <a th:href="@{/contact}" class="bf-btn bf-btn-primary">Get in Touch</a>
         </div>
     </div>
 </section>
