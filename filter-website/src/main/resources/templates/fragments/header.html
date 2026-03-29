@@ -116,15 +116,18 @@
                     </li>
                     <li>
                         <a th:href="@{/solutions}"
-                           th:classappend="${currentUrl == '/solutions'} ? 'active' : ''">Solutions</a>
+                           th:classappend="${currentUrl == '/solutions'} ? 'active' : ''"
+                           th:text="#{nav.solutions}">Solutions</a>
                     </li>
                     <li>
                         <a th:href="@{/about}"
-                           th:classappend="${currentUrl == '/about'} ? 'active' : ''">About Us</a>
+                           th:classappend="${currentUrl == '/about'} ? 'active' : ''"
+                           th:text="#{nav.about}">About Us</a>
                     </li>
                     <li>
                         <a th:href="@{/news}"
-                           th:classappend="${currentUrl != null and #strings.startsWith(currentUrl, '/news')} ? 'active' : ''">News</a>
+                           th:classappend="${currentUrl != null and #strings.startsWith(currentUrl, '/news')} ? 'active' : ''"
+                           th:text="#{nav.news}">News</a>
                     </li>
                     <li>
                         <a th:href="@{/contact}"
@@ -186,9 +189,9 @@
                     </li>
                 </ul>
             </li>
-            <li><a th:href="@{/solutions}">Solutions</a></li>
-            <li><a th:href="@{/about}">About Us</a></li>
-            <li><a th:href="@{/news}">News</a></li>
+            <li><a th:href="@{/solutions}" th:text="#{nav.solutions}">Solutions</a></li>
+            <li><a th:href="@{/about}" th:text="#{nav.about}">About Us</a></li>
+            <li><a th:href="@{/news}" th:text="#{nav.news}">News</a></li>
             <li><a th:href="@{/contact}" th:text="#{nav.contact}">Contact</a></li>
         </ul>
         <div class="mobile-menu-bottom">

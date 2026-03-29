@@ -10,25 +10,25 @@
         <div class="hero-slide active" style="background-image:url('/static/images/hero-bg.jpg')">
             <div class="hero-slide-overlay"></div>
             <div class="hero-slide-content aesop-container">
-                <h1>Industrial Filter Bags</h1>
-                <p>Premium quality dust collector bags for every industrial application</p>
-                <a th:href="@{/products}" class="btn btn-accent btn-lg">View Products</a>
+                <h1 th:text="#{home.hero.slide1.title}">Industrial Filter Bags</h1>
+                <p th:text="#{home.hero.slide1.subtitle}">Premium quality dust collector bags for every industrial application</p>
+                <a th:href="@{/products}" class="btn btn-accent btn-lg" th:text="#{home.hero.cta}">View Products</a>
             </div>
         </div>
         <div class="hero-slide" style="background-image:url('/static/images/feature-factory.jpg')">
             <div class="hero-slide-overlay"></div>
             <div class="hero-slide-content aesop-container">
-                <h1>Complete Filtration Solutions</h1>
-                <p>Needle punched felt, woven filter cloth, and filtration system solutions</p>
-                <a th:href="@{/solutions}" class="btn btn-accent btn-lg">Our Solutions</a>
+                <h1 th:text="#{home.hero.slide2.title}">Complete Filtration Solutions</h1>
+                <p th:text="#{home.hero.slide2.subtitle}">Needle punched felt, woven filter cloth, and filtration system solutions</p>
+                <a th:href="@{/solutions}" class="btn btn-accent btn-lg" th:text="#{nav.solutions}">Our Solutions</a>
             </div>
         </div>
         <div class="hero-slide" style="background-image:url('/static/images/factory-overview.jpg')">
             <div class="hero-slide-overlay"></div>
             <div class="hero-slide-content aesop-container">
-                <h1>20+ Years of Experience</h1>
-                <p>Trusted by customers in over 100 countries worldwide</p>
-                <a th:href="@{/about}" class="btn btn-accent btn-lg">About Us</a>
+                <h1 th:text="#{home.hero.slide3.title}">20+ Years of Experience</h1>
+                <p th:text="#{home.hero.slide3.subtitle}">Trusted by customers in over 100 countries worldwide</p>
+                <a th:href="@{/about}" class="btn btn-accent btn-lg" th:text="#{nav.about}">About Us</a>
             </div>
         </div>
     </div>
@@ -46,11 +46,11 @@
     <div class="aesop-container">
         <div class="home-about-grid">
             <div class="home-about-text fade-in">
-                <span class="section-eyebrow">About Us</span>
-                <h2>Philitee Filter Technology</h2>
-                <p>With over 20 years of experience in industrial filtration, Philitee Filter specializes in the design, manufacture, and supply of high-quality filter bags, needle punched felt, woven filter cloth, and complete filtration system solutions.</p>
-                <p>Our state-of-the-art facility features advanced production lines including automated sewing machines, heat-setting equipment, and precision cutting systems. We serve customers in over 100 countries across industries including cement, steel, power generation, waste incineration, and chemical processing.</p>
-                <a th:href="@{/about}" class="btn btn-outline-accent">Learn More <i class="bi bi-arrow-right"></i></a>
+                <span class="section-eyebrow" th:text="#{home.about.eyebrow}">About Us</span>
+                <h2 th:text="#{home.about.title}">Philitee Filter Technology</h2>
+                <p th:text="#{home.about.text}">With over 20 years of experience in industrial filtration...</p>
+                <p th:text="#{home.about.text2}">Our state-of-the-art facility features advanced production lines...</p>
+                <a th:href="@{/about}" class="btn btn-outline-accent"><span th:text="#{home.learn_more}">Learn More</span> <i class="bi bi-arrow-right"></i></a>
             </div>
             <div class="home-about-gallery fade-in">
                 <div class="about-gallery-main">
@@ -71,9 +71,9 @@
 <section class="home-categories-section" th:if="${categories != null and !categories.isEmpty()}">
     <div class="aesop-container">
         <div class="section-header text-center fade-in">
-            <span class="section-eyebrow">Our Range</span>
-            <h2>Product Categories</h2>
-            <p>Comprehensive filtration solutions for every industrial application</p>
+            <span class="section-eyebrow" th:text="#{home.categories.eyebrow}">Our Range</span>
+            <h2 th:text="#{home.categories.title}">Product Categories</h2>
+            <p th:text="#{home.categories.subtitle}">Comprehensive filtration solutions for every industrial application</p>
         </div>
         <div class="home-categories-grid">
             <th:block th:each="cat,iter : ${categories}" th:if="${iter.index < 9}">
@@ -98,8 +98,8 @@
 <section class="home-products-section" th:if="${tagProducts != null and !tagProducts.isEmpty()}">
     <div class="aesop-container">
         <div class="section-header text-center fade-in">
-            <span class="section-eyebrow">Our Products</span>
-            <h2>Featured Products</h2>
+            <span class="section-eyebrow" th:text="#{home.featured.eyebrow}">Our Products</span>
+            <h2 th:text="#{home.featured.title}">Featured Products</h2>
         </div>
         <!-- Tag tabs -->
         <div class="product-tabs fade-in">
@@ -143,40 +143,40 @@
 <section class="home-applications-section">
     <div class="aesop-container">
         <div class="section-header text-center fade-in">
-            <span class="section-eyebrow">Applications</span>
-            <h2>Application Scenarios</h2>
-            <p>Our filtration products are widely used across various industries</p>
+            <span class="section-eyebrow" th:text="#{home.app.eyebrow}">Applications</span>
+            <h2 th:text="#{home.app.title}">Application Scenarios</h2>
+            <p th:text="#{home.app.subtitle}">Our filtration products are widely used across various industries</p>
         </div>
         <div class="applications-grid">
             <div class="application-card fade-in">
                 <div class="application-icon"><i class="bi bi-building"></i></div>
-                <h5>Cement Industry</h5>
-                <p>Kiln and clinker cooler dust collection, raw mill and cement mill filtration</p>
+                <h5 th:text="#{industries.cement}">Cement Industry</h5>
+                <p th:text="#{home.app.cement}">Kiln and clinker cooler dust collection, raw mill and cement mill filtration</p>
             </div>
             <div class="application-card fade-in">
                 <div class="application-icon"><i class="bi bi-fire"></i></div>
-                <h5>Steel & Smelting</h5>
-                <p>EAF and BOF dust collection, sintering machine and blast furnace gas cleaning</p>
+                <h5 th:text="#{industries.steel}">Steel & Smelting</h5>
+                <p th:text="#{home.app.steel}">EAF and BOF dust collection, sintering machine and blast furnace gas cleaning</p>
             </div>
             <div class="application-card fade-in">
                 <div class="application-icon"><i class="bi bi-lightning"></i></div>
-                <h5>Power Generation</h5>
-                <p>Coal-fired boiler flue gas filtration, biomass power plant dust removal</p>
+                <h5 th:text="#{industries.power}">Power Generation</h5>
+                <p th:text="#{home.app.power}">Coal-fired boiler flue gas filtration, biomass power plant dust removal</p>
             </div>
             <div class="application-card fade-in">
                 <div class="application-icon"><i class="bi bi-recycle"></i></div>
-                <h5>Waste Incineration</h5>
-                <p>MSW incineration flue gas treatment, hazardous waste incineration filtration</p>
+                <h5 th:text="#{industries.waste}">Waste Incineration</h5>
+                <p th:text="#{home.app.waste}">MSW incineration flue gas treatment, hazardous waste incineration filtration</p>
             </div>
             <div class="application-card fade-in">
                 <div class="application-icon"><i class="bi bi-droplet"></i></div>
-                <h5>Chemical Processing</h5>
-                <p>Chemical plant dust collection, pharmaceutical and fine chemical filtration</p>
+                <h5 th:text="#{industries.chemical}">Chemical Processing</h5>
+                <p th:text="#{home.app.chemical}">Chemical plant dust collection, pharmaceutical and fine chemical filtration</p>
             </div>
             <div class="application-card fade-in">
                 <div class="application-icon"><i class="bi bi-tree"></i></div>
-                <h5>Woodworking</h5>
-                <p>Sawdust and wood chip collection, furniture manufacturing dust removal</p>
+                <h5 th:text="#{industries.woodworking}">Woodworking</h5>
+                <p th:text="#{home.app.woodworking}">Sawdust and wood chip collection, furniture manufacturing dust removal</p>
             </div>
         </div>
     </div>
@@ -186,39 +186,39 @@
 <section class="home-whychoose-section">
     <div class="aesop-container">
         <div class="section-header text-center fade-in">
-            <span class="section-eyebrow">Our Advantages</span>
-            <h2>Why Choose Philitee Filter</h2>
+            <span class="section-eyebrow" th:text="#{home.why.eyebrow}">Our Advantages</span>
+            <h2 th:text="#{home.why.title}">Why Choose Philitee Filter</h2>
         </div>
         <div class="whychoose-grid">
             <div class="whychoose-card fade-in">
                 <div class="whychoose-icon"><i class="bi bi-award"></i></div>
-                <h5>20+ Years Experience</h5>
-                <p>Two decades of expertise in industrial filtration manufacturing and R&D</p>
+                <h5 th:text="#{home.why.experience}">20+ Years Experience</h5>
+                <p th:text="#{home.why.experience.desc}">Two decades of expertise in industrial filtration manufacturing and R&D</p>
             </div>
             <div class="whychoose-card fade-in">
                 <div class="whychoose-icon"><i class="bi bi-gear"></i></div>
-                <h5>Advanced Equipment</h5>
-                <p>State-of-the-art production lines with automated sewing and heat-setting machines</p>
+                <h5 th:text="#{home.why.equipment}">Advanced Equipment</h5>
+                <p th:text="#{home.why.equipment.desc}">State-of-the-art production lines with automated sewing and heat-setting machines</p>
             </div>
             <div class="whychoose-card fade-in">
                 <div class="whychoose-icon"><i class="bi bi-shield-check"></i></div>
-                <h5>ISO 9001 Certified</h5>
-                <p>Strict quality management system ensuring consistent product excellence</p>
+                <h5 th:text="#{home.why.iso}">ISO 9001 Certified</h5>
+                <p th:text="#{home.why.iso.desc}">Strict quality management system ensuring consistent product excellence</p>
             </div>
             <div class="whychoose-card fade-in">
                 <div class="whychoose-icon"><i class="bi bi-tools"></i></div>
-                <h5>OEM/ODM Service</h5>
-                <p>Custom manufacturing solutions tailored to your specific requirements</p>
+                <h5 th:text="#{home.why.oem}">OEM/ODM Service</h5>
+                <p th:text="#{home.why.oem.desc}">Custom manufacturing solutions tailored to your specific requirements</p>
             </div>
             <div class="whychoose-card fade-in">
                 <div class="whychoose-icon"><i class="bi bi-truck"></i></div>
-                <h5>Fast Delivery</h5>
-                <p>Reliable global shipping with professional packaging and timely delivery</p>
+                <h5 th:text="#{home.why.delivery}">Fast Delivery</h5>
+                <p th:text="#{home.why.delivery.desc}">Reliable global shipping with professional packaging and timely delivery</p>
             </div>
             <div class="whychoose-card fade-in">
                 <div class="whychoose-icon"><i class="bi bi-headset"></i></div>
-                <h5>Technical Support</h5>
-                <p>Professional technical consultation and after-sales service worldwide</p>
+                <h5 th:text="#{home.why.support}">Technical Support</h5>
+                <p th:text="#{home.why.support.desc}">Professional technical consultation and after-sales service worldwide</p>
             </div>
         </div>
     </div>
@@ -228,77 +228,58 @@
 <section class="home-global-section">
     <div class="aesop-container">
         <div class="section-header text-center fade-in">
-            <span class="section-eyebrow">Global Reach</span>
-            <h2>Global Sales Network</h2>
-            <p>Our products are exported to over 100 countries and regions worldwide</p>
+            <span class="section-eyebrow" th:text="#{home.global.eyebrow}">Global Reach</span>
+            <h2 th:text="#{home.global.title}">Global Sales Network</h2>
+            <p th:text="#{home.global.text}">Our products are exported to over 100 countries and regions worldwide</p>
         </div>
         <div class="global-map-wrapper fade-in">
             <svg class="global-map" viewBox="0 0 1000 500" xmlns="http://www.w3.org/2000/svg">
-                <!-- Simplified world map paths -->
                 <g fill="#e8f5e9" stroke="#4CAF50" stroke-width="0.5">
-                    <!-- North America -->
                     <path d="M150,120 L200,80 L260,85 L280,110 L270,150 L250,170 L220,200 L190,210 L160,200 L140,170 L130,140Z"/>
-                    <!-- South America -->
                     <path d="M220,250 L260,230 L280,260 L290,310 L280,370 L260,400 L240,410 L220,390 L210,350 L200,300 L210,270Z"/>
-                    <!-- Europe -->
                     <path d="M440,90 L480,80 L520,85 L530,100 L520,130 L500,140 L470,145 L450,130 L440,110Z"/>
-                    <!-- Africa -->
                     <path d="M450,170 L500,160 L530,180 L540,230 L530,300 L510,350 L480,370 L460,350 L440,300 L430,230 L440,190Z"/>
-                    <!-- Asia -->
                     <path d="M550,60 L650,50 L750,70 L800,100 L810,140 L790,170 L750,180 L700,190 L650,180 L600,160 L560,140 L540,110Z"/>
-                    <!-- Southeast Asia -->
                     <path d="M700,200 L740,190 L780,200 L800,220 L790,250 L760,260 L730,250 L710,230Z"/>
-                    <!-- Australia -->
                     <path d="M760,330 L820,310 L860,330 L870,370 L850,400 L810,410 L770,390 L760,360Z"/>
-                    <!-- Middle East -->
                     <path d="M540,150 L580,140 L610,155 L600,180 L570,185 L545,170Z"/>
                 </g>
-                <!-- Active market dots -->
                 <g fill="#4CAF50">
-                    <!-- North America -->
                     <circle cx="200" cy="140" r="5"><animate attributeName="r" values="4;6;4" dur="2s" repeatCount="indefinite"/></circle>
                     <circle cx="250" cy="160" r="4"/>
-                    <!-- South America -->
                     <circle cx="250" cy="300" r="4"/>
                     <circle cx="260" cy="350" r="4"/>
-                    <!-- Europe -->
                     <circle cx="470" cy="110" r="5"><animate attributeName="r" values="4;6;4" dur="2s" repeatCount="indefinite"/></circle>
                     <circle cx="500" cy="105" r="4"/>
                     <circle cx="520" cy="115" r="4"/>
-                    <!-- Africa -->
                     <circle cx="480" cy="250" r="4"/>
                     <circle cx="500" cy="300" r="4"/>
-                    <!-- Middle East -->
                     <circle cx="570" cy="165" r="5"><animate attributeName="r" values="4;6;4" dur="2s" repeatCount="indefinite"/></circle>
-                    <!-- Asia (China - HQ) -->
                     <circle cx="720" cy="140" r="7" fill="#388E3C"><animate attributeName="r" values="6;8;6" dur="2s" repeatCount="indefinite"/></circle>
                     <circle cx="680" cy="120" r="4"/>
                     <circle cx="700" cy="170" r="4"/>
-                    <!-- Southeast Asia -->
                     <circle cx="750" cy="220" r="5"><animate attributeName="r" values="4;6;4" dur="2s" repeatCount="indefinite"/></circle>
-                    <!-- Australia -->
                     <circle cx="810" cy="360" r="4"/>
                 </g>
-                <!-- HQ Label -->
                 <text x="720" y="125" font-size="10" fill="#1a2e1a" text-anchor="middle" font-weight="bold">HQ</text>
             </svg>
         </div>
         <div class="global-stats fade-in">
             <div class="global-stat">
                 <div class="global-stat-number" data-count="100">100+</div>
-                <div class="global-stat-label">Countries Served</div>
+                <div class="global-stat-label" th:text="#{stats.countries}">Countries Served</div>
             </div>
             <div class="global-stat">
                 <div class="global-stat-number" data-count="20">20+</div>
-                <div class="global-stat-label">Years Experience</div>
+                <div class="global-stat-label" th:text="#{stats.years}">Years Experience</div>
             </div>
             <div class="global-stat">
                 <div class="global-stat-number" data-count="295">295+</div>
-                <div class="global-stat-label">Products Available</div>
+                <div class="global-stat-label" th:text="#{stats.products}">Products Available</div>
             </div>
             <div class="global-stat">
                 <div class="global-stat-number">ISO</div>
-                <div class="global-stat-label">Certified Quality</div>
+                <div class="global-stat-label" th:text="#{stats.certifications}">Certified Quality</div>
             </div>
         </div>
     </div>
@@ -308,9 +289,9 @@
 <section class="home-exhibition-section">
     <div class="aesop-container">
         <div class="section-header text-center fade-in">
-            <span class="section-eyebrow">Events</span>
-            <h2>Exhibition Gallery</h2>
-            <p>We actively participate in international trade shows and exhibitions</p>
+            <span class="section-eyebrow" th:text="#{home.exhibition.eyebrow}">Events</span>
+            <h2 th:text="#{home.exhibition.title}">Exhibition Gallery</h2>
+            <p th:text="#{home.exhibition.subtitle}">We actively participate in international trade shows and exhibitions</p>
         </div>
         <div class="exhibition-carousel-wrapper">
             <button class="exhibition-arrow exhibition-prev" onclick="exhibitionSlide(-1)"><i class="bi bi-chevron-left"></i></button>
@@ -336,10 +317,10 @@
 <!-- ========== 9. CTA Banner ========== -->
 <section class="home-cta-section">
     <div class="aesop-container text-center">
-        <h3 class="fade-in">Need Custom Filtration Solutions?</h3>
-        <p class="fade-in">Contact our team for professional consultation and competitive quotation</p>
+        <h3 class="fade-in" th:text="#{cta.title}">Need Custom Filtration Solutions?</h3>
+        <p class="fade-in" th:text="#{cta.subtitle}">Contact our team for professional consultation and competitive quotation</p>
         <div class="fade-in">
-            <a th:href="@{/contact}" class="btn btn-accent btn-lg">Get in Touch</a>
+            <a th:href="@{/contact}" class="btn btn-accent btn-lg" th:text="#{cta.button}">Get in Touch</a>
         </div>
     </div>
 </section>
@@ -414,7 +395,6 @@ window.switchProductTab = function(btn) {
     if (!track) return;
     var items = track.querySelectorAll('.exhibition-item');
     var currentOffset = 0;
-    var visibleCount = 4;
 
     function getItemWidth() {
         if (window.innerWidth <= 576) return track.parentElement.offsetWidth;
@@ -439,7 +419,6 @@ window.switchProductTab = function(btn) {
     updateTrack();
     window.addEventListener('resize', function() { updateTrack(); });
 
-    // Touch support
     var sx = 0;
     track.parentElement.addEventListener('touchstart', function(e) { sx = e.changedTouches[0].clientX; }, {passive:true});
     track.parentElement.addEventListener('touchend', function(e) {

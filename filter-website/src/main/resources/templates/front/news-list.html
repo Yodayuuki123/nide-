@@ -10,7 +10,7 @@
 <!-- Page Title -->
 <section class="bf-page-title">
     <div class="bf-container">
-        <h1>News</h1>
+        <h1 th:text="#{nav.news}">News</h1>
     </div>
 </section>
 
@@ -19,7 +19,7 @@
     <div class="bf-container">
         <form th:action="@{/news}" method="get" class="bf-filter-form">
             <div class="bf-filter-group">
-                <input type="text" name="keyword" th:value="${keyword}" placeholder="Search news..." class="bf-filter-input">
+                <input type="text" name="keyword" th:value="${keyword}" th:placeholder="#{news.search.placeholder}" class="bf-filter-input">
             </div>
             <div class="bf-filter-group">
                 <input type="date" name="startDate" th:value="${startDate}" class="bf-filter-input bf-date-input">
@@ -29,11 +29,11 @@
             </div>
             <div class="bf-filter-group">
                 <select name="sort" class="bf-filter-input">
-                    <option value="newest" th:selected="${sort == 'newest'}">Newest First</option>
-                    <option value="oldest" th:selected="${sort == 'oldest'}">Oldest First</option>
+                    <option value="newest" th:selected="${sort == 'newest'}" th:text="#{news.sort.newest}">Newest First</option>
+                    <option value="oldest" th:selected="${sort == 'oldest'}" th:text="#{news.sort.oldest}">Oldest First</option>
                 </select>
             </div>
-            <button type="submit" class="bf-filter-btn"><i class="bi bi-search"></i> Search</button>
+            <button type="submit" class="bf-filter-btn"><i class="bi bi-search"></i> <span th:text="#{search.button}">Search</span></button>
         </form>
     </div>
 </section>
@@ -43,8 +43,8 @@
     <div class="bf-container">
         <!-- Search info -->
         <div th:if="${keyword != null and keyword != ''}" class="bf-search-info">
-            <span>Search results for: "<strong th:text="${keyword}"></strong>"</span>
-            <a th:href="@{/news}" class="bf-clear-search"><i class="bi bi-x-circle"></i> Clear</a>
+            <span th:text="#{search.results_for}">Search results for:</span> "<strong th:text="${keyword}"></strong>"
+            <a th:href="@{/news}" class="bf-clear-search"><i class="bi bi-x-circle"></i> <span th:text="#{news.clear}">Clear</span></a>
         </div>
 
         <div class="bf-news-grid">
@@ -68,15 +68,15 @@
         <!-- Empty State -->
         <div th:if="${newsPage == null or newsPage.records.isEmpty()}" class="bf-empty-state">
             <i class="bi bi-newspaper" style="font-size:3rem;color:#ccc;"></i>
-            <h4>No news articles found</h4>
-            <p th:if="${keyword != null}">Try a different search term</p>
+            <h4 th:text="#{news.empty}">No news articles found</h4>
+            <p th:if="${keyword != null}" th:text="#{news.empty.hint}">Try a different search term</p>
         </div>
 
         <!-- Pagination -->
         <div th:if="${newsPage != null and newsPage.getPages() > 1}" class="bf-pagination">
             <a th:if="${newsPage.current > 1}"
                th:href="@{/news(page=${newsPage.current - 1}, keyword=${keyword}, startDate=${startDate}, endDate=${endDate}, sort=${sort})}"
-               class="bf-page-link">&laquo; Prev</a>
+               class="bf-page-link"><span th:text="'&laquo; ' + #{pagination.previous}">&laquo; Prev</span></a>
             <th:block th:each="i : ${#numbers.sequence(1, newsPage.getPages())}">
                 <a th:href="@{/news(page=${i}, keyword=${keyword}, startDate=${startDate}, endDate=${endDate}, sort=${sort})}"
                    th:text="${i}"
@@ -85,7 +85,7 @@
             </th:block>
             <a th:if="${newsPage.current < newsPage.getPages()}"
                th:href="@{/news(page=${newsPage.current + 1}, keyword=${keyword}, startDate=${startDate}, endDate=${endDate}, sort=${sort})}"
-               class="bf-page-link">Next &raquo;</a>
+               class="bf-page-link"><span th:text="#{pagination.next} + ' &raquo;'">Next &raquo;</span></a>
         </div>
     </div>
 </section>

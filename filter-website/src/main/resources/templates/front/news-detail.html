@@ -34,11 +34,11 @@
                 <!-- Previous / Next Post Navigation -->
                 <div class="bf-post-nav" th:if="${prevNews != null or nextNews != null}">
                     <a th:if="${prevNews != null}" th:href="@{/news/{slug}(slug=${prevNews.slug})}" class="bf-post-nav-item bf-post-prev">
-                        <span class="bf-post-nav-label"><i class="bi bi-arrow-left"></i> Previous Post</span>
+                        <span class="bf-post-nav-label"><i class="bi bi-arrow-left"></i> <span th:text="#{news.prev_post}">Previous Post</span></span>
                         <span class="bf-post-nav-title" th:text="${prevNews.title}">Previous Title</span>
                     </a>
                     <a th:if="${nextNews != null}" th:href="@{/news/{slug}(slug=${nextNews.slug})}" class="bf-post-nav-item bf-post-next">
-                        <span class="bf-post-nav-label">Next Post <i class="bi bi-arrow-right"></i></span>
+                        <span class="bf-post-nav-label"><span th:text="#{news.next_post}">Next Post</span> <i class="bi bi-arrow-right"></i></span>
                         <span class="bf-post-nav-title" th:text="${nextNews.title}">Next Title</span>
                     </a>
                 </div>
@@ -47,7 +47,7 @@
             <!-- Right Sidebar -->
             <aside class="bf-sidebar">
                 <div class="bf-sidebar-header">
-                    <h3 class="bf-sidebar-title">News</h3>
+                    <h3 class="bf-sidebar-title" th:text="#{nav.news}">News</h3>
                 </div>
 
                 <!-- Recent News List -->
@@ -64,7 +64,7 @@
                             <div class="bf-sidebar-news-info">
                                 <span class="bf-sidebar-news-title" th:text="${item.title}">Title</span>
                                 <span class="bf-sidebar-news-date" th:text="${#temporals.format(item.createdTime, 'yyyy/ MM-dd')}">2025/ 11-06</span>
-                                <span class="bf-sidebar-news-comments">0 COMMENTS</span>
+                                <span class="bf-sidebar-news-comments">0 <span th:text="#{news.comments}">COMMENTS</span></span>
                             </div>
                         </a>
                     </div>

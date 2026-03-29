@@ -110,15 +110,15 @@
                         <div class="bf-info-icon"><i class="bi bi-clock-fill"></i></div>
                         <div class="bf-info-content">
                             <h4 th:text="#{contact.hours.label}">Business Hours</h4>
-                            <p>Mon - Fri: 8:00 AM - 6:00 PM (GMT+8)</p>
-                            <p>Sat: 9:00 AM - 12:00 PM (GMT+8)</p>
+                            <p th:text="#{contact.hours.weekday}">Mon - Fri: 8:00 AM - 6:00 PM (GMT+8)</p>
+                            <p th:text="#{contact.hours.weekend}">Sat: 9:00 AM - 12:00 PM (GMT+8)</p>
                         </div>
                     </div>
                 </div>
 
                 <!-- Social Media -->
                 <div class="bf-social-section">
-                    <h4>Follow Us</h4>
+                    <h4 th:text="#{contact.follow_us}">Follow Us</h4>
                     <div class="bf-social-icons">
                         <a href="#" target="_blank" class="bf-social-icon bf-social-facebook"><i class="bi bi-facebook"></i></a>
                         <a href="#" target="_blank" class="bf-social-icon bf-social-linkedin"><i class="bi bi-linkedin"></i></a>

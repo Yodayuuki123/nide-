@@ -1,18 +1,18 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{fragments/header :: htmlHead('Solutions', 'Complete filtration solutions for every industry')}"></head>
+<head th:replace="~{fragments/header :: htmlHead(#{solutions.title}, #{solutions.subtitle})}"></head>
 <body>
 <header th:replace="~{fragments/header :: navbar}"></header>
 
 <!-- Page Header -->
 <section class="page-header">
     <div class="aesop-container">
-        <h1 class="fade-in">Filtration Solutions</h1>
-        <p class="fade-in">Complete filtration solutions tailored to your industry needs</p>
+        <h1 class="fade-in" th:text="#{solutions.title}">Filtration Solutions</h1>
+        <p class="fade-in" th:text="#{solutions.subtitle}">Complete filtration solutions tailored to your industry needs</p>
         <nav class="breadcrumb-nav">
-            <a th:href="@{/}">Home</a>
+            <a th:href="@{/}" th:text="#{breadcrumb.home}">Home</a>
             <span class="separator">/</span>
-            <span class="current">Solutions</span>
+            <span class="current" th:text="#{nav.solutions}">Solutions</span>
         </nav>
     </div>
 </section>
@@ -21,81 +21,81 @@
 <section class="section">
     <div class="aesop-container">
         <div class="section-header text-center fade-in">
-            <span class="section-eyebrow">Industry Solutions</span>
-            <h2>Tailored Filtration for Every Industry</h2>
-            <p>We provide customized filtration solutions based on your specific working conditions and requirements</p>
+            <span class="section-eyebrow" th:text="#{solutions.industry.eyebrow}">Industry Solutions</span>
+            <h2 th:text="#{solutions.industry.title}">Tailored Filtration for Every Industry</h2>
+            <p th:text="#{solutions.industry.subtitle}">We provide customized filtration solutions based on your specific working conditions and requirements</p>
         </div>
 
         <div class="solutions-grid">
             <div class="solution-card fade-in">
                 <div class="solution-icon"><i class="bi bi-building"></i></div>
-                <h4>Cement Industry</h4>
-                <p>High-temperature resistant filter bags for kiln, clinker cooler, raw mill, and cement mill dust collection systems. Our PTFE membrane and fiberglass solutions handle temperatures up to 280C.</p>
+                <h4 th:text="#{industries.cement}">Cement Industry</h4>
+                <p th:text="#{solutions.cement.desc}">High-temperature resistant filter bags for kiln, clinker cooler, raw mill, and cement mill dust collection systems.</p>
                 <ul class="solution-features">
-                    <li>Kiln tail dust collection</li>
-                    <li>Clinker cooler filtration</li>
-                    <li>Raw mill & cement mill bags</li>
-                    <li>Coal mill explosion-proof bags</li>
+                    <li th:text="#{solutions.cement.f1}">Kiln tail dust collection</li>
+                    <li th:text="#{solutions.cement.f2}">Clinker cooler filtration</li>
+                    <li th:text="#{solutions.cement.f3}">Raw mill & cement mill bags</li>
+                    <li th:text="#{solutions.cement.f4}">Coal mill explosion-proof bags</li>
                 </ul>
             </div>
 
             <div class="solution-card fade-in">
                 <div class="solution-icon"><i class="bi bi-fire"></i></div>
-                <h4>Steel & Smelting</h4>
-                <p>Durable filter solutions for electric arc furnaces, blast furnaces, sintering machines, and converter gas cleaning. Resistant to high temperatures and chemical corrosion.</p>
+                <h4 th:text="#{industries.steel}">Steel & Smelting</h4>
+                <p th:text="#{solutions.steel.desc}">Durable filter solutions for electric arc furnaces, blast furnaces, sintering machines, and converter gas cleaning.</p>
                 <ul class="solution-features">
-                    <li>EAF & BOF dust collection</li>
-                    <li>Sintering machine filtration</li>
-                    <li>Blast furnace gas cleaning</li>
-                    <li>Ladle furnace dust removal</li>
+                    <li th:text="#{solutions.steel.f1}">EAF & BOF dust collection</li>
+                    <li th:text="#{solutions.steel.f2}">Sintering machine filtration</li>
+                    <li th:text="#{solutions.steel.f3}">Blast furnace gas cleaning</li>
+                    <li th:text="#{solutions.steel.f4}">Ladle furnace dust removal</li>
                 </ul>
             </div>
 
             <div class="solution-card fade-in">
                 <div class="solution-icon"><i class="bi bi-lightning"></i></div>
-                <h4>Power Generation</h4>
-                <p>Advanced filtration for coal-fired power plants, biomass energy, and waste-to-energy facilities. Our solutions meet the strictest emission standards worldwide.</p>
+                <h4 th:text="#{industries.power}">Power Generation</h4>
+                <p th:text="#{solutions.power.desc}">Advanced filtration for coal-fired power plants, biomass energy, and waste-to-energy facilities.</p>
                 <ul class="solution-features">
-                    <li>Coal-fired boiler flue gas</li>
-                    <li>Biomass power plant filtration</li>
-                    <li>CFB boiler filter bags</li>
-                    <li>Ultra-low emission solutions</li>
+                    <li th:text="#{solutions.power.f1}">Coal-fired boiler flue gas</li>
+                    <li th:text="#{solutions.power.f2}">Biomass power plant filtration</li>
+                    <li th:text="#{solutions.power.f3}">CFB boiler filter bags</li>
+                    <li th:text="#{solutions.power.f4}">Ultra-low emission solutions</li>
                 </ul>
             </div>
 
             <div class="solution-card fade-in">
                 <div class="solution-icon"><i class="bi bi-recycle"></i></div>
-                <h4>Waste Incineration</h4>
-                <p>Specialized filter bags for municipal solid waste (MSW) and hazardous waste incineration, with excellent resistance to acid, alkali, and dioxin.</p>
+                <h4 th:text="#{industries.waste}">Waste Incineration</h4>
+                <p th:text="#{solutions.waste.desc}">Specialized filter bags for municipal solid waste and hazardous waste incineration.</p>
                 <ul class="solution-features">
-                    <li>MSW incineration flue gas</li>
-                    <li>Hazardous waste treatment</li>
-                    <li>Dioxin adsorption filtration</li>
-                    <li>Acid/alkali resistant bags</li>
+                    <li th:text="#{solutions.waste.f1}">MSW incineration flue gas</li>
+                    <li th:text="#{solutions.waste.f2}">Hazardous waste treatment</li>
+                    <li th:text="#{solutions.waste.f3}">Dioxin adsorption filtration</li>
+                    <li th:text="#{solutions.waste.f4}">Acid/alkali resistant bags</li>
                 </ul>
             </div>
 
             <div class="solution-card fade-in">
                 <div class="solution-icon"><i class="bi bi-droplet"></i></div>
-                <h4>Chemical & Pharmaceutical</h4>
-                <p>Corrosion-resistant filter solutions for chemical processing, pharmaceutical production, and fine chemical manufacturing with various material options.</p>
+                <h4 th:text="#{industries.chemical}">Chemical & Pharmaceutical</h4>
+                <p th:text="#{solutions.chemical.desc}">Corrosion-resistant filter solutions for chemical processing and pharmaceutical production.</p>
                 <ul class="solution-features">
-                    <li>Chemical plant dust collection</li>
-                    <li>Pharmaceutical filtration</li>
-                    <li>Carbon black collection</li>
-                    <li>Titanium dioxide filtration</li>
+                    <li th:text="#{solutions.chemical.f1}">Chemical plant dust collection</li>
+                    <li th:text="#{solutions.chemical.f2}">Pharmaceutical filtration</li>
+                    <li th:text="#{solutions.chemical.f3}">Carbon black collection</li>
+                    <li th:text="#{solutions.chemical.f4}">Titanium dioxide filtration</li>
                 </ul>
             </div>
 
             <div class="solution-card fade-in">
                 <div class="solution-icon"><i class="bi bi-water"></i></div>
-                <h4>Liquid Filtration</h4>
-                <p>Complete liquid filtration solutions for water treatment, food & beverage, oil processing, and industrial wastewater treatment applications.</p>
+                <h4 th:text="#{solutions.liquid.title}">Liquid Filtration</h4>
+                <p th:text="#{solutions.liquid.desc}">Complete liquid filtration solutions for water treatment, food & beverage, and industrial wastewater.</p>
                 <ul class="solution-features">
-                    <li>Water treatment filtration</li>
-                    <li>Food & beverage processing</li>
-                    <li>Oil & grease removal</li>
-                    <li>Industrial wastewater</li>
+                    <li th:text="#{solutions.liquid.f1}">Water treatment filtration</li>
+                    <li th:text="#{solutions.liquid.f2}">Food & beverage processing</li>
+                    <li th:text="#{solutions.liquid.f3}">Oil & grease removal</li>
+                    <li th:text="#{solutions.liquid.f4}">Industrial wastewater</li>
                 </ul>
             </div>
         </div>
@@ -106,24 +106,24 @@
 <section class="home-whychoose-section" style="background:var(--bg-secondary);">
     <div class="aesop-container">
         <div class="section-header text-center fade-in">
-            <span class="section-eyebrow">Our Approach</span>
-            <h2>Why Our Solutions Work</h2>
+            <span class="section-eyebrow" th:text="#{solutions.approach.eyebrow}">Our Approach</span>
+            <h2 th:text="#{solutions.approach.title}">Why Our Solutions Work</h2>
         </div>
         <div class="whychoose-grid">
             <div class="whychoose-card fade-in">
                 <div class="whychoose-icon"><i class="bi bi-clipboard-data"></i></div>
-                <h5>Site Assessment</h5>
-                <p>We analyze your working conditions, temperature, dust type, and emission requirements to design the optimal solution</p>
+                <h5 th:text="#{solutions.approach.assessment}">Site Assessment</h5>
+                <p th:text="#{solutions.approach.assessment.desc}">We analyze your working conditions, temperature, dust type, and emission requirements to design the optimal solution</p>
             </div>
             <div class="whychoose-card fade-in">
                 <div class="whychoose-icon"><i class="bi bi-puzzle"></i></div>
-                <h5>Material Selection</h5>
-                <p>Choose from 20+ filter media materials including PPS, PTFE, P84, Nomex, fiberglass, and more</p>
+                <h5 th:text="#{solutions.approach.material}">Material Selection</h5>
+                <p th:text="#{solutions.approach.material.desc}">Choose from 20+ filter media materials including PPS, PTFE, P84, Nomex, fiberglass, and more</p>
             </div>
             <div class="whychoose-card fade-in">
                 <div class="whychoose-icon"><i class="bi bi-graph-up-arrow"></i></div>
-                <h5>Performance Guarantee</h5>
-                <p>Our solutions are backed by performance data and field-tested results from 20+ years of industry experience</p>
+                <h5 th:text="#{solutions.approach.guarantee}">Performance Guarantee</h5>
+                <p th:text="#{solutions.approach.guarantee.desc}">Our solutions are backed by performance data and field-tested results from 20+ years of industry experience</p>
             </div>
         </div>
     </div>
@@ -132,10 +132,10 @@
 <!-- CTA -->
 <section class="home-cta-section">
     <div class="aesop-container text-center">
-        <h3 class="fade-in">Need a Custom Filtration Solution?</h3>
-        <p class="fade-in">Our engineers will design the optimal solution for your specific requirements</p>
+        <h3 class="fade-in" th:text="#{solutions.cta.title}">Need a Custom Filtration Solution?</h3>
+        <p class="fade-in" th:text="#{solutions.cta.subtitle}">Our engineers will design the optimal solution for your specific requirements</p>
         <div class="fade-in">
-            <a th:href="@{/contact}" class="btn btn-accent btn-lg">Get Free Consultation</a>
+            <a th:href="@{/contact}" class="btn btn-accent btn-lg" th:text="#{solutions.cta.button}">Get Free Consultation</a>
         </div>
     </div>
 </section>

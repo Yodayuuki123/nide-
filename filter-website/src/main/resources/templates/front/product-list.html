@@ -12,7 +12,7 @@
     <div class="bf-container">
         <h1 th:if="${currentCategory != null}" th:text="${currentCategory.name}">Category Name</h1>
         <h1 th:if="${currentTag != null}" th:text="${currentTag.name}">Tag Name</h1>
-        <h1 th:if="${currentCategory == null and currentTag == null}">Products</h1>
+        <h1 th:if="${currentCategory == null and currentTag == null}" th:text="#{product.list.title}">Products</h1>
         <p th:if="${currentCategory != null and currentCategory.description != null}"
            th:text="${currentCategory.description}" class="bf-page-subtitle">Category description</p>
     </div>
@@ -36,9 +36,9 @@
                 <!-- Toolbar: result count + view toggle + page size -->
                 <div class="bf-pl-toolbar" th:if="${productPage != null}">
                     <div class="bf-pl-toolbar-left">
-                        <span>Showing</span>
+                        <span th:text="#{pagination.showing}">Showing</span>
                         <strong th:text="${productPage.total}">0</strong>
-                        <span>results</span>
+                        <span th:text="#{pagination.results}">results</span>
                     </div>
                     <div class="bf-pl-toolbar-right">
                         <div class="bf-view-toggle">
@@ -53,9 +53,9 @@
                             </button>
                         </div>
                         <select class="bf-page-size" onchange="changePageSize(this.value)">
-                            <option value="16" th:selected="${productPage.size == 16}">16 / page</option>
-                            <option value="32" th:selected="${productPage.size == 32}">32 / page</option>
-                            <option value="48" th:selected="${productPage.size == 48}">48 / page</option>
+                            <option value="16" th:selected="${productPage.size == 16}" th:text="'16 / ' + #{pagination.per_page}">16 / page</option>
+                            <option value="32" th:selected="${productPage.size == 32}" th:text="'32 / ' + #{pagination.per_page}">32 / page</option>
+                            <option value="48" th:selected="${productPage.size == 48}" th:text="'48 / ' + #{pagination.per_page}">48 / page</option>
                         </select>
                     </div>
                 </div>
@@ -92,9 +92,9 @@
                 <!-- Empty State -->
                 <div th:if="${productPage != null and productPage.records.isEmpty()}" class="bf-empty-state">
                     <i class="bi bi-inbox"></i>
-                    <h4>No products found</h4>
-                    <p>Try browsing our categories</p>
-                    <a th:href="@{/products}" class="bf-btn bf-btn-primary">Browse All Products</a>
+                    <h4 th:text="#{search.no_results}">No products found</h4>
+                    <p th:text="#{search.try_again}">Try browsing our categories</p>
+                    <a th:href="@{/products}" class="bf-btn bf-btn-primary" th:text="#{nav.view_all_products}">Browse All Products</a>
                 </div>
 
                 <!-- Product Grid (Non-paged, for tags) -->
@@ -119,7 +119,7 @@
                     <nav class="bf-pagination">
                         <a th:if="${productPage.current > 1}"
                            th:href="${currentCategory != null} ? @{/categories/{slug}(slug=${currentCategory.slug}, page=${productPage.current - 1}, size=${productPage.size})} : @{/products(page=${productPage.current - 1}, size=${productPage.size})}"
-                           class="bf-page-link">&laquo; Prev</a>
+                           class="bf-page-link"><span th:text="'&laquo; ' + #{pagination.previous}">&laquo; Prev</span></a>
                         <th:block th:each="i : ${#numbers.sequence(1, productPage.pages)}">
                             <span th:if="${i == productPage.current}" class="bf-page-link bf-page-active" th:text="${i}">1</span>
                             <a th:unless="${i == productPage.current}"
@@ -128,7 +128,7 @@
                         </th:block>
                         <a th:if="${productPage.current < productPage.pages}"
                            th:href="${currentCategory != null} ? @{/categories/{slug}(slug=${currentCategory.slug}, page=${productPage.current + 1}, size=${productPage.size})} : @{/products(page=${productPage.current + 1}, size=${productPage.size})}"
-                           class="bf-page-link">Next &raquo;</a>
+                           class="bf-page-link"><span th:text="#{pagination.next} + ' &raquo;'">Next &raquo;</span></a>
                     </nav>
                 </div>
             </div>
@@ -137,16 +137,16 @@
             <aside class="bf-sidebar">
                 <!-- Search Widget -->
                 <div class="bf-sidebar-widget">
-                    <h5 class="bf-widget-title">Search Products</h5>
+                    <h5 class="bf-widget-title" th:text="#{sidebar.search}">Search Products</h5>
                     <form th:action="@{/search}" method="get" class="bf-search-form">
-                        <input type="text" name="keyword" placeholder="Search products..." class="bf-input">
+                        <input type="text" name="keyword" th:placeholder="#{search.placeholder}" class="bf-input">
                         <button type="submit" class="bf-btn bf-btn-primary"><i class="bi bi-search"></i></button>
                     </form>
                 </div>
 
                 <!-- Category List Widget -->
                 <div class="bf-sidebar-widget" th:if="${categoryTree != null or globalCategoryTree != null}">
-                    <h5 class="bf-widget-title">Product Categories</h5>
+                    <h5 class="bf-widget-title" th:text="#{sidebar.categories}">Product Categories</h5>
                     <ul class="bf-category-list">
                         <li th:each="cat : ${categoryTree != null ? categoryTree : globalCategoryTree}">
                             <a th:href="@{/categories/{slug}(slug=${cat.slug})}"
@@ -167,8 +167,8 @@
 
                 <!-- Contact Widget -->
                 <div class="bf-sidebar-widget bf-sidebar-contact">
-                    <h5 class="bf-widget-title">Need Help?</h5>
-                    <p>Contact us for product consultation</p>
+                    <h5 class="bf-widget-title" th:text="#{sidebar.need_help}">Need Help?</h5>
+                    <p th:text="#{sidebar.need_help.desc}">Contact us for product consultation</p>
                     <ul class="bf-contact-list">
                         <li><i class="bi bi-envelope"></i> <a href="mailto:info@philiteefilter.com">info@philiteefilter.com</a></li>
                         <li><i class="bi bi-whatsapp"></i> <a href="https://wa.me/8618057358206" target="_blank">+86-18057358206</a></li>
