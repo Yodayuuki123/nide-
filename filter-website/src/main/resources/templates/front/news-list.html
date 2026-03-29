@@ -4,6 +4,9 @@
 <body>
 <header th:replace="~{fragments/header :: navbar}"></header>
 
+<!-- Breadcrumb -->
+<div th:replace="~{fragments/breadcrumb :: breadcrumb(${breadcrumbItems})}"></div>
+
 <!-- Page Title -->
 <section class="bf-page-title">
     <div class="bf-container">

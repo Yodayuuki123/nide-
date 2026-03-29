@@ -5,6 +5,7 @@ import com.philitee.filter.entity.ProductCategory;
 import com.philitee.filter.service.MenuService;
 import com.philitee.filter.service.ProductCategoryService;
 import com.philitee.filter.service.ProductService;
+import com.philitee.filter.util.BreadcrumbItem;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -44,6 +45,9 @@ public class HomeController {
      */
     @GetMapping("/about")
     public String about(Model model) {
+        model.addAttribute("breadcrumbItems", List.of(
+            BreadcrumbItem.of("About Us")
+        ));
         return "front/about";
     }
 
@@ -52,6 +56,9 @@ public class HomeController {
      */
     @GetMapping("/factory")
     public String factory(Model model) {
+        model.addAttribute("breadcrumbItems", List.of(
+            BreadcrumbItem.of("Factory")
+        ));
         return "front/factory";
     }
 
@@ -60,6 +67,9 @@ public class HomeController {
      */
     @GetMapping("/solutions")
     public String solutions(Model model) {
+        model.addAttribute("breadcrumbItems", List.of(
+            BreadcrumbItem.of("Solutions")
+        ));
         return "front/solutions";
     }
 
@@ -68,6 +78,9 @@ public class HomeController {
      */
     @GetMapping("/contact")
     public String contact(Model model) {
+        model.addAttribute("breadcrumbItems", List.of(
+            BreadcrumbItem.of("Contact Us")
+        ));
         return "front/contact";
     }
 

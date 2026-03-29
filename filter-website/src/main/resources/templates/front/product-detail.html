@@ -1,51 +1,43 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{fragments/header :: htmlHead(${product.name}, ${product.shortDescription})}"></head>
+<html xmlns:th="http://www.thymeleaf.org" th:lang="${#locale.language}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${product.name} + ' - Philitee Filter'">Product - Philitee Filter</title>
+    <meta name="description" th:content="${product.shortDescription}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" th:href="@{/static/css/style.css(v=8)}">
+</head>
 <body>
 <header th:replace="~{fragments/header :: navbar}"></header>
 
 <!-- Breadcrumb -->
-<div class="section-sm" style="padding-bottom:0;">
-    <div class="aesop-container">
-        <nav class="breadcrumb-nav" style="justify-content:flex-start;">
-            <a th:href="@{/}" th:text="#{breadcrumb.home}">Home</a>
-            <span class="separator">/</span>
-            <a th:href="@{/products}" th:text="#{breadcrumb.products}">Products</a>
-            <th:block th:if="${product.categories != null and !product.categories.isEmpty()}">
-                <span class="separator">/</span>
-                <a th:href="@{/categories/{slug}(slug=${product.categories[0].slug})}"
-                   th:text="${product.categories[0].name}">Category</a>
-            </th:block>
-            <span class="separator">/</span>
-            <span class="current" th:text="${product.name}">Product Name</span>
-        </nav>
-    </div>
-</div>
+<div th:replace="~{fragments/breadcrumb :: breadcrumb(${breadcrumbItems})}"></div>
 
-<section class="section">
-    <div class="aesop-container">
-        <div class="pd-layout">
+<section class="bf-product-detail-page">
+    <div class="bf-container">
+        <div class="bf-pd-layout">
             <!-- Left: Main Content -->
-            <div class="pd-main">
+            <div class="bf-pd-main">
                 <!-- Product Top: Gallery + Info -->
-                <div class="product-detail">
+                <div class="bf-pd-top">
                     <!-- Gallery -->
-                    <div class="product-gallery fade-in-left">
-                        <div class="product-gallery-main" id="galleryMainContainer">
+                    <div class="bf-pd-gallery">
+                        <div class="bf-pd-gallery-main" id="galleryMainContainer">
                             <img th:if="${product.mainImage != null}"
                                  th:src="${product.mainImage.url}"
                                  th:alt="${product.name}"
                                  id="galleryMainImage">
-                            <div th:unless="${product.mainImage != null}" class="product-gallery-placeholder">
+                            <div th:unless="${product.mainImage != null}" class="bf-pd-placeholder">
                                 <i class="bi bi-image"></i>
                             </div>
                         </div>
-                        <div class="product-gallery-thumbs" th:if="${product.images != null and !product.images.isEmpty()}">
-                            <div th:if="${product.mainImage != null}" class="gallery-thumb active"
+                        <div class="bf-pd-gallery-thumbs" th:if="${product.images != null and !product.images.isEmpty()}">
+                            <div th:if="${product.mainImage != null}" class="bf-pd-thumb active"
                                  th:data-img="${product.mainImage.url}" onclick="switchGalleryImage(this)">
                                 <img th:src="${product.mainImage.url}" th:alt="${product.name}">
                             </div>
-                            <div th:each="img : ${product.images}" class="gallery-thumb"
+                            <div th:each="img : ${product.images}" class="bf-pd-thumb"
                                  th:data-img="${img.url}" onclick="switchGalleryImage(this)">
                                 <img th:src="${img.url}" th:alt="${img.altText} ?: ${product.name}">
                             </div>
@@ -53,19 +45,19 @@
                     </div>
 
                     <!-- Product Info -->
-                    <div class="product-info fade-in-right">
-                        <div class="eyebrow" th:if="${product.categories != null and !product.categories.isEmpty()}"
+                    <div class="bf-pd-info">
+                        <div class="bf-pd-category" th:if="${product.categories != null and !product.categories.isEmpty()}"
                              th:text="${product.categories[0].name}">Category</div>
-                        <h1 th:text="${product.name}">Product Name</h1>
-                        <div th:if="${product.sku != null}" class="product-sku" th:text="'SKU: ' + ${product.sku}">SKU: ABC-123</div>
-                        <div th:if="${product.shortDescription != null}" class="product-short-desc" th:utext="${product.shortDescription}">
+                        <h1 class="bf-pd-title" th:text="${product.name}">Product Name</h1>
+                        <div th:if="${product.sku != null}" class="bf-pd-sku" th:text="'SKU: ' + ${product.sku}">SKU: ABC-123</div>
+                        <div th:if="${product.shortDescription != null}" class="bf-pd-short-desc" th:utext="${product.shortDescription}">
                             Short description here
                         </div>
 
-                        <ul class="product-meta-list">
+                        <ul class="bf-pd-meta">
                             <li th:if="${product.categories != null and !product.categories.isEmpty()}">
-                                <span class="label" th:text="#{product.category}">Category</span>
-                                <span class="value">
+                                <span class="bf-pd-meta-label" th:text="#{product.category}">Category</span>
+                                <span class="bf-pd-meta-value">
                                     <span th:each="cat,iter : ${product.categories}">
                                         <a th:href="@{/categories/{slug}(slug=${cat.slug})}" th:text="${cat.name}">Cat</a>
                                         <span th:if="${!iter.last}">, </span>
@@ -73,29 +65,17 @@
                                 </span>
                             </li>
                             <li th:if="${product.tags != null and !product.tags.isEmpty()}">
-                                <span class="label" th:text="#{product.tags}">Tags</span>
-                                <span class="value">
+                                <span class="bf-pd-meta-label" th:text="#{product.tags}">Tags</span>
+                                <span class="bf-pd-meta-value">
                                     <span th:each="tag,iter : ${product.tags}">
                                         <a th:href="@{/tags/{slug}(slug=${tag.slug})}" th:text="${tag.name}">Tag</a>
                                         <span th:if="${!iter.last}">, </span>
                                     </span>
                                 </span>
                             </li>
-                            <li th:if="${product.stockQuantity != null}">
-                                <span class="label" th:text="#{product.in_stock}">Stock</span>
-                                <span class="value"
-                                      th:text="${product.stockQuantity > 0} ? #{product.in_stock} : 'Out of Stock'"
-                                      th:style="${product.stockQuantity > 0} ? 'color:#2d5a2d' : 'color:#7a2d2d'">In Stock</span>
-                            </li>
                         </ul>
 
-                        <div th:if="${product.price != null}" class="product-price">
-                            <span th:if="${product.salePrice != null}" class="original"
-                                  th:text="'$' + ${#numbers.formatDecimal(product.price, 1, 2)}">$100.00</span>
-                            <span th:text="'$' + ${#numbers.formatDecimal(product.salePrice ?: product.price, 1, 2)}">$89.00</span>
-                        </div>
-
-                        <a th:href="@{/contact}" class="btn btn-accent" style="width:100%;text-align:center;">
+                        <a th:href="@{/contact}" class="bf-btn bf-btn-primary bf-btn-block">
                             <i class="bi bi-envelope"></i>
                             <span th:text="#{product.send_inquiry}">Send Inquiry</span>
                         </a>
@@ -103,32 +83,31 @@
                 </div>
 
                 <!-- Description -->
-                <div th:if="${product.description != null}" class="product-description-section fade-in">
+                <div th:if="${product.description != null}" class="bf-pd-description">
                     <h3 th:text="#{product.description}">Product Description</h3>
-                    <div class="product-description-content" th:utext="${product.description}">
+                    <div class="bf-pd-desc-content" th:utext="${product.description}">
                         Product description content
                     </div>
                 </div>
 
                 <!-- Related Products (4 items) -->
-                <div th:if="${relatedProducts != null and !relatedProducts.isEmpty()}" class="related-products">
-                    <h3 th:text="#{product.related}" class="fade-in">Related Products</h3>
-                    <div class="pd-related-grid">
+                <div th:if="${relatedProducts != null and !relatedProducts.isEmpty()}" class="bf-pd-related">
+                    <h3 th:text="#{product.related}">Related Products</h3>
+                    <div class="bf-pd-related-grid">
                         <a th:each="rp,iter : ${relatedProducts}" th:if="${iter.index < 4}"
                            th:href="@{/products/{slug}(slug=${rp.slug})}"
-                           class="pl-product-card fade-in">
-                            <div class="pl-product-img">
+                           class="bf-pd-related-card">
+                            <div class="bf-pd-related-img">
                                 <img th:if="${rp.mainImage != null}" th:src="${rp.mainImage.url}" th:alt="${rp.name}" loading="lazy">
-                                <div th:unless="${rp.mainImage != null}" class="product-placeholder">
+                                <div th:unless="${rp.mainImage != null}" class="bf-pd-placeholder">
                                     <i class="bi bi-image"></i>
                                 </div>
                             </div>
-                            <div class="pl-product-info">
-                                <span class="pl-product-tags"
-                                      th:if="${rp.categories != null and !rp.categories.isEmpty()}">
-                                    <span class="pl-tag" th:text="${rp.categories[0].name}">Category</span>
-                                </span>
-                                <h6 class="pl-product-title" th:text="${rp.name}">Product Name</h6>
+                            <div class="bf-pd-related-info">
+                                <span class="bf-pd-related-cat"
+                                      th:if="${rp.categories != null and !rp.categories.isEmpty()}"
+                                      th:text="${rp.categories[0].name}">Category</span>
+                                <h6 th:text="${rp.name}">Product Name</h6>
                             </div>
                         </a>
                     </div>
@@ -136,25 +115,26 @@
             </div>
 
             <!-- Right Sidebar -->
-            <aside class="pl-sidebar">
+            <aside class="bf-sidebar">
                 <!-- Search Widget -->
-                <div class="pl-sidebar-widget">
-                    <h5 class="pl-widget-title">Search Products</h5>
-                    <form th:action="@{/search}" method="get" class="pl-search-form">
-                        <input type="text" name="keyword" placeholder="Search..." class="form-control">
-                        <button type="submit" class="btn btn-accent"><i class="bi bi-search"></i></button>
+                <div class="bf-sidebar-widget">
+                    <h5 class="bf-widget-title">Search Products</h5>
+                    <form th:action="@{/search}" method="get" class="bf-search-form">
+                        <input type="text" name="keyword" placeholder="Search products..." class="bf-input">
+                        <button type="submit" class="bf-btn bf-btn-primary"><i class="bi bi-search"></i></button>
                     </form>
                 </div>
 
                 <!-- Category List -->
-                <div class="pl-sidebar-widget" th:if="${globalCategoryTree != null}">
-                    <h5 class="pl-widget-title">Product Categories</h5>
-                    <ul class="pl-category-list">
+                <div class="bf-sidebar-widget" th:if="${globalCategoryTree != null}">
+                    <h5 class="bf-widget-title">Product Categories</h5>
+                    <ul class="bf-category-list">
                         <li th:each="cat : ${globalCategoryTree}">
                             <a th:href="@{/categories/{slug}(slug=${cat.slug})}">
                                 <span th:text="${cat.name}">Category</span>
+                                <span class="bf-cat-count" th:if="${cat.productCount != null}" th:text="${cat.productCount}">0</span>
                             </a>
-                            <ul th:if="${cat.children != null and !cat.children.isEmpty()}" class="pl-category-sub">
+                            <ul th:if="${cat.children != null and !cat.children.isEmpty()}" class="bf-category-sub">
                                 <li th:each="child : ${cat.children}">
                                     <a th:href="@{/categories/{slug}(slug=${child.slug})}"
                                        th:text="${child.name}">Sub Category</a>
@@ -165,15 +145,15 @@
                 </div>
 
                 <!-- Contact Widget -->
-                <div class="pl-sidebar-widget pl-contact-widget">
-                    <h5 class="pl-widget-title">Need Help?</h5>
+                <div class="bf-sidebar-widget bf-sidebar-contact">
+                    <h5 class="bf-widget-title">Need Help?</h5>
                     <p>Contact us for product consultation</p>
-                    <ul class="pl-contact-list">
+                    <ul class="bf-contact-list">
                         <li><i class="bi bi-envelope"></i> <a href="mailto:info@philiteefilter.com">info@philiteefilter.com</a></li>
                         <li><i class="bi bi-whatsapp"></i> <a href="https://wa.me/8618057358206" target="_blank">+86-18057358206</a></li>
                         <li><i class="bi bi-telephone"></i> <a href="tel:+8618057358206">+86-18057358206</a></li>
                     </ul>
-                    <a th:href="@{/contact}" class="btn btn-accent" style="width:100%;text-align:center;margin-top:12px;">
+                    <a th:href="@{/contact}" class="bf-btn bf-btn-primary bf-btn-block">
                         <i class="bi bi-send"></i> Send Inquiry
                     </a>
                 </div>
@@ -202,5 +182,13 @@
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script src="/static/js/main.js"></script>
+<script>
+function switchGalleryImage(el) {
+    var img = document.getElementById('galleryMainImage');
+    if (img) img.src = el.getAttribute('data-img');
+    document.querySelectorAll('.bf-pd-thumb').forEach(function(t) { t.classList.remove('active'); });
+    el.classList.add('active');
+}
+</script>
 </body>
 </html>

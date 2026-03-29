@@ -4,10 +4,13 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.philitee.filter.entity.News;
 import com.philitee.filter.service.NewsService;
+import com.philitee.filter.util.BreadcrumbItem;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
@@ -29,6 +32,12 @@ public class NewsController {
         model.addAttribute("startDate", startDate);
         model.addAttribute("endDate", endDate);
         model.addAttribute("sort", sort);
+
+        // 面包屑
+        model.addAttribute("breadcrumbItems", List.of(
+            BreadcrumbItem.of("News")
+        ));
+
         return "front/news-list";
     }
 
@@ -52,6 +61,12 @@ public class NewsController {
         News nextNews = newsService.getNextNews(news.getCreatedTime());
         model.addAttribute("prevNews", prevNews);
         model.addAttribute("nextNews", nextNews);
+
+        // 面包屑
+        model.addAttribute("breadcrumbItems", List.of(
+            BreadcrumbItem.of("News", "/news"),
+            BreadcrumbItem.of(news.getTitle())
+        ));
 
         return "front/news-detail";
     }

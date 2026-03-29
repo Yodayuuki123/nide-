@@ -1,257 +1,201 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{fragments/header :: htmlHead(#{about.title}, #{about.subtitle})}"></head>
+<html xmlns:th="http://www.thymeleaf.org" th:lang="${#locale.language}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="#{about.title} + ' - Philitee Filter'">About Us - Philitee Filter</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" th:href="@{/static/css/style.css(v=8)}">
+</head>
 <body>
 <header th:replace="~{fragments/header :: navbar}"></header>
 
-<!-- Page Header (Aesop-style) -->
-<section class="page-header">
-    <div class="aesop-container">
-        <h1 th:text="#{about.title}" class="fade-in">About Us</h1>
-        <p th:text="#{about.subtitle}" class="fade-in">Premium filtration solutions serving 100+ countries worldwide</p>
-        <nav class="breadcrumb-nav">
-            <a th:href="@{/}" th:text="#{breadcrumb.home}">Home</a>
-            <span class="separator">/</span>
-            <span class="current" th:text="#{about.title}">About Us</span>
-        </nav>
-    </div>
-</section>
+<!-- Breadcrumb -->
+<div th:replace="~{fragments/breadcrumb :: breadcrumb(${breadcrumbItems})}"></div>
 
-<!-- Editorial Section: Company Story (Aesop-style split) -->
-<section class="editorial-section">
-    <div class="editorial-image parallax-image fade-in-left">
-        <div class="module-slideshow">
-            <img src="/static/images/about-company-generated.jpg" alt="Philite Environment Technology">
-        </div>
-    </div>
-    <div class="editorial-content fade-in-right">
-        <span class="eyebrow" th:text="#{about.company.eyebrow}">Our Story</span>
-        <h2 th:text="#{about.company.title}">Who We Are</h2>
-        <p th:text="#{about.company.desc}">Philite® is committed to providing first grade filter solution.</p>
-        <p th:text="#{about.company.desc2}">Our products are trusted by industries across 100+ countries.</p>
-    </div>
-</section>
+<!-- About Page -->
+<section class="bf-about-page">
+    <div class="bf-container">
+        <h1 class="bf-page-title" th:text="#{about.title}">About Us</h1>
 
-<!-- Stats (Aesop-style) -->
-<section class="stats-bar section-cream">
-    <div class="aesop-container">
-        <div class="stats-grid">
-            <div class="stat-item fade-in stagger-1">
-                <div class="stat-number" data-count="20">20+</div>
-                <div class="stat-label" th:text="#{stats.years}">Years Experience</div>
+        <!-- Company Introduction (left text + right image) -->
+        <div class="bf-about-intro">
+            <div class="bf-about-intro-text">
+                <h2 class="bf-section-heading"><span class="bf-heading-bar"></span> <span th:text="#{about.company.title}">Who We Are</span></h2>
+                <p th:text="#{about.company.desc}">Philitee Filter is a professional manufacturer specializing in industrial filtration products.</p>
+                <p th:text="#{about.company.desc2}">Our products are trusted by industries across 100+ countries.</p>
             </div>
-            <div class="stat-item fade-in stagger-2">
-                <div class="stat-number" data-count="100">100+</div>
-                <div class="stat-label" th:text="#{stats.countries}">Countries Served</div>
-            </div>
-            <div class="stat-item fade-in stagger-3">
-                <div class="stat-number" data-count="295">295+</div>
-                <div class="stat-label" th:text="#{stats.products}">Products</div>
-            </div>
-            <div class="stat-item fade-in stagger-4">
-                <div class="stat-number">ISO</div>
-                <div class="stat-label" th:text="#{stats.certifications}">Certified</div>
+            <div class="bf-about-intro-image">
+                <img src="/static/images/about-company-generated.jpg" alt="Philitee Factory" loading="lazy">
             </div>
         </div>
-    </div>
-</section>
 
-<!-- Values Section (Aesop-style) -->
-<section class="section">
-    <div class="aesop-container">
-        <div class="section-header fade-in">
-            <div class="eyebrow" th:text="#{about.values.eyebrow}">Why Choose Us</div>
-            <h2 th:text="#{about.values.title}">Core Strengths</h2>
-        </div>
-        <div class="values-grid">
-            <div class="value-item fade-in stagger-1">
-                <div class="value-icon"><i class="bi bi-shield-check"></i></div>
-                <h5 th:text="#{about.value.quality}">Quality Assurance</h5>
-                <p th:text="#{about.value.quality.desc}">Every batch passes multiple inspection systems.</p>
+        <!-- Stats Bar -->
+        <div class="bf-stats-bar">
+            <div class="bf-stat-item">
+                <div class="bf-stat-number">20+</div>
+                <div class="bf-stat-label" th:text="#{stats.years}">Years Experience</div>
             </div>
-            <div class="value-item fade-in stagger-2">
-                <div class="value-icon"><i class="bi bi-headset"></i></div>
-                <h5 th:text="#{about.value.innovation}">Technical Support</h5>
-                <p th:text="#{about.value.innovation.desc}">Engineers with 20 years of experience, free consultation.</p>
+            <div class="bf-stat-item">
+                <div class="bf-stat-number">100+</div>
+                <div class="bf-stat-label" th:text="#{stats.countries}">Countries Served</div>
             </div>
-            <div class="value-item fade-in stagger-3">
-                <div class="value-icon"><i class="bi bi-gear-wide-connected"></i></div>
-                <h5 th:text="#{about.value.service}">Production Solutions</h5>
-                <p th:text="#{about.value.service.desc}">Proprietary technology for filter bag sewing and heat welding.</p>
+            <div class="bf-stat-item">
+                <div class="bf-stat-number">295+</div>
+                <div class="bf-stat-label" th:text="#{stats.products}">Products</div>
             </div>
-            <div class="value-item fade-in stagger-4">
-                <div class="value-icon"><i class="bi bi-cart-check"></i></div>
-                <h5 th:text="#{about.value.global}">One-Stop Sourcing</h5>
-                <p th:text="#{about.value.global.desc}">Save time with our complete product range.</p>
+            <div class="bf-stat-item">
+                <div class="bf-stat-number">ISO</div>
+                <div class="bf-stat-label" th:text="#{stats.certifications}">Certified</div>
             </div>
         </div>
-    </div>
-</section>
 
-<!-- Technical Support Showcase -->
-<section class="editorial-section">
-    <div class="editorial-image parallax-image fade-in-left">
-        <div class="module-slideshow">
-            <img src="/static/images/service-technical.jpg" alt="Technical Support">
+        <!-- Why Choose Us -->
+        <div class="bf-about-features">
+            <h2 class="bf-section-heading bf-center"><span class="bf-heading-bar"></span> Why Choose Philitee</h2>
+            <div class="bf-features-grid">
+                <div class="bf-feature-card">
+                    <div class="bf-feature-icon"><i class="bi bi-shield-check"></i></div>
+                    <h4 th:text="#{about.value.quality}">Quality Assurance</h4>
+                    <p th:text="#{about.value.quality.desc}">Every batch passes multiple inspection systems.</p>
+                </div>
+                <div class="bf-feature-card">
+                    <div class="bf-feature-icon"><i class="bi bi-headset"></i></div>
+                    <h4 th:text="#{about.value.innovation}">Technical Support</h4>
+                    <p th:text="#{about.value.innovation.desc}">Engineers with 20 years of experience.</p>
+                </div>
+                <div class="bf-feature-card">
+                    <div class="bf-feature-icon"><i class="bi bi-gear-wide-connected"></i></div>
+                    <h4 th:text="#{about.value.service}">Production Solutions</h4>
+                    <p th:text="#{about.value.service.desc}">Proprietary technology for filter bag sewing.</p>
+                </div>
+                <div class="bf-feature-card">
+                    <div class="bf-feature-icon"><i class="bi bi-cart-check"></i></div>
+                    <h4 th:text="#{about.value.global}">One-Stop Sourcing</h4>
+                    <p th:text="#{about.value.global.desc}">Save time with our complete product range.</p>
+                </div>
+            </div>
         </div>
-    </div>
-    <div class="editorial-content fade-in-right">
-        <span class="eyebrow" th:text="#{about.support.eyebrow}">Support</span>
-        <h2 th:text="#{about.support.title}">Professional Technical Service</h2>
-        <p th:text="#{about.support.desc}">Our engineering team provides comprehensive technical support from product selection to installation guidance and after-sales service.</p>
-        <ul class="about-feature-list">
-            <li th:text="#{about.support.point1}">Free technical consultation and product selection</li>
-            <li th:text="#{about.support.point2}">On-site installation guidance available</li>
-            <li th:text="#{about.support.point3}">24/7 engineer support for urgent issues</li>
-            <li th:text="#{about.support.point4}">Regular maintenance and replacement programs</li>
-        </ul>
-    </div>
-</section>
 
-<!-- Service Process Section -->
-<section class="section section-cream">
-    <div class="aesop-container">
-        <div class="section-header fade-in">
-            <div class="eyebrow" th:text="#{about.process.eyebrow}">How We Work</div>
-            <h2 th:text="#{about.process.title}">Our Service Process</h2>
-        </div>
-        <div class="process-grid">
-            <div class="process-step fade-in stagger-1">
-                <div class="process-number">01</div>
-                <h5 th:text="#{about.process.step1.title}">Design Solution</h5>
-                <p th:text="#{about.process.step1.desc}">Provide design solutions based on your production needs.</p>
-            </div>
-            <div class="process-step fade-in stagger-2">
-                <div class="process-number">02</div>
-                <h5 th:text="#{about.process.step2.title}">Configuration</h5>
-                <p th:text="#{about.process.step2.desc}">Adjust configuration based on your site conditions.</p>
-            </div>
-            <div class="process-step fade-in stagger-3">
-                <div class="process-number">03</div>
-                <h5 th:text="#{about.process.step3.title}">Quotation</h5>
-                <p th:text="#{about.process.step3.desc}">Provide specific quotation and finalize design.</p>
-            </div>
-            <div class="process-step fade-in stagger-4">
-                <div class="process-number">04</div>
-                <h5 th:text="#{about.process.step4.title}">Manufacturing</h5>
-                <p th:text="#{about.process.step4.desc}">Production with strict quality control at every stage.</p>
-            </div>
-            <div class="process-step fade-in stagger-5">
-                <div class="process-number">05</div>
-                <h5 th:text="#{about.process.step5.title}">Installation</h5>
-                <p th:text="#{about.process.step5.desc}">On-site installation, commissioning and staff training.</p>
-            </div>
-            <div class="process-step fade-in stagger-6">
-                <div class="process-number">06</div>
-                <h5 th:text="#{about.process.step6.title}">After-Sales</h5>
-                <p th:text="#{about.process.step6.desc}">Warranty, spare parts, and 24/7 engineer support.</p>
+        <!-- Service Process -->
+        <div class="bf-about-process">
+            <h2 class="bf-section-heading bf-center"><span class="bf-heading-bar"></span> <span th:text="#{about.process.title}">Our Service Process</span></h2>
+            <div class="bf-process-grid">
+                <div class="bf-process-step">
+                    <div class="bf-process-number">01</div>
+                    <h5 th:text="#{about.process.step1.title}">Design Solution</h5>
+                    <p th:text="#{about.process.step1.desc}">Provide design solutions based on your needs.</p>
+                </div>
+                <div class="bf-process-step">
+                    <div class="bf-process-number">02</div>
+                    <h5 th:text="#{about.process.step2.title}">Configuration</h5>
+                    <p th:text="#{about.process.step2.desc}">Adjust configuration based on conditions.</p>
+                </div>
+                <div class="bf-process-step">
+                    <div class="bf-process-number">03</div>
+                    <h5 th:text="#{about.process.step3.title}">Quotation</h5>
+                    <p th:text="#{about.process.step3.desc}">Provide specific quotation.</p>
+                </div>
+                <div class="bf-process-step">
+                    <div class="bf-process-number">04</div>
+                    <h5 th:text="#{about.process.step4.title}">Manufacturing</h5>
+                    <p th:text="#{about.process.step4.desc}">Production with strict quality control.</p>
+                </div>
+                <div class="bf-process-step">
+                    <div class="bf-process-number">05</div>
+                    <h5 th:text="#{about.process.step5.title}">Installation</h5>
+                    <p th:text="#{about.process.step5.desc}">On-site installation and training.</p>
+                </div>
+                <div class="bf-process-step">
+                    <div class="bf-process-number">06</div>
+                    <h5 th:text="#{about.process.step6.title}">After-Sales</h5>
+                    <p th:text="#{about.process.step6.desc}">Warranty and 24/7 support.</p>
+                </div>
             </div>
         </div>
-    </div>
-</section>
 
-<!-- OEM Section (Aesop-style editorial) -->
-<section class="editorial-section">
-    <div class="editorial-image parallax-image fade-in-left">
-        <div class="module-slideshow">
-            <img src="/static/images/oem-service.jpg" alt="OEM Manufacturing">
-        </div>
-    </div>
-    <div class="editorial-content fade-in-right">
-        <span class="eyebrow" th:text="#{about.oem.eyebrow}">OEM Service</span>
-        <h2 th:text="#{about.oem.title}">Custom Manufacturing</h2>
-        <p th:text="#{about.oem.desc}">We offer OEM services. Our factory can produce products according to your designs and requirements.</p>
-        <ul class="about-feature-list">
-            <li th:text="#{about.oem.point1}">Custom filter bags in multiple materials</li>
-            <li th:text="#{about.oem.point2}">Custom sizes and specifications</li>
-            <li th:text="#{about.oem.point3}">Custom branding and packaging</li>
-            <li th:text="#{about.oem.point4}">Flexible MOQ</li>
-        </ul>
-    </div>
-</section>
-
-<!-- Distributorship Section -->
-<section class="editorial-section reverse">
-    <div class="editorial-image parallax-image fade-in-right">
-        <div class="module-slideshow">
-            <img src="/static/images/about-dist-3.jpg" alt="Dornier Weaving Machine">
-        </div>
-    </div>
-    <div class="editorial-content fade-in-left" style="background:var(--bg-secondary);">
-        <span class="eyebrow" th:text="#{about.dist.eyebrow}">Partnership</span>
-        <h2 th:text="#{about.dist.title}">Become Our Distributor</h2>
-        <p th:text="#{about.dist.desc}">We are looking for global distributors to expand our worldwide network.</p>
-        <ul class="about-feature-list">
-            <li th:text="#{about.dist.marketing}">Marketing support: share local customer resources</li>
-            <li th:text="#{about.dist.technical}">Technical support: solve customer problems</li>
-            <li th:text="#{about.dist.funds}">Financial support: extended credit terms</li>
-            <li th:text="#{about.dist.stocks}">Stock support: warehouses on major continents</li>
-        </ul>
-    </div>
-</section>
-
-<!-- VIP Customer Program -->
-<section class="section">
-    <div class="aesop-container">
-        <div class="section-header fade-in">
-            <div class="eyebrow" th:text="#{about.vip.eyebrow}">Premium Service</div>
-            <h2 th:text="#{about.vip.title}">VIP Customer Program</h2>
-            <p th:text="#{about.vip.desc}">We understand your concerns about delivery speed, financial pressure, and stock availability.</p>
-        </div>
-        <div class="vip-grid">
-            <div class="vip-card fade-in stagger-1">
-                <div class="vip-badge">VIP</div>
-                <h4 th:text="#{about.vip.level1}">VIP (Annual $500,000+)</h4>
-                <ul class="vip-benefits">
-                    <li><i class="bi bi-cash-coin"></i> <span th:text="#{about.vip.level1.funds}">30-day credit terms</span></li>
-                    <li><i class="bi bi-truck"></i> <span th:text="#{about.vip.level1.delivery}">20GP: 15 days | 40GP: 20 days</span></li>
-                    <li><i class="bi bi-box-seam"></i> <span th:text="#{about.vip.level1.stock}">20GP reserved stock, ship within 24h</span></li>
+        <!-- OEM/ODM Section (left text + right image) -->
+        <div class="bf-about-oem">
+            <div class="bf-oem-content">
+                <h2 class="bf-section-heading"><span class="bf-heading-bar"></span> <span th:text="#{about.oem.title}">Custom Manufacturing</span></h2>
+                <p th:text="#{about.oem.desc}">We can produce products according to your designs and requirements.</p>
+                <ul class="bf-oem-list">
+                    <li><i class="bi bi-check-circle-fill"></i> <span th:text="#{about.oem.point1}">Custom filter bags in multiple materials</span></li>
+                    <li><i class="bi bi-check-circle-fill"></i> <span th:text="#{about.oem.point2}">Custom sizes and specifications</span></li>
+                    <li><i class="bi bi-check-circle-fill"></i> <span th:text="#{about.oem.point3}">Custom branding and packaging</span></li>
+                    <li><i class="bi bi-check-circle-fill"></i> <span th:text="#{about.oem.point4}">Flexible MOQ</span></li>
                 </ul>
             </div>
-            <div class="vip-card vip-card-premium fade-in stagger-2">
-                <div class="vip-badge vip-badge-premium">VVIP</div>
-                <h4 th:text="#{about.vip.level2}" style="color:#ffffff !important;">VVIP (Annual $1,000,000+)</h4>
-                <ul class="vip-benefits">
-                    <li><i class="bi bi-cash-coin"></i> <span th:text="#{about.vip.level2.funds}">60-day credit terms</span></li>
-                    <li><i class="bi bi-truck"></i> <span th:text="#{about.vip.level2.delivery}">20GP: 10 days | 40GP: 15 days</span></li>
-                    <li><i class="bi bi-box-seam"></i> <span th:text="#{about.vip.level2.stock}">40GP reserved stock, ship within 12h</span></li>
+            <div class="bf-oem-image">
+                <img src="/static/images/oem-service.jpg" alt="OEM Service" loading="lazy">
+            </div>
+        </div>
+
+        <!-- Distributorship (left image + right text) -->
+        <div class="bf-about-dist">
+            <div class="bf-dist-image">
+                <img src="/static/images/about-dist-3.jpg" alt="Partnership" loading="lazy">
+            </div>
+            <div class="bf-dist-content">
+                <h2 class="bf-section-heading"><span class="bf-heading-bar"></span> <span th:text="#{about.dist.title}">Become Our Distributor</span></h2>
+                <p th:text="#{about.dist.desc}">We are looking for global distributors.</p>
+                <ul class="bf-oem-list">
+                    <li><i class="bi bi-check-circle-fill"></i> <span th:text="#{about.dist.marketing}">Marketing support</span></li>
+                    <li><i class="bi bi-check-circle-fill"></i> <span th:text="#{about.dist.technical}">Technical support</span></li>
+                    <li><i class="bi bi-check-circle-fill"></i> <span th:text="#{about.dist.funds}">Financial support</span></li>
+                    <li><i class="bi bi-check-circle-fill"></i> <span th:text="#{about.dist.stocks}">Stock support</span></li>
                 </ul>
             </div>
         </div>
-    </div>
-</section>
 
-<!-- Application Scenes Slideshow (removed) -->
-
-<!-- Mission Editorial (Reversed, Aesop-style) -->
-<section class="editorial-section reverse">
-    <div class="editorial-image parallax-image fade-in-right">
-        <div class="module-slideshow">
-            <img src="/static/images/mission.jpg" alt="Our Mission">
+        <!-- VIP Customer Program -->
+        <div class="bf-about-vip">
+            <h2 class="bf-section-heading bf-center"><span class="bf-heading-bar"></span> <span th:text="#{about.vip.title}">VIP Customer Program</span></h2>
+            <p class="bf-vip-desc" th:text="#{about.vip.desc}">We understand your concerns.</p>
+            <div class="bf-vip-grid">
+                <div class="bf-vip-card">
+                    <div class="bf-vip-badge">VIP</div>
+                    <h4 th:text="#{about.vip.level1}">VIP (Annual $500,000+)</h4>
+                    <ul>
+                        <li><i class="bi bi-cash-coin"></i> <span th:text="#{about.vip.level1.funds}">30-day credit terms</span></li>
+                        <li><i class="bi bi-truck"></i> <span th:text="#{about.vip.level1.delivery}">20GP: 15 days</span></li>
+                        <li><i class="bi bi-box-seam"></i> <span th:text="#{about.vip.level1.stock}">20GP reserved stock</span></li>
+                    </ul>
+                </div>
+                <div class="bf-vip-card bf-vip-premium">
+                    <div class="bf-vip-badge bf-vip-badge-premium">VVIP</div>
+                    <h4 th:text="#{about.vip.level2}">VVIP (Annual $1,000,000+)</h4>
+                    <ul>
+                        <li><i class="bi bi-cash-coin"></i> <span th:text="#{about.vip.level2.funds}">60-day credit terms</span></li>
+                        <li><i class="bi bi-truck"></i> <span th:text="#{about.vip.level2.delivery}">20GP: 10 days</span></li>
+                        <li><i class="bi bi-box-seam"></i> <span th:text="#{about.vip.level2.stock}">40GP reserved stock</span></li>
+                    </ul>
+                </div>
+            </div>
         </div>
-    </div>
-    <div class="editorial-content fade-in-left" style="background:var(--bg-secondary);">
-        <span class="eyebrow" th:text="#{about.mission.eyebrow}">Our Commitment</span>
-        <h2 th:text="#{about.mission.title}">Cleaner Air, Better Industry</h2>
-        <p th:text="#{about.mission.desc}">We believe every factory deserves access to high-performance filtration products.</p>
-    </div>
-</section>
 
-<!-- CTA -->
-<section class="cta-banner">
-    <div class="aesop-container">
-        <h3 class="fade-in" th:text="#{cta.title}">Need Custom Filtration Solutions?</h3>
-        <p class="fade-in" th:text="#{cta.subtitle}">Contact our team for professional consultation</p>
-        <div class="fade-in">
-            <a th:href="@{/contact}" class="btn btn-accent" th:text="#{cta.button}">Get in Touch</a>
+        <!-- Mission -->
+        <div class="bf-about-mission">
+            <div class="bf-mission-image">
+                <img src="/static/images/mission.jpg" alt="Our Mission" loading="lazy">
+            </div>
+            <div class="bf-mission-content">
+                <h2 class="bf-section-heading"><span class="bf-heading-bar"></span> <span th:text="#{about.mission.title}">Cleaner Air, Better Industry</span></h2>
+                <p th:text="#{about.mission.desc}">We believe every factory deserves access to high-performance filtration products.</p>
+            </div>
+        </div>
+
+        <!-- CTA -->
+        <div class="bf-about-cta">
+            <h3 th:text="#{cta.title}">Need Custom Filtration Solutions?</h3>
+            <p th:text="#{cta.subtitle}">Contact our team for professional consultation</p>
+            <a th:href="@{/contact}" class="bf-btn bf-btn-primary" th:text="#{cta.button}">Get in Touch</a>
         </div>
     </div>
 </section>
 
 <footer th:replace="~{fragments/footer :: footer}"></footer>
-
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script src="/static/js/main.js"></script>
-<script src="/static/js/slideshow.js?v=3"></script>
 </body>
 </html>
