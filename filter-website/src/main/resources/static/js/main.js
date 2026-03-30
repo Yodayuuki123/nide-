@@ -351,6 +351,75 @@ function closeSearch(event) {
     }
 }
 
+// ===== Search Results Modal =====
+function doSearchModal(form) {
+    var input = form.querySelector('input[name="keyword"]');
+    var keyword = input ? input.value.trim() : '';
+    if (!keyword) return false;
+
+    // Close search overlay if open
+    closeSearch();
+    closeMobileMenu();
+
+    // Open results modal
+    var overlay = document.getElementById('searchResultsOverlay');
+    var body = document.getElementById('searchResultsBody');
+    if (!overlay || !body) {
+        window.location.href = '/search?keyword=' + encodeURIComponent(keyword);
+        return false;
+    }
+
+    overlay.classList.add('active');
+    document.body.style.overflow = 'hidden';
+    body.innerHTML = '<div class="search-results-loading"><i class="bi bi-arrow-repeat spin"></i> Searching...</div>';
+
+    fetch('/api/search?keyword=' + encodeURIComponent(keyword))
+        .then(function(resp) { return resp.json(); })
+        .then(function(data) {
+            var html = '<div class="search-results-info">Found <strong>' + data.total + '</strong> results for "' + escapeHtml(data.keyword) + '"</div>';
+            if (data.products && data.products.length > 0) {
+                html += '<div class="search-results-grid">';
+                data.products.forEach(function(p) {
+                    html += '<a href="/products/' + p.slug + '" class="search-result-item">';
+                    if (p.mainImage) {
+                        html += '<div class="search-result-img"><img src="' + p.mainImage + '" alt="' + escapeHtml(p.name) + '" loading="lazy"></div>';
+                    } else {
+                        html += '<div class="search-result-img"><div class="search-result-placeholder"><i class="bi bi-image"></i></div></div>';
+                    }
+                    html += '<div class="search-result-info">';
+                    if (p.category) html += '<span class="search-result-cat">' + escapeHtml(p.category) + '</span>';
+                    html += '<h6>' + escapeHtml(p.name) + '</h6>';
+                    if (p.sku) html += '<span class="search-result-sku">SKU: ' + escapeHtml(p.sku) + '</span>';
+                    html += '</div></a>';
+                });
+                html += '</div>';
+            } else {
+                html += '<div class="search-results-empty"><i class="bi bi-search"></i><p>No products found. Try different keywords.</p></div>';
+            }
+            html += '<div class="search-results-footer"><a href="/search?keyword=' + encodeURIComponent(data.keyword) + '" class="bf-btn bf-btn-outline">View Full Results Page</a></div>';
+            body.innerHTML = html;
+        })
+        .catch(function() {
+            body.innerHTML = '<div class="search-results-empty"><p>Search failed. Please try again.</p></div>';
+        });
+
+    return false;
+}
+
+function closeSearchResults(event) {
+    if (event && event.target !== event.currentTarget) return;
+    var overlay = document.getElementById('searchResultsOverlay');
+    if (overlay) {
+        overlay.classList.remove('active');
+        document.body.style.overflow = '';
+    }
+}
+
+function escapeHtml(str) {
+    if (!str) return '';
+    return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
 // Close search when clicking overlay background
 document.addEventListener('click', function(e) {
     var overlay = document.getElementById('searchOverlay');
@@ -365,6 +434,7 @@ document.addEventListener('click', function(e) {
 document.addEventListener('keydown', function(e) {
     if (e.key === 'Escape') {
         closeSearch();
+        closeSearchResults();
         closeMobileMenu();
     }
 });

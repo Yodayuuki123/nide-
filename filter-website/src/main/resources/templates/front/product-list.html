@@ -114,21 +114,39 @@
                     </a>
                 </div>
 
-                <!-- Pagination -->
+                <!-- Pagination (max 5 page numbers) -->
                 <div th:if="${productPage != null and productPage.pages > 1}" class="bf-pagination-wrap">
-                    <nav class="bf-pagination">
-                        <a th:if="${productPage.current > 1}"
-                           th:href="${currentCategory != null} ? @{/categories/{slug}(slug=${currentCategory.slug}, page=${productPage.current - 1}, size=${productPage.size})} : @{/products(page=${productPage.current - 1}, size=${productPage.size})}"
-                           class="bf-page-link"><span th:text="'&laquo; ' + #{pagination.previous}">&laquo; Prev</span></a>
-                        <th:block th:each="i : ${#numbers.sequence(1, productPage.pages)}">
-                            <span th:if="${i == productPage.current}" class="bf-page-link bf-page-active" th:text="${i}">1</span>
-                            <a th:unless="${i == productPage.current}"
+                    <nav class="bf-pagination"
+                         th:with="totalPages=${productPage.pages},
+                                  curPage=${productPage.current},
+                                  startPage=${curPage - 2 > 0 ? curPage - 2 : 1},
+                                  endPage=${startPage + 4 < totalPages ? startPage + 4 : totalPages},
+                                  finalStart=${endPage - 4 > 0 ? endPage - 4 : 1}">
+                        <!-- Previous -->
+                        <a th:if="${curPage > 1}"
+                           th:href="${currentCategory != null} ? @{/categories/{slug}(slug=${currentCategory.slug}, page=${curPage - 1}, size=${productPage.size})} : @{/products(page=${curPage - 1}, size=${productPage.size})}"
+                           class="bf-page-link">&laquo;</a>
+                        <!-- First + ellipsis -->
+                        <a th:if="${finalStart > 1}"
+                           th:href="${currentCategory != null} ? @{/categories/{slug}(slug=${currentCategory.slug}, page=1, size=${productPage.size})} : @{/products(page=1, size=${productPage.size})}"
+                           class="bf-page-link">1</a>
+                        <span th:if="${finalStart > 2}" class="bf-page-link bf-page-ellipsis">&hellip;</span>
+                        <!-- Page range (max 5) -->
+                        <th:block th:each="i : ${#numbers.sequence(finalStart, endPage)}">
+                            <span th:if="${i == curPage}" class="bf-page-link bf-page-active" th:text="${i}">1</span>
+                            <a th:unless="${i == curPage}"
                                th:href="${currentCategory != null} ? @{/categories/{slug}(slug=${currentCategory.slug}, page=${i}, size=${productPage.size})} : @{/products(page=${i}, size=${productPage.size})}"
                                class="bf-page-link" th:text="${i}">1</a>
                         </th:block>
-                        <a th:if="${productPage.current < productPage.pages}"
-                           th:href="${currentCategory != null} ? @{/categories/{slug}(slug=${currentCategory.slug}, page=${productPage.current + 1}, size=${productPage.size})} : @{/products(page=${productPage.current + 1}, size=${productPage.size})}"
-                           class="bf-page-link"><span th:text="#{pagination.next} + ' &raquo;'">Next &raquo;</span></a>
+                        <!-- Ellipsis + last -->
+                        <span th:if="${endPage < totalPages - 1}" class="bf-page-link bf-page-ellipsis">&hellip;</span>
+                        <a th:if="${endPage < totalPages}"
+                           th:href="${currentCategory != null} ? @{/categories/{slug}(slug=${currentCategory.slug}, page=${totalPages}, size=${productPage.size})} : @{/products(page=${totalPages}, size=${productPage.size})}"
+                           class="bf-page-link" th:text="${totalPages}">99</a>
+                        <!-- Next -->
+                        <a th:if="${curPage < totalPages}"
+                           th:href="${currentCategory != null} ? @{/categories/{slug}(slug=${currentCategory.slug}, page=${curPage + 1}, size=${productPage.size})} : @{/products(page=${curPage + 1}, size=${productPage.size})}"
+                           class="bf-page-link">&raquo;</a>
                     </nav>
                 </div>
             </div>

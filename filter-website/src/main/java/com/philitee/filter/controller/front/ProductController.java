@@ -1,9 +1,11 @@
 package com.philitee.filter.controller.front;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.philitee.filter.entity.News;
 import com.philitee.filter.entity.Product;
 import com.philitee.filter.entity.ProductCategory;
 import com.philitee.filter.entity.ProductTag;
+import com.philitee.filter.service.NewsService;
 import com.philitee.filter.service.ProductCategoryService;
 import com.philitee.filter.service.ProductService;
 import com.philitee.filter.service.ProductTagService;
@@ -14,9 +16,12 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 前台产品 Controller
@@ -28,6 +33,7 @@ public class ProductController {
     private final ProductService productService;
     private final ProductCategoryService categoryService;
     private final ProductTagService tagService;
+    private final NewsService newsService;
 
     /**
      * 产品列表页（全部产品）- 默认一页16个
@@ -152,23 +158,61 @@ public class ProductController {
     }
 
     /**
-     * 产品搜索
+     * 全局搜索（产品 + 新闻）
      */
     @GetMapping("/search")
     public String search(@RequestParam(required = false) String keyword, Model model) {
         if (keyword != null && !keyword.trim().isEmpty()) {
-            List<Product> products = productService.searchProducts(keyword.trim());
+            String kw = keyword.trim();
+            // 搜索产品
+            List<Product> products = productService.searchProducts(kw);
             model.addAttribute("products", products);
+            // 搜索新闻
+            IPage<News> newsPage = newsService.searchNews(kw, null, null, "newest", 1, 20);
+            model.addAttribute("newsList", newsPage.getRecords());
+            // 总数
+            long total = products.size() + newsPage.getTotal();
+            model.addAttribute("totalResults", total);
         }
         model.addAttribute("keyword", keyword);
 
         // 面包屑
         model.addAttribute("breadcrumbItems", List.of(
-            BreadcrumbItem.of("Products", "/products"),
             BreadcrumbItem.of("Search Results")
         ));
 
         return "front/search";
+    }
+
+    /**
+     * 产品搜索 JSON API（供弹窗 AJAX 调用）
+     */
+    @GetMapping("/api/search")
+    @ResponseBody
+    public Map<String, Object> searchApi(@RequestParam(required = false) String keyword) {
+        Map<String, Object> result = new HashMap<>();
+        if (keyword != null && !keyword.trim().isEmpty()) {
+            List<Product> products = productService.searchProducts(keyword.trim());
+            List<Map<String, Object>> items = new ArrayList<>();
+            for (Product p : products) {
+                Map<String, Object> item = new HashMap<>();
+                item.put("name", p.getName());
+                item.put("slug", p.getSlug());
+                item.put("sku", p.getSku());
+                item.put("mainImage", p.getMainImage() != null ? p.getMainImage().getUrl() : null);
+                if (p.getCategories() != null && !p.getCategories().isEmpty()) {
+                    item.put("category", p.getCategories().get(0).getName());
+                }
+                items.add(item);
+            }
+            result.put("products", items);
+            result.put("total", items.size());
+        } else {
+            result.put("products", List.of());
+            result.put("total", 0);
+        }
+        result.put("keyword", keyword);
+        return result;
     }
 
 }

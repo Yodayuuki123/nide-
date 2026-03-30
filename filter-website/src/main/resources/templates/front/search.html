@@ -4,7 +4,7 @@
 <body>
 <header th:replace="~{fragments/header :: navbar}"></header>
 
-<!-- Page Header (Aesop-style) -->
+<!-- Page Header -->
 <section class="page-header">
     <div class="aesop-container">
         <h1 th:text="#{search.title}" class="fade-in">Search</h1>
@@ -18,59 +18,108 @@
 
 <section class="section">
     <div class="aesop-container">
-        <!-- Search Form (Aesop-style) -->
+
+        <!-- Search Form -->
         <form th:action="@{/search}" method="get" class="search-form-large fade-in">
             <input type="text" name="keyword" th:value="${keyword}" th:placeholder="#{search.placeholder}" autofocus>
             <button type="submit"><i class="bi bi-search"></i></button>
         </form>
 
-        <!-- Results -->
+        <!-- Results Area -->
         <div th:if="${keyword != null and !keyword.isEmpty()}">
+
+            <!-- Summary -->
             <div class="search-result-info fade-in">
                 <span th:text="#{search.results_for}">Results for</span>
                 &ldquo;<strong th:text="${keyword}">keyword</strong>&rdquo;
-                <span th:if="${products != null}">
-                    &mdash; <span th:text="${products.size()}">0</span> <span th:text="#{pagination.results}">results</span>
-                </span>
+                &mdash;
+                <span th:text="${totalResults != null ? totalResults : 0}">0</span>
+                <span th:text="#{pagination.results}">results</span>
             </div>
 
-            <!-- Product Grid -->
-            <div th:if="${products != null and !products.isEmpty()}" class="product-grid">
-                <a th:each="product,iter : ${products}"
-                   th:href="@{/products/{slug}(slug=${product.slug})}"
-                   class="product-card fade-in"
-                   th:classappend="'stagger-' + ${(iter.index % 6) + 1}">
-                    <div class="product-card-image">
-                        <img th:if="${product.mainImage != null}" th:src="${product.mainImage.url}" th:alt="${product.name}" loading="lazy">
-                        <div th:unless="${product.mainImage != null}" class="product-placeholder">
-                            <i class="bi bi-image"></i>
+            <!-- Tab Navigation -->
+            <div class="search-tabs fade-in">
+                <button class="search-tab active" onclick="showTab('products', this)">
+                    <i class="bi bi-box-seam"></i>
+                    Products
+                    <span class="search-tab-count" th:text="${products != null ? products.size() : 0}">0</span>
+                </button>
+                <button class="search-tab" onclick="showTab('news', this)">
+                    <i class="bi bi-newspaper"></i>
+                    News
+                    <span class="search-tab-count" th:text="${newsList != null ? newsList.size() : 0}">0</span>
+                </button>
+            </div>
+
+            <!-- Products Section -->
+            <div id="tab-products" class="search-tab-content active">
+                <div th:if="${products != null and !products.isEmpty()}" class="product-grid">
+                    <a th:each="product,iter : ${products}"
+                       th:href="@{/products/{slug}(slug=${product.slug})}"
+                       class="product-card fade-in"
+                       th:classappend="'stagger-' + ${(iter.index % 6) + 1}">
+                        <div class="product-card-image">
+                            <img th:if="${product.mainImage != null}" th:src="${product.mainImage.url}" th:alt="${product.name}" loading="lazy">
+                            <div th:unless="${product.mainImage != null}" class="product-placeholder">
+                                <i class="bi bi-image"></i>
+                            </div>
                         </div>
-                    </div>
-                    <div class="product-card-info">
-                        <span class="product-card-category"
-                              th:if="${product.categories != null and !product.categories.isEmpty()}"
-                              th:text="${product.categories[0].name}">Category</span>
-                        <div class="product-card-title" th:text="${product.name}">Product Name</div>
-                        <div class="product-card-sku" th:if="${product.sku != null}" th:text="'SKU: ' + ${product.sku}">SKU</div>
-                    </div>
-                </a>
+                        <div class="product-card-info">
+                            <span class="product-card-category"
+                                  th:if="${product.categories != null and !product.categories.isEmpty()}"
+                                  th:text="${product.categories[0].name}">Category</span>
+                            <div class="product-card-title" th:text="${product.name}">Product Name</div>
+                            <div class="product-card-sku" th:if="${product.sku != null}" th:text="'SKU: ' + ${product.sku}">SKU</div>
+                        </div>
+                    </a>
+                </div>
+                <div th:if="${products == null or products.isEmpty()}" class="empty-state fade-in">
+                    <i class="bi bi-box-seam"></i>
+                    <h4>No products found</h4>
+                    <p th:text="#{search.try_again}">Try different keywords or browse our categories</p>
+                    <a th:href="@{/products}" class="btn-aesop" th:text="#{breadcrumb.products}">Browse Products</a>
+                </div>
             </div>
 
-            <!-- No Results -->
-            <div th:if="${products == null or products.isEmpty()}" class="empty-state fade-in">
-                <i class="bi bi-search"></i>
-                <h4 th:text="#{search.no_results}">No products found</h4>
-                <p th:text="#{search.try_again}">Try different keywords or browse our categories</p>
-                <a th:href="@{/products}" class="btn-aesop" th:text="#{breadcrumb.products}">Browse Products</a>
+            <!-- News Section -->
+            <div id="tab-news" class="search-tab-content" style="display:none">
+                <div th:if="${newsList != null and !newsList.isEmpty()}" class="search-news-list">
+                    <a th:each="news,iter : ${newsList}"
+                       th:href="@{/news/{slug}(slug=${news.slug})}"
+                       class="search-news-card fade-in">
+                        <div class="search-news-img" th:if="${news.coverImage != null}">
+                            <img th:src="${news.coverImage}" th:alt="${news.title}" loading="lazy">
+                        </div>
+                        <div class="search-news-img search-news-placeholder" th:unless="${news.coverImage != null}">
+                            <i class="bi bi-newspaper"></i>
+                        </div>
+                        <div class="search-news-info">
+                            <span class="search-news-type">News</span>
+                            <h5 th:text="${news.title}">News Title</h5>
+                            <p th:if="${news.summary != null}" th:text="${news.summary}">Summary...</p>
+                            <span class="search-news-date"
+                                  th:if="${news.createdTime != null}"
+                                  th:text="${#temporals.format(news.createdTime, 'MMM dd, yyyy')}">Jan 01, 2024</span>
+                        </div>
+                    </a>
+                </div>
+                <div th:if="${newsList == null or newsList.isEmpty()}" class="empty-state fade-in">
+                    <i class="bi bi-newspaper"></i>
+                    <h4>No news found</h4>
+                    <p>Try different keywords or browse our latest news</p>
+                    <a th:href="@{/news}" class="btn-aesop">Browse News</a>
+                </div>
             </div>
+
         </div>
 
         <!-- No Keyword -->
         <div th:if="${keyword == null or keyword.isEmpty()}" class="empty-state fade-in">
             <i class="bi bi-search"></i>
             <h4 th:text="#{search.enter_keyword}">Enter a keyword to search</h4>
-            <p>Search our catalog of over 2000 filtration products</p>
+            <p>Search our products, news and more</p>
         </div>
+
     </div>
 </section>
 
@@ -78,5 +127,18 @@
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script src="/static/js/main.js"></script>
+<script>
+function showTab(name, btn) {
+    document.querySelectorAll('.search-tab-content').forEach(function(el) {
+        el.style.display = 'none';
+    });
+    document.querySelectorAll('.search-tab').forEach(function(el) {
+        el.classList.remove('active');
+    });
+    var tab = document.getElementById('tab-' + name);
+    if (tab) tab.style.display = '';
+    if (btn) btn.classList.add('active');
+}
+</script>
 </body>
 </html>
