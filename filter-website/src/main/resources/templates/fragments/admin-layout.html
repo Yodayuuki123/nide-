@@ -156,6 +156,21 @@
 <div th:fragment="adminScripts">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="/static/js/admin.js"></script>
+    <!-- B-17: Flash message toast notifications -->
+    <script th:if="${message}">
+        document.addEventListener('DOMContentLoaded', function() {
+            if (typeof showToast === 'function') {
+                showToast([[${message}]], 'success');
+            }
+        });
+    </script>
+    <script th:if="${error}">
+        document.addEventListener('DOMContentLoaded', function() {
+            if (typeof showToast === 'function') {
+                showToast([[${error}]], 'error');
+            }
+        });
+    </script>
 </div>
 
 </html>

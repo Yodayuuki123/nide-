@@ -468,43 +468,7 @@ window.switchProductTab = function(btn) {
     if (targetPanel) targetPanel.classList.add('active');
 };
 
-/* ===== Exhibition Carousel ===== */
-(function(){
-    var track = document.getElementById('exhibitionTrack');
-    if (!track) return;
-    var items = track.querySelectorAll('.exhibition-item');
-    var currentOffset = 0;
 
-    function getItemWidth() {
-        if (window.innerWidth <= 576) return track.parentElement.offsetWidth;
-        if (window.innerWidth <= 768) return track.parentElement.offsetWidth / 2;
-        if (window.innerWidth <= 992) return track.parentElement.offsetWidth / 3;
-        return track.parentElement.offsetWidth / 4;
-    }
-
-    function updateTrack() {
-        var w = getItemWidth();
-        items.forEach(function(item) { item.style.minWidth = w + 'px'; item.style.maxWidth = w + 'px'; });
-        track.style.transform = 'translateX(-' + (currentOffset * w) + 'px)';
-    }
-
-    window.exhibitionSlide = function(dir) {
-        var vc = window.innerWidth <= 576 ? 1 : window.innerWidth <= 768 ? 2 : window.innerWidth <= 992 ? 3 : 4;
-        var maxOffset = Math.max(0, items.length - vc);
-        currentOffset = Math.max(0, Math.min(currentOffset + dir, maxOffset));
-        updateTrack();
-    };
-
-    updateTrack();
-    window.addEventListener('resize', function() { updateTrack(); });
-
-    var sx = 0;
-    track.parentElement.addEventListener('touchstart', function(e) { sx = e.changedTouches[0].clientX; }, {passive:true});
-    track.parentElement.addEventListener('touchend', function(e) {
-        var dx = e.changedTouches[0].clientX - sx;
-        if (Math.abs(dx) > 50) exhibitionSlide(dx < 0 ? 1 : -1);
-    }, {passive:true});
-})();
 </script>
 
 </body>
