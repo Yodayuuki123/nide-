@@ -9,7 +9,7 @@
         <div th:replace="~{fragments/admin-layout :: adminTopbar}"></div>
 
         <div class="admin-main">
-            <!-- Flash 留言内容s -->
+            <!-- Flash Messages -->
             <div th:if="${message}" class="alert alert-success alert-dismissible fade show">
                 <span th:text="${message}"></span>
                 <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
@@ -21,7 +21,7 @@
 
             <div class="d-flex justify-content-between align-items-center mb-4">
                 <div>
-                    <h4 style="font-size: 1.8rem; margin-bottom: 4px;" th:text="#{admin.menus}">Menus</h4>
+                    <h4 style="font-size: 1.8rem; margin-bottom: 4px;" th:text="#{admin.menus}">菜单管理</h4>
                     <p style="color: var(--admin-text-tertiary); font-size: 13px; margin: 0;">Configure navigation menus for your website</p>
                 </div>
             </div>
@@ -31,7 +31,7 @@
                 <div class="col-lg-8">
                     <div class="admin-card">
                         <div class="admin-card-header">
-                            <h5>All Menus</h5>
+                            <h5>全部菜单</h5>
                         </div>
                         <div class="admin-card-body">
                             <div class="table-responsive">
@@ -40,8 +40,8 @@
                                     <tr>
                                         <th>ID</th>
                                         <th>名称</th>
-                                        <th>Location</th>
-                                        <th>Items</th>
+                                        <th>位置</th>
+                                        <th>菜单项数</th>
                                         <th>创建时间</th>
                                         <th th:text="#{admin.actions}">操作</th>
                                     </tr>
@@ -63,13 +63,19 @@
                                         <td class="text-muted" th:text="${menu.createdAt != null} ? ${#temporals.format(menu.createdAt, 'yyyy-MM-dd')} : '-'">2026-01-01</td>
                                         <td class="actions">
                                             <a th:href="@{/admin/menus/{id}(id=${menu.id})}"
-                                               class="btn btn-sm btn-outline-primary" title="Manage">
+                                               class="btn btn-sm btn-outline-primary me-1" title="管理">
                                                 <i class="bi bi-gear"></i>
                                             </a>
+                                            <button type="button" class="btn btn-sm btn-outline-danger"
+                                                    th:data-id="${menu.id}"
+                                                    th:data-name="${menu.name}"
+                                                    onclick="confirmDelete(this)">
+                                                <i class="bi bi-trash"></i>
+                                            </button>
                                         </td>
                                     </tr>
                                     <tr th:if="${menus == null or menus.isEmpty()}">
-                                        <td colspan="6" class="text-center text-muted py-4">No menus found.</td>
+                                        <td colspan="6" class="text-center text-muted py-4">暂无菜单数据。</td>
                                     </tr>
                                     </tbody>
                                 </table>
@@ -81,23 +87,23 @@
                 <!-- Add Menu Form -->
                 <div class="col-lg-4">
                     <div class="admin-form">
-                        <h6 class="mb-3">新增 Menu</h6>
+                        <h6 class="mb-3">新增菜单</h6>
                         <form th:action="@{/admin/menus/save}" method="post">
                             <div class="mb-3">
-                                <label class="form-label">Menu Name <span class="text-danger">*</span></label>
-                                <input type="text" name="name" class="form-control" required placeholder="e.g. Main Navigation">
+                                <label class="form-label">菜单名称 <span class="text-danger">*</span></label>
+                                <input type="text" name="name" class="form-control" required placeholder="如：主导航">
                             </div>
                             <div class="mb-3">
-                                <label class="form-label">Location</label>
+                                <label class="form-label">位置</label>
                                 <select name="location" class="form-select">
-                                    <option value="">— Select —</option>
-                                    <option value="primary">Primary</option>
-                                    <option value="footer">Footer</option>
-                                    <option value="sidebar">Sidebar</option>
+                                    <option value="">— 选择 —</option>
+                                    <option value="primary">Primary（主导航）</option>
+                                    <option value="footer">Footer（页脚）</option>
+                                    <option value="sidebar">Sidebar（侧边栏）</option>
                                 </select>
                             </div>
                             <button type="submit" class="btn btn-primary w-100">
-                                <i class="bi bi-plus-circle"></i> Create Menu
+                                <i class="bi bi-plus-circle"></i> 创建菜单
                             </button>
                         </form>
                     </div>
@@ -107,6 +113,36 @@
     </div>
 </div>
 
+<!-- 删除确认弹窗 -->
+<div class="modal fade" id="deleteModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">确认删除</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <p>确定要删除此菜单吗？菜单下的所有菜单项也将被删除，此操作不可撤销。</p>
+                <p class="fw-medium" id="deleteItemName"></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+                <form id="deleteForm" method="post" class="d-inline">
+                    <button type="submit" class="btn btn-outline-danger">确认删除</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div th:replace="~{fragments/admin-layout :: adminScripts}"></div>
+<script>
+    function confirmDelete(btn) {
+        document.getElementById('deleteItemName').textContent = btn.getAttribute('data-name');
+        document.getElementById('deleteForm').action = '/admin/menus/delete/' + btn.getAttribute('data-id');
+        var modal = new bootstrap.Modal(document.getElementById('deleteModal'));
+        modal.show();
+    }
+</script>
 </body>
 </html>

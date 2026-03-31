@@ -4,17 +4,8 @@
 <body>
 <header th:replace="~{fragments/header :: navbar}"></header>
 
-<!-- Page Header -->
-<section class="page-header">
-    <div class="aesop-container">
-        <h1 th:text="#{search.title}" class="fade-in">Search</h1>
-        <nav class="breadcrumb-nav">
-            <a th:href="@{/}" th:text="#{breadcrumb.home}">Home</a>
-            <span class="separator">/</span>
-            <span class="current" th:text="#{search.title}">Search</span>
-        </nav>
-    </div>
-</section>
+<!-- Breadcrumb -->
+<div th:replace="~{fragments/breadcrumb :: breadcrumb(${breadcrumbItems})}"></div>
 
 <section class="section">
     <div class="aesop-container">

@@ -9,7 +9,7 @@
         <div th:replace="~{fragments/admin-layout :: adminTopbar}"></div>
 
         <div class="admin-main">
-            <!-- Flash 留言内容s -->
+            <!-- Flash Messages -->
             <div th:if="${message}" class="alert alert-success alert-dismissible fade show">
                 <span th:text="${message}"></span>
                 <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
@@ -26,15 +26,49 @@
                 </div>
             </div>
 
-            <!-- 上传 Zone -->
+            <!-- 上传 Zone - 支持批量上传 -->
             <div class="admin-card mb-4">
                 <div class="admin-card-body p-4">
                     <div class="upload-zone" id="pageUploadZone">
                         <i class="bi bi-cloud-arrow-up"></i>
-                        <h5>上传 图片s</h5>
-                        <p class="text-muted mb-0">Click or drag files here to upload</p>
-                        <input type="file" id="pageFileInput" accept="image/*" style="display: none">
+                        <h5>上传图片</h5>
+                        <p class="text-muted mb-0">点击或拖拽文件到此处上传（支持批量上传多张）</p>
+                        <input type="file" id="pageFileInput" accept="image/*" multiple style="display: none">
                     </div>
+                    <div id="batchUploadProgress" class="mt-3" style="display: none;">
+                        <div class="progress mb-2">
+                            <div class="progress-bar" id="batchProgressBar" style="width: 0%"></div>
+                        </div>
+                        <small class="text-muted" id="batchProgressText">上传中...</small>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 搜索表单 -->
+            <div class="admin-card mb-4">
+                <div class="admin-card-body p-3">
+                    <form method="get" th:action="@{/admin/images}" class="row g-2 align-items-end">
+                        <div class="col-md-4">
+                            <label class="form-label small mb-1">文件名搜索</label>
+                            <input type="text" name="keyword" class="form-control form-control-sm"
+                                   th:value="${param.keyword}" placeholder="搜索文件名...">
+                        </div>
+                        <div class="col-md-2">
+                            <label class="form-label small mb-1">每页显示</label>
+                            <select name="size" class="form-select form-select-sm">
+                                <option value="10" th:selected="${imagePage.size == 10}">10</option>
+                                <option value="20" th:selected="${imagePage.size == 20}">20</option>
+                                <option value="50" th:selected="${imagePage.size == 50}">50</option>
+                                <option value="100" th:selected="${imagePage.size == 100}">100</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <button type="submit" class="btn btn-primary btn-sm me-1">
+                                <i class="bi bi-search"></i> 搜索
+                            </button>
+                            <a th:href="@{/admin/images}" class="btn btn-outline-secondary btn-sm">重置</a>
+                        </div>
+                    </form>
                 </div>
             </div>
 
@@ -42,7 +76,7 @@
             <div class="admin-card">
                 <div class="admin-card-header">
                     <h5>
-                        <span th:text="#{admin.images}">图片s</span>
+                        <span th:text="#{admin.images}">图片</span>
                         <span class="badge bg-light text-dark ms-2" th:text="${imagePage.total}">0</span>
                     </h5>
                 </div>
@@ -55,12 +89,13 @@
                             </div>
                             <div class="image-grid-info">
                                 <small class="text-truncate d-block" th:text="${img.fileName}">filename.jpg</small>
-                                <small class="text-muted" th:if="${img.width != null}"
-                                       th:text="${img.width} + 'x' + ${img.height}">800x600</small>
+                                <small class="text-muted" th:if="${img.uploadedAt != null}"
+                                       th:text="${#temporals.format(img.uploadedAt, 'yyyy-MM-dd HH:mm')}">2026-01-01</small>
                             </div>
                             <div class="image-grid-actions">
                                 <button type="button" class="btn btn-sm btn-outline-danger"
-                                        th:onclick="'deleteImage(' + ${img.id} + ', this)'">
+                                        th:data-id="${img.id}" th:data-name="${img.fileName}"
+                                        onclick="confirmDeleteImage(this)">
                                     <i class="bi bi-trash"></i>
                                 </button>
                             </div>
@@ -69,23 +104,29 @@
 
                     <div th:if="${imagePage.records.isEmpty()}" class="text-center text-muted py-4">
                         <i class="bi bi-image fs-1 d-block mb-2"></i>
-                        <p>No images uploaded yet.</p>
+                        <p>暂无图片。</p>
                     </div>
 
-                    <!-- Pagination -->
-                    <div class="mt-4" th:if="${imagePage.pages > 1}">
+                    <!-- 分页 - 显示5页窗口 -->
+                    <div class="mt-4 d-flex justify-content-between align-items-center" th:if="${imagePage.pages > 1}">
+                        <small class="text-muted">
+                            共 <span th:text="${imagePage.total}">0</span> 条，
+                            第 <span th:text="${imagePage.current}">1</span> / <span th:text="${imagePage.pages}">1</span> 页
+                        </small>
                         <nav>
-                            <ul class="pagination mb-0 justify-content-center">
+                            <ul class="pagination mb-0">
                                 <li class="page-item" th:classappend="${imagePage.current <= 1} ? 'disabled'">
-                                    <a class="page-link" th:href="@{/admin/images(page=${imagePage.current - 1}, size=${imagePage.size})}">上一页</a>
+                                    <a class="page-link" th:href="@{/admin/images(page=${imagePage.current - 1}, size=${imagePage.size}, keyword=${param.keyword})}">上一页</a>
                                 </li>
-                                <th:block th:each="i : ${#numbers.sequence(1, imagePage.pages)}">
-                                    <li class="page-item" th:classappend="${i == imagePage.current} ? 'active'">
-                                        <a class="page-link" th:href="@{/admin/images(page=${i}, size=${imagePage.size})}" th:text="${i}">1</a>
-                                    </li>
+                                <th:block th:with="startPage=${T(Math).max(1, imagePage.current - 2)}, endPage=${T(Math).min(imagePage.pages, T(Math).max(1, imagePage.current - 2) + 4)}">
+                                    <th:block th:each="i : ${#numbers.sequence(startPage, endPage)}">
+                                        <li class="page-item" th:classappend="${i == imagePage.current} ? 'active'">
+                                            <a class="page-link" th:href="@{/admin/images(page=${i}, size=${imagePage.size}, keyword=${param.keyword})}" th:text="${i}">1</a>
+                                        </li>
+                                    </th:block>
                                 </th:block>
                                 <li class="page-item" th:classappend="${imagePage.current >= imagePage.pages} ? 'disabled'">
-                                    <a class="page-link" th:href="@{/admin/images(page=${imagePage.current + 1}, size=${imagePage.size})}">下一页</a>
+                                    <a class="page-link" th:href="@{/admin/images(page=${imagePage.current + 1}, size=${imagePage.size}, keyword=${param.keyword})}">下一页</a>
                                 </li>
                             </ul>
                         </nav>
@@ -96,6 +137,106 @@
     </div>
 </div>
 
+<!-- 删除确认弹窗 -->
+<div class="modal fade" id="deleteImageModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">确认删除</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <p>确定要删除此图片吗？此操作不可撤销。</p>
+                <p class="fw-medium" id="deleteImageName"></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+                <button type="button" class="btn btn-outline-danger" id="confirmDeleteBtn" onclick="doDeleteImage()">确认删除</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div th:replace="~{fragments/admin-layout :: adminScripts}"></div>
+<script>
+// 批量上传
+(function() {
+    var uploadZone = document.getElementById('pageUploadZone');
+    var fileInput = document.getElementById('pageFileInput');
+    var progressDiv = document.getElementById('batchUploadProgress');
+    var progressBar = document.getElementById('batchProgressBar');
+    var progressText = document.getElementById('batchProgressText');
+
+    if (uploadZone && fileInput) {
+        uploadZone.addEventListener('click', function() { fileInput.click(); });
+        uploadZone.addEventListener('dragover', function(e) { e.preventDefault(); uploadZone.classList.add('drag-over'); });
+        uploadZone.addEventListener('dragleave', function() { uploadZone.classList.remove('drag-over'); });
+        uploadZone.addEventListener('drop', function(e) {
+            e.preventDefault();
+            uploadZone.classList.remove('drag-over');
+            handleFiles(e.dataTransfer.files);
+        });
+        fileInput.addEventListener('change', function() {
+            if (this.files.length > 0) handleFiles(this.files);
+        });
+    }
+
+    function handleFiles(files) {
+        if (files.length === 0) return;
+        var formData = new FormData();
+        for (var i = 0; i < files.length; i++) {
+            formData.append('files', files[i]);
+        }
+        progressDiv.style.display = 'block';
+        progressBar.style.width = '30%';
+        progressText.textContent = '正在上传 ' + files.length + ' 张图片...';
+
+        fetch('/admin/api/images/batch-upload', {
+            method: 'POST',
+            body: formData
+        })
+        .then(function(resp) { return resp.json(); })
+        .then(function(data) {
+            progressBar.style.width = '100%';
+            if (data.uploadedCount > 0) {
+                progressText.textContent = '成功上传 ' + data.uploadedCount + ' 张' + (data.errorCount > 0 ? '，失败 ' + data.errorCount + ' 张' : '');
+                progressBar.classList.add('bg-success');
+                setTimeout(function() { location.reload(); }, 1000);
+            } else {
+                progressText.textContent = '上传失败';
+                progressBar.classList.add('bg-danger');
+            }
+        })
+        .catch(function(err) {
+            progressBar.style.width = '100%';
+            progressBar.classList.add('bg-danger');
+            progressText.textContent = '上传失败: ' + err.message;
+        });
+    }
+})();
+
+// 删除确认
+var deleteImageId = null;
+function confirmDeleteImage(btn) {
+    deleteImageId = btn.getAttribute('data-id');
+    document.getElementById('deleteImageName').textContent = btn.getAttribute('data-name');
+    var modal = new bootstrap.Modal(document.getElementById('deleteImageModal'));
+    modal.show();
+}
+
+function doDeleteImage() {
+    if (!deleteImageId) return;
+    fetch('/admin/api/images/delete/' + deleteImageId, { method: 'POST' })
+    .then(function(resp) { return resp.json(); })
+    .then(function(data) {
+        if (data.success) {
+            location.reload();
+        } else {
+            alert('删除失败: ' + (data.message || '未知错误'));
+        }
+    })
+    .catch(function(err) { alert('删除失败: ' + err.message); });
+}
+</script>
 </body>
 </html>

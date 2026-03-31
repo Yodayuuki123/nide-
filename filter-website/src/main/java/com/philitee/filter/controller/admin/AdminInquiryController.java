@@ -1,7 +1,7 @@
 package com.philitee.filter.controller.admin;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.core.metadata.OrderItem;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.philitee.filter.entity.Inquiry;
 import com.philitee.filter.service.InquiryService;
@@ -9,9 +9,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -26,10 +28,32 @@ public class AdminInquiryController {
     public String list(
             @RequestParam(defaultValue = "1") int page,
             @RequestParam(defaultValue = "20") int size,
+            @RequestParam(required = false) String name,
+            @RequestParam(required = false) String email,
+            @RequestParam(required = false) String company,
+            @RequestParam(required = false) String startDate,
             Model model) {
+
+        QueryWrapper<Inquiry> queryWrapper = new QueryWrapper<>();
+
+        if (StringUtils.hasText(name)) {
+            queryWrapper.like("name", name);
+        }
+        if (StringUtils.hasText(email)) {
+            queryWrapper.like("email", email);
+        }
+        if (StringUtils.hasText(company)) {
+            queryWrapper.like("company", company);
+        }
+        if (StringUtils.hasText(startDate)) {
+            queryWrapper.ge("created_time", LocalDate.parse(startDate).atStartOfDay());
+        }
+
+        // 按创建时间倒序
+        queryWrapper.orderByDesc("created_time");
+
         Page<Inquiry> pageReq = new Page<>(page, size);
-        pageReq.addOrder(OrderItem.desc("created_time"));
-        IPage<Inquiry> inquiryPage = inquiryService.page(pageReq);
+        IPage<Inquiry> inquiryPage = inquiryService.page(pageReq, queryWrapper);
         model.addAttribute("inquiryPage", inquiryPage);
         return "admin/inquiry-list";
     }
@@ -63,9 +87,9 @@ public class AdminInquiryController {
     public String save(@ModelAttribute Inquiry inquiry, RedirectAttributes redirectAttributes) {
         try {
             inquiryService.updateById(inquiry);
-            redirectAttributes.addFlashAttribute("message", "Inquiry updated successfully");
+            redirectAttributes.addFlashAttribute("message", "询盘更新成功");
         } catch (Exception e) {
-            redirectAttributes.addFlashAttribute("error", "Save failed: " + e.getMessage());
+            redirectAttributes.addFlashAttribute("error", "操作失败: " + e.getMessage());
         }
         return "redirect:/admin/inquiries";
     }
@@ -95,9 +119,9 @@ public class AdminInquiryController {
     public String delete(@PathVariable Long id, RedirectAttributes redirectAttributes) {
         try {
             inquiryService.removeById(id);
-            redirectAttributes.addFlashAttribute("message", "Inquiry deleted successfully");
+            redirectAttributes.addFlashAttribute("message", "询盘删除成功");
         } catch (Exception e) {
-            redirectAttributes.addFlashAttribute("error", "Delete failed: " + e.getMessage());
+            redirectAttributes.addFlashAttribute("error", "删除失败: " + e.getMessage());
         }
         return "redirect:/admin/inquiries";
     }

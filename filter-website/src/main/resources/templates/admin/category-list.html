@@ -9,7 +9,7 @@
         <div th:replace="~{fragments/admin-layout :: adminTopbar}"></div>
 
         <div class="admin-main">
-            <!-- Flash 留言内容s -->
+            <!-- Flash Messages -->
             <div th:if="${message}" class="alert alert-success alert-dismissible fade show">
                 <span th:text="${message}"></span>
                 <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
@@ -21,7 +21,7 @@
 
             <div class="d-flex justify-content-between align-items-center mb-4">
                 <div>
-                    <h4 style="font-size: 1.8rem; margin-bottom: 4px;" th:text="#{admin.categories}">所属分类</h4>
+                    <h4 style="font-size: 1.8rem; margin-bottom: 4px;" th:text="#{admin.categories}">分类管理</h4>
                     <p style="color: var(--admin-text-tertiary); font-size: 13px; margin: 0;">Organize your products with categories</p>
                 </div>
                 <a href="/admin/categories/add" class="btn btn-primary btn-sm">
@@ -29,9 +29,42 @@
                 </a>
             </div>
 
+            <!-- Search Form -->
+            <div class="admin-card mb-3">
+                <div class="admin-card-body">
+                    <form method="get" th:action="@{/admin/categories}" class="row g-2 align-items-end">
+                        <div class="col-md-3">
+                            <label class="form-label form-label-sm">类目名称</label>
+                            <input type="text" name="keyword" th:value="${param.keyword}" class="form-control form-control-sm" placeholder="搜索分类名称...">
+                        </div>
+                        <div class="col-md-2">
+                            <label class="form-label form-label-sm">创建时间起</label>
+                            <input type="date" name="startDate" th:value="${param.startDate}" class="form-control form-control-sm">
+                        </div>
+                        <div class="col-md-2">
+                            <label class="form-label form-label-sm">创建时间止</label>
+                            <input type="date" name="endDate" th:value="${param.endDate}" class="form-control form-control-sm">
+                        </div>
+                        <div class="col-md-2">
+                            <label class="form-label form-label-sm">每页显示</label>
+                            <select name="size" class="form-select form-select-sm">
+                                <option value="10" th:selected="${param.size == null or param.size == '10'}">10</option>
+                                <option value="20" th:selected="${param.size == '20'}">20</option>
+                                <option value="50" th:selected="${param.size == '50'}">50</option>
+                                <option value="100" th:selected="${param.size == '100'}">100</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3 d-flex gap-2">
+                            <button type="submit" class="btn btn-primary btn-sm"><i class="bi bi-search"></i> 搜索</button>
+                            <a th:href="@{/admin/categories}" class="btn btn-outline-secondary btn-sm"><i class="bi bi-arrow-counterclockwise"></i> 重置</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
             <div class="admin-card">
                 <div class="admin-card-header">
-                    <h5>All 所属分类</h5>
+                    <h5>全部分类</h5>
                 </div>
                 <div class="admin-card-body">
                     <div class="table-responsive">
@@ -43,7 +76,7 @@
                                 <th>URL别名</th>
                                 <th>父级</th>
                                 <th>产品数</th>
-                                <th>创建时间</th>
+                                <th>修改时间</th>
                                 <th th:text="#{admin.actions}">操作</th>
                             </tr>
                             </thead>
@@ -63,7 +96,7 @@
                                     <td>
                                         <span class="badge bg-light text-dark" th:text="${cat.productCount} ?: 0">0</span>
                                     </td>
-                                    <td class="text-muted" th:text="${cat.createdAt != null} ? ${#temporals.format(cat.createdAt, 'yyyy-MM-dd')} : '-'">2026-01-01</td>
+                                    <td class="text-muted" th:text="${cat.updatedAt != null} ? ${#temporals.format(cat.updatedAt, 'yyyy-MM-dd HH:mm')} : (${cat.createdAt != null} ? ${#temporals.format(cat.createdAt, 'yyyy-MM-dd HH:mm')} : '-')">2026-01-01</td>
                                     <td class="actions">
                                         <a th:href="@{/admin/categories/edit/{id}(id=${cat.id})}"
                                            class="btn btn-sm btn-outline-primary me-1" title="编辑">
@@ -72,8 +105,7 @@
                                         <button type="button" class="btn btn-sm btn-outline-danger"
                                                 th:data-id="${cat.id}"
                                                 th:data-name="${cat.name}"
-                                                data-bs-toggle="modal" data-bs-target="#deleteModal"
-                                                onclick="prepareDelete(this)">
+                                                onclick="confirmDelete(this)">
                                             <i class="bi bi-trash"></i>
                                         </button>
                                     </td>
@@ -90,7 +122,7 @@
                                     <td>
                                         <span class="badge bg-light text-dark" th:text="${child.productCount} ?: 0">0</span>
                                     </td>
-                                    <td class="text-muted" th:text="${child.createdAt != null} ? ${#temporals.format(child.createdAt, 'yyyy-MM-dd')} : '-'">2026-01-01</td>
+                                    <td class="text-muted" th:text="${child.updatedAt != null} ? ${#temporals.format(child.updatedAt, 'yyyy-MM-dd HH:mm')} : (${child.createdAt != null} ? ${#temporals.format(child.createdAt, 'yyyy-MM-dd HH:mm')} : '-')">2026-01-01</td>
                                     <td class="actions">
                                         <a th:href="@{/admin/categories/edit/{id}(id=${child.id})}"
                                            class="btn btn-sm btn-outline-primary me-1" title="编辑">
@@ -99,8 +131,7 @@
                                         <button type="button" class="btn btn-sm btn-outline-danger"
                                                 th:data-id="${child.id}"
                                                 th:data-name="${child.name}"
-                                                data-bs-toggle="modal" data-bs-target="#deleteModal"
-                                                onclick="prepareDelete(this)">
+                                                onclick="confirmDelete(this)">
                                             <i class="bi bi-trash"></i>
                                         </button>
                                     </td>
@@ -118,22 +149,22 @@
     </div>
 </div>
 
-<!-- 删除 Confirmation Modal -->
+<!-- 删除确认弹窗 -->
 <div class="modal fade" id="deleteModal" tabindex="-1">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Confirm 删除</h5>
+                <h5 class="modal-title">确认删除</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body">
-                <p th:text="#{admin.confirm_delete}">确定要删除此项目吗？此操作不可撤销。</p>
+                <p>确定要删除此分类吗？此操作不可撤销。</p>
                 <p class="fw-medium" id="deleteItemName"></p>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" th:text="#{admin.cancel}">取消</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
                 <form id="deleteForm" method="post" class="d-inline">
-                    <button type="submit" class="btn btn-danger" th:text="#{admin.delete}">删除</button>
+                    <button type="submit" class="btn btn-outline-danger">确认删除</button>
                 </form>
             </div>
         </div>
@@ -142,9 +173,11 @@
 
 <div th:replace="~{fragments/admin-layout :: adminScripts}"></div>
 <script>
-    function prepareDelete(btn) {
+    function confirmDelete(btn) {
         document.getElementById('deleteItemName').textContent = btn.getAttribute('data-name');
         document.getElementById('deleteForm').action = '/admin/categories/delete/' + btn.getAttribute('data-id');
+        var modal = new bootstrap.Modal(document.getElementById('deleteModal'));
+        modal.show();
     }
 </script>
 </body>

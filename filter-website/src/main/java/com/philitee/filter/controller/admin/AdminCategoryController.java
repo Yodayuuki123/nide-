@@ -8,6 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -61,9 +62,12 @@ public class AdminCategoryController {
     public String save(ProductCategory category, RedirectAttributes redirectAttributes) {
         try {
             if (category.getId() == null) {
+                category.setCreatedAt(LocalDateTime.now());
+                category.setUpdatedAt(LocalDateTime.now());
                 categoryService.save(category);
                 redirectAttributes.addFlashAttribute("message", "分类创建成功");
             } else {
+                category.setUpdatedAt(LocalDateTime.now());
                 categoryService.updateById(category);
                 redirectAttributes.addFlashAttribute("message", "分类更新成功");
             }

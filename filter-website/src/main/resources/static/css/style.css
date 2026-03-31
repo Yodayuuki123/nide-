@@ -36,8 +36,8 @@
 
     --container-width: 1200px;
     --container-wide: 1400px;
-    --section-padding: 100px;
-    --section-padding-sm: 60px;
+    --section-padding: 60px;
+    --section-padding-sm: 40px;
 }
 
 /* ===== Reset & Base ===== */
@@ -78,7 +78,7 @@ h5 { font-size: 1.15rem; }
 h6 { font-size: 1rem; }
 
 p {
-    color: var(--text-secondary);
+    color: #333333;
     line-height: 1.8;
     margin-bottom: 1rem;
 }
@@ -171,7 +171,7 @@ img {
 .top-info-bar {
     background: var(--bg-dark);
     color: var(--text-inverse);
-    padding: 8px 0;
+    padding: 4px 0;
     font-size: 13px;
     border-bottom: 1px solid rgba(255,255,255,0.1);
 }
@@ -242,14 +242,14 @@ img {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 12px 0;
+    padding: 6px 0;
     position: relative;
 }
 
 .nav-left {
     display: flex;
     align-items: center;
-    gap: 24px;
+    gap: 12px;
 }
 
 .nav-util-link {
@@ -355,7 +355,7 @@ img {
 .header-nav-list {
     display: flex;
     align-items: center;
-    gap: 32px;
+    gap: 24px;
     list-style: none;
     margin: 0;
     padding: 0;
@@ -3827,12 +3827,12 @@ img {
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.15em;
-    color: var(--accent);
+    color: #1a1a1a;
     margin-bottom: 10px;
 }
 
 .section-header {
-    margin-bottom: 50px;
+    margin-bottom: 30px;
 }
 
 .section-header h2 {
@@ -4314,6 +4314,49 @@ img {
     .applications-grid {
         grid-template-columns: 1fr;
     }
+}
+
+/* Application Image Cards */
+.application-card-img {
+    position: relative;
+    border-radius: 8px;
+    overflow: hidden;
+    aspect-ratio: 4/3;
+    cursor: pointer;
+}
+.application-card-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.4s ease;
+}
+.application-card-img:hover img {
+    transform: scale(1.08);
+}
+.application-placeholder {
+    width: 100%;
+    height: 100%;
+    background: var(--bg-tertiary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.5rem;
+    color: var(--accent);
+}
+.application-card-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 16px;
+    background: linear-gradient(transparent, rgba(0,0,0,0.7));
+    color: #fff;
+}
+.application-card-overlay h5 {
+    margin: 0;
+    font-size: 1rem;
+    color: #fff;
+    font-weight: 600;
 }
 
 /* ===== 6. Why Choose Us ===== */
@@ -5205,6 +5248,8 @@ img {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 24px;
+    max-width: var(--container-wide);
+    margin: 0 auto;
 }
 
 .solution-card {
@@ -5862,9 +5907,9 @@ img {
    Breadcrumb Navigation (best-filter.com style)
    ============================================ */
 .bf-breadcrumb {
-    background: var(--bg-secondary);
-    padding: 12px 0;
-    border-bottom: 1px solid var(--border-light);
+    background: var(--accent);
+    padding: 10px 0;
+    border-bottom: none;
 }
 .bf-breadcrumb-list {
     display: flex;
@@ -5881,20 +5926,21 @@ img {
     align-items: center;
     gap: 8px;
 }
-.bf-breadcrumb-list li a {
-    color: var(--text-secondary);
+.bf-breadcrumb-list li a,
+.bf-breadcrumb-list li a i {
+    color: rgba(255,255,255,0.85);
     text-decoration: none;
     transition: color 0.2s;
 }
 .bf-breadcrumb-list li a:hover {
-    color: var(--accent);
+    color: #fff;
 }
 .bf-breadcrumb-sep {
-    color: var(--text-tertiary);
+    color: rgba(255,255,255,0.6);
     font-size: 0.75rem;
 }
 .bf-breadcrumb-list li:last-child span {
-    color: var(--text-primary);
+    color: #fff;
     font-weight: 500;
 }
 
@@ -5902,7 +5948,7 @@ img {
    Contact Page (best-filter.com style)
    ============================================ */
 .bf-contact-page {
-    padding: 60px 0;
+    padding: 40px 0 60px;
 }
 .bf-contact-layout {
     display: grid;
@@ -5910,6 +5956,162 @@ img {
     gap: 60px;
     max-width: 1200px;
     margin: 0 auto;
+}
+
+/* New Contact Page Styles */
+.bf-contact-methods {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    margin-bottom: 50px;
+}
+.bf-contact-method-card {
+    text-align: center;
+    padding: 30px 20px;
+    background: #fff;
+    border: 1px solid var(--border-light);
+    border-radius: 8px;
+    transition: box-shadow 0.3s;
+}
+.bf-contact-method-card:hover {
+    box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+}
+.bf-method-icon {
+    width: 56px;
+    height: 56px;
+    margin: 0 auto 12px;
+    background: var(--accent);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.4rem;
+    color: #fff;
+}
+.bf-contact-method-card h4 {
+    font-size: 1.1rem;
+    margin-bottom: 6px;
+    color: #1a1a1a;
+}
+.bf-contact-method-card p {
+    margin: 0;
+    color: #333;
+}
+.bf-contact-method-card a {
+    color: #333;
+}
+.bf-contact-method-card a:hover {
+    color: var(--accent);
+}
+.bf-contact-section-title {
+    font-size: 1.6rem;
+    font-weight: 600;
+    color: var(--accent);
+    margin-bottom: 24px;
+    padding-bottom: 12px;
+    border-bottom: 2px solid var(--accent);
+    display: inline-block;
+}
+.bf-contact-form-wrapper {
+    margin-bottom: 50px;
+}
+.bf-contact-form-new {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+.bf-form-row-3 {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+}
+.bf-form-row-2 {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+}
+.bf-input-new,
+.bf-textarea-new {
+    width: 100%;
+    padding: 10px 14px;
+    border: 1px dashed var(--border);
+    border-radius: 4px;
+    font-size: 0.95rem;
+    font-family: var(--font-body);
+    background: #fff;
+    transition: border-color 0.2s;
+    box-sizing: border-box;
+}
+.bf-input-new:focus,
+.bf-textarea-new:focus {
+    outline: none;
+    border-color: var(--accent);
+    border-style: solid;
+    box-shadow: 0 0 0 2px rgba(76, 175, 80, 0.15);
+}
+.bf-textarea-new {
+    resize: vertical;
+    min-height: 120px;
+}
+.bf-btn-submit {
+    align-self: flex-start;
+    padding: 12px 40px;
+    font-size: 1rem;
+    font-weight: 600;
+}
+.bf-contact-office {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    margin-bottom: 40px;
+    align-items: start;
+}
+.bf-office-details {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+.bf-office-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+}
+.bf-office-item i {
+    font-size: 1.2rem;
+    color: var(--accent);
+    margin-top: 3px;
+}
+.bf-office-item strong {
+    display: block;
+    margin-bottom: 4px;
+    color: #1a1a1a;
+}
+.bf-office-item p {
+    margin: 0;
+    color: #333;
+    font-size: 0.95rem;
+}
+.bf-contact-social {
+    text-align: center;
+    padding: 30px 0;
+}
+.bf-contact-social h4 {
+    margin-bottom: 16px;
+    color: #1a1a1a;
+}
+@media (max-width: 768px) {
+    .bf-contact-methods {
+        grid-template-columns: 1fr;
+    }
+    .bf-form-row-3 {
+        grid-template-columns: 1fr;
+    }
+    .bf-form-row-2 {
+        grid-template-columns: 1fr;
+    }
+    .bf-contact-office {
+        grid-template-columns: 1fr;
+    }
 }
 .bf-contact-form-section h2 {
     font-family: var(--font-heading);
@@ -6817,12 +7019,13 @@ img {
 .bf-tag {
     display: inline-block;
     padding: 2px 8px;
-    background: var(--accent);
-    color: #fff;
+    background: transparent;
+    color: #2E7D32;
     font-size: 0.7rem;
     border-radius: 3px;
     text-transform: uppercase;
     letter-spacing: 0.5px;
+    font-weight: 600;
 }
 .bf-tag-outline {
     background: transparent;
@@ -6831,10 +7034,10 @@ img {
 }
 .bf-product-title {
     font-size: 0.9rem;
-    color: var(--text-primary);
+    color: #1a1a1a;
     margin: 0;
     line-height: 1.3;
-    font-weight: 500;
+    font-weight: 700;
 }
 
 /* Sidebar (shared between product list, detail, news) */

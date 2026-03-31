@@ -9,7 +9,7 @@
         <div th:replace="~{fragments/admin-layout :: adminTopbar}"></div>
 
         <div class="admin-main">
-            <!-- Flash 留言内容s -->
+            <!-- Flash Messages -->
             <div th:if="${message}" class="alert alert-success alert-dismissible fade show">
                 <span th:text="${message}"></span>
                 <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
@@ -29,9 +29,47 @@
                 </a>
             </div>
 
+            <!-- Search Form -->
+            <div class="admin-card mb-3">
+                <div class="admin-card-body">
+                    <form method="get" th:action="@{/admin/news}" class="row g-2 align-items-end">
+                        <div class="col-md-3">
+                            <label class="form-label form-label-sm">标题</label>
+                            <input type="text" name="keyword" th:value="${param.keyword}" class="form-control form-control-sm" placeholder="搜索新闻标题...">
+                        </div>
+                        <div class="col-md-2">
+                            <label class="form-label form-label-sm">状态</label>
+                            <select name="status" class="form-select form-select-sm">
+                                <option value="">全部</option>
+                                <option value="published" th:selected="${param.status != null and param.status == 'published'}">已发布</option>
+                                <option value="draft" th:selected="${param.status != null and param.status == 'draft'}">草稿</option>
+                            </select>
+                        </div>
+                        <div class="col-md-2">
+                            <label class="form-label form-label-sm">创建时间起</label>
+                            <input type="date" name="startDate" th:value="${param.startDate}" class="form-control form-control-sm">
+                        </div>
+                        <div class="col-md-2">
+                            <label class="form-label form-label-sm">每页显示</label>
+                            <select name="size" class="form-select form-select-sm">
+                                <option value="10" th:selected="${newsPage.size == 10}">10</option>
+                                <option value="20" th:selected="${newsPage.size == 20}">20</option>
+                                <option value="50" th:selected="${newsPage.size == 50}">50</option>
+                                <option value="100" th:selected="${newsPage.size == 100}">100</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3 d-flex gap-2">
+                            <button type="submit" class="btn btn-primary btn-sm"><i class="bi bi-search"></i> 搜索</button>
+                            <a th:href="@{/admin/news}" class="btn btn-outline-secondary btn-sm"><i class="bi bi-arrow-counterclockwise"></i> 重置</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
             <div class="admin-card">
                 <div class="admin-card-header">
                     <h5>全部新闻</h5>
+                    <span class="text-muted" th:text="'共 ' + ${newsPage.total} + ' 条'"></span>
                 </div>
                 <div class="admin-card-body">
                     <div class="table-responsive">
@@ -42,7 +80,7 @@
                                 <th>标题</th>
                                 <th>状态</th>
                                 <th>浏览量</th>
-                                <th>创建时间</th>
+                                <th>修改时间</th>
                                 <th>操作</th>
                             </tr>
                             </thead>
@@ -59,7 +97,7 @@
                                           th:text="${news.status == 'published'} ? '已发布' : '草稿'">已发布</span>
                                 </td>
                                 <td class="text-muted" th:text="${news.viewCount} ?: '0'">0</td>
-                                <td class="text-muted" th:text="${news.createdTime != null} ? ${#temporals.format(news.createdTime, 'yyyy-MM-dd')} : '-'">2026-01-01</td>
+                                <td class="text-muted" th:text="${news.updatedTime != null} ? ${#temporals.format(news.updatedTime, 'yyyy-MM-dd HH:mm')} : (${news.createdTime != null} ? ${#temporals.format(news.createdTime, 'yyyy-MM-dd HH:mm')} : '-')">2026-01-01</td>
                                 <td class="actions">
                                     <a th:href="@{/admin/news/edit/{id}(id=${news.id})}"
                                        class="btn btn-sm btn-outline-primary me-1" title="编辑">
@@ -68,8 +106,7 @@
                                     <button type="button" class="btn btn-sm btn-outline-danger"
                                             th:data-id="${news.id}"
                                             th:data-name="${news.title}"
-                                            data-bs-toggle="modal" data-bs-target="#deleteModal"
-                                            onclick="prepareDelete(this)">
+                                            onclick="confirmDelete(this)">
                                         <i class="bi bi-trash"></i>
                                     </button>
                                 </td>
@@ -82,19 +119,30 @@
                     </div>
 
                     <!-- Pagination -->
-                    <div class="p-3" th:if="${newsPage.pages > 1}">
+                    <div class="p-3 d-flex justify-content-between align-items-center" th:if="${newsPage.pages > 1}">
+                        <span class="text-muted" style="font-size:13px;" th:text="'显示 ' + ${(newsPage.current - 1) * newsPage.size + 1} + '-' + ${T(Math).min(newsPage.current * newsPage.size, newsPage.total)} + ' / 共 ' + ${newsPage.total} + ' 条'"></span>
                         <nav>
-                            <ul class="pagination mb-0 justify-content-center">
+                            <ul class="pagination pagination-sm mb-0">
                                 <li class="page-item" th:classappend="${newsPage.current <= 1} ? 'disabled'">
-                                    <a class="page-link" th:href="@{/admin/news(page=${newsPage.current - 1}, size=${newsPage.size})}">上一页</a>
+                                    <a class="page-link" th:href="@{/admin/news(page=${newsPage.current - 1}, size=${newsPage.size}, keyword=${param.keyword}, status=${param.status}, startDate=${param.startDate})}">上一页</a>
                                 </li>
-                                <th:block th:each="i : ${#numbers.sequence(1, newsPage.pages)}">
-                                    <li class="page-item" th:classappend="${i == newsPage.current} ? 'active'">
-                                        <a class="page-link" th:href="@{/admin/news(page=${i}, size=${newsPage.size})}" th:text="${i}">1</a>
+                                <th:block th:with="startPage=${T(Math).max(1, newsPage.current - 2)}, endPage=${T(Math).min(newsPage.pages, T(Math).max(1, newsPage.current - 2) + 4)}">
+                                    <li th:if="${startPage > 1}" class="page-item">
+                                        <a class="page-link" th:href="@{/admin/news(page=1, size=${newsPage.size}, keyword=${param.keyword}, status=${param.status}, startDate=${param.startDate})}">1</a>
+                                    </li>
+                                    <li th:if="${startPage > 2}" class="page-item disabled"><span class="page-link">...</span></li>
+                                    <th:block th:each="i : ${#numbers.sequence(startPage, endPage)}">
+                                        <li class="page-item" th:classappend="${i == newsPage.current} ? 'active'">
+                                            <a class="page-link" th:href="@{/admin/news(page=${i}, size=${newsPage.size}, keyword=${param.keyword}, status=${param.status}, startDate=${param.startDate})}" th:text="${i}">1</a>
+                                        </li>
+                                    </th:block>
+                                    <li th:if="${endPage < newsPage.pages - 1}" class="page-item disabled"><span class="page-link">...</span></li>
+                                    <li th:if="${endPage < newsPage.pages}" class="page-item">
+                                        <a class="page-link" th:href="@{/admin/news(page=${newsPage.pages}, size=${newsPage.size}, keyword=${param.keyword}, status=${param.status}, startDate=${param.startDate})}" th:text="${newsPage.pages}">99</a>
                                     </li>
                                 </th:block>
                                 <li class="page-item" th:classappend="${newsPage.current >= newsPage.pages} ? 'disabled'">
-                                    <a class="page-link" th:href="@{/admin/news(page=${newsPage.current + 1}, size=${newsPage.size})}">下一页</a>
+                                    <a class="page-link" th:href="@{/admin/news(page=${newsPage.current + 1}, size=${newsPage.size}, keyword=${param.keyword}, status=${param.status}, startDate=${param.startDate})}">下一页</a>
                                 </li>
                             </ul>
                         </nav>
@@ -129,9 +177,11 @@
 
 <div th:replace="~{fragments/admin-layout :: adminScripts}"></div>
 <script>
-    function prepareDelete(btn) {
+    function confirmDelete(btn) {
         document.getElementById('deleteItemName').textContent = btn.getAttribute('data-name');
         document.getElementById('deleteForm').action = '/admin/news/delete/' + btn.getAttribute('data-id');
+        var modal = new bootstrap.Modal(document.getElementById('deleteModal'));
+        modal.show();
     }
 </script>
 </body>

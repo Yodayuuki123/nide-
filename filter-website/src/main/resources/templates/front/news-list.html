@@ -7,36 +7,7 @@
 <!-- Breadcrumb -->
 <div th:replace="~{fragments/breadcrumb :: breadcrumb(${breadcrumbItems})}"></div>
 
-<!-- Page Title -->
-<section class="bf-page-title">
-    <div class="bf-container">
-        <h1 th:text="#{nav.news}">News</h1>
-    </div>
-</section>
 
-<!-- Search & Filter Bar -->
-<section class="bf-filter-bar">
-    <div class="bf-container">
-        <form th:action="@{/news}" method="get" class="bf-filter-form">
-            <div class="bf-filter-group">
-                <input type="text" name="keyword" th:value="${keyword}" th:placeholder="#{news.search.placeholder}" class="bf-filter-input">
-            </div>
-            <div class="bf-filter-group">
-                <input type="date" name="startDate" th:value="${startDate}" class="bf-filter-input bf-date-input">
-            </div>
-            <div class="bf-filter-group">
-                <input type="date" name="endDate" th:value="${endDate}" class="bf-filter-input bf-date-input">
-            </div>
-            <div class="bf-filter-group">
-                <select name="sort" class="bf-filter-input">
-                    <option value="newest" th:selected="${sort == 'newest'}" th:text="#{news.sort.newest}">Newest First</option>
-                    <option value="oldest" th:selected="${sort == 'oldest'}" th:text="#{news.sort.oldest}">Oldest First</option>
-                </select>
-            </div>
-            <button type="submit" class="bf-filter-btn"><i class="bi bi-search"></i> <span th:text="#{search.button}">Search</span></button>
-        </form>
-    </div>
-</section>
 
 <!-- News Grid -->
 <section class="bf-news-section">

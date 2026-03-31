@@ -4,18 +4,8 @@
 <body>
 <header th:replace="~{fragments/header :: navbar}"></header>
 
-<!-- Page Header -->
-<section class="page-header">
-    <div class="aesop-container">
-        <h1 class="fade-in" th:text="#{solutions.title}">Filtration Solutions</h1>
-        <p class="fade-in" th:text="#{solutions.subtitle}">Complete filtration solutions tailored to your industry needs</p>
-        <nav class="breadcrumb-nav">
-            <a th:href="@{/}" th:text="#{breadcrumb.home}">Home</a>
-            <span class="separator">/</span>
-            <span class="current" th:text="#{nav.solutions}">Solutions</span>
-        </nav>
-    </div>
-</section>
+<!-- Breadcrumb -->
+<div th:replace="~{fragments/breadcrumb :: breadcrumb(${breadcrumbItems})}"></div>
 
 <!-- Industry Solutions -->
 <section class="section">
@@ -129,16 +119,7 @@
     </div>
 </section>
 
-<!-- CTA -->
-<section class="home-cta-section">
-    <div class="aesop-container text-center">
-        <h3 class="fade-in" th:text="#{solutions.cta.title}">Need a Custom Filtration Solution?</h3>
-        <p class="fade-in" th:text="#{solutions.cta.subtitle}">Our engineers will design the optimal solution for your specific requirements</p>
-        <div class="fade-in">
-            <a th:href="@{/contact}" class="btn btn-accent btn-lg" th:text="#{solutions.cta.button}">Get Free Consultation</a>
-        </div>
-    </div>
-</section>
+
 
 <footer th:replace="~{fragments/footer :: footer}"></footer>
 

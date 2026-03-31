@@ -77,29 +77,68 @@
             .replace(/^-+|-+$/g, '');
     }
 
-    // ===== Image Picker =====
+    // ===== Image Picker (Enhanced with Search and Pagination) =====
     var imagePickerMode = 'main'; // 'main' or 'gallery'
     var imagePickerPage = 1;
+    var imagePickerKeyword = '';
     var selectedImageId = null;
     var selectedImageUrl = null;
 
     window.openImagePicker = function(mode) {
         imagePickerMode = mode;
         imagePickerPage = 1;
+        imagePickerKeyword = '';
         selectedImageId = null;
         selectedImageUrl = null;
-        document.getElementById('confirmImageSelect').disabled = true;
+        
+        var confirmBtn = document.getElementById('confirmImageSelect');
+        if (confirmBtn) confirmBtn.disabled = true;
+        
+        // Add search input to modal if not exists
+        setupImagePickerSearch();
+        
         loadImages(true);
-        var modal = new bootstrap.Modal(document.getElementById('imagePickerModal'));
-        modal.show();
+        var modalEl = document.getElementById('imagePickerModal');
+        if (modalEl) {
+            var modal = bootstrap.Modal.getOrCreateInstance(modalEl);
+            modal.show();
+        }
     };
+
+    function setupImagePickerSearch() {
+        var libraryTab = document.getElementById('tabLibrary');
+        if (!libraryTab || libraryTab.querySelector('.picker-search-container')) return;
+
+        var searchHtml = '<div class="picker-search-container mb-3 d-flex gap-2">' +
+            '<input type="text" id="pickerSearchInput" class="form-control form-control-sm" placeholder="Search image name...">' +
+            '<button type="button" id="pickerSearchBtn" class="btn btn-primary btn-sm">Search</button>' +
+            '</div>';
+        libraryTab.insertAdjacentHTML('afterbegin', searchHtml);
+
+        document.getElementById('pickerSearchBtn').addEventListener('click', function() {
+            imagePickerKeyword = document.getElementById('pickerSearchInput').value;
+            loadImages(true);
+        });
+
+        document.getElementById('pickerSearchInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                imagePickerKeyword = this.value;
+                loadImages(true);
+            }
+        });
+    }
 
     function loadImages(reset) {
         if (reset) {
             imagePickerPage = 1;
         }
 
-        fetch('/admin/api/images/list?page=' + imagePickerPage + '&size=20')
+        var url = '/admin/api/images/list?page=' + imagePickerPage + '&size=20';
+        if (imagePickerKeyword) {
+            url += '&keyword=' + encodeURIComponent(imagePickerKeyword);
+        }
+
+        fetch(url)
             .then(function(resp) { return resp.json(); })
             .then(function(data) {
                 var grid = document.getElementById('imagePickerGrid');
@@ -112,29 +151,30 @@
                         var div = document.createElement('div');
                         div.className = 'image-picker-item';
                         div.setAttribute('data-id', img.id);
-                        div.setAttribute('data-url', img.url || ('/wp-content/uploads' + img.filePath));
-                        div.innerHTML = '<img src="' + (img.url || ('/wp-content/uploads' + img.filePath)) + '" alt="' + (img.altText || img.fileName) + '">';
+                        var finalUrl = img.url || ('/wp-content/uploads' + img.filePath);
+                        div.setAttribute('data-url', finalUrl);
+                        div.innerHTML = '<img src="' + finalUrl + '" alt="' + (img.altText || img.fileName) + '">';
                         div.addEventListener('click', function() {
-                            // Deselect all
                             grid.querySelectorAll('.image-picker-item').forEach(function(item) {
                                 item.classList.remove('selected');
                             });
-                            // Select this one
                             div.classList.add('selected');
                             selectedImageId = img.id;
-                            selectedImageUrl = img.url || ('/wp-content/uploads' + img.filePath);
-                            document.getElementById('confirmImageSelect').disabled = false;
+                            selectedImageUrl = finalUrl;
+                            var confirmBtn = document.getElementById('confirmImageSelect');
+                            if (confirmBtn) confirmBtn.disabled = false;
                         });
                         grid.appendChild(div);
                     });
 
-                    // Show/hide load more button
                     var loadMoreBtn = document.getElementById('loadMoreImages');
                     if (loadMoreBtn) {
                         loadMoreBtn.style.display = (data.current < data.pages) ? 'inline-block' : 'none';
                     }
                 } else if (reset) {
                     grid.innerHTML = '<p class="text-muted text-center py-4">No images found.</p>';
+                    var loadMoreBtn = document.getElementById('loadMoreImages');
+                    if (loadMoreBtn) loadMoreBtn.style.display = 'none';
                 }
             })
             .catch(function(err) {
@@ -158,27 +198,31 @@
             if (!selectedImageId) return;
 
             if (imagePickerMode === 'main') {
-                // Set main image
-                document.getElementById('mainImageId').value = selectedImageId;
+                var mainIdInput = document.getElementById('mainImageId');
+                if (mainIdInput) mainIdInput.value = selectedImageId;
                 var preview = document.getElementById('mainImagePreview');
-                preview.innerHTML = '<img src="' + selectedImageUrl + '" class="img-fluid rounded" style="max-height: 200px;">';
+                if (preview) preview.innerHTML = '<img src="' + selectedImageUrl + '" class="img-fluid rounded" style="max-height: 200px;">';
             } else if (imagePickerMode === 'gallery') {
-                // Add to gallery
                 var container = document.getElementById('galleryImagesContainer');
-                // Check if already exists
-                var existing = container.querySelector('[data-id="' + selectedImageId + '"]');
-                if (!existing) {
-                    var div = document.createElement('div');
-                    div.className = 'gallery-thumb-item position-relative';
-                    div.setAttribute('data-id', selectedImageId);
-                    div.innerHTML = '<img src="' + selectedImageUrl + '" class="rounded" style="width: 80px; height: 80px; object-fit: cover;">' +
-                        '<input type="hidden" name="imageIds" value="' + selectedImageId + '">' +
-                        '<button type="button" class="btn btn-sm btn-danger position-absolute top-0 end-0" style="padding: 0 4px; font-size: 0.7rem; line-height: 1.4;" onclick="removeGalleryImage(this)"><i class="bi bi-x"></i></button>';
-                    container.appendChild(div);
+                if (container) {
+                    var existing = container.querySelector('[data-id="' + selectedImageId + '"]');
+                    if (!existing) {
+                        var div = document.createElement('div');
+                        div.className = 'gallery-thumb-item position-relative';
+                        div.setAttribute('data-id', selectedImageId);
+                        div.innerHTML = '<img src="' + selectedImageUrl + '" class="rounded" style="width: 80px; height: 80px; object-fit: cover;">' +
+                            '<input type="hidden" name="imageIds" value="' + selectedImageId + '">' +
+                            '<button type="button" class="btn btn-sm btn-danger position-absolute top-0 end-0" style="padding: 0 4px; font-size: 0.7rem; line-height: 1.4;" onclick="removeGalleryImage(this)"><i class="bi bi-x"></i></button>';
+                        container.appendChild(div);
+                    }
                 }
             }
 
-            bootstrap.Modal.getInstance(document.getElementById('imagePickerModal')).hide();
+            var modalEl = document.getElementById('imagePickerModal');
+            if (modalEl) {
+                var modal = bootstrap.Modal.getInstance(modalEl);
+                if (modal) modal.hide();
+            }
         });
     }
 
@@ -242,16 +286,15 @@
             }, 500);
 
             if (data.success) {
-                // Select the newly uploaded image
                 selectedImageId = data.image.id;
                 selectedImageUrl = data.url;
-                document.getElementById('confirmImageSelect').disabled = false;
+                var confirmBtn = document.getElementById('confirmImageSelect');
+                if (confirmBtn) confirmBtn.disabled = false;
 
-                // Reload image grid and switch to library tab
                 loadImages(true);
-                var libraryTab = document.querySelector('a[href="#tabLibrary"]');
-                if (libraryTab) {
-                    bootstrap.Tab.getOrCreateInstance(libraryTab).show();
+                var libraryTabLink = document.querySelector('a[href="#tabLibrary"]');
+                if (libraryTabLink) {
+                    bootstrap.Tab.getOrCreateInstance(libraryTabLink).show();
                 }
             } else {
                 alert('Upload failed: ' + (data.message || 'Unknown error'));
@@ -263,61 +306,7 @@
         });
     }
 
-    // ===== Image List Page: Upload Zone =====
-    var pageUploadZone = document.getElementById('pageUploadZone');
-    var pageFileInput = document.getElementById('pageFileInput');
-
-    if (pageUploadZone && pageFileInput) {
-        pageUploadZone.addEventListener('click', function() {
-            pageFileInput.click();
-        });
-
-        pageUploadZone.addEventListener('dragover', function(e) {
-            e.preventDefault();
-            pageUploadZone.classList.add('dragover');
-        });
-
-        pageUploadZone.addEventListener('dragleave', function() {
-            pageUploadZone.classList.remove('dragover');
-        });
-
-        pageUploadZone.addEventListener('drop', function(e) {
-            e.preventDefault();
-            pageUploadZone.classList.remove('dragover');
-            if (e.dataTransfer.files.length > 0) {
-                uploadPageImage(e.dataTransfer.files[0]);
-            }
-        });
-
-        pageFileInput.addEventListener('change', function() {
-            if (this.files.length > 0) {
-                uploadPageImage(this.files[0]);
-            }
-        });
-    }
-
-    function uploadPageImage(file) {
-        var formData = new FormData();
-        formData.append('file', file);
-
-        fetch('/admin/api/images/upload', {
-            method: 'POST',
-            body: formData
-        })
-        .then(function(resp) { return resp.json(); })
-        .then(function(data) {
-            if (data.success) {
-                window.location.reload();
-            } else {
-                alert('Upload failed: ' + (data.message || 'Unknown error'));
-            }
-        })
-        .catch(function(err) {
-            alert('Upload failed: ' + err.message);
-        });
-    }
-
-    // ===== Delete Image (AJAX) =====
+    // ===== Delete Image (AJAX) - Simplified for use with confirmation modals if needed =====
     window.deleteImage = function(id, btn) {
         if (!confirm('Are you sure you want to delete this image?')) return;
 
@@ -327,6 +316,7 @@
                 if (data.success) {
                     var item = btn.closest('.image-grid-item');
                     if (item) item.remove();
+                    else window.location.reload();
                 } else {
                     alert('Delete failed: ' + (data.message || 'Unknown error'));
                 }

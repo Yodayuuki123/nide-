@@ -7,16 +7,7 @@
 <!-- Breadcrumb -->
 <div th:replace="~{fragments/breadcrumb :: breadcrumb(${breadcrumbItems})}"></div>
 
-<!-- Page Title -->
-<section class="bf-page-title">
-    <div class="bf-container">
-        <h1 th:if="${currentCategory != null}" th:text="${currentCategory.name}">Category Name</h1>
-        <h1 th:if="${currentTag != null}" th:text="${currentTag.name}">Tag Name</h1>
-        <h1 th:if="${currentCategory == null and currentTag == null}" th:text="#{product.list.title}">Products</h1>
-        <p th:if="${currentCategory != null and currentCategory.description != null}"
-           th:text="${currentCategory.description}" class="bf-page-subtitle">Category description</p>
-    </div>
-</section>
+
 
 <section class="bf-product-list-page">
     <div class="bf-container">

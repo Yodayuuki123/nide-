@@ -13,6 +13,7 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -102,6 +103,9 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
     @Transactional(rollbackFor = Exception.class)
     @CacheEvict(value = "featuredProducts", allEntries = true)
     public boolean saveProduct(Product product, List<Long> categoryIds, List<Long> tagIds, List<Long> imageIds) {
+        // 设置时间戳
+        product.setCreatedAt(LocalDateTime.now());
+        product.setUpdatedAt(LocalDateTime.now());
         // 保存产品
         this.save(product);
         Long productId = product.getId();
@@ -138,6 +142,8 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
     @Transactional(rollbackFor = Exception.class)
     @CacheEvict(value = "featuredProducts", allEntries = true)
     public boolean updateProduct(Product product, List<Long> categoryIds, List<Long> tagIds, List<Long> imageIds) {
+        // 设置更新时间
+        product.setUpdatedAt(LocalDateTime.now());
         // 更新产品
         this.updateById(product);
         Long productId = product.getId();

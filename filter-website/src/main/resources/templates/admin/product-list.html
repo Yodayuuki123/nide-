@@ -9,7 +9,7 @@
         <div th:replace="~{fragments/admin-layout :: adminTopbar}"></div>
 
         <div class="admin-main">
-            <!-- Flash 留言内容s -->
+            <!-- Flash Messages -->
             <div th:if="${message}" class="alert alert-success alert-dismissible fade show">
                 <span th:text="${message}"></span>
                 <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
@@ -29,9 +29,47 @@
                 </a>
             </div>
 
+            <!-- Search Form -->
+            <div class="admin-card mb-3">
+                <div class="admin-card-body">
+                    <form method="get" th:action="@{/admin/products}" class="row g-2 align-items-end">
+                        <div class="col-md-3">
+                            <label class="form-label form-label-sm">产品名称</label>
+                            <input type="text" name="keyword" th:value="${param.keyword}" class="form-control form-control-sm" placeholder="搜索产品名称...">
+                        </div>
+                        <div class="col-md-2">
+                            <label class="form-label form-label-sm">SKU</label>
+                            <input type="text" name="sku" th:value="${param.sku}" class="form-control form-control-sm" placeholder="SKU编号">
+                        </div>
+                        <div class="col-md-2">
+                            <label class="form-label form-label-sm">状态</label>
+                            <select name="status" class="form-select form-select-sm">
+                                <option value="">全部</option>
+                                <option value="publish" th:selected="${param.status != null and param.status == 'publish'}">已发布</option>
+                                <option value="draft" th:selected="${param.status != null and param.status == 'draft'}">草稿</option>
+                            </select>
+                        </div>
+                        <div class="col-md-2">
+                            <label class="form-label form-label-sm">每页显示</label>
+                            <select name="size" class="form-select form-select-sm">
+                                <option value="10" th:selected="${productPage.size == 10}">10</option>
+                                <option value="20" th:selected="${productPage.size == 20}">20</option>
+                                <option value="50" th:selected="${productPage.size == 50}">50</option>
+                                <option value="100" th:selected="${productPage.size == 100}">100</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3 d-flex gap-2">
+                            <button type="submit" class="btn btn-primary btn-sm"><i class="bi bi-search"></i> 搜索</button>
+                            <a th:href="@{/admin/products}" class="btn btn-outline-secondary btn-sm"><i class="bi bi-arrow-counterclockwise"></i> 重置</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
             <div class="admin-card">
                 <div class="admin-card-header">
                     <h5>全部产品</h5>
+                    <span class="text-muted" th:text="'共 ' + ${productPage.total} + ' 条'"></span>
                 </div>
                 <div class="admin-card-body">
                     <div class="table-responsive">
@@ -44,7 +82,7 @@
                                 <th>SKU</th>
                                 <th>状态</th>
                                 <th>所属分类</th>
-                                <th>创建时间</th>
+                                <th>修改时间</th>
                                 <th>操作</th>
                             </tr>
                             </thead>
@@ -79,7 +117,7 @@
                                     <span th:if="${product.categories != null and product.categories.size() > 2}"
                                           class="text-muted">+<span th:text="${product.categories.size() - 2}">1</span></span>
                                 </td>
-                                <td class="text-muted" th:text="${product.createdAt != null} ? ${#temporals.format(product.createdAt, 'yyyy-MM-dd')} : '-'">2026-01-01</td>
+                                <td class="text-muted" th:text="${product.updatedAt != null} ? ${#temporals.format(product.updatedAt, 'yyyy-MM-dd HH:mm')} : (${product.createdAt != null} ? ${#temporals.format(product.createdAt, 'yyyy-MM-dd HH:mm')} : '-')">2026-01-01</td>
                                 <td class="actions">
                                     <a th:href="@{/admin/products/edit/{id}(id=${product.id})}"
                                        class="btn btn-sm btn-outline-primary me-1" title="编辑">
@@ -88,8 +126,7 @@
                                     <button type="button" class="btn btn-sm btn-outline-danger"
                                             th:data-id="${product.id}"
                                             th:data-name="${product.name}"
-                                            data-bs-toggle="modal" data-bs-target="#deleteModal"
-                                            onclick="prepareDelete(this)">
+                                            onclick="confirmDelete(this, '产品')">
                                         <i class="bi bi-trash"></i>
                                     </button>
                                 </td>
@@ -101,20 +138,31 @@
                         </table>
                     </div>
 
-                    <!-- Pagination -->
-                    <div class="p-3" th:if="${productPage.pages > 1}">
+                    <!-- Pagination with page size -->
+                    <div class="p-3 d-flex justify-content-between align-items-center" th:if="${productPage.pages > 1}">
+                        <span class="text-muted" style="font-size:13px;" th:text="'显示 ' + ${(productPage.current - 1) * productPage.size + 1} + '-' + ${T(Math).min(productPage.current * productPage.size, productPage.total)} + ' / 共 ' + ${productPage.total} + ' 条'"></span>
                         <nav>
-                            <ul class="pagination mb-0 justify-content-center">
+                            <ul class="pagination pagination-sm mb-0">
                                 <li class="page-item" th:classappend="${productPage.current <= 1} ? 'disabled'">
-                                    <a class="page-link" th:href="@{/admin/products(page=${productPage.current - 1}, size=${productPage.size})}">上一页</a>
+                                    <a class="page-link" th:href="@{/admin/products(page=${productPage.current - 1}, size=${productPage.size}, keyword=${param.keyword}, sku=${param.sku}, status=${param.status})}">上一页</a>
                                 </li>
-                                <th:block th:each="i : ${#numbers.sequence(1, productPage.pages)}">
-                                    <li class="page-item" th:classappend="${i == productPage.current} ? 'active'">
-                                        <a class="page-link" th:href="@{/admin/products(page=${i}, size=${productPage.size})}" th:text="${i}">1</a>
+                                <th:block th:with="startPage=${T(Math).max(1, productPage.current - 2)}, endPage=${T(Math).min(productPage.pages, T(Math).max(1, productPage.current - 2) + 4)}">
+                                    <li th:if="${startPage > 1}" class="page-item">
+                                        <a class="page-link" th:href="@{/admin/products(page=1, size=${productPage.size}, keyword=${param.keyword}, sku=${param.sku}, status=${param.status})}">1</a>
+                                    </li>
+                                    <li th:if="${startPage > 2}" class="page-item disabled"><span class="page-link">...</span></li>
+                                    <th:block th:each="i : ${#numbers.sequence(startPage, endPage)}">
+                                        <li class="page-item" th:classappend="${i == productPage.current} ? 'active'">
+                                            <a class="page-link" th:href="@{/admin/products(page=${i}, size=${productPage.size}, keyword=${param.keyword}, sku=${param.sku}, status=${param.status})}" th:text="${i}">1</a>
+                                        </li>
+                                    </th:block>
+                                    <li th:if="${endPage < productPage.pages - 1}" class="page-item disabled"><span class="page-link">...</span></li>
+                                    <li th:if="${endPage < productPage.pages}" class="page-item">
+                                        <a class="page-link" th:href="@{/admin/products(page=${productPage.pages}, size=${productPage.size}, keyword=${param.keyword}, sku=${param.sku}, status=${param.status})}" th:text="${productPage.pages}">99</a>
                                     </li>
                                 </th:block>
                                 <li class="page-item" th:classappend="${productPage.current >= productPage.pages} ? 'disabled'">
-                                    <a class="page-link" th:href="@{/admin/products(page=${productPage.current + 1}, size=${productPage.size})}">下一页</a>
+                                    <a class="page-link" th:href="@{/admin/products(page=${productPage.current + 1}, size=${productPage.size}, keyword=${param.keyword}, sku=${param.sku}, status=${param.status})}">下一页</a>
                                 </li>
                             </ul>
                         </nav>
@@ -134,7 +182,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body">
-                <p>确定要删除以下产品吗？此操作不可撤销。</p>
+                <p>确定要删除以下内容吗？此操作不可撤销。</p>
                 <p class="fw-medium" id="deleteItemName"></p>
             </div>
             <div class="modal-footer">
@@ -149,9 +197,11 @@
 
 <div th:replace="~{fragments/admin-layout :: adminScripts}"></div>
 <script>
-    function prepareDelete(btn) {
+    function confirmDelete(btn, typeName) {
         document.getElementById('deleteItemName').textContent = btn.getAttribute('data-name');
         document.getElementById('deleteForm').action = '/admin/products/delete/' + btn.getAttribute('data-id');
+        var modal = new bootstrap.Modal(document.getElementById('deleteModal'));
+        modal.show();
     }
 </script>
 </body>

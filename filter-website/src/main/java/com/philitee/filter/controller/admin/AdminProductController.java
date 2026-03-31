@@ -1,5 +1,6 @@
 package com.philitee.filter.controller.admin;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.philitee.filter.entity.Product;
@@ -11,6 +12,7 @@ import com.philitee.filter.service.ProductTagService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -29,23 +31,44 @@ public class AdminProductController {
     private final ProductTagService tagService;
 
     /**
-     * 产品列表
+     * 产品列表 - 支持搜索+分页+按修改时间倒序
      */
     @GetMapping
     public String list(
             @RequestParam(defaultValue = "1") int page,
             @RequestParam(defaultValue = "20") int size,
+            @RequestParam(required = false) String keyword,
+            @RequestParam(required = false) String sku,
+            @RequestParam(required = false) String status,
             Model model) {
+
+        QueryWrapper<Product> queryWrapper = new QueryWrapper<>();
+
+        // 搜索条件
+        if (StringUtils.hasText(keyword)) {
+            queryWrapper.like("name", keyword);
+        }
+        if (StringUtils.hasText(sku)) {
+            queryWrapper.like("sku", sku);
+        }
+        if (StringUtils.hasText(status)) {
+            queryWrapper.eq("status", status);
+        }
+
+        // 按修改时间倒序排序（优先updated_at，其次created_at）
+        queryWrapper.orderByDesc("COALESCE(updated_at, created_at)");
 
         IPage<Product> productPage = productService.page(
                 new Page<>(page, size),
-                null
+                queryWrapper
         );
         // 填充主图
         productPage.getRecords().forEach(p -> {
             Product detail = productService.getProductDetail(p.getId());
-            p.setMainImage(detail.getMainImage());
-            p.setCategories(detail.getCategories());
+            if (detail != null) {
+                p.setMainImage(detail.getMainImage());
+                p.setCategories(detail.getCategories());
+            }
         });
 
         model.addAttribute("productPage", productPage);

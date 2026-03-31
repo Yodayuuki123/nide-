@@ -147,36 +147,48 @@
             <h2 th:text="#{home.app.title}">Application Scenarios</h2>
             <p th:text="#{home.app.subtitle}">Our filtration products are widely used across various industries</p>
         </div>
-        <div class="applications-grid">
-            <div class="application-card fade-in">
-                <div class="application-icon"><i class="bi bi-building"></i></div>
-                <h5 th:text="#{industries.cement}">Cement Industry</h5>
-                <p th:text="#{home.app.cement}">Kiln and clinker cooler dust collection, raw mill and cement mill filtration</p>
+        <div class="applications-grid applications-grid-img">
+            <div class="application-card-img fade-in">
+                <img src="/static/images/applications/cement.jpg" alt="Cement Industry" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+                <div class="application-placeholder" style="display:none;"><i class="bi bi-building"></i></div>
+                <div class="application-card-overlay">
+                    <h5 th:text="#{industries.cement}">Cement Industry</h5>
+                </div>
             </div>
-            <div class="application-card fade-in">
-                <div class="application-icon"><i class="bi bi-fire"></i></div>
-                <h5 th:text="#{industries.steel}">Steel & Smelting</h5>
-                <p th:text="#{home.app.steel}">EAF and BOF dust collection, sintering machine and blast furnace gas cleaning</p>
+            <div class="application-card-img fade-in">
+                <img src="/static/images/applications/steel.jpg" alt="Steel & Smelting" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+                <div class="application-placeholder" style="display:none;"><i class="bi bi-fire"></i></div>
+                <div class="application-card-overlay">
+                    <h5 th:text="#{industries.steel}">Steel & Smelting</h5>
+                </div>
             </div>
-            <div class="application-card fade-in">
-                <div class="application-icon"><i class="bi bi-lightning"></i></div>
-                <h5 th:text="#{industries.power}">Power Generation</h5>
-                <p th:text="#{home.app.power}">Coal-fired boiler flue gas filtration, biomass power plant dust removal</p>
+            <div class="application-card-img fade-in">
+                <img src="/static/images/applications/power.jpg" alt="Power Generation" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+                <div class="application-placeholder" style="display:none;"><i class="bi bi-lightning"></i></div>
+                <div class="application-card-overlay">
+                    <h5 th:text="#{industries.power}">Power Generation</h5>
+                </div>
             </div>
-            <div class="application-card fade-in">
-                <div class="application-icon"><i class="bi bi-recycle"></i></div>
-                <h5 th:text="#{industries.waste}">Waste Incineration</h5>
-                <p th:text="#{home.app.waste}">MSW incineration flue gas treatment, hazardous waste incineration filtration</p>
+            <div class="application-card-img fade-in">
+                <img src="/static/images/applications/waste.jpg" alt="Waste Incineration" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+                <div class="application-placeholder" style="display:none;"><i class="bi bi-recycle"></i></div>
+                <div class="application-card-overlay">
+                    <h5 th:text="#{industries.waste}">Waste Incineration</h5>
+                </div>
             </div>
-            <div class="application-card fade-in">
-                <div class="application-icon"><i class="bi bi-droplet"></i></div>
-                <h5 th:text="#{industries.chemical}">Chemical Processing</h5>
-                <p th:text="#{home.app.chemical}">Chemical plant dust collection, pharmaceutical and fine chemical filtration</p>
+            <div class="application-card-img fade-in">
+                <img src="/static/images/applications/chemical.jpg" alt="Chemical Processing" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+                <div class="application-placeholder" style="display:none;"><i class="bi bi-droplet"></i></div>
+                <div class="application-card-overlay">
+                    <h5 th:text="#{industries.chemical}">Chemical Processing</h5>
+                </div>
             </div>
-            <div class="application-card fade-in">
-                <div class="application-icon"><i class="bi bi-tree"></i></div>
-                <h5 th:text="#{industries.woodworking}">Woodworking</h5>
-                <p th:text="#{home.app.woodworking}">Sawdust and wood chip collection, furniture manufacturing dust removal</p>
+            <div class="application-card-img fade-in">
+                <img src="/static/images/applications/woodworking.jpg" alt="Woodworking" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+                <div class="application-placeholder" style="display:none;"><i class="bi bi-tree"></i></div>
+                <div class="application-card-overlay">
+                    <h5 th:text="#{industries.woodworking}">Woodworking</h5>
+                </div>
             </div>
         </div>
     </div>
@@ -188,6 +200,7 @@
         <div class="section-header text-center fade-in">
             <span class="section-eyebrow" th:text="#{home.why.eyebrow}">Our Advantages</span>
             <h2 th:text="#{home.why.title}">Why Choose Philitee Filter</h2>
+            <button class="btn btn-accent" onclick="openInquiryModal()" style="margin-top:12px;"><i class="bi bi-envelope"></i> <span th:text="#{product.send_inquiry}">Contact Us</span></button>
         </div>
         <div class="whychoose-grid">
             <div class="whychoose-card fade-in">
@@ -227,11 +240,7 @@
 <!-- ========== 7. Global Sales Network (Custom Map) ========== -->
 <section class="home-global-section">
     <div class="aesop-container">
-        <div class="section-header text-center fade-in">
-            <span class="section-eyebrow" th:text="#{home.global.eyebrow}">Global Reach</span>
-            <h2 th:text="#{home.global.title}">Global Sales Network</h2>
-            <p th:text="#{home.global.text}">Our products are exported to over 100 countries and regions worldwide</p>
-        </div>
+
         <div class="global-map-wrapper fade-in">
             <svg class="global-map" viewBox="0 0 1000 500" xmlns="http://www.w3.org/2000/svg">
                 <g fill="#e8f5e9" stroke="#4CAF50" stroke-width="0.5">
@@ -285,34 +294,7 @@
     </div>
 </section>
 
-<!-- ========== 8. Exhibition Photos (4 visible, carousel of 10) ========== -->
-<section class="home-exhibition-section">
-    <div class="aesop-container">
-        <div class="section-header text-center fade-in">
-            <span class="section-eyebrow" th:text="#{home.exhibition.eyebrow}">Events</span>
-            <h2 th:text="#{home.exhibition.title}">Exhibition Gallery</h2>
-            <p th:text="#{home.exhibition.subtitle}">We actively participate in international trade shows and exhibitions</p>
-        </div>
-        <div class="exhibition-carousel-wrapper">
-            <button class="exhibition-arrow exhibition-prev" onclick="exhibitionSlide(-1)"><i class="bi bi-chevron-left"></i></button>
-            <div class="exhibition-track-viewport">
-                <div class="exhibition-track" id="exhibitionTrack">
-                    <div class="exhibition-item"><img src="/static/images/factory/factory1.jpg" alt="Exhibition 1" loading="lazy"></div>
-                    <div class="exhibition-item"><img src="/static/images/factory/factory2.jpg" alt="Exhibition 2" loading="lazy"></div>
-                    <div class="exhibition-item"><img src="/static/images/factory/factory3.jpg" alt="Exhibition 3" loading="lazy"></div>
-                    <div class="exhibition-item"><img src="/static/images/factory/factory4.jpg" alt="Exhibition 4" loading="lazy"></div>
-                    <div class="exhibition-item"><img src="/static/images/factory/sewing-workshop-1.jpg" alt="Exhibition 5" loading="lazy"></div>
-                    <div class="exhibition-item"><img src="/static/images/factory/sewing-workshop-2.jpg" alt="Exhibition 6" loading="lazy"></div>
-                    <div class="exhibition-item"><img src="/static/images/factory/sewing-workshop-3.jpg" alt="Exhibition 7" loading="lazy"></div>
-                    <div class="exhibition-item"><img src="/static/images/factory/sewing-line.jpg" alt="Exhibition 8" loading="lazy"></div>
-                    <div class="exhibition-item"><img src="/static/images/factory/sewing-machine.jpg" alt="Exhibition 9" loading="lazy"></div>
-                    <div class="exhibition-item"><img src="/static/images/factory/steel-factory.jpg" alt="Exhibition 10" loading="lazy"></div>
-                </div>
-            </div>
-            <button class="exhibition-arrow exhibition-next" onclick="exhibitionSlide(1)"><i class="bi bi-chevron-right"></i></button>
-        </div>
-    </div>
-</section>
+
 
 <!-- ========== 9. CTA Banner ========== -->
 <section class="home-cta-section">
@@ -325,12 +307,109 @@
     </div>
 </section>
 
+<!-- Inquiry Modal (for Why Choose button) -->
+<div class="inquiry-modal-overlay" id="inquiryModalOverlay" onclick="closeInquiryModal(event)">
+    <div class="inquiry-modal" onclick="event.stopPropagation()">
+        <div class="inquiry-modal-header">
+            <h4>Request Quotation</h4>
+            <button type="button" class="inquiry-modal-close" onclick="closeInquiryModal()">&times;</button>
+        </div>
+        <div class="inquiry-modal-body">
+            <form id="inquiryForm" method="post" th:action="@{/contact}">
+                <div class="inquiry-form-row">
+                    <div class="inquiry-form-group">
+                        <label th:text="#{contact.form.name}">Name *</label>
+                        <input type="text" name="name" required th:placeholder="#{contact.form.name.placeholder}">
+                    </div>
+                    <div class="inquiry-form-group">
+                        <label th:text="#{contact.form.email}">Email *</label>
+                        <input type="email" name="email" required th:placeholder="#{contact.form.email.placeholder}">
+                    </div>
+                </div>
+                <div class="inquiry-form-row">
+                    <div class="inquiry-form-group">
+                        <label th:text="#{contact.form.phone}">Phone</label>
+                        <input type="text" name="phone" th:placeholder="#{contact.form.phone.placeholder}">
+                    </div>
+                    <div class="inquiry-form-group">
+                        <label th:text="#{contact.form.company}">Company</label>
+                        <input type="text" name="company" th:placeholder="#{contact.form.company.placeholder}">
+                    </div>
+                </div>
+                <div class="inquiry-form-group">
+                    <label th:text="#{contact.form.message}">Message *</label>
+                    <textarea name="message" rows="4" required th:placeholder="#{contact.form.message.placeholder}"></textarea>
+                </div>
+                <button type="submit" class="bf-btn bf-btn-primary bf-btn-block">
+                    <i class="bi bi-send"></i> <span th:text="#{contact.form.submit}">Submit Inquiry</span>
+                </button>
+            </form>
+            <div id="inquirySuccess" style="display:none" class="inquiry-success">
+                <i class="bi bi-check-circle"></i>
+                <p th:text="#{contact.form.success}">Your inquiry has been submitted successfully!</p>
+            </div>
+        </div>
+    </div>
+</div>
+
 <footer th:replace="~{fragments/footer :: footer}"></footer>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script src="/static/js/main.js"></script>
 
 <script>
+/* ===== Inquiry Modal ===== */
+function openInquiryModal() {
+    var overlay = document.getElementById('inquiryModalOverlay');
+    if (overlay) {
+        overlay.classList.add('active');
+        document.body.style.overflow = 'hidden';
+    }
+}
+function closeInquiryModal(event) {
+    if (event && event.target !== event.currentTarget) return;
+    var overlay = document.getElementById('inquiryModalOverlay');
+    if (overlay) {
+        overlay.classList.remove('active');
+        document.body.style.overflow = '';
+    }
+}
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') closeInquiryModal();
+});
+var inquiryForm = document.getElementById('inquiryForm');
+if (inquiryForm) {
+    inquiryForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        var formData = new FormData(inquiryForm);
+        fetch('/contact', {
+            method: 'POST',
+            body: new URLSearchParams(formData),
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'X-Requested-With': 'XMLHttpRequest'
+            }
+        }).then(function(resp) {
+            return resp.json();
+        }).then(function(data) {
+            if (data.success) {
+                inquiryForm.style.display = 'none';
+                document.getElementById('inquirySuccess').style.display = 'block';
+                setTimeout(function() { closeInquiryModal(); }, 3000);
+                setTimeout(function() {
+                    inquiryForm.style.display = '';
+                    inquiryForm.reset();
+                    document.getElementById('inquirySuccess').style.display = 'none';
+                }, 3500);
+            } else {
+                alert('Failed to submit. Please try again.');
+            }
+        }).catch(function(err) {
+            alert('Failed to submit. Please try again.');
+        });
+    });
+}
+
 /* ===== Hero Carousel ===== */
 (function(){
     var slides = document.querySelectorAll('.hero-slide');

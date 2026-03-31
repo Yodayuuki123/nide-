@@ -85,7 +85,7 @@
 
                 <!-- Related Products (4 items) -->
                 <div th:if="${relatedProducts != null and !relatedProducts.isEmpty()}" class="bf-pd-related">
-                    <h3 th:text="#{product.related}">Related Products</h3>
+                    <h3>Related Products</h3>
                     <div class="bf-pd-related-grid">
                         <a th:each="rp,iter : ${relatedProducts}" th:if="${iter.index < 4}"
                            th:href="@{/products/{slug}(slug=${rp.slug})}"

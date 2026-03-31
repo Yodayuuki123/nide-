@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{fragments/admin-layout :: adminHead('Menu: ' + ${menu.name})}"></head>
+<head th:replace="~{fragments/admin-layout :: adminHead('菜单: ' + ${menu.name})}"></head>
 <body class="admin-body">
 <div class="admin-wrapper">
     <div th:replace="~{fragments/admin-layout :: adminSidebar}"></div>
@@ -9,7 +9,7 @@
         <div th:replace="~{fragments/admin-layout :: adminTopbar}"></div>
 
         <div class="admin-main">
-            <!-- Flash 留言内容s -->
+            <!-- Flash Messages -->
             <div th:if="${message}" class="alert alert-success alert-dismissible fade show">
                 <span th:text="${message}"></span>
                 <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
@@ -25,7 +25,7 @@
                         <span th:text="${menu.name}">Menu Name</span>
                         <span class="badge bg-info text-dark fs-6 ms-2" th:text="${menu.location} ?: 'unassigned'">primary</span>
                     </h4>
-                    <p style="color: var(--admin-text-tertiary); font-size: 13px; margin: 0;">Manage menu items and structure</p>
+                    <p style="color: var(--admin-text-tertiary); font-size: 13px; margin: 0;">管理菜单项和结构</p>
                 </div>
                 <a href="/admin/menus" class="btn btn-outline-secondary btn-sm">
                     <i class="bi bi-arrow-left"></i> <span th:text="#{admin.back}">返回</span>
@@ -44,10 +44,10 @@
                                 <table class="table admin-table mb-0">
                                     <thead>
                                     <tr>
-                                        <th>Title</th>
+                                        <th>标题</th>
                                         <th>URL</th>
-                                        <th>Type</th>
-                                        <th>Sort</th>
+                                        <th>类型</th>
+                                        <th>排序</th>
                                         <th th:text="#{admin.actions}">操作</th>
                                     </tr>
                                     </thead>
@@ -69,14 +69,13 @@
                                             </td>
                                             <td th:text="${item.sortOrder} ?: 0">0</td>
                                             <td class="actions">
-                                                <form th:action="@{/admin/menus/items/delete/{id}(id=${item.id})}"
-                                                      method="post" class="d-inline"
-                                                      onsubmit="return confirm('删除 this menu item?')">
-                                                    <input type="hidden" name="menuId" th:value="${menu.id}">
-                                                    <button type="submit" class="btn btn-sm btn-outline-danger">
-                                                        <i class="bi bi-trash"></i>
-                                                    </button>
-                                                </form>
+                                                <button type="button" class="btn btn-sm btn-outline-danger"
+                                                        th:data-id="${item.id}"
+                                                        th:data-name="${item.title}"
+                                                        th:data-menuid="${menu.id}"
+                                                        onclick="confirmDeleteItem(this)">
+                                                    <i class="bi bi-trash"></i>
+                                                </button>
                                             </td>
                                         </tr>
                                         <!-- Child items -->
@@ -94,20 +93,19 @@
                                                 </td>
                                                 <td th:text="${child.sortOrder} ?: 0">0</td>
                                                 <td class="actions">
-                                                    <form th:action="@{/admin/menus/items/delete/{id}(id=${child.id})}"
-                                                          method="post" class="d-inline"
-                                                          onsubmit="return confirm('删除 this menu item?')">
-                                                        <input type="hidden" name="menuId" th:value="${menu.id}">
-                                                        <button type="submit" class="btn btn-sm btn-outline-danger">
-                                                            <i class="bi bi-trash"></i>
-                                                        </button>
-                                                    </form>
+                                                    <button type="button" class="btn btn-sm btn-outline-danger"
+                                                            th:data-id="${child.id}"
+                                                            th:data-name="${child.title}"
+                                                            th:data-menuid="${menu.id}"
+                                                            onclick="confirmDeleteItem(this)">
+                                                        <i class="bi bi-trash"></i>
+                                                    </button>
                                                 </td>
                                             </tr>
                                         </th:block>
                                     </th:block>
                                     <tr th:if="${menu.menuItems == null or menu.menuItems.isEmpty()}">
-                                        <td colspan="5" class="text-center text-muted py-4">No menu items yet.</td>
+                                        <td colspan="5" class="text-center text-muted py-4">暂无菜单项。</td>
                                     </tr>
                                     </tbody>
                                 </table>
@@ -124,29 +122,29 @@
                             <input type="hidden" name="menuId" th:value="${menu.id}">
 
                             <div class="mb-3">
-                                <label class="form-label">Title <span class="text-danger">*</span></label>
-                                <input type="text" name="title" class="form-control" required placeholder="Menu item title">
+                                <label class="form-label">标题 <span class="text-danger">*</span></label>
+                                <input type="text" name="title" class="form-control" required placeholder="菜单项标题">
                             </div>
 
                             <div class="mb-3">
                                 <label class="form-label">URL <span class="text-danger">*</span></label>
-                                <input type="text" name="url" class="form-control" required placeholder="/products or https://...">
+                                <input type="text" name="url" class="form-control" required placeholder="/products 或 https://...">
                             </div>
 
                             <div class="mb-3">
-                                <label class="form-label">Type</label>
+                                <label class="form-label">类型</label>
                                 <select name="type" class="form-select">
-                                    <option value="custom">Custom Link</option>
-                                    <option value="page">Page</option>
-                                    <option value="category">Category</option>
-                                    <option value="product">Product</option>
+                                    <option value="custom">自定义链接</option>
+                                    <option value="page">页面</option>
+                                    <option value="category">分类</option>
+                                    <option value="product">产品</option>
                                 </select>
                             </div>
 
                             <div class="mb-3">
-                                <label class="form-label">父级 Item</label>
+                                <label class="form-label">父级菜单项</label>
                                 <select name="parentId" class="form-select">
-                                    <option value="">— 无（顶级分类） —</option>
+                                    <option value="">— 无（顶级） —</option>
                                     <th:block th:each="item : ${menu.menuItems}">
                                         <option th:if="${item.parentId == null or item.parentId == 0}"
                                                 th:value="${item.id}"
@@ -161,31 +159,31 @@
                             </div>
 
                             <button type="submit" class="btn btn-primary w-100">
-                                <i class="bi bi-plus-circle"></i> Add Item
+                                <i class="bi bi-plus-circle"></i> 添加菜单项
                             </button>
                         </form>
                     </div>
 
                     <!-- 编辑 Menu Info -->
                     <div class="admin-form mt-4">
-                        <h6 class="mb-3">Menu Settings</h6>
+                        <h6 class="mb-3">菜单设置</h6>
                         <form th:action="@{/admin/menus/save}" method="post">
                             <input type="hidden" name="id" th:value="${menu.id}">
                             <div class="mb-3">
-                                <label class="form-label">Menu Name</label>
+                                <label class="form-label">菜单名称</label>
                                 <input type="text" name="name" class="form-control" th:value="${menu.name}" required>
                             </div>
                             <div class="mb-3">
-                                <label class="form-label">Location</label>
+                                <label class="form-label">位置</label>
                                 <select name="location" class="form-select">
-                                    <option value="">— Select —</option>
-                                    <option value="primary" th:selected="${menu.location == 'primary'}">Primary</option>
-                                    <option value="footer" th:selected="${menu.location == 'footer'}">Footer</option>
-                                    <option value="sidebar" th:selected="${menu.location == 'sidebar'}">Sidebar</option>
+                                    <option value="">— 选择 —</option>
+                                    <option value="primary" th:selected="${menu.location == 'primary'}">Primary（主导航）</option>
+                                    <option value="footer" th:selected="${menu.location == 'footer'}">Footer（页脚）</option>
+                                    <option value="sidebar" th:selected="${menu.location == 'sidebar'}">Sidebar（侧边栏）</option>
                                 </select>
                             </div>
                             <button type="submit" class="btn btn-outline-primary w-100">
-                                <i class="bi bi-check-circle"></i> Update Menu
+                                <i class="bi bi-check-circle"></i> 更新菜单
                             </button>
                         </form>
                     </div>
@@ -195,6 +193,38 @@
     </div>
 </div>
 
+<!-- 删除确认弹窗 -->
+<div class="modal fade" id="deleteItemModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">确认删除</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <p>确定要删除此菜单项吗？此操作不可撤销。</p>
+                <p class="fw-medium" id="deleteItemName"></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+                <form id="deleteItemForm" method="post" class="d-inline">
+                    <input type="hidden" name="menuId" id="deleteMenuId">
+                    <button type="submit" class="btn btn-outline-danger">确认删除</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div th:replace="~{fragments/admin-layout :: adminScripts}"></div>
+<script>
+    function confirmDeleteItem(btn) {
+        document.getElementById('deleteItemName').textContent = btn.getAttribute('data-name');
+        document.getElementById('deleteItemForm').action = '/admin/menus/items/delete/' + btn.getAttribute('data-id');
+        document.getElementById('deleteMenuId').value = btn.getAttribute('data-menuid');
+        var modal = new bootstrap.Modal(document.getElementById('deleteItemModal'));
+        modal.show();
+    }
+</script>
 </body>
 </html>
