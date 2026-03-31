@@ -21,7 +21,7 @@
             </a>
         </div>
 
-        <div class="bf-pl-layout">
+        <div class="bf-pl-layout bf-pl-layout-new">
             <!-- Left: Product Content -->
             <div class="bf-pl-main">
                 <!-- Toolbar: result count + view toggle + page size -->
@@ -142,46 +142,41 @@
                 </div>
             </div>
 
-            <!-- Right Sidebar -->
-            <aside class="bf-sidebar">
-                <!-- Search Widget -->
-                <div class="bf-sidebar-widget">
-                    <h5 class="bf-widget-title" th:text="#{sidebar.search}">Search Products</h5>
-                    <form th:action="@{/search}" method="get" class="bf-search-form">
-                        <input type="text" name="keyword" th:placeholder="#{search.placeholder}" class="bf-input">
-                        <button type="submit" class="bf-btn bf-btn-primary"><i class="bi bi-search"></i></button>
-                    </form>
-                </div>
-
-                <!-- Category List Widget -->
-                <div class="bf-sidebar-widget" th:if="${categoryTree != null or globalCategoryTree != null}">
-                    <h5 class="bf-widget-title" th:text="#{sidebar.categories}">Product Categories</h5>
-                    <ul class="bf-category-list">
-                        <li th:each="cat : ${categoryTree != null ? categoryTree : globalCategoryTree}">
-                            <a th:href="@{/categories/{slug}(slug=${cat.slug})}"
-                               th:classappend="${currentCategory != null and currentCategory.id == cat.id} ? 'active' : ''">
-                                <span th:text="${cat.name}">Category</span>
-                                <span class="bf-cat-count" th:if="${cat.productCount != null}" th:text="${cat.productCount}">0</span>
-                            </a>
-                            <ul th:if="${cat.children != null and !cat.children.isEmpty()}" class="bf-category-sub">
-                                <li th:each="child : ${cat.children}">
-                                    <a th:href="@{/categories/{slug}(slug=${child.slug})}"
-                                       th:classappend="${currentCategory != null and currentCategory.id == child.id} ? 'active' : ''"
-                                       th:text="${child.name}">Sub Category</a>
-                                </li>
-                            </ul>
-                        </li>
-                    </ul>
-                </div>
-
-                <!-- Contact Widget -->
-                <div class="bf-sidebar-widget bf-sidebar-contact">
-                    <h5 class="bf-widget-title" th:text="#{sidebar.need_help}">Need Help?</h5>
-                    <p th:text="#{sidebar.need_help.desc}">Contact us for product consultation</p>
-                    <ul class="bf-contact-list">
-                        <li><i class="bi bi-envelope"></i> <a href="mailto:info@philiteefilter.com">info@philiteefilter.com</a></li>
-                        <li><i class="bi bi-whatsapp"></i> <a href="https://wa.me/8618057358206" target="_blank">+86-18057358206</a></li>
-                    </ul>
+            <!-- Right Sidebar: best-filter.com 图6风格 mainCategory -->
+            <aside class="bf-sidebar bf-sidebar-maincategory" th:if="${categoryTree != null or globalCategoryTree != null}">
+                <div class="bf-maincategory-panel">
+                    <!-- Left: main categories with images -->
+                    <div class="bf-maincategory-list">
+                        <div class="bf-maincategory-row"
+                             th:each="cat,iter : ${categoryTree != null ? categoryTree : globalCategoryTree}"
+                             th:data-index="${iter.index}"
+                             onmouseenter="activateSidebarCat(this)"
+                             th:classappend="${currentCategory != null and currentCategory.id == cat.id} ? ' active' : ''">
+                            <div class="bf-maincategory-row-img">
+                                <img th:src="'/wp-content/uploads/category-covers/' + ${cat.slug} + '.jpg'"
+                                     th:alt="${cat.name}" loading="lazy"
+                                     onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+                                <div class="bf-maincategory-row-placeholder" style="display:none;"><i class="bi bi-funnel"></i></div>
+                            </div>
+                            <a th:href="@{/categories/{slug}(slug=${cat.slug})}" th:text="${cat.name}" class="bf-maincategory-row-name">Category</a>
+                            <i class="bi bi-chevron-right bf-maincategory-row-arrow" th:if="${cat.children != null and !cat.children.isEmpty()}"></i>
+                        </div>
+                    </div>
+                    <!-- Right: sub categories panel -->
+                    <div class="bf-maincategory-sub-area">
+                        <div class="bf-maincategory-sub-panel"
+                             th:each="cat,iter : ${categoryTree != null ? categoryTree : globalCategoryTree}"
+                             th:id="'sidecatsub-' + ${iter.index}"
+                             th:classappend="${currentCategory != null and currentCategory.id == cat.id} ? ' active' : ''">
+                            <div th:if="${cat.children != null and !cat.children.isEmpty()}">
+                                <a th:each="child : ${cat.children}"
+                                   th:href="@{/categories/{slug}(slug=${child.slug})}"
+                                   class="bf-maincategory-sub-link"
+                                   th:classappend="${currentCategory != null and currentCategory.id == child.id} ? ' active' : ''"
+                                   th:text="${child.name}">Sub Category</a>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </aside>
         </div>
@@ -220,6 +215,22 @@
                 if (grid && btn) setGridCols(parseInt(saved), btn);
             }
         } catch(e) {}
+    })();
+
+    // Sidebar mainCategory hover interaction
+    function activateSidebarCat(el) {
+        document.querySelectorAll('.bf-maincategory-row').forEach(function(r){ r.classList.remove('active'); });
+        document.querySelectorAll('.bf-maincategory-sub-panel').forEach(function(p){ p.classList.remove('active'); });
+        el.classList.add('active');
+        var idx = el.getAttribute('data-index');
+        var panel = document.getElementById('sidecatsub-' + idx);
+        if (panel) panel.classList.add('active');
+    }
+    // Auto-activate first or current on load
+    (function(){
+        var active = document.querySelector('.bf-maincategory-row.active');
+        if (!active) active = document.querySelector('.bf-maincategory-row');
+        if (active) activateSidebarCat(active);
     })();
 </script>
 </body>

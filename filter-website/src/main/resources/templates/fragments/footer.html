@@ -5,9 +5,9 @@
     <!-- Footer Main Content -->
     <div class="bf-footer-main">
         <div class="bf-container">
-            <div class="bf-footer-grid">
-                <!-- Left: Send A Message Form -->
-                <div class="bf-footer-form-section">
+            <div class="bf-footer-grid-3col">
+                <!-- Column 1: Send A Message Form -->
+                <div class="bf-footer-col">
                     <h3 class="bf-footer-heading"><span class="bf-heading-bar"></span> <span th:text="#{footer.send_message}">Send A Message</span></h3>
                     <form th:action="@{/contact}" method="post" class="bf-footer-form">
                         <input type="text" name="name" th:placeholder="#{footer.form.name}" required>
@@ -22,8 +22,8 @@
                     </form>
                 </div>
 
-                <!-- Right: Contact Information -->
-                <div class="bf-footer-contact-section">
+                <!-- Column 2: Contact Information -->
+                <div class="bf-footer-col">
                     <h3 class="bf-footer-heading"><span class="bf-heading-bar"></span> <span th:text="#{footer.contact_info}">Contact Information</span></h3>
                     <div class="bf-contact-items">
                         <!-- Email -->
@@ -60,16 +60,6 @@
                         </div>
                     </div>
 
-                    <!-- Useful Links -->
-                    <h3 class="bf-footer-heading" style="margin-top:30px;"><span class="bf-heading-bar"></span> <span th:text="#{footer.useful_links}">Useful Links</span></h3>
-                    <ul class="bf-useful-links">
-                        <li><a th:href="@{/}" th:text="#{nav.home}">Home</a></li>
-                        <li><a th:href="@{/products}" th:text="#{nav.products}">Products</a></li>
-                        <li><a th:href="@{/about}" th:text="#{nav.about}">About Us</a></li>
-                        <li><a th:href="@{/news}" th:text="#{nav.news}">News</a></li>
-                        <li><a th:href="@{/contact}" th:text="#{nav.contact}">Contact</a></li>
-                    </ul>
-
                     <!-- Follow Us -->
                     <h3 class="bf-footer-heading" style="margin-top:30px;"><span class="bf-heading-bar"></span> <span th:text="#{footer.follow_us}">Follow Us</span></h3>
                     <div class="bf-social-icons">
@@ -79,6 +69,18 @@
                         <a href="https://wa.me/8618057358206" target="_blank" class="bf-social-icon bf-social-whatsapp" title="WhatsApp"><i class="bi bi-whatsapp"></i></a>
                         <a href="https://filterphilite.en.alibaba.com/" target="_blank" class="bf-social-icon bf-social-alibaba" title="Alibaba"><i class="bi bi-shop"></i></a>
                     </div>
+                </div>
+                <!-- Column 3: Useful Links (vertical) -->
+                <div class="bf-footer-col">
+                    <h3 class="bf-footer-heading"><span class="bf-heading-bar"></span> <span th:text="#{footer.useful_links}">Useful Links</span></h3>
+                    <ul class="bf-useful-links-vertical">
+                        <li><a th:href="@{/}" th:text="#{nav.home}">Home</a></li>
+                        <li><a th:href="@{/products}" th:text="#{nav.products}">Products</a></li>
+                        <li><a th:href="@{/solutions}" th:text="#{nav.solutions}">Solutions</a></li>
+                        <li><a th:href="@{/about}" th:text="#{nav.about}">About Us</a></li>
+                        <li><a th:href="@{/news}" th:text="#{nav.news}">News</a></li>
+                        <li><a th:href="@{/contact}" th:text="#{nav.contact}">Contact</a></li>
+                    </ul>
                 </div>
             </div>
         </div>

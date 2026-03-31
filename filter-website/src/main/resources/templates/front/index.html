@@ -67,28 +67,28 @@
     </div>
 </section>
 
-<!-- ========== 3. Product Categories (9 cards with banner) ========== -->
+<!-- ========== 3. Product Categories (图2风格: 大图+标题+MORE按钮) ========== -->
 <section class="home-categories-section" th:if="${categories != null and !categories.isEmpty()}">
     <div class="aesop-container">
         <div class="section-header text-center fade-in">
-            <span class="section-eyebrow" th:text="#{home.categories.eyebrow}">Our Range</span>
             <h2 th:text="#{home.categories.title}">Product Categories</h2>
             <p th:text="#{home.categories.subtitle}">Comprehensive filtration solutions for every industrial application</p>
         </div>
-        <div class="home-categories-grid">
-            <th:block th:each="cat,iter : ${categories}" th:if="${iter.index < 9}">
-                <a th:href="@{/categories/{slug}(slug=${cat.slug})}" class="home-category-card fade-in">
-                    <div class="home-category-img">
+        <div class="filmedia-cat-grid">
+            <th:block th:each="cat,iter : ${categories}" th:if="${iter.index < 3}">
+                <div class="filmedia-cat-item fade-in">
+                    <div class="filmedia-cat-img">
                         <img th:src="'/wp-content/uploads/category-covers/' + ${cat.slug} + '.jpg'"
                              th:alt="${cat.name}" loading="lazy"
                              onerror="this.src='/wp-content/uploads/category-covers/'+this.dataset.slug+'.jpeg'; this.onerror=function(){this.src='/wp-content/uploads/category-covers/'+this.dataset.slug+'.png'; this.onerror=function(){this.style.display='none';this.nextElementSibling.style.display='flex';};};"
                              th:data-slug="${cat.slug}">
-                        <div class="category-placeholder" style="display:none;"><i class="bi bi-funnel"></i></div>
+                        <div class="filmedia-cat-placeholder" style="display:none;"><i class="bi bi-funnel"></i></div>
+                        <div class="filmedia-cat-overlay">
+                            <h4 th:text="${cat.name}">Category Name</h4>
+                            <a th:href="@{/categories/{slug}(slug=${cat.slug})}" class="filmedia-cat-btn">MORE</a>
+                        </div>
                     </div>
-                    <div class="home-category-overlay">
-                        <h5 th:text="${cat.name}">Category Name</h5>
-                    </div>
-                </a>
+                </div>
             </th:block>
         </div>
     </div>
@@ -139,56 +139,43 @@
     </div>
 </section>
 
-<!-- ========== 5. Application Scenarios ========== -->
+<!-- ========== 5. Application Scenarios (图3风格: 3×2网格+蓝色标题条) ========== -->
 <section class="home-applications-section">
     <div class="aesop-container">
         <div class="section-header text-center fade-in">
-            <span class="section-eyebrow" th:text="#{home.app.eyebrow}">Applications</span>
             <h2 th:text="#{home.app.title}">Application Scenarios</h2>
             <p th:text="#{home.app.subtitle}">Our filtration products are widely used across various industries</p>
         </div>
-        <div class="applications-grid applications-grid-img">
-            <div class="application-card-img fade-in">
-                <img src="/static/images/applications/cement.jpg" alt="Cement Industry" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
-                <div class="application-placeholder" style="display:none;"><i class="bi bi-building"></i></div>
-                <div class="application-card-overlay">
-                    <h5 th:text="#{industries.cement}">Cement Industry</h5>
-                </div>
+        <div class="app-scenario-grid">
+            <div class="app-scenario-item fade-in">
+                <img src="/static/images/applications/asphalt.jpg" alt="Asphalt Plant" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+                <div class="app-scenario-placeholder" style="display:none;"><i class="bi bi-building"></i></div>
+                <div class="app-scenario-label" th:text="#{industries.asphalt}">Asphalt Plant</div>
             </div>
-            <div class="application-card-img fade-in">
-                <img src="/static/images/applications/steel.jpg" alt="Steel & Smelting" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
-                <div class="application-placeholder" style="display:none;"><i class="bi bi-fire"></i></div>
-                <div class="application-card-overlay">
-                    <h5 th:text="#{industries.steel}">Steel & Smelting</h5>
-                </div>
+            <div class="app-scenario-item fade-in">
+                <img src="/static/images/applications/carbon.jpg" alt="Carbon Black Factory" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+                <div class="app-scenario-placeholder" style="display:none;"><i class="bi bi-circle-fill"></i></div>
+                <div class="app-scenario-label" th:text="#{industries.carbon}">Carbon Black Factory</div>
             </div>
-            <div class="application-card-img fade-in">
-                <img src="/static/images/applications/power.jpg" alt="Power Generation" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
-                <div class="application-placeholder" style="display:none;"><i class="bi bi-lightning"></i></div>
-                <div class="application-card-overlay">
-                    <h5 th:text="#{industries.power}">Power Generation</h5>
-                </div>
+            <div class="app-scenario-item fade-in">
+                <img src="/static/images/applications/cement.jpg" alt="Cement Plant" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+                <div class="app-scenario-placeholder" style="display:none;"><i class="bi bi-building"></i></div>
+                <div class="app-scenario-label" th:text="#{industries.cement}">Cement Plant</div>
             </div>
-            <div class="application-card-img fade-in">
+            <div class="app-scenario-item fade-in">
+                <img src="/static/images/applications/power.jpg" alt="Power Plant" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+                <div class="app-scenario-placeholder" style="display:none;"><i class="bi bi-lightning"></i></div>
+                <div class="app-scenario-label" th:text="#{industries.power}">Power Plant</div>
+            </div>
+            <div class="app-scenario-item fade-in">
+                <img src="/static/images/applications/steel.jpg" alt="Steel Plant" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+                <div class="app-scenario-placeholder" style="display:none;"><i class="bi bi-fire"></i></div>
+                <div class="app-scenario-label" th:text="#{industries.steel}">Steel Plant</div>
+            </div>
+            <div class="app-scenario-item fade-in">
                 <img src="/static/images/applications/waste.jpg" alt="Waste Incineration" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
-                <div class="application-placeholder" style="display:none;"><i class="bi bi-recycle"></i></div>
-                <div class="application-card-overlay">
-                    <h5 th:text="#{industries.waste}">Waste Incineration</h5>
-                </div>
-            </div>
-            <div class="application-card-img fade-in">
-                <img src="/static/images/applications/chemical.jpg" alt="Chemical Processing" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
-                <div class="application-placeholder" style="display:none;"><i class="bi bi-droplet"></i></div>
-                <div class="application-card-overlay">
-                    <h5 th:text="#{industries.chemical}">Chemical Processing</h5>
-                </div>
-            </div>
-            <div class="application-card-img fade-in">
-                <img src="/static/images/applications/woodworking.jpg" alt="Woodworking" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
-                <div class="application-placeholder" style="display:none;"><i class="bi bi-tree"></i></div>
-                <div class="application-card-overlay">
-                    <h5 th:text="#{industries.woodworking}">Woodworking</h5>
-                </div>
+                <div class="app-scenario-placeholder" style="display:none;"><i class="bi bi-recycle"></i></div>
+                <div class="app-scenario-label" th:text="#{industries.waste}">Waste Incineration</div>
             </div>
         </div>
     </div>
@@ -296,16 +283,7 @@
 
 
 
-<!-- ========== 9. CTA Banner ========== -->
-<section class="home-cta-section">
-    <div class="aesop-container text-center">
-        <h3 class="fade-in" th:text="#{cta.title}">Need Custom Filtration Solutions?</h3>
-        <p class="fade-in" th:text="#{cta.subtitle}">Contact our team for professional consultation and competitive quotation</p>
-        <div class="fade-in">
-            <a th:href="@{/contact}" class="btn btn-accent btn-lg" th:text="#{cta.button}">Get in Touch</a>
-        </div>
-    </div>
-</section>
+<!-- CTA Banner removed -->
 
 <!-- Inquiry Modal (for Why Choose button) -->
 <div class="inquiry-modal-overlay" id="inquiryModalOverlay" onclick="closeInquiryModal(event)">
