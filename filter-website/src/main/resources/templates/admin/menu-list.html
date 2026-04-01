@@ -1,29 +1,58 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{fragments/admin-layout :: adminHead(#{admin.menus})}"></head>
+<head th:replace="~{fragments/admin-layout :: adminHead('Menu Management')}"></head>
 <body class="admin-body">
 <div class="admin-wrapper">
     <div th:replace="~{fragments/admin-layout :: adminSidebar}"></div>
-
     <div class="admin-content">
         <div th:replace="~{fragments/admin-layout :: adminTopbar}"></div>
-
         <div class="admin-main">
-            <!-- Flash Messages -->
-
             <div class="d-flex justify-content-between align-items-center mb-4">
                 <div>
-                    <h4 style="font-size: 1.8rem; margin-bottom: 4px;" th:text="#{admin.menus}">菜单管理</h4>
-                    <p style="color: var(--admin-text-tertiary); font-size: 13px; margin: 0;">Configure navigation menus for your website</p>
+                    <h4 style="font-size: 1.8rem; margin-bottom: 4px;">Menu Management</h4>
+                    <p style="color: var(--admin-text-tertiary); font-size: 13px; margin: 0;">Search and manage website menus</p>
+                </div>
+            </div>
+
+            <div class="admin-card mb-3">
+                <div class="admin-card-body">
+                    <form method="get" th:action="@{/admin/menus}" class="row g-2 align-items-end">
+                        <div class="col-md-3">
+                            <label class="form-label form-label-sm">Menu Name</label>
+                            <input type="text" name="keyword" th:value="${param.keyword}" class="form-control form-control-sm" placeholder="Search menu name...">
+                        </div>
+                        <div class="col-md-2">
+                            <label class="form-label form-label-sm">Location</label>
+                            <select name="location" class="form-select form-select-sm">
+                                <option value="">All</option>
+                                <option value="primary" th:selected="${param.location == 'primary'}">Primary</option>
+                                <option value="footer" th:selected="${param.location == 'footer'}">Footer</option>
+                                <option value="sidebar" th:selected="${param.location == 'sidebar'}">Sidebar</option>
+                            </select>
+                        </div>
+                        <div class="col-md-2">
+                            <label class="form-label form-label-sm">Per Page</label>
+                            <select name="size" class="form-select form-select-sm">
+                                <option value="10" th:selected="${menuPage.size == 10}">10</option>
+                                <option value="20" th:selected="${menuPage.size == 20}">20</option>
+                                <option value="50" th:selected="${menuPage.size == 50}">50</option>
+                                <option value="100" th:selected="${menuPage.size == 100}">100</option>
+                            </select>
+                        </div>
+                        <div class="col-md-5 d-flex gap-2">
+                            <button type="submit" class="btn btn-primary btn-sm"><i class="bi bi-search"></i> Search</button>
+                            <a th:href="@{/admin/menus}" class="btn btn-outline-secondary btn-sm"><i class="bi bi-arrow-counterclockwise"></i> Reset</a>
+                        </div>
+                    </form>
                 </div>
             </div>
 
             <div class="row g-4">
-                <!-- Menu List -->
                 <div class="col-lg-8">
                     <div class="admin-card">
-                        <div class="admin-card-header">
-                            <h5>全部菜单</h5>
+                        <div class="admin-card-header d-flex justify-content-between align-items-center">
+                            <h5 class="mb-0">All Menus</h5>
+                            <span class="text-muted" th:text="'Total ' + ${menuPage.total}">Total 0</span>
                         </div>
                         <div class="admin-card-body">
                             <div class="table-responsive">
@@ -31,71 +60,83 @@
                                     <thead>
                                     <tr>
                                         <th>ID</th>
-                                        <th>名称</th>
-                                        <th>位置</th>
-                                        <th>菜单项数</th>
-                                        <th>创建时间</th>
-                                        <th th:text="#{admin.actions}">操作</th>
+                                        <th>Name</th>
+                                        <th>Location</th>
+                                        <th>Items</th>
+                                        <th>Updated At</th>
+                                        <th>Actions</th>
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <tr th:each="menu : ${menus}">
+                                    <tr th:each="menu : ${menuPage.records}">
                                         <td th:text="${menu.id}">1</td>
-                                        <td>
-                                            <a th:href="@{/admin/menus/{id}(id=${menu.id})}"
-                                               th:text="${menu.name}" class="fw-medium">Menu Name</a>
-                                        </td>
-                                        <td>
-                                            <span class="badge bg-info text-dark" th:text="${menu.location} ?: 'unassigned'">primary</span>
-                                        </td>
-                                        <td>
-                                            <span class="badge bg-light text-dark"
-                                                  th:text="${menu.menuItems != null} ? ${menu.menuItems.size()} : 0">0</span>
-                                        </td>
-                                        <td class="text-muted" th:text="${menu.createdAt != null} ? ${#temporals.format(menu.createdAt, 'yyyy-MM-dd')} : '-'">2026-01-01</td>
+                                        <td><a th:href="@{/admin/menus/{id}(id=${menu.id})}" th:text="${menu.name}" class="fw-medium">Menu Name</a></td>
+                                        <td><span class="badge bg-info text-dark" th:text="${menu.location} ?: 'unassigned'">primary</span></td>
+                                        <td><span class="badge bg-light text-dark" th:text="${menu.menuItems != null ? menu.menuItems.size() : 0}">0</span></td>
+                                        <td class="text-muted" th:text="${menu.updatedAt != null ? #temporals.format(menu.updatedAt, 'yyyy-MM-dd HH:mm') : (menu.createdAt != null ? #temporals.format(menu.createdAt, 'yyyy-MM-dd HH:mm') : '-')}">2026-01-01</td>
                                         <td class="actions">
-                                            <a th:href="@{/admin/menus/{id}(id=${menu.id})}"
-                                               class="btn btn-sm btn-outline-primary me-1" title="管理">
-                                                <i class="bi bi-gear"></i>
-                                            </a>
-                                            <button type="button" class="btn btn-sm btn-outline-danger"
-                                                    th:data-id="${menu.id}"
-                                                    th:data-name="${menu.name}"
-                                                    onclick="confirmDelete(this)">
-                                                <i class="bi bi-trash"></i>
-                                            </button>
+                                            <a th:href="@{/admin/menus/{id}(id=${menu.id})}" class="btn btn-sm btn-outline-primary me-1" title="Manage"><i class="bi bi-gear"></i></a>
+                                            <button type="button" class="btn btn-sm btn-outline-danger" th:data-id="${menu.id}" th:data-name="${menu.name}" onclick="confirmDelete(this)"><i class="bi bi-trash"></i></button>
                                         </td>
                                     </tr>
-                                    <tr th:if="${menus == null or menus.isEmpty()}">
-                                        <td colspan="6" class="text-center text-muted py-4">暂无菜单数据。</td>
+                                    <tr th:if="${menuPage.records.isEmpty()}">
+                                        <td colspan="6" class="text-center text-muted py-4">No menu data.</td>
                                     </tr>
                                     </tbody>
                                 </table>
+                            </div>
+
+                            <div class="p-3 d-flex justify-content-between align-items-center" th:if="${menuPage.pages > 1}">
+                                <span class="text-muted" style="font-size:13px;" th:text="'Showing ' + ${(menuPage.current - 1) * menuPage.size + 1} + '-' + ${T(java.lang.Math).min(menuPage.current * menuPage.size, menuPage.total)} + ' / Total ' + ${menuPage.total}"></span>
+                                <nav>
+                                    <ul class="pagination pagination-sm mb-0">
+                                        <li class="page-item" th:classappend="${menuPage.current <= 1} ? 'disabled'">
+                                            <a class="page-link" th:href="@{/admin/menus(page=${menuPage.current - 1}, size=${menuPage.size}, keyword=${param.keyword}, location=${param.location})}">Prev</a>
+                                        </li>
+                                        <th:block th:with="startPage=${T(java.lang.Math).max(1, menuPage.current - 2)}, endPage=${T(java.lang.Math).min(menuPage.pages, T(java.lang.Math).max(1, menuPage.current - 2) + 4)}">
+                                            <li th:if="${startPage > 1}" class="page-item">
+                                                <a class="page-link" th:href="@{/admin/menus(page=1, size=${menuPage.size}, keyword=${param.keyword}, location=${param.location})}">1</a>
+                                            </li>
+                                            <li th:if="${startPage > 2}" class="page-item disabled"><span class="page-link">...</span></li>
+                                            <th:block th:each="i : ${#numbers.sequence(startPage, endPage)}">
+                                                <li class="page-item" th:classappend="${i == menuPage.current} ? 'active'">
+                                                    <a class="page-link" th:href="@{/admin/menus(page=${i}, size=${menuPage.size}, keyword=${param.keyword}, location=${param.location})}" th:text="${i}">1</a>
+                                                </li>
+                                            </th:block>
+                                            <li th:if="${endPage < menuPage.pages - 1}" class="page-item disabled"><span class="page-link">...</span></li>
+                                            <li th:if="${endPage < menuPage.pages}" class="page-item">
+                                                <a class="page-link" th:href="@{/admin/menus(page=${menuPage.pages}, size=${menuPage.size}, keyword=${param.keyword}, location=${param.location})}" th:text="${menuPage.pages}">99</a>
+                                            </li>
+                                        </th:block>
+                                        <li class="page-item" th:classappend="${menuPage.current >= menuPage.pages} ? 'disabled'">
+                                            <a class="page-link" th:href="@{/admin/menus(page=${menuPage.current + 1}, size=${menuPage.size}, keyword=${param.keyword}, location=${param.location})}">Next</a>
+                                        </li>
+                                    </ul>
+                                </nav>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- Add Menu Form -->
                 <div class="col-lg-4">
                     <div class="admin-form">
-                        <h6 class="mb-3">新增菜单</h6>
+                        <h6 class="mb-3">Create Menu</h6>
                         <form th:action="@{/admin/menus/save}" method="post">
                             <div class="mb-3">
-                                <label class="form-label">菜单名称 <span class="text-danger">*</span></label>
-                                <input type="text" name="name" class="form-control" required placeholder="如：主导航">
+                                <label class="form-label">Menu Name <span class="text-danger">*</span></label>
+                                <input type="text" name="name" class="form-control" required placeholder="e.g. Main Navigation">
                             </div>
                             <div class="mb-3">
-                                <label class="form-label">位置</label>
+                                <label class="form-label">Location</label>
                                 <select name="location" class="form-select">
-                                    <option value="">— 选择 —</option>
-                                    <option value="primary">Primary（主导航）</option>
-                                    <option value="footer">Footer（页脚）</option>
-                                    <option value="sidebar">Sidebar（侧边栏）</option>
+                                    <option value="">-- Select --</option>
+                                    <option value="primary">Primary</option>
+                                    <option value="footer">Footer</option>
+                                    <option value="sidebar">Sidebar</option>
                                 </select>
                             </div>
                             <button type="submit" class="btn btn-primary w-100">
-                                <i class="bi bi-plus-circle"></i> 创建菜单
+                                <i class="bi bi-plus-circle"></i> Create Menu
                             </button>
                         </form>
                     </div>
@@ -105,22 +146,21 @@
     </div>
 </div>
 
-<!-- 删除确认弹窗 -->
 <div class="modal fade" id="deleteModal" tabindex="-1">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">确认删除</h5>
+                <h5 class="modal-title">Confirm Delete</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body">
-                <p>确定要删除此菜单吗？菜单下的所有菜单项也将被删除，此操作不可撤销。</p>
+                <p>Are you sure you want to delete this menu and all of its items?</p>
                 <p class="fw-medium" id="deleteItemName"></p>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
                 <form id="deleteForm" method="post" class="d-inline">
-                    <button type="submit" class="btn btn-outline-danger">确认删除</button>
+                    <button type="submit" class="btn btn-outline-danger">Confirm</button>
                 </form>
             </div>
         </div>
@@ -129,12 +169,13 @@
 
 <div th:replace="~{fragments/admin-layout :: adminScripts}"></div>
 <script>
-    function confirmDelete(btn) {
-        document.getElementById('deleteItemName').textContent = btn.getAttribute('data-name');
-        document.getElementById('deleteForm').action = '/admin/menus/delete/' + btn.getAttribute('data-id');
-        var modal = new bootstrap.Modal(document.getElementById('deleteModal'));
-        modal.show();
-    }
+function confirmDelete(btn) {
+    document.getElementById('deleteItemName').textContent = btn.getAttribute('data-name');
+    document.getElementById('deleteForm').action = '/admin/menus/delete/' + btn.getAttribute('data-id');
+    var modal = new bootstrap.Modal(document.getElementById('deleteModal'));
+    modal.show();
+}
 </script>
 </body>
 </html>
+

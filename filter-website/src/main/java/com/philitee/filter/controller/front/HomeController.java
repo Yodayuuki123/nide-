@@ -12,10 +12,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
-/**
- * 前台首页 Controller
- */
 @Controller
 @RequiredArgsConstructor
 public class HomeController {
@@ -24,25 +24,33 @@ public class HomeController {
     private final ProductCategoryService categoryService;
     private final MenuService menuService;
 
-    /**
-     * 首页
-     */
     @GetMapping("/")
     public String index(Model model) {
-        // 获取精选产品（最新12个）
         List<Product> featuredProducts = productService.getFeaturedProducts(12);
         model.addAttribute("featuredProducts", featuredProducts);
 
-        // 获取顶级分类
-        List<ProductCategory> categories = categoryService.getTopLevelCategories();
+        List<String> featuredCategorySlugs = List.of(
+                "industrial-filter-bags",
+                "industrial-filter-cloth",
+                "bag-house-filters",
+                "filter-cartridges",
+                "filter-bag-making-machine",
+                "air-slide-fabric",
+                "filter-systems",
+                "filter-elements",
+                "air-filters"
+        );
+        Map<String, ProductCategory> categoryMap = categoryService.getTopLevelCategories().stream()
+                .collect(Collectors.toMap(ProductCategory::getSlug, Function.identity(), (first, second) -> first));
+        List<ProductCategory> categories = featuredCategorySlugs.stream()
+                .map(categoryMap::get)
+                .filter(category -> category != null)
+                .collect(Collectors.toList());
         model.addAttribute("categories", categories);
 
         return "front/index";
     }
 
-    /**
-     * 关于我们
-     */
     @GetMapping("/about")
     public String about(Model model) {
         model.addAttribute("breadcrumbItems", List.of(
@@ -51,9 +59,6 @@ public class HomeController {
         return "front/about";
     }
 
-    /**
-     * 工厂介绍
-     */
     @GetMapping("/factory")
     public String factory(Model model) {
         model.addAttribute("breadcrumbItems", List.of(
@@ -62,9 +67,6 @@ public class HomeController {
         return "front/factory";
     }
 
-    /**
-     * 解决方案
-     */
     @GetMapping("/solutions")
     public String solutions(Model model) {
         model.addAttribute("breadcrumbItems", List.of(
@@ -73,9 +75,6 @@ public class HomeController {
         return "front/solutions";
     }
 
-    /**
-     * 联系我们
-     */
     @GetMapping("/contact")
     public String contact(Model model) {
         model.addAttribute("breadcrumbItems", List.of(
@@ -83,5 +82,4 @@ public class HomeController {
         ));
         return "front/contact";
     }
-
 }

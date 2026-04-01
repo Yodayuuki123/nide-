@@ -1,52 +1,62 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{fragments/admin-layout :: adminHead(#{admin.images})}"></head>
+<head th:replace="~{fragments/admin-layout :: adminHead('Image Management')}"></head>
 <body class="admin-body">
 <div class="admin-wrapper">
     <div th:replace="~{fragments/admin-layout :: adminSidebar}"></div>
-
     <div class="admin-content">
         <div th:replace="~{fragments/admin-layout :: adminTopbar}"></div>
-
         <div class="admin-main">
-            <!-- Flash Messages -->
-
             <div class="d-flex justify-content-between align-items-center mb-4">
                 <div>
-                    <h4 style="font-size: 1.8rem; margin-bottom: 4px;" th:text="#{admin.images}">图片管理</h4>
-                    <p style="color: var(--admin-text-tertiary); font-size: 13px; margin: 0;">上传和管理您的媒体资源库</p>
+                    <h4 style="font-size: 1.8rem; margin-bottom: 4px;">Image Management</h4>
+                    <p style="color: var(--admin-text-tertiary); font-size: 13px; margin: 0;">Upload, search and manage image assets</p>
                 </div>
             </div>
 
-            <!-- 上传 Zone - 支持批量上传 -->
             <div class="admin-card mb-4">
                 <div class="admin-card-body p-4">
-                    <div class="upload-zone" id="pageUploadZone">
+                    <div class="upload-zone mb-3" id="pageUploadZone">
                         <i class="bi bi-cloud-arrow-up"></i>
-                        <h5>上传图片</h5>
-                        <p class="text-muted mb-0">点击或拖拽文件到此处上传（支持批量上传多张）</p>
+                        <h5>Select Images</h5>
+                        <p class="text-muted mb-0">Click or drag files here. Files will be staged before upload.</p>
                         <input type="file" id="pageFileInput" accept="image/*" multiple style="display: none">
                     </div>
-                    <div id="batchUploadProgress" class="mt-3" style="display: none;">
+
+                    <div id="pendingUploadWrap" style="display:none;">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <h6 class="mb-0">Pending Uploads</h6>
+                            <button type="button" class="btn btn-primary btn-sm" id="startBatchUploadBtn">Upload Selected</button>
+                        </div>
+                        <div id="pendingUploadList" class="d-flex flex-wrap gap-2 mb-3"></div>
+                    </div>
+
+                    <div id="batchUploadProgress" class="mt-3" style="display:none;">
                         <div class="progress mb-2">
                             <div class="progress-bar" id="batchProgressBar" style="width: 0%"></div>
                         </div>
-                        <small class="text-muted" id="batchProgressText">上传中...</small>
+                        <small class="text-muted" id="batchProgressText">Uploading...</small>
                     </div>
                 </div>
             </div>
 
-            <!-- 搜索表单 -->
             <div class="admin-card mb-4">
                 <div class="admin-card-body p-3">
                     <form method="get" th:action="@{/admin/images}" class="row g-2 align-items-end">
                         <div class="col-md-4">
-                            <label class="form-label small mb-1">文件名搜索</label>
-                            <input type="text" name="keyword" class="form-control form-control-sm"
-                                   th:value="${param.keyword}" placeholder="搜索文件名...">
+                            <label class="form-label small mb-1">Image Title</label>
+                            <input type="text" name="keyword" class="form-control form-control-sm" th:value="${param.keyword}" placeholder="Search by file name...">
                         </div>
                         <div class="col-md-2">
-                            <label class="form-label small mb-1">每页显示</label>
+                            <label class="form-label small mb-1">Upload From</label>
+                            <input type="date" name="startDate" class="form-control form-control-sm" th:value="${param.startDate}">
+                        </div>
+                        <div class="col-md-2">
+                            <label class="form-label small mb-1">Upload To</label>
+                            <input type="date" name="endDate" class="form-control form-control-sm" th:value="${param.endDate}">
+                        </div>
+                        <div class="col-md-2">
+                            <label class="form-label small mb-1">Per Page</label>
                             <select name="size" class="form-select form-select-sm">
                                 <option value="10" th:selected="${imagePage.size == 10}">10</option>
                                 <option value="20" th:selected="${imagePage.size == 20}">20</option>
@@ -54,71 +64,60 @@
                                 <option value="100" th:selected="${imagePage.size == 100}">100</option>
                             </select>
                         </div>
-                        <div class="col-md-3">
-                            <button type="submit" class="btn btn-primary btn-sm me-1">
-                                <i class="bi bi-search"></i> 搜索
-                            </button>
-                            <a th:href="@{/admin/images}" class="btn btn-outline-secondary btn-sm">重置</a>
+                        <div class="col-md-2 d-flex gap-2">
+                            <button type="submit" class="btn btn-primary btn-sm"><i class="bi bi-search"></i> Search</button>
+                            <a th:href="@{/admin/images}" class="btn btn-outline-secondary btn-sm">Reset</a>
                         </div>
                     </form>
                 </div>
             </div>
 
-            <!-- 图片 Grid -->
             <div class="admin-card">
-                <div class="admin-card-header">
-                    <h5>
-                        <span th:text="#{admin.images}">图片</span>
-                        <span class="badge bg-light text-dark ms-2" th:text="${imagePage.total}">0</span>
-                    </h5>
+                <div class="admin-card-header d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">Image Library</h5>
+                    <span class="text-muted" th:text="'Total ' + ${imagePage.total}">Total 0</span>
                 </div>
                 <div class="admin-card-body p-4">
                     <div class="image-grid">
                         <div th:each="img : ${imagePage.records}" class="image-grid-item">
                             <div class="image-grid-thumb">
-                                <img th:src="${img.url} ?: ('/wp-content/uploads' + ${img.filePath})"
-                                     th:alt="${img.altText} ?: ${img.fileName}">
+                                <img th:src="${img.url} ?: ('/wp-content/uploads' + img.filePath)" th:alt="${img.altText} ?: ${img.fileName}">
                             </div>
                             <div class="image-grid-info">
                                 <small class="text-truncate d-block" th:text="${img.fileName}">filename.jpg</small>
-                                <small class="text-muted" th:if="${img.uploadedAt != null}"
-                                       th:text="${#temporals.format(img.uploadedAt, 'yyyy-MM-dd HH:mm')}">2026-01-01</small>
+                                <small class="text-muted" th:text="${img.uploadedAt != null ? #temporals.format(img.uploadedAt, 'yyyy-MM-dd HH:mm') : '-'}">2026-01-01</small>
                             </div>
                             <div class="image-grid-actions">
-                                <button type="button" class="btn btn-sm btn-outline-danger"
-                                        th:data-id="${img.id}" th:data-name="${img.fileName}"
-                                        onclick="confirmDeleteImage(this)">
-                                    <i class="bi bi-trash"></i>
-                                </button>
+                                <button type="button" class="btn btn-sm btn-outline-danger" th:data-id="${img.id}" th:data-name="${img.fileName}" onclick="confirmDeleteImage(this)"><i class="bi bi-trash"></i></button>
                             </div>
                         </div>
                     </div>
 
                     <div th:if="${imagePage.records.isEmpty()}" class="text-center text-muted py-4">
                         <i class="bi bi-image fs-1 d-block mb-2"></i>
-                        <p>暂无图片。</p>
+                        <p>No images found.</p>
                     </div>
 
-                    <!-- 分页 - 显示5页窗口 -->
                     <div class="mt-4 d-flex justify-content-between align-items-center" th:if="${imagePage.pages > 1}">
-                        <small class="text-muted">
-                            共 <span th:text="${imagePage.total}">0</span> 条，
-                            第 <span th:text="${imagePage.current}">1</span> / <span th:text="${imagePage.pages}">1</span> 页
-                        </small>
+                        <small class="text-muted" th:text="'Showing ' + ${(imagePage.current - 1) * imagePage.size + 1} + '-' + ${T(java.lang.Math).min(imagePage.current * imagePage.size, imagePage.total)} + ' / Total ' + ${imagePage.total}"></small>
                         <nav>
-                            <ul class="pagination mb-0">
+                            <ul class="pagination pagination-sm mb-0">
                                 <li class="page-item" th:classappend="${imagePage.current <= 1} ? 'disabled'">
-                                    <a class="page-link" th:href="@{/admin/images(page=${imagePage.current - 1}, size=${imagePage.size}, keyword=${param.keyword})}">上一页</a>
+                                    <a class="page-link" th:href="@{/admin/images(page=${imagePage.current - 1}, size=${imagePage.size}, keyword=${param.keyword}, startDate=${param.startDate}, endDate=${param.endDate})}">Prev</a>
                                 </li>
-                                <th:block th:with="startPage=${T(Math).max(1, imagePage.current - 2)}, endPage=${T(Math).min(imagePage.pages, T(Math).max(1, imagePage.current - 2) + 4)}">
+                                <th:block th:with="startPage=${T(java.lang.Math).max(1, imagePage.current - 2)}, endPage=${T(java.lang.Math).min(imagePage.pages, T(java.lang.Math).max(1, imagePage.current - 2) + 4)}">
+                                    <li th:if="${startPage > 1}" class="page-item"><a class="page-link" th:href="@{/admin/images(page=1, size=${imagePage.size}, keyword=${param.keyword}, startDate=${param.startDate}, endDate=${param.endDate})}">1</a></li>
+                                    <li th:if="${startPage > 2}" class="page-item disabled"><span class="page-link">...</span></li>
                                     <th:block th:each="i : ${#numbers.sequence(startPage, endPage)}">
                                         <li class="page-item" th:classappend="${i == imagePage.current} ? 'active'">
-                                            <a class="page-link" th:href="@{/admin/images(page=${i}, size=${imagePage.size}, keyword=${param.keyword})}" th:text="${i}">1</a>
+                                            <a class="page-link" th:href="@{/admin/images(page=${i}, size=${imagePage.size}, keyword=${param.keyword}, startDate=${param.startDate}, endDate=${param.endDate})}" th:text="${i}">1</a>
                                         </li>
                                     </th:block>
+                                    <li th:if="${endPage < imagePage.pages - 1}" class="page-item disabled"><span class="page-link">...</span></li>
+                                    <li th:if="${endPage < imagePage.pages}" class="page-item"><a class="page-link" th:href="@{/admin/images(page=${imagePage.pages}, size=${imagePage.size}, keyword=${param.keyword}, startDate=${param.startDate}, endDate=${param.endDate})}" th:text="${imagePage.pages}">99</a></li>
                                 </th:block>
                                 <li class="page-item" th:classappend="${imagePage.current >= imagePage.pages} ? 'disabled'">
-                                    <a class="page-link" th:href="@{/admin/images(page=${imagePage.current + 1}, size=${imagePage.size}, keyword=${param.keyword})}">下一页</a>
+                                    <a class="page-link" th:href="@{/admin/images(page=${imagePage.current + 1}, size=${imagePage.size}, keyword=${param.keyword}, startDate=${param.startDate}, endDate=${param.endDate})}">Next</a>
                                 </li>
                             </ul>
                         </nav>
@@ -129,21 +128,20 @@
     </div>
 </div>
 
-<!-- 删除确认弹窗 -->
 <div class="modal fade" id="deleteImageModal" tabindex="-1">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">确认删除</h5>
+                <h5 class="modal-title">Confirm Delete</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body">
-                <p>确定要删除此图片吗？此操作不可撤销。</p>
+                <p>Are you sure you want to delete this image?</p>
                 <p class="fw-medium" id="deleteImageName"></p>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
-                <button type="button" class="btn btn-outline-danger" id="confirmDeleteBtn" onclick="doDeleteImage()">确认删除</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-outline-danger" onclick="doDeleteImage()">Confirm</button>
             </div>
         </div>
     </div>
@@ -151,13 +149,38 @@
 
 <div th:replace="~{fragments/admin-layout :: adminScripts}"></div>
 <script>
-// 批量上传
 (function() {
+    var pendingFiles = [];
     var uploadZone = document.getElementById('pageUploadZone');
     var fileInput = document.getElementById('pageFileInput');
+    var pendingWrap = document.getElementById('pendingUploadWrap');
+    var pendingList = document.getElementById('pendingUploadList');
+    var uploadBtn = document.getElementById('startBatchUploadBtn');
     var progressDiv = document.getElementById('batchUploadProgress');
     var progressBar = document.getElementById('batchProgressBar');
     var progressText = document.getElementById('batchProgressText');
+
+    function renderPendingFiles() {
+        pendingList.innerHTML = '';
+        pendingWrap.style.display = pendingFiles.length ? '' : 'none';
+        pendingFiles.forEach(function(file, index) {
+            var item = document.createElement('div');
+            item.className = 'border rounded p-2 d-flex align-items-center gap-2';
+            item.innerHTML = '<i class="bi bi-image text-success"></i><small class="text-truncate" style="max-width:180px;">' + file.name + '</small><button type="button" class="btn btn-sm btn-outline-danger">&times;</button>';
+            item.querySelector('button').addEventListener('click', function() {
+                pendingFiles.splice(index, 1);
+                renderPendingFiles();
+            });
+            pendingList.appendChild(item);
+        });
+    }
+
+    function appendFiles(files) {
+        Array.from(files).forEach(function(file) {
+            pendingFiles.push(file);
+        });
+        renderPendingFiles();
+    }
 
     if (uploadZone && fileInput) {
         uploadZone.addEventListener('click', function() { fileInput.click(); });
@@ -166,69 +189,67 @@
         uploadZone.addEventListener('drop', function(e) {
             e.preventDefault();
             uploadZone.classList.remove('drag-over');
-            handleFiles(e.dataTransfer.files);
+            appendFiles(e.dataTransfer.files);
         });
         fileInput.addEventListener('change', function() {
-            if (this.files.length > 0) handleFiles(this.files);
+            appendFiles(this.files);
+            this.value = '';
         });
     }
 
-    function handleFiles(files) {
-        if (files.length === 0) return;
-        var formData = new FormData();
-        for (var i = 0; i < files.length; i++) {
-            formData.append('files', files[i]);
-        }
-        progressDiv.style.display = 'block';
-        progressBar.style.width = '30%';
-        progressText.textContent = '正在上传 ' + files.length + ' 张图片...';
-
-        fetch('/admin/api/images/batch-upload', {
-            method: 'POST',
-            body: formData
-        })
-        .then(function(resp) { return resp.json(); })
-        .then(function(data) {
-            progressBar.style.width = '100%';
-            if (data.uploadedCount > 0) {
-                progressText.textContent = '成功上传 ' + data.uploadedCount + ' 张' + (data.errorCount > 0 ? '，失败 ' + data.errorCount + ' 张' : '');
-                progressBar.classList.add('bg-success');
-                setTimeout(function() { location.reload(); }, 1000);
-            } else {
-                progressText.textContent = '上传失败';
-                progressBar.classList.add('bg-danger');
-            }
-        })
-        .catch(function(err) {
-            progressBar.style.width = '100%';
-            progressBar.classList.add('bg-danger');
-            progressText.textContent = '上传失败: ' + err.message;
+    if (uploadBtn) {
+        uploadBtn.addEventListener('click', function() {
+            if (!pendingFiles.length) return;
+            var formData = new FormData();
+            pendingFiles.forEach(function(file) { formData.append('files', file); });
+            progressDiv.style.display = '';
+            progressBar.style.width = '35%';
+            progressText.textContent = 'Uploading ' + pendingFiles.length + ' files...';
+            fetch('/admin/api/images/batch-upload', { method: 'POST', body: formData })
+                .then(function(resp) { return resp.json(); })
+                .then(function(data) {
+                    progressBar.style.width = '100%';
+                    if (data.uploadedCount > 0) {
+                        pendingFiles = [];
+                        renderPendingFiles();
+                        if (typeof showToast === 'function') showToast('Uploaded ' + data.uploadedCount + ' image(s)', 'success');
+                        setTimeout(function() { window.location.reload(); }, 800);
+                    } else if (typeof showToast === 'function') {
+                        showToast('Upload failed', 'error');
+                    }
+                })
+                .catch(function(err) {
+                    progressBar.style.width = '100%';
+                    if (typeof showToast === 'function') showToast('Upload failed: ' + err.message, 'error');
+                });
         });
     }
 })();
 
-// 删除确认
 var deleteImageId = null;
 function confirmDeleteImage(btn) {
     deleteImageId = btn.getAttribute('data-id');
     document.getElementById('deleteImageName').textContent = btn.getAttribute('data-name');
-    var modal = new bootstrap.Modal(document.getElementById('deleteImageModal'));
-    modal.show();
+    bootstrap.Modal.getOrCreateInstance(document.getElementById('deleteImageModal')).show();
 }
 
 function doDeleteImage() {
     if (!deleteImageId) return;
     fetch('/admin/api/images/delete/' + deleteImageId, { method: 'POST' })
-    .then(function(resp) { return resp.json(); })
-    .then(function(data) {
-        if (data.success) {
-            location.reload();
-        } else {
-            alert('删除失败: ' + (data.message || '未知错误'));
-        }
-    })
-    .catch(function(err) { alert('删除失败: ' + err.message); });
+        .then(function(resp) { return resp.json(); })
+        .then(function(data) {
+            if (data.success) {
+                if (typeof showToast === 'function') showToast('Image deleted successfully', 'success');
+                setTimeout(function() { window.location.reload(); }, 500);
+            } else if (typeof showToast === 'function') {
+                showToast(data.message || 'Delete failed', 'error');
+            }
+        })
+        .catch(function(err) {
+            if (typeof showToast === 'function') showToast('Delete failed: ' + err.message, 'error');
+        });
 }
 </script>
 </body>
 </html>
+

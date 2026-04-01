@@ -34,7 +34,7 @@
     <!-- Slideshow CSS -->
     <link rel="stylesheet" href="/static/css/slideshow.css?v=6">
     <!-- Redesign v10 -->
-    <link rel="stylesheet" href="/static/css/redesign-v10.css?v=3">
+    <link rel="stylesheet" href="/static/css/redesign-v10.css?v=4">
 </head>
 
 <!-- ===== Navbar Fragment ===== -->
@@ -91,20 +91,17 @@
                         <!-- mainCategory Dropdown -->
                         <div class="maincategory-dropdown" th:if="${globalCategoryTree != null}">
                             <div class="maincategory-inner">
-                                <!-- Left: main categories with images -->
+                                <!-- Left: main categories list -->
                                 <div class="maincategory-left">
                                     <div class="maincategory-item"
                                          th:each="cat,iter : ${globalCategoryTree}"
-                                         th:if="${iter.index < 8}"
+                                         th:if="${iter.index < 9}"
                                          th:data-index="${iter.index}"
                                          onmouseenter="activateMainCat(this)">
-                                        <div class="maincategory-item-img">
-                                            <img th:src="'/wp-content/uploads/category-covers/' + ${cat.slug} + '.jpg'"
-                                                 th:alt="${cat.name}"
-                                                 onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
-                                            <div class="maincategory-img-placeholder" style="display:none;"><i class="bi bi-funnel"></i></div>
+                                        <div class="maincategory-item-icon">
+                                            <i class="bi bi-funnel"></i>
                                         </div>
-                                        <span th:text="${cat.name}">Category</span>
+                                        <span class="maincategory-item-name" th:text="${cat.name}">Category</span>
                                         <i class="bi bi-chevron-right maincategory-arrow" th:if="${cat.children != null and !cat.children.isEmpty()}"></i>
                                     </div>
                                 </div>
@@ -112,7 +109,7 @@
                                 <div class="maincategory-right">
                                     <div class="maincategory-sub-panel"
                                          th:each="cat,iter : ${globalCategoryTree}"
-                                         th:if="${iter.index < 8}"
+                                         th:if="${iter.index < 9}"
                                          th:id="'maincatsub-' + ${iter.index}">
                                         <div th:if="${cat.children != null and !cat.children.isEmpty()}">
                                             <a th:each="child : ${cat.children}"
@@ -120,11 +117,7 @@
                                                class="maincategory-sub-link"
                                                th:text="${child.name}">Sub Category</a>
                                         </div>
-                                        <div th:unless="${cat.children != null and !cat.children.isEmpty()}">
-                                            <a th:href="@{/categories/{slug}(slug=${cat.slug})}"
-                                               class="maincategory-sub-link maincategory-sub-view-all"
-                                               th:text="#{nav.view_all_products}">View All</a>
-                                        </div>
+
                                     </div>
                                 </div>
                             </div>
@@ -232,12 +225,40 @@
     document.addEventListener('DOMContentLoaded', function(){
         var parent = document.querySelector('.has-maincategory-dropdown');
         if (!parent) return;
-        parent.addEventListener('mouseenter', function(){
+        var dropdown = parent.querySelector('.maincategory-dropdown');
+        var closeTimer;
+
+        function openDropdown() {
+            clearTimeout(closeTimer);
+            if (dropdown) dropdown.classList.add('active');
             var first = parent.querySelector('.maincategory-item');
-            if (first) activateMainCat(first);
-        });
+            if (first && !parent.querySelector('.maincategory-item.active')) {
+                activateMainCat(first);
+            }
+        }
+
+        function closeDropdown() {
+            clearTimeout(closeTimer);
+            closeTimer = setTimeout(function() {
+                if (dropdown) dropdown.classList.remove('active');
+            }, 700);
+        }
+
+        parent.addEventListener('mouseenter', openDropdown);
+        parent.addEventListener('mouseleave', closeDropdown);
+        if (dropdown) {
+            dropdown.addEventListener('mouseenter', openDropdown);
+            dropdown.addEventListener('mouseleave', closeDropdown);
+        }
+    });
     });
     </script>
 </header>
 
 </html>
+
+
+
+
+
+

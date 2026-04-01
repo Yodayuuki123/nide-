@@ -1,6 +1,6 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{fragments/admin-layout :: adminHead(${product.id != null} ? '编辑 Product' : '新增产品')}"></head>
+<head th:replace="~{fragments/admin-layout :: adminHead(${product.id != null} ? '缂栬緫 Product' : '鏂板浜у搧')}"></head>
 <body class="admin-body">
 <div class="admin-wrapper">
     <div th:replace="~{fragments/admin-layout :: adminSidebar}"></div>
@@ -11,11 +11,11 @@
         <div class="admin-main">
             <div class="d-flex justify-content-between align-items-center mb-4">
                 <div>
-                    <h4 style="font-size: 1.8rem; margin-bottom: 4px;" th:text="${product.id != null} ? '编辑产品' : '新增产品'">产品表单</h4>
-                    <p style="color: var(--admin-text-tertiary); font-size: 13px; margin: 0;" th:text="${product.id != null} ? '修改产品详情、图片和富文本内容' : '创建新产品，添加描述和媒体资源'">副标题</p>
+                    <h4 style="font-size: 1.8rem; margin-bottom: 4px;" th:text="${product.id != null} ? '缂栬緫浜у搧' : '鏂板浜у搧'">浜у搧琛ㄥ崟</h4>
+                    <p style="color: var(--admin-text-tertiary); font-size: 13px; margin: 0;" th:text="${product.id != null} ? '淇敼浜у搧璇︽儏銆佸浘鐗囧拰瀵屾枃鏈唴瀹? : '鍒涘缓鏂颁骇鍝侊紝娣诲姞鎻忚堪鍜屽獟浣撹祫婧?">鍓爣棰?/p>
                 </div>
                 <a href="/admin/products" class="btn btn-outline-secondary btn-sm">
-                    <i class="bi bi-arrow-left"></i> <span th:text="#{admin.back}">返回</span>
+                    <i class="bi bi-arrow-left"></i> <span th:text="#{admin.back}">杩斿洖</span>
                 </a>
             </div>
 
@@ -28,14 +28,14 @@
                     <div class="col-lg-8">
                         <!-- Basic Info -->
                         <div class="admin-form mb-4">
-                            <h6 class="mb-3">基本信息</h6>
+                            <h6 class="mb-3">鍩烘湰淇℃伅</h6>
                             <div class="mb-3">
-                                <label class="form-label">产品名称 <span class="text-danger">*</span></label>
+                                <label class="form-label">浜у搧鍚嶇О <span class="text-danger">*</span></label>
                                 <input type="text" name="name" class="form-control" th:value="${product.name}"
                                        required id="productName" placeholder="Enter product name">
                             </div>
                             <div class="mb-3">
-                                <label class="form-label">URL别名</label>
+                                <label class="form-label">URL鍒悕</label>
                                 <input type="text" name="slug" class="form-control" th:value="${product.slug}"
                                        id="productSlug" placeholder="auto-generated-from-name">
                             </div>
@@ -43,10 +43,10 @@
                                 <div class="col-md-4">
                                     <label class="form-label">SKU</label>
                                     <input type="text" name="sku" class="form-control" th:value="${product.sku}"
-                                           placeholder="产品SKU">
+                                           placeholder="浜у搧SKU">
                                 </div>
                                 <div class="col-md-4">
-                                    <label class="form-label">价格</label>
+                                    <label class="form-label">浠锋牸</label>
                                     <input type="number" name="price" class="form-control" step="0.01"
                                            th:value="${product.price}" placeholder="0.00">
                                 </div>
@@ -58,48 +58,46 @@
                             </div>
                             <div class="row g-3 mt-0">
                                 <div class="col-md-4">
-                                    <label class="form-label">库存数量</label>
+                                    <label class="form-label">搴撳瓨鏁伴噺</label>
                                     <input type="number" name="stockQuantity" class="form-control"
                                            th:value="${product.stockQuantity}" placeholder="0">
                                 </div>
                                 <div class="col-md-4">
-                                    <label class="form-label">状态 <span class="text-danger">*</span></label>
+                                    <label class="form-label">鐘舵€?<span class="text-danger">*</span></label>
                                     <select name="status" class="form-select" required>
-                                        <option value="draft" th:selected="${product.status == 'draft'}">草稿</option>
-                                        <option value="publish" th:selected="${product.status == 'publish'}">已发布</option>
+                                        <option value="draft" th:selected="${product.status == 'draft'}">鑽夌</option>
+                                        <option value="publish" th:selected="${product.status == 'publish'}">宸插彂甯?/option>
                                     </select>
                                 </div>
                             </div>
                         </div>
 
-                        <!-- 第一部分: 简要介绍 (简短描述 - Rich Text HTML Fragment) -->
+                        <!-- 绗竴閮ㄥ垎: 绠€瑕佷粙缁?(绠€鐭弿杩?- Rich Text HTML Fragment) -->
                         <div class="admin-form mb-4">
                             <div class="d-flex align-items-center mb-3">
-                                <span class="badge bg-primary me-2">第一部分</span>
-                                <h6 class="mb-0">产品简要介绍</h6>
-                                <small class="text-muted ms-2">（产品详情页上半部分，简要概述产品特点）</small>
+                                <span class="badge bg-primary me-2">绗竴閮ㄥ垎</span>
+                                <h6 class="mb-0">浜у搧绠€瑕佷粙缁?/h6>
+                                <small class="text-muted ms-2">锛堜骇鍝佽鎯呴〉涓婂崐閮ㄥ垎锛岀畝瑕佹杩颁骇鍝佺壒鐐癸級</small>
                             </div>
                             <p class="text-muted small mb-2">
                                 <i class="bi bi-info-circle"></i>
-                                此部分显示在产品详情页的产品信息区域，支持图文混排。建议包含产品亮点、核心参数等。
-                            </p>
+                                姝ら儴鍒嗘樉绀哄湪浜у搧璇︽儏椤电殑浜у搧淇℃伅鍖哄煙锛屾敮鎸佸浘鏂囨贩鎺掋€傚缓璁寘鍚骇鍝佷寒鐐广€佹牳蹇冨弬鏁扮瓑銆?                            </p>
                             <div class="tinymce-wrapper">
                                 <textarea name="shortDescription" id="shortDescription" rows="8"
                                           th:utext="${product.shortDescription}"></textarea>
                             </div>
                         </div>
 
-                        <!-- 第二部分: 详细介绍 (详细描述 - Rich Text HTML Fragment) -->
+                        <!-- 绗簩閮ㄥ垎: 璇︾粏浠嬬粛 (璇︾粏鎻忚堪 - Rich Text HTML Fragment) -->
                         <div class="admin-form mb-4">
                             <div class="d-flex align-items-center mb-3">
-                                <span class="badge bg-success me-2">第二部分</span>
-                                <h6 class="mb-0">产品详细介绍</h6>
-                                <small class="text-muted ms-2">（产品详情页下半部分，详细产品描述）</small>
+                                <span class="badge bg-success me-2">绗簩閮ㄥ垎</span>
+                                <h6 class="mb-0">浜у搧璇︾粏浠嬬粛</h6>
+                                <small class="text-muted ms-2">锛堜骇鍝佽鎯呴〉涓嬪崐閮ㄥ垎锛岃缁嗕骇鍝佹弿杩帮級</small>
                             </div>
                             <p class="text-muted small mb-2">
                                 <i class="bi bi-info-circle"></i>
-                                此部分显示在产品详情页下方独立区域，支持图文并茂的富文本内容。建议包含详细规格、应用场景、技术参数等。
-                            </p>
+                                姝ら儴鍒嗘樉绀哄湪浜у搧璇︽儏椤典笅鏂圭嫭绔嬪尯鍩燂紝鏀寔鍥炬枃骞惰寕鐨勫瘜鏂囨湰鍐呭銆傚缓璁寘鍚缁嗚鏍笺€佸簲鐢ㄥ満鏅€佹妧鏈弬鏁扮瓑銆?                            </p>
                             <div class="tinymce-wrapper">
                                 <textarea name="description" id="description" rows="15"
                                           th:utext="${product.description}"></textarea>
@@ -109,9 +107,9 @@
 
                     <!-- Right Column: Side Panels -->
                     <div class="col-lg-4">
-                        <!-- Main 图片 -->
+                        <!-- Main 鍥剧墖 -->
                         <div class="admin-form mb-4">
-                            <h6 class="mb-3">Main 图片</h6>
+                            <h6 class="mb-3">Main 鍥剧墖</h6>
                             <input type="hidden" name="mainImageId" id="mainImageId" th:value="${product.mainImageId}">
                             <div id="mainImagePreview" class="mb-2">
                                 <img th:if="${product.mainImage != null}" th:src="${product.mainImage.url}"
@@ -124,13 +122,13 @@
                             </div>
                             <button type="button" class="btn btn-outline-primary btn-sm w-100"
                                     onclick="openImagePicker('main')">
-                                <i class="bi bi-image"></i> Select 图片
+                                <i class="bi bi-image"></i> Select 鍥剧墖
                             </button>
                         </div>
 
-                        <!-- Gallery 图片s -->
+                        <!-- Gallery 鍥剧墖s -->
                         <div class="admin-form mb-4">
-                            <h6 class="mb-3">Gallery 图片s</h6>
+                            <h6 class="mb-3">Gallery 鍥剧墖s</h6>
                             <div id="galleryImagesContainer" class="d-flex flex-wrap gap-2 mb-2">
                                 <div th:each="img : ${product.images}" class="gallery-thumb-item position-relative"
                                      th:data-id="${img.id}">
@@ -145,13 +143,13 @@
                             </div>
                             <button type="button" class="btn btn-outline-primary btn-sm w-100"
                                     onclick="openImagePicker('gallery')">
-                                <i class="bi bi-images"></i> Add 图片s
+                                <i class="bi bi-images"></i> Add 鍥剧墖s
                             </button>
                         </div>
 
-                        <!-- 所属分类 -->
+                        <!-- 鎵€灞炲垎绫?-->
                         <div class="admin-form mb-4">
-                            <h6 class="mb-3" th:text="#{product.category}">所属分类</h6>
+                            <h6 class="mb-3" th:text="#{product.category}">鎵€灞炲垎绫?/h6>
                             <div class="category-checkbox-tree">
                                 <th:block th:each="cat : ${categories}">
                                     <div class="form-check">
@@ -167,7 +165,7 @@
                                                    th:value="${child.id}" th:id="'cat_' + ${child.id}"
                                                    th:checked="${product.categories != null and #lists.contains(product.categories.![id], child.id)}">
                                             <label class="form-check-label" th:for="'cat_' + ${child.id}"
-                                                   th:text="${child.name}">子分类</label>
+                                                   th:text="${child.name}">瀛愬垎绫?/label>
                                         </div>
                                     </div>
                                 </th:block>
@@ -192,9 +190,9 @@
                         <!-- Submit -->
                         <div class="d-grid gap-2">
                             <button type="submit" class="btn btn-primary">
-                                <i class="bi bi-check-circle"></i> <span th:text="#{admin.save}">保存</span>
+                                <i class="bi bi-check-circle"></i> <span th:text="#{admin.save}">淇濆瓨</span>
                             </button>
-                            <a href="/admin/products" class="btn btn-outline-secondary" th:text="#{admin.cancel}">取消</a>
+                            <a href="/admin/products" class="btn btn-outline-secondary" th:text="#{admin.cancel}">鍙栨秷</a>
                         </div>
                     </div>
                 </div>
@@ -203,7 +201,7 @@
     </div>
 </div>
 
-<!-- 图片 Picker Modal -->
+<!-- 鍥剧墖 Picker Modal -->
 <div class="modal fade" id="imagePickerModal" tabindex="-1">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
@@ -223,20 +221,33 @@
                 </ul>
                 <div class="tab-content">
                     <div class="tab-pane fade show active" id="tabLibrary">
-                        <!-- Search bar for image picker -->
-                        <div class="d-flex gap-2 mb-3">
-                            <input type="text" id="pickerSearchInput" class="form-control form-control-sm" placeholder="Search by file name...">
-                            <button type="button" id="pickerSearchBtn" class="btn btn-primary btn-sm">Search</button>
+                        <div class="row g-2 mb-3 align-items-end">
+                            <div class="col-md-6">
+                                <label class="form-label form-label-sm">Search</label>
+                                <input type="text" id="pickerSearchInput" class="form-control form-control-sm" placeholder="Search by file name...">
+                            </div>
+                            <div class="col-md-3">
+                                <label class="form-label form-label-sm">Per Page</label>
+                                <select id="pickerPageSize" class="form-select form-select-sm">
+                                    <option value="10">10</option>
+                                    <option value="20" selected>20</option>
+                                    <option value="50">50</option>
+                                    <option value="100">100</option>
+                                </select>
+                            </div>
+                            <div class="col-md-3 d-grid">
+                                <button type="button" id="pickerSearchBtn" class="btn btn-primary btn-sm">Search</button>
+                            </div>
                         </div>
                         <div id="imagePickerGrid" class="image-picker-grid">
                             <p class="text-muted text-center py-4">Loading images...</p>
                         </div>
-                        <!-- Pagination for image picker -->
-                        <div class="d-flex justify-content-between align-items-center mt-3">
+                        <div class="d-flex justify-content-between align-items-center mt-3 flex-wrap gap-2">
                             <small class="text-muted" id="pickerPageInfo"></small>
-                            <div class="btn-group btn-group-sm">
-                                <button type="button" class="btn btn-outline-secondary" id="pickerPrevPage" disabled>&laquo; Prev</button>
-                                <button type="button" class="btn btn-outline-secondary" id="pickerNextPage" disabled>Next &raquo;</button>
+                            <div class="d-flex align-items-center gap-2">
+                                <button type="button" class="btn btn-outline-secondary btn-sm" id="pickerPrevPage" disabled>&laquo; Prev</button>
+                                <div class="btn-group btn-group-sm" id="pickerPagination"></div>
+                                <button type="button" class="btn btn-outline-secondary btn-sm" id="pickerNextPage" disabled>Next &raquo;</button>
                             </div>
                         </div>
                     </div>
@@ -269,13 +280,19 @@
 <!-- Enhanced TinyMCE initialization for product form -->
 <script>
 (function() {
-    // Override the default TinyMCE init from admin.js with enhanced config
+    var imagePickerMode = 'main';
+    var imagePickerPage = 1;
+    var imagePickerTotalPages = 1;
+    var imagePickerKeyword = '';
+    var imagePickerPageSize = 20;
+    var selectedImageId = null;
+    var selectedImageUrl = null;
+    var selectedGalleryImages = [];
+
     if (typeof tinymce !== 'undefined') {
-        // Remove any existing instances first
         tinymce.remove('#shortDescription');
         tinymce.remove('#description');
 
-        // 简短描述 editor (第一部分 - compact)
         tinymce.init({
             selector: '#shortDescription',
             height: 350,
@@ -292,11 +309,9 @@
             promotion: false,
             branding: false,
             convert_urls: false,
-            relative_urls: false,
-            placeholder: '请输入产品简要介绍，支持图文混排...'
+            relative_urls: false
         });
 
-        // 详细描述 editor (第二部分 - full featured)
         tinymce.init({
             selector: '#description',
             height: 550,
@@ -314,7 +329,6 @@
             branding: false,
             convert_urls: false,
             relative_urls: false,
-            placeholder: '请输入产品详细介绍，支持插入图片、表格、视频等富文本内容...',
             image_caption: true,
             image_advtab: true,
             table_default_styles: { 'border-collapse': 'collapse', 'width': '100%' },
@@ -322,58 +336,316 @@
         });
     }
 
-    // 图片 upload handler for TinyMCE
+    function renderPickerPagination(current, total) {
+        var pagination = document.getElementById('pickerPagination');
+        if (!pagination) return;
+        pagination.innerHTML = '';
+        if (total <= 1) return;
+
+        var start = Math.max(1, current - 2);
+        var end = Math.min(total, start + 4);
+        start = Math.max(1, end - 4);
+
+        for (var i = start; i <= end; i++) {
+            var btn = document.createElement('button');
+            btn.type = 'button';
+            btn.className = 'btn btn-outline-secondary' + (i === current ? ' active' : '');
+            btn.textContent = i;
+            btn.addEventListener('click', (function(pageNo) {
+                return function() {
+                    imagePickerPage = pageNo;
+                    loadPickerImages();
+                };
+            })(i));
+            pagination.appendChild(btn);
+        }
+    }
+
+    function updateConfirmButton() {
+        var confirmBtn = document.getElementById('confirmImageSelect');
+        if (!confirmBtn) return;
+        if (imagePickerMode === 'gallery') {
+            confirmBtn.disabled = selectedGalleryImages.length === 0;
+            confirmBtn.textContent = selectedGalleryImages.length > 0 ? 'Add Selected (' + selectedGalleryImages.length + ')' : 'Select';
+        } else {
+            confirmBtn.disabled = !selectedImageId;
+            confirmBtn.textContent = 'Select';
+        }
+    }
+
+    window.openImagePicker = function(mode) {
+        imagePickerMode = mode;
+        imagePickerPage = 1;
+        imagePickerKeyword = '';
+        imagePickerPageSize = parseInt(document.getElementById('pickerPageSize')?.value || '20', 10);
+        selectedImageId = null;
+        selectedImageUrl = null;
+        selectedGalleryImages = [];
+        var searchInput = document.getElementById('pickerSearchInput');
+        if (searchInput) searchInput.value = '';
+        var uploadInput = document.getElementById('modalFileInput');
+        if (uploadInput) uploadInput.multiple = (mode === 'gallery');
+        updateConfirmButton();
+        loadPickerImages();
+        var modalEl = document.getElementById('imagePickerModal');
+        if (modalEl) bootstrap.Modal.getOrCreateInstance(modalEl).show();
+    };
+
+    function loadPickerImages() {
+        var url = '/admin/api/images/list?page=' + imagePickerPage + '&size=' + imagePickerPageSize;
+        if (imagePickerKeyword) {
+            url += '&keyword=' + encodeURIComponent(imagePickerKeyword);
+        }
+
+        var grid = document.getElementById('imagePickerGrid');
+        if (grid) grid.innerHTML = '<p class="text-muted text-center py-4">Loading images...</p>';
+
+        fetch(url)
+            .then(function(resp) { return resp.json(); })
+            .then(function(data) {
+                if (!grid) return;
+                grid.innerHTML = '';
+                imagePickerTotalPages = data.pages || 1;
+                imagePickerPage = data.current || 1;
+                var records = data.records || [];
+
+                if (!records.length) {
+                    grid.innerHTML = '<p class="text-muted text-center py-4">No images found.</p>';
+                }
+
+                records.forEach(function(img) {
+                    var imageUrl = img.url || ('/wp-content/uploads' + (img.filePath || ''));
+                    var item = document.createElement('div');
+                    item.className = 'image-picker-item';
+                    item.dataset.id = img.id;
+                    item.dataset.url = imageUrl;
+                    item.innerHTML = '<img src="' + imageUrl + '" alt="' + (img.fileName || 'image') + '"><small class="d-block text-muted mt-1 text-truncate">' + (img.fileName || 'image') + '</small>';
+
+                    if (imagePickerMode === 'gallery' && selectedGalleryImages.some(function(sel){ return String(sel.id) === String(img.id); })) {
+                        item.classList.add('selected');
+                    }
+                    if (imagePickerMode === 'main' && String(selectedImageId) === String(img.id)) {
+                        item.classList.add('selected');
+                    }
+
+                    item.addEventListener('click', function() {
+                        if (imagePickerMode === 'gallery') {
+                            var existingIndex = selectedGalleryImages.findIndex(function(sel){ return String(sel.id) === String(img.id); });
+                            if (existingIndex >= 0) {
+                                selectedGalleryImages.splice(existingIndex, 1);
+                                item.classList.remove('selected');
+                            } else {
+                                selectedGalleryImages.push({ id: img.id, url: imageUrl, fileName: img.fileName });
+                                item.classList.add('selected');
+                            }
+                        } else {
+                            selectedImageId = img.id;
+                            selectedImageUrl = imageUrl;
+                            grid.querySelectorAll('.image-picker-item').forEach(function(node) { node.classList.remove('selected'); });
+                            item.classList.add('selected');
+                        }
+                        updateConfirmButton();
+                    });
+
+                    grid.appendChild(item);
+                });
+
+                var pageInfo = document.getElementById('pickerPageInfo');
+                if (pageInfo) {
+                    pageInfo.textContent = 'Page ' + imagePickerPage + ' of ' + imagePickerTotalPages + ' / Total ' + (data.total || 0);
+                }
+                var prev = document.getElementById('pickerPrevPage');
+                var next = document.getElementById('pickerNextPage');
+                if (prev) prev.disabled = imagePickerPage <= 1;
+                if (next) next.disabled = imagePickerPage >= imagePickerTotalPages;
+                renderPickerPagination(imagePickerPage, imagePickerTotalPages);
+                updateConfirmButton();
+            })
+            .catch(function(err) {
+                if (grid) grid.innerHTML = '<p class="text-danger text-center py-4">Failed to load images.</p>';
+                if (typeof showToast === 'function') showToast('Failed to load images: ' + err.message, 'error');
+            });
+    }
+
+    function appendGalleryImage(img) {
+        var container = document.getElementById('galleryImagesContainer');
+        if (!container) return;
+        if (container.querySelector('[data-id="' + img.id + '"]')) return;
+        var div = document.createElement('div');
+        div.className = 'gallery-thumb-item position-relative';
+        div.dataset.id = img.id;
+        div.innerHTML = '<img src="' + img.url + '" class="rounded" style="width: 80px; height: 80px; object-fit: cover;">' +
+            '<input type="hidden" name="imageIds" value="' + img.id + '">' +
+            '<button type="button" class="btn btn-sm btn-danger position-absolute top-0 end-0" style="padding: 0 4px; font-size: 0.7rem; line-height: 1.4;" onclick="removeGalleryImage(this)"><i class="bi bi-x"></i></button>';
+        container.appendChild(div);
+    }
+
+    var pickerSearchBtn = document.getElementById('pickerSearchBtn');
+    if (pickerSearchBtn) {
+        pickerSearchBtn.addEventListener('click', function() {
+            imagePickerKeyword = document.getElementById('pickerSearchInput')?.value || '';
+            imagePickerPage = 1;
+            imagePickerPageSize = parseInt(document.getElementById('pickerPageSize')?.value || '20', 10);
+            loadPickerImages();
+        });
+    }
+
+    var pickerPageSizeEl = document.getElementById('pickerPageSize');
+    if (pickerPageSizeEl) {
+        pickerPageSizeEl.addEventListener('change', function() {
+            imagePickerPageSize = parseInt(this.value, 10);
+            imagePickerPage = 1;
+            loadPickerImages();
+        });
+    }
+
+    var pickerSearchInput = document.getElementById('pickerSearchInput');
+    if (pickerSearchInput) {
+        pickerSearchInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                imagePickerKeyword = this.value;
+                imagePickerPage = 1;
+                loadPickerImages();
+            }
+        });
+    }
+
+    var pickerPrevBtn = document.getElementById('pickerPrevPage');
+    if (pickerPrevBtn) {
+        pickerPrevBtn.addEventListener('click', function() {
+            if (imagePickerPage > 1) {
+                imagePickerPage--;
+                loadPickerImages();
+            }
+        });
+    }
+
+    var pickerNextBtn = document.getElementById('pickerNextPage');
+    if (pickerNextBtn) {
+        pickerNextBtn.addEventListener('click', function() {
+            if (imagePickerPage < imagePickerTotalPages) {
+                imagePickerPage++;
+                loadPickerImages();
+            }
+        });
+    }
+
+    var confirmBtn = document.getElementById('confirmImageSelect');
+    if (confirmBtn) {
+        confirmBtn.addEventListener('click', function() {
+            if (imagePickerMode === 'gallery') {
+                selectedGalleryImages.forEach(appendGalleryImage);
+            } else if (selectedImageId) {
+                var mainIdInput = document.getElementById('mainImageId');
+                if (mainIdInput) mainIdInput.value = selectedImageId;
+                var preview = document.getElementById('mainImagePreview');
+                if (preview) {
+                    preview.innerHTML = '<img src="' + selectedImageUrl + '" class="img-fluid rounded" style="max-height: 200px;">';
+                }
+            }
+            var modalEl = document.getElementById('imagePickerModal');
+            if (modalEl) bootstrap.Modal.getInstance(modalEl).hide();
+            if (typeof showToast === 'function') showToast('Image selection updated', 'success');
+        });
+    }
+
+    window.removeGalleryImage = function(btn) {
+        var item = btn.closest('.gallery-thumb-item');
+        if (item) item.remove();
+    };
+
+    var modalUploadZone = document.getElementById('modalUploadZone');
+    var modalFileInput = document.getElementById('modalFileInput');
+    if (modalUploadZone && modalFileInput) {
+        modalUploadZone.addEventListener('click', function() { modalFileInput.click(); });
+        modalUploadZone.addEventListener('dragover', function(e) { e.preventDefault(); modalUploadZone.classList.add('drag-over'); });
+        modalUploadZone.addEventListener('dragleave', function() { modalUploadZone.classList.remove('drag-over'); });
+        modalUploadZone.addEventListener('drop', function(e) {
+            e.preventDefault();
+            modalUploadZone.classList.remove('drag-over');
+            if (e.dataTransfer.files.length) uploadModalFiles(e.dataTransfer.files);
+        });
+        modalFileInput.addEventListener('change', function() {
+            if (this.files.length) uploadModalFiles(this.files);
+        });
+    }
+
+    function uploadModalFiles(files) {
+        var progressWrap = document.getElementById('uploadProgress');
+        var progressBar = progressWrap ? progressWrap.querySelector('.progress-bar') : null;
+        var formData = new FormData();
+        Array.from(files).forEach(function(file) { formData.append('files', file); });
+        if (progressWrap) progressWrap.style.display = 'block';
+        if (progressBar) progressBar.style.width = '35%';
+
+        fetch('/admin/api/images/batch-upload', {
+            method: 'POST',
+            body: formData
+        })
+        .then(function(resp) { return resp.json(); })
+        .then(function(data) {
+            if (progressBar) progressBar.style.width = '100%';
+            if (data.uploaded && data.uploaded.length) {
+                if (imagePickerMode === 'gallery') {
+                    data.uploaded.forEach(function(img) {
+                        appendGalleryImage({ id: img.id, url: img.url, fileName: img.fileName });
+                    });
+                } else {
+                    selectedImageId = data.uploaded[0].id;
+                    selectedImageUrl = data.uploaded[0].url;
+                    var mainIdInput = document.getElementById('mainImageId');
+                    if (mainIdInput) mainIdInput.value = selectedImageId;
+                    var preview = document.getElementById('mainImagePreview');
+                    if (preview) preview.innerHTML = '<img src="' + selectedImageUrl + '" class="img-fluid rounded" style="max-height: 200px;">';
+                }
+                if (typeof showToast === 'function') showToast('Upload successful', 'success');
+                imagePickerPage = 1;
+                loadPickerImages();
+            } else if (typeof showToast === 'function') {
+                showToast('Upload failed', 'error');
+            }
+        })
+        .catch(function(err) {
+            if (typeof showToast === 'function') showToast('Upload failed: ' + err.message, 'error');
+        });
+    }
+
     function tinymceImageUploadHandler(blobInfo) {
         return new Promise(function(resolve, reject) {
             var formData = new FormData();
             formData.append('file', blobInfo.blob(), blobInfo.filename());
-
-            fetch('/admin/api/images/upload', {
-                method: 'POST',
-                body: formData
-            })
-            .then(function(resp) { return resp.json(); })
-            .then(function(data) {
-                if (data.success) {
-                    resolve(data.url);
-                } else {
-                    reject('上传失败: ' + (data.message || '未知错误'));
-                }
-            })
-            .catch(function(err) {
-                reject('上传失败: ' + err.message);
-            });
-        });
-    }
-
-    // File picker for selecting images from library
-    function tinymceFilePicker(callback, value, meta) {
-        if (meta.filetype === 'image') {
-            // Create a temporary file input to upload
-            var input = document.createElement('input');
-            input.setAttribute('type', 'file');
-            input.setAttribute('accept', 'image/*');
-            input.onchange = function() {
-                var file = this.files[0];
-                var formData = new FormData();
-                formData.append('file', file);
-
-                fetch('/admin/api/images/upload', {
-                    method: 'POST',
-                    body: formData
-                })
+            fetch('/admin/api/images/upload', { method: 'POST', body: formData })
                 .then(function(resp) { return resp.json(); })
                 .then(function(data) {
                     if (data.success) {
-                        callback(data.url, { alt: file.name });
+                        resolve(data.url);
+                    } else {
+                        reject('Upload failed: ' + (data.message || 'Unknown error'));
                     }
-                });
+                })
+                .catch(function(err) { reject('Upload failed: ' + err.message); });
+        });
+    }
+
+    function tinymceFilePicker(callback, value, meta) {
+        if (meta.filetype === 'image') {
+            var input = document.createElement('input');
+            input.type = 'file';
+            input.accept = 'image/*';
+            input.onchange = function() {
+                var formData = new FormData();
+                formData.append('file', this.files[0]);
+                fetch('/admin/api/images/upload', { method: 'POST', body: formData })
+                    .then(function(resp) { return resp.json(); })
+                    .then(function(data) {
+                        if (data.success) callback(data.url, { alt: input.files[0].name });
+                    });
             };
             input.click();
         }
     }
 
-    // Ensure TinyMCE content syncs before form submit
     var form = document.getElementById('productForm');
     if (form) {
         form.addEventListener('submit', function() {
@@ -386,3 +658,5 @@
 </script>
 </body>
 </html>
+
+

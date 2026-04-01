@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" th:lang="${#locale.language}">
 <head th:replace="~{fragments/header :: htmlHead(${currentCategory != null} ? ${currentCategory.name} : 'Products', ${currentCategory != null} ? ${currentCategory.description} : 'Philitee Filter Products')}"></head>
 <body>
@@ -140,45 +140,7 @@
                            class="bf-page-link">&raquo;</a>
                     </nav>
                 </div>
-            </div>
-
-            <!-- Right Sidebar: best-filter.com 图6风格 mainCategory -->
-            <aside class="bf-sidebar bf-sidebar-maincategory" th:if="${categoryTree != null or globalCategoryTree != null}">
-                <div class="bf-maincategory-panel">
-                    <!-- Left: main categories with images -->
-                    <div class="bf-maincategory-list">
-                        <div class="bf-maincategory-row"
-                             th:each="cat,iter : ${categoryTree != null ? categoryTree : globalCategoryTree}"
-                             th:data-index="${iter.index}"
-                             onmouseenter="activateSidebarCat(this)"
-                             th:classappend="${currentCategory != null and currentCategory.id == cat.id} ? ' active' : ''">
-                            <div class="bf-maincategory-row-img">
-                                <img th:src="'/wp-content/uploads/category-covers/' + ${cat.slug} + '.jpg'"
-                                     th:alt="${cat.name}" loading="lazy"
-                                     onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
-                                <div class="bf-maincategory-row-placeholder" style="display:none;"><i class="bi bi-funnel"></i></div>
-                            </div>
-                            <a th:href="@{/categories/{slug}(slug=${cat.slug})}" th:text="${cat.name}" class="bf-maincategory-row-name">Category</a>
-                            <i class="bi bi-chevron-right bf-maincategory-row-arrow" th:if="${cat.children != null and !cat.children.isEmpty()}"></i>
-                        </div>
-                    </div>
-                    <!-- Right: sub categories panel -->
-                    <div class="bf-maincategory-sub-area">
-                        <div class="bf-maincategory-sub-panel"
-                             th:each="cat,iter : ${categoryTree != null ? categoryTree : globalCategoryTree}"
-                             th:id="'sidecatsub-' + ${iter.index}"
-                             th:classappend="${currentCategory != null and currentCategory.id == cat.id} ? ' active' : ''">
-                            <div th:if="${cat.children != null and !cat.children.isEmpty()}">
-                                <a th:each="child : ${cat.children}"
-                                   th:href="@{/categories/{slug}(slug=${child.slug})}"
-                                   class="bf-maincategory-sub-link"
-                                   th:classappend="${currentCategory != null and currentCategory.id == child.id} ? ' active' : ''"
-                                   th:text="${child.name}">Sub Category</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </aside>
+            </div>            <div th:replace="~{fragments/sidebar :: productSidebar(${categoryTree != null ? categoryTree : globalCategoryTree}, ${currentCategory})}"></div>
         </div>
     </div>
 </section>
@@ -235,3 +197,4 @@
 </script>
 </body>
 </html>
+

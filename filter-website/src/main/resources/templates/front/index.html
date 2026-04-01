@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head th:replace="~{fragments/header :: htmlHead(#{site.title}, #{site.description})}"></head>
 <body>
@@ -67,7 +67,7 @@
     </div>
 </section>
 
-<!-- ========== 3. Product Categories (图2风格: 大图+标题+MORE按钮) ========== -->
+<!-- ========== 3. Product Categories (鍥?椋庢牸: 澶у浘+鏍囬+MORE鎸夐挳) ========== -->
 <section class="home-categories-section" th:if="${categories != null and !categories.isEmpty()}">
     <div class="aesop-container">
         <div class="section-header text-center fade-in">
@@ -75,12 +75,12 @@
             <p th:text="#{home.categories.subtitle}">Comprehensive filtration solutions for every industrial application</p>
         </div>
         <div class="filmedia-cat-grid">
-            <th:block th:each="cat,iter : ${categories}" th:if="${iter.index < 3}">
+            <th:block th:each="cat : ${categories}">
                 <div class="filmedia-cat-item fade-in">
                     <div class="filmedia-cat-img">
-                        <img th:src="'/wp-content/uploads/category-covers/' + ${cat.slug} + '.jpg'"
+                        <img th:src="${'/static/wp-content/uploads/category-covers/' + cat.slug + '.jpg'}"
                              th:alt="${cat.name}" loading="lazy"
-                             onerror="this.src='/wp-content/uploads/category-covers/'+this.dataset.slug+'.jpeg'; this.onerror=function(){this.src='/wp-content/uploads/category-covers/'+this.dataset.slug+'.png'; this.onerror=function(){this.style.display='none';this.nextElementSibling.style.display='flex';};};"
+                             onerror="this.src='/static/wp-content/uploads/category-covers/'+this.dataset.slug+'.jpeg'; this.onerror=function(){this.src='/static/wp-content/uploads/category-covers/'+this.dataset.slug+'.png'; this.onerror=function(){this.style.display='none';this.nextElementSibling.style.display='flex';};};"
                              th:data-slug="${cat.slug}">
                         <div class="filmedia-cat-placeholder" style="display:none;"><i class="bi bi-funnel"></i></div>
                         <div class="filmedia-cat-overlay">
@@ -139,7 +139,7 @@
     </div>
 </section>
 
-<!-- ========== 5. Application Scenarios (图3风格: 3×2网格+蓝色标题条) ========== -->
+<!-- ========== 5. Application Scenarios (鍥?椋庢牸: 3脳2缃戞牸+钃濊壊鏍囬鏉? ========== -->
 <section class="home-applications-section">
     <div class="aesop-container">
         <div class="section-header text-center fade-in">
@@ -451,3 +451,7 @@ window.switchProductTab = function(btn) {
 
 </body>
 </html>
+
+
+
+
