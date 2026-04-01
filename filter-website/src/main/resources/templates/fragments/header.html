@@ -98,9 +98,6 @@
                                          th:if="${iter.index < 9}"
                                          th:data-index="${iter.index}"
                                          onmouseenter="activateMainCat(this)">
-                                        <div class="maincategory-item-icon">
-                                            <i class="bi bi-funnel"></i>
-                                        </div>
                                         <span class="maincategory-item-name" th:text="${cat.name}">Category</span>
                                         <i class="bi bi-chevron-right maincategory-arrow" th:if="${cat.children != null and !cat.children.isEmpty()}"></i>
                                     </div>
@@ -149,6 +146,10 @@
                     <input type="text" name="keyword" placeholder="Search..." autocomplete="off">
                     <button type="submit" aria-label="Search"><i class="bi bi-search"></i></button>
                 </form>
+                <!-- Request Quote Button -->
+                <button type="button" class="header-quote-btn" onclick="openHeaderQuoteModal()" title="Request Quotation">
+                    <i class="bi bi-file-earmark-text"></i>
+                </button>
                 <button class="mobile-toggle" onclick="openMobileMenu()" aria-label="Menu">
                     <span></span><span></span><span></span>
                 </button>
@@ -251,6 +252,119 @@
             dropdown.addEventListener('mouseleave', closeDropdown);
         }
     });
+    });
+    </script>
+
+    <!-- Header Quote Modal -->
+    <div class="header-quote-overlay" id="headerQuoteOverlay" onclick="closeHeaderQuoteModal(event)">
+        <div class="header-quote-modal" onclick="event.stopPropagation()">
+            <div class="header-quote-modal-header">
+                <h4>Request Quotation</h4>
+                <button type="button" class="header-quote-close" onclick="closeHeaderQuoteModal()">&times;</button>
+            </div>
+            <div class="header-quote-modal-body">
+                <form id="headerQuoteForm" method="post" th:action="@{/contact}">
+                    <div class="inquiry-form-row">
+                        <div class="inquiry-form-group">
+                            <label th:text="#{contact.form.name}">Name *</label>
+                            <input type="text" name="name" required th:placeholder="#{contact.form.name.placeholder}">
+                        </div>
+                        <div class="inquiry-form-group">
+                            <label th:text="#{contact.form.email}">Email *</label>
+                            <input type="email" name="email" required th:placeholder="#{contact.form.email.placeholder}">
+                        </div>
+                    </div>
+                    <div class="inquiry-form-row">
+                        <div class="inquiry-form-group">
+                            <label th:text="#{contact.form.phone}">Phone</label>
+                            <input type="text" name="phone" th:placeholder="#{contact.form.phone.placeholder}">
+                        </div>
+                        <div class="inquiry-form-group">
+                            <label th:text="#{contact.form.company}">Company</label>
+                            <input type="text" name="company" th:placeholder="#{contact.form.company.placeholder}">
+                        </div>
+                    </div>
+                    <div class="inquiry-form-group">
+                        <label th:text="#{contact.form.message}">Message *</label>
+                        <textarea name="message" rows="4" required th:placeholder="#{contact.form.message.placeholder}"></textarea>
+                    </div>
+                    <button type="submit" class="bf-btn bf-btn-primary bf-btn-block">
+                        <i class="bi bi-send"></i> <span th:text="#{contact.form.submit}">Submit Inquiry</span>
+                    </button>
+                </form>
+                <div id="headerQuoteSuccess" style="display:none" class="inquiry-success">
+                    <i class="bi bi-check-circle"></i>
+                    <p th:text="#{contact.form.success}">Your inquiry has been submitted successfully!</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <style>
+    .header-quote-btn {
+        display: flex; align-items: center; justify-content: center;
+        width: 38px; height: 38px; border-radius: 50%;
+        border: 2px solid var(--accent, #4CAF50); background: transparent;
+        color: var(--accent, #4CAF50); font-size: 16px; cursor: pointer;
+        transition: all 0.3s; margin-left: 8px;
+    }
+    .header-quote-btn:hover {
+        background: var(--accent, #4CAF50); color: #fff;
+    }
+    .header-quote-overlay {
+        display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+        background: rgba(0,0,0,0.5); z-index: 10000;
+        justify-content: center; align-items: center;
+    }
+    .header-quote-overlay.active { display: flex; }
+    .header-quote-modal {
+        background: #fff; border-radius: 12px; width: 90%; max-width: 560px;
+        max-height: 90vh; overflow-y: auto; box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        font-family: var(--font-body);
+    }
+    .header-quote-modal-header {
+        display: flex; justify-content: space-between; align-items: center;
+        padding: 20px 24px; border-bottom: 1px solid #e0e0e0;
+    }
+    .header-quote-modal-header h4 { margin: 0; font-size: 18px; font-weight: 700; font-family: var(--font-heading); }
+    .header-quote-close {
+        background: none; border: none; font-size: 28px; cursor: pointer;
+        color: #666; line-height: 1;
+    }
+    .header-quote-modal-body { padding: 24px; }
+    .header-quote-modal-body .inquiry-form-row {
+        display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px;
+    }
+    .header-quote-modal-body .inquiry-form-group { margin-bottom: 0; }
+    .header-quote-modal-body .inquiry-form-group label {
+        display: block; font-size: 13px; font-weight: 600; margin-bottom: 6px; color: #333;
+    }
+    .header-quote-modal-body .inquiry-form-group input,
+    .header-quote-modal-body .inquiry-form-group textarea {
+        width: 100%; padding: 10px 14px; border: 1px solid #ddd; border-radius: 6px;
+        font-size: 14px; transition: border-color 0.3s;
+    }
+    .header-quote-modal-body .inquiry-form-group input:focus,
+    .header-quote-modal-body .inquiry-form-group textarea:focus {
+        outline: none; border-color: var(--accent, #4CAF50);
+    }
+    @media (max-width: 576px) {
+        .header-quote-modal-body .inquiry-form-row { grid-template-columns: 1fr; }
+    }
+    </style>
+
+    <script>
+    function openHeaderQuoteModal() {
+        var overlay = document.getElementById('headerQuoteOverlay');
+        if (overlay) { overlay.classList.add('active'); document.body.style.overflow = 'hidden'; }
+    }
+    function closeHeaderQuoteModal(e) {
+        if (e && e.target !== e.currentTarget) return;
+        var overlay = document.getElementById('headerQuoteOverlay');
+        if (overlay) { overlay.classList.remove('active'); document.body.style.overflow = ''; }
+    }
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') closeHeaderQuoteModal();
     });
     </script>
 </header>

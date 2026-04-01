@@ -57,7 +57,7 @@ mybatis-plus:
     map-underscore-to-camel-case: true
 
 upload:
-  base-path: F:/codex/nide--dev-update-20260331/filter-website/src/main/resources/static/wp-content/uploads
+  base-path: /home/ubuntu/nide/filter-website/src/main/resources/static/wp-content/uploads
   url-prefix: /wp-content/uploads
   static-web-path:
   proxy-enabled: false

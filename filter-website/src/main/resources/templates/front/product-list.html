@@ -100,7 +100,19 @@
                             </div>
                         </div>
                         <div class="bf-product-info">
+                            <span class="bf-product-tags"
+                                  th:if="${product.categories != null and !product.categories.isEmpty()}">
+                                <th:block th:each="cat,catIter : ${product.categories}" th:if="${catIter.index < 2}">
+                                    <span class="bf-tag" th:text="${cat.name}">Category</span>
+                                </th:block>
+                            </span>
                             <h6 class="bf-product-title" th:text="${product.name}">Product Name</h6>
+                            <span class="bf-product-tags"
+                                  th:if="${product.tags != null and !product.tags.isEmpty()}">
+                                <th:block th:each="tag,tagIter : ${product.tags}" th:if="${tagIter.index < 3}">
+                                    <span class="bf-tag bf-tag-outline" th:text="${tag.name}">Tag</span>
+                                </th:block>
+                            </span>
                         </div>
                     </a>
                 </div>

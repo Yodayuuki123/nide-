@@ -260,9 +260,10 @@
 .app-scenario-item {
     position: relative;
     overflow: hidden;
-    border-radius: 4px;
-    border: 2px solid #81c784;
-    background: #e8f5e9;
+    border-radius: 6px;
+    border: none;
+    background: #fff;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
 }
 .app-scenario-item img {
     width: 100%;
@@ -282,16 +283,17 @@
     justify-content: center;
     font-size: 40px;
     color: #81c784;
-    background: #e8f5e9;
+    background: #f5f5f5;
 }
 .app-scenario-label {
-    background: #4CAF50;
+    background: #42a5f5;
     color: #fff;
     text-align: center;
     font-size: 15px;
     font-weight: 600;
-    padding: 8px 12px;
+    padding: 10px 12px;
     letter-spacing: 0.02em;
+    font-family: var(--font-body);
 }
 
 /* --- Footer: 3-column layout --- */
@@ -496,3 +498,36 @@
 }
 
 
+
+/* --- Exhibition Section --- */
+.home-exhibition-section {
+    padding: 60px 0;
+    background: #f8f9fa;
+}
+.exhibition-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+    margin-top: 36px;
+}
+.exhibition-item {
+    overflow: hidden;
+    border-radius: 6px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+.exhibition-item img {
+    width: 100%;
+    aspect-ratio: 4/3;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.35s;
+}
+.exhibition-item:hover img {
+    transform: scale(1.05);
+}
+@media (max-width: 768px) {
+    .exhibition-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 576px) {
+    .exhibition-grid { grid-template-columns: 1fr; }
+}
