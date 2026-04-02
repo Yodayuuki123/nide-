@@ -7,12 +7,26 @@
 .logo {
     display: flex !important;
     align-items: center;
+    gap: 0 !important;
     text-decoration: none !important;
 }
 .logo-img-compact {
     height: 48px;
     width: auto;
     display: block;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+.logo-brand-text {
+    font-family: var(--font-heading, 'Montserrat', 'Arial', sans-serif);
+    font-size: 1.5rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    color: #1a5c2a;
+    text-transform: uppercase;
+    line-height: 1;
+    margin: 0 !important;
+    padding: 0 !important;
 }
 .nav-wrapper {
     display: flex;
