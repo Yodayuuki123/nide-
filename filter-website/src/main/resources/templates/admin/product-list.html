@@ -132,13 +132,13 @@
 
                     <!-- Pagination with page size -->
                     <div class="p-3 d-flex justify-content-between align-items-center" th:if="${productPage.pages > 1}">
-                        <span class="text-muted" style="font-size:13px;" th:text="'显示 ' + ${(productPage.current - 1) * productPage.size + 1} + '-' + ${T(Math).min(productPage.current * productPage.size, productPage.total)} + ' / 共 ' + ${productPage.total} + ' 条'"></span>
+                        <span class="text-muted" style="font-size:13px;" th:text="'显示 ' + ${(productPage.current - 1) * productPage.size + 1} + '-' + ${productPage.current * productPage.size < productPage.total ? productPage.current * productPage.size : productPage.total} + ' / 共 ' + ${productPage.total} + ' 条'"></span>
                         <nav>
                             <ul class="pagination pagination-sm mb-0">
                                 <li class="page-item" th:classappend="${productPage.current <= 1} ? 'disabled'">
                                     <a class="page-link" th:href="@{/admin/products(page=${productPage.current - 1}, size=${productPage.size}, keyword=${param.keyword}, sku=${param.sku}, status=${param.status})}">上一页</a>
                                 </li>
-                                <th:block th:with="startPage=${T(Math).max(1, productPage.current - 2)}, endPage=${T(Math).min(productPage.pages, T(Math).max(1, productPage.current - 2) + 4)}">
+                                <th:block th:with="startPage=${productPage.current - 2 > 1 ? productPage.current - 2 : 1}, endPage=${productPage.pages < (productPage.current - 2 > 1 ? productPage.current - 2 : 1) + 4 ? productPage.pages : (productPage.current - 2 > 1 ? productPage.current - 2 : 1) + 4}">
                                     <li th:if="${startPage > 1}" class="page-item">
                                         <a class="page-link" th:href="@{/admin/products(page=1, size=${productPage.size}, keyword=${param.keyword}, sku=${param.sku}, status=${param.status})}">1</a>
                                     </li>

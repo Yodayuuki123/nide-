@@ -298,7 +298,17 @@
         confirmBtn.addEventListener('click', function() {
             if (!selectedImageId) return;
 
-            if (imagePickerMode === 'main') {
+            if (imagePickerMode === 'newsCover') {
+                // News cover image selection
+                var coverInput = document.getElementById('newsCoverImage');
+                if (coverInput) coverInput.value = selectedImageUrl;
+                var urlInput = document.getElementById('newsCoverUrlInput');
+                if (urlInput) urlInput.value = selectedImageUrl;
+                var coverPreview = document.getElementById('newsCoverPreview');
+                if (coverPreview) {
+                    coverPreview.innerHTML = '<img id="newsCoverImg" src="' + selectedImageUrl + '" class="img-fluid rounded" style="max-height: 200px;">';
+                }
+            } else if (imagePickerMode === 'main') {
                 var mainIdInput = document.getElementById('mainImageId');
                 if (mainIdInput) mainIdInput.value = selectedImageId;
                 var preview = document.getElementById('mainImagePreview');

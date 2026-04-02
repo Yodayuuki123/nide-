@@ -241,11 +241,11 @@
                         </div>
                     </div>
                     <div class="tab-pane fade" id="tabUpload">
-                        <div class="upload-zone" id="modalUploadZone">
-                            <i class="bi bi-cloud-arrow-up d-block"></i>
-                            <p>Click or drag file to upload</p>
+                        <label class="upload-zone d-block" id="modalUploadZone" for="modalFileInput" style="cursor:pointer;">
+                            <i class="bi bi-cloud-arrow-up d-block" style="pointer-events:none;"></i>
+                            <p style="pointer-events:none;">Click or drag file to upload</p>
                             <input type="file" id="modalFileInput" accept="image/*" style="display: none">
-                        </div>
+                        </label>
                         <div id="uploadProgress" class="mt-2" style="display: none">
                             <div class="progress">
                                 <div class="progress-bar" style="width: 0%"></div>
@@ -349,12 +349,15 @@
     // File picker for selecting images from library
     function tinymceFilePicker(callback, value, meta) {
         if (meta.filetype === 'image') {
-            // Create a temporary file input to upload
+            // Use a hidden label+input to avoid browser security restrictions on programmatic .click()
             var input = document.createElement('input');
             input.setAttribute('type', 'file');
             input.setAttribute('accept', 'image/*');
-            input.onchange = function() {
+            input.style.cssText = 'position:fixed;top:-9999px;left:-9999px;opacity:0;';
+            document.body.appendChild(input);
+            input.addEventListener('change', function() {
                 var file = this.files[0];
+                if (!file) { document.body.removeChild(input); return; }
                 var formData = new FormData();
                 formData.append('file', file);
 
@@ -364,11 +367,13 @@
                 })
                 .then(function(resp) { return resp.json(); })
                 .then(function(data) {
+                    document.body.removeChild(input);
                     if (data.success) {
                         callback(data.url, { alt: file.name });
                     }
-                });
-            };
+                })
+                .catch(function() { document.body.removeChild(input); });
+            });
             input.click();
         }
     }

@@ -87,13 +87,13 @@
                             </div>
 
                             <div class="p-3 d-flex justify-content-between align-items-center" th:if="${menuPage.pages > 1}">
-                                <span class="text-muted" style="font-size:13px;" th:text="'Showing ' + ${(menuPage.current - 1) * menuPage.size + 1} + '-' + ${T(java.lang.Math).min(menuPage.current * menuPage.size, menuPage.total)} + ' / Total ' + ${menuPage.total}"></span>
+                                <span class="text-muted" style="font-size:13px;" th:text="'Showing ' + ${(menuPage.current - 1) * menuPage.size + 1} + '-' + ${menuPage.current * menuPage.size < menuPage.total ? menuPage.current * menuPage.size : menuPage.total} + ' / Total ' + ${menuPage.total}"></span>
                                 <nav>
                                     <ul class="pagination pagination-sm mb-0">
                                         <li class="page-item" th:classappend="${menuPage.current <= 1} ? 'disabled'">
                                             <a class="page-link" th:href="@{/admin/menus(page=${menuPage.current - 1}, size=${menuPage.size}, keyword=${param.keyword}, location=${param.location})}">Prev</a>
                                         </li>
-                                        <th:block th:with="startPage=${T(java.lang.Math).max(1, menuPage.current - 2)}, endPage=${T(java.lang.Math).min(menuPage.pages, T(java.lang.Math).max(1, menuPage.current - 2) + 4)}">
+                                        <th:block th:with="startPage=${menuPage.current - 2 > 1 ? menuPage.current - 2 : 1}, endPage=${menuPage.pages < (menuPage.current - 2 > 1 ? menuPage.current - 2 : 1) + 4 ? menuPage.pages : (menuPage.current - 2 > 1 ? menuPage.current - 2 : 1) + 4}">
                                             <li th:if="${startPage > 1}" class="page-item">
                                                 <a class="page-link" th:href="@{/admin/menus(page=1, size=${menuPage.size}, keyword=${param.keyword}, location=${param.location})}">1</a>
                                             </li>

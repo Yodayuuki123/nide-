@@ -104,13 +104,13 @@
 
                     <!-- Pagination -->
                     <div class="p-3 d-flex justify-content-between align-items-center" th:if="${tagPage.pages > 1}">
-                        <span class="text-muted" style="font-size:13px;" th:text="'显示 ' + ${(tagPage.current - 1) * tagPage.size + 1} + '-' + ${T(Math).min(tagPage.current * tagPage.size, tagPage.total)} + ' / 共 ' + ${tagPage.total} + ' 条'"></span>
+                        <span class="text-muted" style="font-size:13px;" th:text="'显示 ' + ${(tagPage.current - 1) * tagPage.size + 1} + '-' + ${tagPage.current * tagPage.size < tagPage.total ? tagPage.current * tagPage.size : tagPage.total} + ' / 共 ' + ${tagPage.total} + ' 条'"></span>
                         <nav>
                             <ul class="pagination pagination-sm mb-0">
                                 <li class="page-item" th:classappend="${tagPage.current <= 1} ? 'disabled'">
                                     <a class="page-link" th:href="@{/admin/tags(page=${tagPage.current - 1}, size=${tagPage.size}, keyword=${param.keyword}, startDate=${param.startDate}, endDate=${param.endDate})}">上一页</a>
                                 </li>
-                                <th:block th:with="startPage=${T(Math).max(1, tagPage.current - 2)}, endPage=${T(Math).min(tagPage.pages, T(Math).max(1, tagPage.current - 2) + 4)}">
+                                <th:block th:with="startPage=${tagPage.current - 2 > 1 ? tagPage.current - 2 : 1}, endPage=${tagPage.pages < (tagPage.current - 2 > 1 ? tagPage.current - 2 : 1) + 4 ? tagPage.pages : (tagPage.current - 2 > 1 ? tagPage.current - 2 : 1) + 4}">
                                     <li th:if="${startPage > 1}" class="page-item">
                                         <a class="page-link" th:href="@{/admin/tags(page=1, size=${tagPage.size}, keyword=${param.keyword}, startDate=${param.startDate}, endDate=${param.endDate})}">1</a>
                                     </li>

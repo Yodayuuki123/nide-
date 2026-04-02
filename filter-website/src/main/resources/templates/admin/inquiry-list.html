@@ -109,13 +109,13 @@
 
                     <!-- Pagination -->
                     <div class="p-3 d-flex justify-content-between align-items-center" th:if="${inquiryPage.pages > 1}">
-                        <span class="text-muted" style="font-size:13px;" th:text="'显示 ' + ${(inquiryPage.current - 1) * inquiryPage.size + 1} + '-' + ${T(Math).min(inquiryPage.current * inquiryPage.size, inquiryPage.total)} + ' / 共 ' + ${inquiryPage.total} + ' 条'"></span>
+                        <span class="text-muted" style="font-size:13px;" th:text="'显示 ' + ${(inquiryPage.current - 1) * inquiryPage.size + 1} + '-' + ${inquiryPage.current * inquiryPage.size < inquiryPage.total ? inquiryPage.current * inquiryPage.size : inquiryPage.total} + ' / 共 ' + ${inquiryPage.total} + ' 条'"></span>
                         <nav>
                             <ul class="pagination pagination-sm mb-0">
                                 <li class="page-item" th:classappend="${inquiryPage.current <= 1} ? 'disabled'">
                                     <a class="page-link" th:href="@{/admin/inquiries(page=${inquiryPage.current - 1}, size=${inquiryPage.size}, name=${param.name}, email=${param.email}, company=${param.company}, startDate=${param.startDate})}">上一页</a>
                                 </li>
-                                <th:block th:with="startPage=${T(Math).max(1, inquiryPage.current - 2)}, endPage=${T(Math).min(inquiryPage.pages, T(Math).max(1, inquiryPage.current - 2) + 4)}">
+                                <th:block th:with="startPage=${inquiryPage.current - 2 > 1 ? inquiryPage.current - 2 : 1}, endPage=${inquiryPage.pages < (inquiryPage.current - 2 > 1 ? inquiryPage.current - 2 : 1) + 4 ? inquiryPage.pages : (inquiryPage.current - 2 > 1 ? inquiryPage.current - 2 : 1) + 4}">
                                     <li th:if="${startPage > 1}" class="page-item">
                                         <a class="page-link" th:href="@{/admin/inquiries(page=1, size=${inquiryPage.size}, name=${param.name}, email=${param.email}, company=${param.company}, startDate=${param.startDate})}">1</a>
                                     </li>

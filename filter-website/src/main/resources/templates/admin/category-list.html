@@ -89,13 +89,13 @@
                     </div>
 
                     <div class="p-3 d-flex justify-content-between align-items-center" th:if="${categoryPage.pages > 1}">
-                        <span class="text-muted" style="font-size:13px;" th:text="'Showing ' + ${(categoryPage.current - 1) * categoryPage.size + 1} + '-' + ${T(java.lang.Math).min(categoryPage.current * categoryPage.size, categoryPage.total)} + ' / Total ' + ${categoryPage.total}"></span>
+                        <span class="text-muted" style="font-size:13px;" th:text="'Showing ' + ${(categoryPage.current - 1) * categoryPage.size + 1} + '-' + ${categoryPage.current * categoryPage.size < categoryPage.total ? categoryPage.current * categoryPage.size : categoryPage.total} + ' / Total ' + ${categoryPage.total}"></span>
                         <nav>
                             <ul class="pagination pagination-sm mb-0">
                                 <li class="page-item" th:classappend="${categoryPage.current <= 1} ? 'disabled'">
                                     <a class="page-link" th:href="@{/admin/categories(page=${categoryPage.current - 1}, size=${categoryPage.size}, keyword=${param.keyword}, startDate=${param.startDate}, endDate=${param.endDate})}">Prev</a>
                                 </li>
-                                <th:block th:with="startPage=${T(java.lang.Math).max(1, categoryPage.current - 2)}, endPage=${T(java.lang.Math).min(categoryPage.pages, T(java.lang.Math).max(1, categoryPage.current - 2) + 4)}">
+                                <th:block th:with="startPage=${categoryPage.current - 2 > 1 ? categoryPage.current - 2 : 1}, endPage=${categoryPage.pages < (categoryPage.current - 2 > 1 ? categoryPage.current - 2 : 1) + 4 ? categoryPage.pages : (categoryPage.current - 2 > 1 ? categoryPage.current - 2 : 1) + 4}">
                                     <li th:if="${startPage > 1}" class="page-item">
                                         <a class="page-link" th:href="@{/admin/categories(page=1, size=${categoryPage.size}, keyword=${param.keyword}, startDate=${param.startDate}, endDate=${param.endDate})}">1</a>
                                     </li>

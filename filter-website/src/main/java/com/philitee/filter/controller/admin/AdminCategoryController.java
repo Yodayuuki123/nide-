@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.philitee.filter.entity.ProductCategory;
 import com.philitee.filter.service.ProductCategoryService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.CacheManager;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
@@ -24,6 +25,16 @@ import java.util.stream.Collectors;
 public class AdminCategoryController {
 
     private final ProductCategoryService categoryService;
+    private final CacheManager cacheManager;
+
+    private void evictCategoryCache() {
+        try {
+            if (cacheManager.getCache("categoryTree") != null)
+                cacheManager.getCache("categoryTree").clear();
+            if (cacheManager.getCache("topLevelCategories") != null)
+                cacheManager.getCache("topLevelCategories").clear();
+        } catch (Exception ignored) {}
+    }
 
     @GetMapping
     public String list(@RequestParam(defaultValue = "1") int page,
@@ -91,10 +102,12 @@ public class AdminCategoryController {
                 category.setCreatedAt(LocalDateTime.now());
                 category.setUpdatedAt(LocalDateTime.now());
                 categoryService.save(category);
+                evictCategoryCache();
                 redirectAttributes.addFlashAttribute("message", "Category created successfully");
             } else {
                 category.setUpdatedAt(LocalDateTime.now());
                 categoryService.updateById(category);
+                evictCategoryCache();
                 redirectAttributes.addFlashAttribute("message", "Category updated successfully");
             }
         } catch (Exception e) {
@@ -107,6 +120,7 @@ public class AdminCategoryController {
     public String delete(@PathVariable Long id, RedirectAttributes redirectAttributes) {
         try {
             categoryService.removeById(id);
+            evictCategoryCache();
             redirectAttributes.addFlashAttribute("message", "Category deleted successfully");
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("error", "Delete failed: " + e.getMessage());

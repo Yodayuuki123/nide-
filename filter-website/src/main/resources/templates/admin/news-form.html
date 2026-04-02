@@ -66,10 +66,27 @@
                         <!-- Cover Image -->
                         <div class="admin-form mb-4">
                             <h6 class="mb-3">封面图片</h6>
-                            <div class="mb-3">
-                                <label class="form-label">封面图片URL</label>
-                                <input type="text" name="coverImage" class="form-control"
-                                       th:value="${news.coverImage}" placeholder="https://example.com/image.jpg">
+                            <input type="hidden" name="coverImage" id="newsCoverImage" th:value="${news.coverImage}">
+                            <div id="newsCoverPreview" class="mb-2">
+                                <img th:if="${news.coverImage != null and !#strings.isEmpty(news.coverImage)}"
+                                     th:src="${news.coverImage}" id="newsCoverImg"
+                                     class="img-fluid rounded" style="max-height: 200px;">
+                                <div th:unless="${news.coverImage != null and !#strings.isEmpty(news.coverImage)}"
+                                     id="newsCoverPlaceholder"
+                                     class="placeholder-img rounded d-flex align-items-center justify-content-center"
+                                     style="height: 150px; background: #f0f2f5;">
+                                    <i class="bi bi-image fs-1 text-muted"></i>
+                                </div>
+                            </div>
+                            <button type="button" class="btn btn-outline-primary btn-sm w-100 mb-2"
+                                    onclick="openImagePicker('newsCover')">
+                                <i class="bi bi-image"></i> 选择封面图片
+                            </button>
+                            <div class="input-group input-group-sm">
+                                <span class="input-group-text">或输入URL</span>
+                                <input type="text" id="newsCoverUrlInput" class="form-control"
+                                       th:value="${news.coverImage}" placeholder="https://example.com/image.jpg"
+                                       oninput="updateNewsCover(this.value)">
                             </div>
                         </div>
 
@@ -165,22 +182,24 @@
                     var input = document.createElement('input');
                     input.setAttribute('type', 'file');
                     input.setAttribute('accept', 'image/*');
-                    input.onchange = function() {
+                    input.style.cssText = 'position:fixed;top:-9999px;left:-9999px;opacity:0;';
+                    document.body.appendChild(input);
+                    input.addEventListener('change', function() {
                         var file = this.files[0];
+                        if (!file) { document.body.removeChild(input); return; }
                         var formData = new FormData();
                         formData.append('file', file);
-
                         fetch('/admin/api/images/upload', {
                             method: 'POST',
                             body: formData
                         })
                         .then(function(resp) { return resp.json(); })
                         .then(function(data) {
-                            if (data.success) {
-                                callback(data.url, { alt: file.name });
-                            }
-                        });
-                    };
+                            document.body.removeChild(input);
+                            if (data.success) { callback(data.url, { alt: file.name }); }
+                        })
+                        .catch(function() { document.body.removeChild(input); });
+                    });
                     input.click();
                 }
             },
@@ -205,7 +224,86 @@
             }
         });
     }
+    // News cover image picker integration
+    window.updateNewsCover = function(url) {
+        document.getElementById('newsCoverImage').value = url;
+        var img = document.getElementById('newsCoverImg');
+        var placeholder = document.getElementById('newsCoverPlaceholder');
+        if (url) {
+            if (!img) {
+                img = document.createElement('img');
+                img.id = 'newsCoverImg';
+                img.className = 'img-fluid rounded';
+                img.style.maxHeight = '200px';
+                document.getElementById('newsCoverPreview').appendChild(img);
+            }
+            img.src = url;
+            img.style.display = '';
+            if (placeholder) placeholder.style.display = 'none';
+        } else {
+            if (img) img.style.display = 'none';
+            if (placeholder) placeholder.style.display = '';
+        }
+    };
 })();
 </script>
+
+<!-- Image Picker Modal for news cover -->
+<div class="modal fade" id="imagePickerModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Select Image</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <ul class="nav nav-tabs mb-3">
+                    <li class="nav-item">
+                        <a class="nav-link active" data-bs-toggle="tab" href="#tabLibrary">Image Library</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-bs-toggle="tab" href="#tabUpload">Upload New</a>
+                    </li>
+                </ul>
+                <div class="tab-content">
+                    <div class="tab-pane fade show active" id="tabLibrary">
+                        <div class="d-flex gap-2 mb-3">
+                            <input type="text" id="pickerSearchInput" class="form-control form-control-sm" placeholder="Search by file name...">
+                            <button type="button" id="pickerSearchBtn" class="btn btn-primary btn-sm">Search</button>
+                        </div>
+                        <div id="imagePickerGrid" class="image-picker-grid">
+                            <p class="text-muted text-center py-4">Loading images...</p>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center mt-3">
+                            <small class="text-muted" id="pickerPageInfo"></small>
+                            <div class="btn-group btn-group-sm">
+                                <button type="button" class="btn btn-outline-secondary" id="pickerPrevPage" disabled>&laquo; Prev</button>
+                                <button type="button" class="btn btn-outline-secondary" id="pickerNextPage" disabled>Next &raquo;</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="tabUpload">
+                        <label class="upload-zone d-block" id="modalUploadZone" for="modalFileInput" style="cursor:pointer;">
+                            <i class="bi bi-cloud-arrow-up d-block" style="pointer-events:none;"></i>
+                            <p style="pointer-events:none;">Click or drag file to upload</p>
+                            <input type="file" id="modalFileInput" accept="image/*" style="display: none">
+                        </label>
+                        <div id="uploadProgress" class="mt-2" style="display: none">
+                            <div class="progress">
+                                <div class="progress-bar" style="width: 0%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary" id="confirmImageSelect" disabled>Select</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 </body>
 </html>
