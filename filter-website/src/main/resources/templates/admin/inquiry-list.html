@@ -1,6 +1,6 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{fragments/admin-layout :: adminHead('璇㈢洏绠＄悊')}"></head>
+<head th:replace="~{fragments/admin-layout :: adminHead('询盘管理')}"></head>
 <body class="admin-body">
 <div class="admin-wrapper">
     <div th:replace="~{fragments/admin-layout :: adminSidebar}"></div>
@@ -13,10 +13,10 @@
 
             <div class="d-flex justify-content-between align-items-center mb-4">
                 <div>
-                    <h4 style="font-size: 1.8rem; margin-bottom: 4px;">璇㈢洏绠＄悊</h4>
+                    <h4 style="font-size: 1.8rem; margin-bottom: 4px;">询盘管理</h4>
                     <p style="color: var(--admin-text-tertiary); font-size: 13px; margin: 0;">View and manage customer contact requests</p>
                 </div>
-                <span class="badge bg-primary" th:text="${inquiryPage.total} + ' 鏉?">0 鏉?/span>
+                <span class="badge bg-primary" th:text="${inquiryPage.total} + ' 条'">0 条</span>
             </div>
 
             <!-- Search Form -->
@@ -24,23 +24,23 @@
                 <div class="admin-card-body">
                     <form method="get" th:action="@{/admin/inquiries}" class="row g-2 align-items-end">
                         <div class="col-md-2">
-                            <label class="form-label form-label-sm">鍚嶇О</label>
-                            <input type="text" name="name" th:value="${param.name}" class="form-control form-control-sm" placeholder="瀹㈡埛鍚嶇О...">
+                            <label class="form-label form-label-sm">名称</label>
+                            <input type="text" name="name" th:value="${param.name}" class="form-control form-control-sm" placeholder="客户名称...">
                         </div>
                         <div class="col-md-2">
-                            <label class="form-label form-label-sm">閭</label>
-                            <input type="text" name="email" th:value="${param.email}" class="form-control form-control-sm" placeholder="閭鍦板潃...">
+                            <label class="form-label form-label-sm">邮箱</label>
+                            <input type="text" name="email" th:value="${param.email}" class="form-control form-control-sm" placeholder="邮箱地址...">
                         </div>
                         <div class="col-md-2">
-                            <label class="form-label form-label-sm">鍏徃</label>
-                            <input type="text" name="company" th:value="${param.company}" class="form-control form-control-sm" placeholder="鍏徃鍚嶇О...">
+                            <label class="form-label form-label-sm">公司</label>
+                            <input type="text" name="company" th:value="${param.company}" class="form-control form-control-sm" placeholder="公司名称...">
                         </div>
                         <div class="col-md-2">
-                            <label class="form-label form-label-sm">鍙戦€佹椂闂磋捣</label>
+                            <label class="form-label form-label-sm">发送时间起</label>
                             <input type="date" name="startDate" th:value="${param.startDate}" class="form-control form-control-sm">
                         </div>
                         <div class="col-md-1">
-                            <label class="form-label form-label-sm">姣忛〉</label>
+                            <label class="form-label form-label-sm">每页</label>
                             <select name="size" class="form-select form-select-sm">
                                 <option value="10" th:selected="${inquiryPage.size == 10}">10</option>
                                 <option value="20" th:selected="${inquiryPage.size == 20}">20</option>
@@ -49,8 +49,8 @@
                             </select>
                         </div>
                         <div class="col-md-3 d-flex gap-2">
-                            <button type="submit" class="btn btn-primary btn-sm"><i class="bi bi-search"></i> 鎼滅储</button>
-                            <a th:href="@{/admin/inquiries}" class="btn btn-outline-secondary btn-sm"><i class="bi bi-arrow-counterclockwise"></i> 閲嶇疆</a>
+                            <button type="submit" class="btn btn-primary btn-sm"><i class="bi bi-search"></i> 搜索</button>
+                            <a th:href="@{/admin/inquiries}" class="btn btn-outline-secondary btn-sm"><i class="bi bi-arrow-counterclockwise"></i> 重置</a>
                         </div>
                     </form>
                 </div>
@@ -58,8 +58,8 @@
 
             <div class="admin-card">
                 <div class="admin-card-header">
-                    <h5>鍏ㄩ儴璇㈢洏</h5>
-                    <span class="text-muted" th:text="'鍏?' + ${inquiryPage.total} + ' 鏉?"></span>
+                    <h5>全部询盘</h5>
+                    <span class="text-muted" th:text="'共 ' + ${inquiryPage.total} + ' 条'"></span>
                 </div>
                 <div class="admin-card-body">
                     <div class="table-responsive">
@@ -67,27 +67,27 @@
                             <thead>
                             <tr>
                                 <th>ID</th>
-                                <th>鍚嶇О</th>
-                                <th>閭</th>
-                                <th>鍏徃</th>
-                                <th>鎰熷叴瓒ｄ骇鍝?/th>
-                                <th>鐣欒█鍐呭</th>
-                                <th>鍙戦€佹椂闂?/th>
-                                <th>鎿嶄綔</th>
+                                <th>名称</th>
+                                <th>邮箱</th>
+                                <th>公司</th>
+                                <th>感兴趣产品</th>
+                                <th>留言内容</th>
+                                <th>发送时间</th>
+                                <th>操作</th>
                             </tr>
                             </thead>
                             <tbody>
                             <tr th:each="inq : ${inquiryPage.records}"
                                 th:class="${inq.isRead != null and !inq.isRead} ? 'fw-medium' : ''">
                                 <td th:text="${inq.id}">1</td>
-                                <td th:text="${inq.name}">鍚嶇О</td>
+                                <td th:text="${inq.name}">名称</td>
                                 <td>
                                     <a th:href="'mailto:' + ${inq.email}" th:text="${inq.email}">email@example.com</a>
                                 </td>
-                                <td th:text="${inq.company} ?: '-'" class="text-muted">鍏徃</td>
+                                <td th:text="${inq.company} ?: '-'" class="text-muted">公司</td>
                                 <td th:text="${inq.productInterest} ?: '-'" class="text-muted">Product</td>
                                 <td>
-                                    <span th:text="${#strings.abbreviate(inq.message, 50)}" class="text-muted">鐣欒█鍐呭 preview...</span>
+                                    <span th:text="${#strings.abbreviate(inq.message, 50)}" class="text-muted">留言内容 preview...</span>
                                 </td>
                                 <td class="text-muted text-nowrap"
                                     th:text="${inq.createdTime != null} ? ${#temporals.format(inq.createdTime, 'yyyy-MM-dd HH:mm')} : '-'">2026-01-01</td>
@@ -101,7 +101,7 @@
                                 </td>
                             </tr>
                             <tr th:if="${inquiryPage.records.isEmpty()}">
-                                <td colspan="8" class="text-center text-muted py-4">鏆傛棤璇㈢洏鏁版嵁銆?/td>
+                                <td colspan="8" class="text-center text-muted py-4">暂无询盘数据。</td>
                             </tr>
                             </tbody>
                         </table>
@@ -109,13 +109,13 @@
 
                     <!-- Pagination -->
                     <div class="p-3 d-flex justify-content-between align-items-center" th:if="${inquiryPage.pages > 1}">
-                        <span class="text-muted" style="font-size:13px;" th:text="'鏄剧ず ' + ${(inquiryPage.current - 1) * inquiryPage.size + 1} + '-' + ${T(java.lang.Math).min(inquiryPage.current * inquiryPage.size, inquiryPage.total)} + ' / 鍏?' + ${inquiryPage.total} + ' 鏉?"></span>
+                        <span class="text-muted" style="font-size:13px;" th:text="'显示 ' + ${(inquiryPage.current - 1) * inquiryPage.size + 1} + '-' + ${T(Math).min(inquiryPage.current * inquiryPage.size, inquiryPage.total)} + ' / 共 ' + ${inquiryPage.total} + ' 条'"></span>
                         <nav>
                             <ul class="pagination pagination-sm mb-0">
                                 <li class="page-item" th:classappend="${inquiryPage.current <= 1} ? 'disabled'">
-                                    <a class="page-link" th:href="@{/admin/inquiries(page=${inquiryPage.current - 1}, size=${inquiryPage.size}, name=${param.name}, email=${param.email}, company=${param.company}, startDate=${param.startDate})}">涓婁竴椤?/a>
+                                    <a class="page-link" th:href="@{/admin/inquiries(page=${inquiryPage.current - 1}, size=${inquiryPage.size}, name=${param.name}, email=${param.email}, company=${param.company}, startDate=${param.startDate})}">上一页</a>
                                 </li>
-                                <th:block th:with="startPage=${T(java.lang.Math).max(1, inquiryPage.current - 2)}, endPage=${T(java.lang.Math).min(inquiryPage.pages, T(java.lang.Math).max(1, inquiryPage.current - 2) + 4)}">
+                                <th:block th:with="startPage=${T(Math).max(1, inquiryPage.current - 2)}, endPage=${T(Math).min(inquiryPage.pages, T(Math).max(1, inquiryPage.current - 2) + 4)}">
                                     <li th:if="${startPage > 1}" class="page-item">
                                         <a class="page-link" th:href="@{/admin/inquiries(page=1, size=${inquiryPage.size}, name=${param.name}, email=${param.email}, company=${param.company}, startDate=${param.startDate})}">1</a>
                                     </li>
@@ -131,7 +131,7 @@
                                     </li>
                                 </th:block>
                                 <li class="page-item" th:classappend="${inquiryPage.current >= inquiryPage.pages} ? 'disabled'">
-                                    <a class="page-link" th:href="@{/admin/inquiries(page=${inquiryPage.current + 1}, size=${inquiryPage.size}, name=${param.name}, email=${param.email}, company=${param.company}, startDate=${param.startDate})}">涓嬩竴椤?/a>
+                                    <a class="page-link" th:href="@{/admin/inquiries(page=${inquiryPage.current + 1}, size=${inquiryPage.size}, name=${param.name}, email=${param.email}, company=${param.company}, startDate=${param.startDate})}">下一页</a>
                                 </li>
                             </ul>
                         </nav>
@@ -142,22 +142,22 @@
     </div>
 </div>
 
-<!-- 鍒犻櫎纭寮圭獥 -->
+<!-- 删除确认弹窗 -->
 <div class="modal fade" id="deleteModal" tabindex="-1">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">纭鍒犻櫎</h5>
+                <h5 class="modal-title">确认删除</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body">
-                <p>纭畾瑕佸垹闄ゆ璇㈢洏鍚楋紵姝ゆ搷浣滀笉鍙挙閿€銆?/p>
+                <p>确定要删除此询盘吗？此操作不可撤销。</p>
                 <p class="fw-medium" id="deleteItemName"></p>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">鍙栨秷</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
                 <form id="deleteForm" method="post" class="d-inline">
-                    <button type="submit" class="btn btn-outline-danger">纭鍒犻櫎</button>
+                    <button type="submit" class="btn btn-outline-danger">确认删除</button>
                 </form>
             </div>
         </div>
@@ -175,4 +175,3 @@
 </script>
 </body>
 </html>
-

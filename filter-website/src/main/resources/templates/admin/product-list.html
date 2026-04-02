@@ -1,6 +1,6 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{fragments/admin-layout :: adminHead('浜у搧绠＄悊')}"></head>
+<head th:replace="~{fragments/admin-layout :: adminHead('产品管理')}"></head>
 <body class="admin-body">
 <div class="admin-wrapper">
     <div th:replace="~{fragments/admin-layout :: adminSidebar}"></div>
@@ -13,11 +13,11 @@
 
             <div class="d-flex justify-content-between align-items-center mb-4">
                 <div>
-                    <h4 style="font-size: 1.8rem; margin-bottom: 4px;">浜у搧绠＄悊</h4>
-                    <p style="color: var(--admin-text-tertiary); font-size: 13px; margin: 0;">绠＄悊鎮ㄧ殑浜у搧鐩綍</p>
+                    <h4 style="font-size: 1.8rem; margin-bottom: 4px;">产品管理</h4>
+                    <p style="color: var(--admin-text-tertiary); font-size: 13px; margin: 0;">管理您的产品目录</p>
                 </div>
                 <a href="/admin/products/add" class="btn btn-primary btn-sm">
-                    <i class="bi bi-plus-circle"></i> 鏂板浜у搧
+                    <i class="bi bi-plus-circle"></i> 新增产品
                 </a>
             </div>
 
@@ -26,23 +26,23 @@
                 <div class="admin-card-body">
                     <form method="get" th:action="@{/admin/products}" class="row g-2 align-items-end">
                         <div class="col-md-3">
-                            <label class="form-label form-label-sm">浜у搧鍚嶇О</label>
-                            <input type="text" name="keyword" th:value="${param.keyword}" class="form-control form-control-sm" placeholder="鎼滅储浜у搧鍚嶇О...">
+                            <label class="form-label form-label-sm">产品名称</label>
+                            <input type="text" name="keyword" th:value="${param.keyword}" class="form-control form-control-sm" placeholder="搜索产品名称...">
                         </div>
                         <div class="col-md-2">
                             <label class="form-label form-label-sm">SKU</label>
-                            <input type="text" name="sku" th:value="${param.sku}" class="form-control form-control-sm" placeholder="SKU缂栧彿">
+                            <input type="text" name="sku" th:value="${param.sku}" class="form-control form-control-sm" placeholder="SKU编号">
                         </div>
                         <div class="col-md-2">
-                            <label class="form-label form-label-sm">鐘舵€?/label>
+                            <label class="form-label form-label-sm">状态</label>
                             <select name="status" class="form-select form-select-sm">
-                                <option value="">鍏ㄩ儴</option>
-                                <option value="publish" th:selected="${param.status != null and param.status == 'publish'}">宸插彂甯?/option>
-                                <option value="draft" th:selected="${param.status != null and param.status == 'draft'}">鑽夌</option>
+                                <option value="">全部</option>
+                                <option value="publish" th:selected="${param.status != null and param.status == 'publish'}">已发布</option>
+                                <option value="draft" th:selected="${param.status != null and param.status == 'draft'}">草稿</option>
                             </select>
                         </div>
                         <div class="col-md-2">
-                            <label class="form-label form-label-sm">姣忛〉鏄剧ず</label>
+                            <label class="form-label form-label-sm">每页显示</label>
                             <select name="size" class="form-select form-select-sm">
                                 <option value="10" th:selected="${productPage.size == 10}">10</option>
                                 <option value="20" th:selected="${productPage.size == 20}">20</option>
@@ -51,8 +51,8 @@
                             </select>
                         </div>
                         <div class="col-md-3 d-flex gap-2">
-                            <button type="submit" class="btn btn-primary btn-sm"><i class="bi bi-search"></i> 鎼滅储</button>
-                            <a th:href="@{/admin/products}" class="btn btn-outline-secondary btn-sm"><i class="bi bi-arrow-counterclockwise"></i> 閲嶇疆</a>
+                            <button type="submit" class="btn btn-primary btn-sm"><i class="bi bi-search"></i> 搜索</button>
+                            <a th:href="@{/admin/products}" class="btn btn-outline-secondary btn-sm"><i class="bi bi-arrow-counterclockwise"></i> 重置</a>
                         </div>
                     </form>
                 </div>
@@ -60,8 +60,8 @@
 
             <div class="admin-card">
                 <div class="admin-card-header">
-                    <h5>鍏ㄩ儴浜у搧</h5>
-                    <span class="text-muted" th:text="'鍏?' + ${productPage.total} + ' 鏉?"></span>
+                    <h5>全部产品</h5>
+                    <span class="text-muted" th:text="'共 ' + ${productPage.total} + ' 条'"></span>
                 </div>
                 <div class="admin-card-body">
                     <div class="table-responsive">
@@ -69,13 +69,13 @@
                             <thead>
                             <tr>
                                 <th>ID</th>
-                                <th>鍥剧墖</th>
-                                <th>浜у搧鍚嶇О</th>
+                                <th>图片</th>
+                                <th>产品名称</th>
                                 <th>SKU</th>
-                                <th>鐘舵€?/th>
-                                <th>鎵€灞炲垎绫?/th>
-                                <th>淇敼鏃堕棿</th>
-                                <th>鎿嶄綔</th>
+                                <th>状态</th>
+                                <th>所属分类</th>
+                                <th>修改时间</th>
+                                <th>操作</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -93,18 +93,18 @@
                                 </td>
                                 <td>
                                     <a th:href="@{/admin/products/edit/{id}(id=${product.id})}"
-                                       th:text="${product.name}" class="fw-medium">浜у搧鍚嶇О</a>
+                                       th:text="${product.name}" class="fw-medium">产品名称</a>
                                 </td>
                                 <td th:text="${product.sku} ?: '-'" class="text-muted">SKU</td>
                                 <td>
                                     <span class="badge status-badge"
                                           th:classappend="${product.status == 'publish'} ? 'bg-success' : 'bg-secondary'"
-                                          th:text="${product.status == 'publish'} ? '宸插彂甯? : '鑽夌'">宸插彂甯?/span>
+                                          th:text="${product.status == 'publish'} ? '已发布' : '草稿'">已发布</span>
                                 </td>
                                 <td>
                                     <span th:each="cat,iter : ${product.categories}"
                                           th:if="${iter.index < 2}">
-                                        <span class="badge" style="background: var(--admin-bg-secondary); color: var(--admin-text-secondary);" th:text="${cat.name}">鍒嗙被</span>
+                                        <span class="badge" style="background: var(--admin-bg-secondary); color: var(--admin-text-secondary);" th:text="${cat.name}">分类</span>
                                     </span>
                                     <span th:if="${product.categories != null and product.categories.size() > 2}"
                                           class="text-muted">+<span th:text="${product.categories.size() - 2}">1</span></span>
@@ -112,19 +112,19 @@
                                 <td class="text-muted" th:text="${product.updatedAt != null} ? ${#temporals.format(product.updatedAt, 'yyyy-MM-dd HH:mm')} : (${product.createdAt != null} ? ${#temporals.format(product.createdAt, 'yyyy-MM-dd HH:mm')} : '-')">2026-01-01</td>
                                 <td class="actions">
                                     <a th:href="@{/admin/products/edit/{id}(id=${product.id})}"
-                                       class="btn btn-sm btn-outline-primary me-1" title="缂栬緫">
+                                       class="btn btn-sm btn-outline-primary me-1" title="编辑">
                                         <i class="bi bi-pencil"></i>
                                     </a>
                                     <button type="button" class="btn btn-sm btn-outline-danger"
                                             th:data-id="${product.id}"
                                             th:data-name="${product.name}"
-                                            onclick="confirmDelete(this, '浜у搧')">
+                                            onclick="confirmDelete(this, '产品')">
                                         <i class="bi bi-trash"></i>
                                     </button>
                                 </td>
                             </tr>
                             <tr th:if="${productPage.records.isEmpty()}">
-                                <td colspan="8" class="text-center text-muted py-4">鏆傛棤浜у搧鏁版嵁銆?/td>
+                                <td colspan="8" class="text-center text-muted py-4">暂无产品数据。</td>
                             </tr>
                             </tbody>
                         </table>
@@ -132,13 +132,13 @@
 
                     <!-- Pagination with page size -->
                     <div class="p-3 d-flex justify-content-between align-items-center" th:if="${productPage.pages > 1}">
-                        <span class="text-muted" style="font-size:13px;" th:text="'鏄剧ず ' + ${(productPage.current - 1) * productPage.size + 1} + '-' + ${T(java.lang.Math).min(productPage.current * productPage.size, productPage.total)} + ' / 鍏?' + ${productPage.total} + ' 鏉?"></span>
+                        <span class="text-muted" style="font-size:13px;" th:text="'显示 ' + ${(productPage.current - 1) * productPage.size + 1} + '-' + ${T(Math).min(productPage.current * productPage.size, productPage.total)} + ' / 共 ' + ${productPage.total} + ' 条'"></span>
                         <nav>
                             <ul class="pagination pagination-sm mb-0">
                                 <li class="page-item" th:classappend="${productPage.current <= 1} ? 'disabled'">
-                                    <a class="page-link" th:href="@{/admin/products(page=${productPage.current - 1}, size=${productPage.size}, keyword=${param.keyword}, sku=${param.sku}, status=${param.status})}">涓婁竴椤?/a>
+                                    <a class="page-link" th:href="@{/admin/products(page=${productPage.current - 1}, size=${productPage.size}, keyword=${param.keyword}, sku=${param.sku}, status=${param.status})}">上一页</a>
                                 </li>
-                                <th:block th:with="startPage=${T(java.lang.Math).max(1, productPage.current - 2)}, endPage=${T(java.lang.Math).min(productPage.pages, T(java.lang.Math).max(1, productPage.current - 2) + 4)}">
+                                <th:block th:with="startPage=${T(Math).max(1, productPage.current - 2)}, endPage=${T(Math).min(productPage.pages, T(Math).max(1, productPage.current - 2) + 4)}">
                                     <li th:if="${startPage > 1}" class="page-item">
                                         <a class="page-link" th:href="@{/admin/products(page=1, size=${productPage.size}, keyword=${param.keyword}, sku=${param.sku}, status=${param.status})}">1</a>
                                     </li>
@@ -154,7 +154,7 @@
                                     </li>
                                 </th:block>
                                 <li class="page-item" th:classappend="${productPage.current >= productPage.pages} ? 'disabled'">
-                                    <a class="page-link" th:href="@{/admin/products(page=${productPage.current + 1}, size=${productPage.size}, keyword=${param.keyword}, sku=${param.sku}, status=${param.status})}">涓嬩竴椤?/a>
+                                    <a class="page-link" th:href="@{/admin/products(page=${productPage.current + 1}, size=${productPage.size}, keyword=${param.keyword}, sku=${param.sku}, status=${param.status})}">下一页</a>
                                 </li>
                             </ul>
                         </nav>
@@ -165,22 +165,22 @@
     </div>
 </div>
 
-<!-- 鍒犻櫎纭寮圭獥 -->
+<!-- 删除确认弹窗 -->
 <div class="modal fade" id="deleteModal" tabindex="-1">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">纭鍒犻櫎</h5>
+                <h5 class="modal-title">确认删除</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body">
-                <p>纭畾瑕佸垹闄や互涓嬪唴瀹瑰悧锛熸鎿嶄綔涓嶅彲鎾ら攢銆?/p>
+                <p>确定要删除以下内容吗？此操作不可撤销。</p>
                 <p class="fw-medium" id="deleteItemName"></p>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">鍙栨秷</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
                 <form id="deleteForm" method="post" class="d-inline">
-                    <button type="submit" class="btn btn-outline-danger">纭鍒犻櫎</button>
+                    <button type="submit" class="btn btn-outline-danger">确认删除</button>
                 </form>
             </div>
         </div>
@@ -198,4 +198,3 @@
 </script>
 </body>
 </html>
-
