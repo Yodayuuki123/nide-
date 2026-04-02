@@ -31,13 +31,16 @@
 .nav-wrapper {
     display: flex;
     align-items: center;
-    gap: 20px;
+    justify-content: flex-start !important;
+    gap: 0 !important;
 }
 .nav-left {
     flex-shrink: 0;
+    margin-right: 0 !important;
 }
 .nav-right {
-    flex: 1;
+    flex: 0 0 auto !important;
+    margin-left: 0 !important;
 }
 
 /* --- mainCategory Dropdown: target-site style without thumbnails --- */
