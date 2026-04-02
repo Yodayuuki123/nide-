@@ -16,12 +16,12 @@
 
             <div class="admin-card mb-4">
                 <div class="admin-card-body p-4">
-                    <div class="upload-zone mb-3" id="pageUploadZone">
-                        <i class="bi bi-cloud-arrow-up"></i>
-                        <h5>Select Images</h5>
-                        <p class="text-muted mb-0">Click or drag files here. Files will be staged before upload.</p>
-                        <input type="file" id="pageFileInput" accept="image/*" multiple style="display: none">
-                    </div>
+                    <label class="upload-zone mb-3" id="pageUploadZone" for="pageFileInput" style="display:block; cursor:pointer;">
+                        <i class="bi bi-cloud-arrow-up" style="pointer-events:none;"></i>
+                        <h5 style="pointer-events:none;">Select Images</h5>
+                        <p class="text-muted mb-0" style="pointer-events:none;">Click or drag files here. Files will be staged before upload.</p>
+                        <input type="file" id="pageFileInput" accept="image/*,video/*" multiple style="display: none">
+                    </label>
 
                     <div id="pendingUploadWrap" style="display:none;">
                         <div class="d-flex justify-content-between align-items-center mb-2">
@@ -183,11 +183,12 @@
     }
 
     if (uploadZone && fileInput) {
-        uploadZone.addEventListener('click', function() { fileInput.click(); });
-        uploadZone.addEventListener('dragover', function(e) { e.preventDefault(); uploadZone.classList.add('drag-over'); });
-        uploadZone.addEventListener('dragleave', function() { uploadZone.classList.remove('drag-over'); });
+        // label[for] handles click natively; only bind drag events
+        uploadZone.addEventListener('dragover', function(e) { e.preventDefault(); e.stopPropagation(); uploadZone.classList.add('drag-over'); });
+        uploadZone.addEventListener('dragleave', function(e) { e.stopPropagation(); uploadZone.classList.remove('drag-over'); });
         uploadZone.addEventListener('drop', function(e) {
             e.preventDefault();
+            e.stopPropagation();
             uploadZone.classList.remove('drag-over');
             appendFiles(e.dataTransfer.files);
         });
