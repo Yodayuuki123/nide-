@@ -92,6 +92,10 @@
                                 <td class="text-muted text-nowrap"
                                     th:text="${inq.createdTime != null} ? ${#temporals.format(inq.createdTime, 'yyyy-MM-dd HH:mm')} : '-'">2026-01-01</td>
                                 <td class="actions">
+                                    <a th:href="@{/admin/inquiries/detail/{id}(id=${inq.id})}"
+                                       class="btn btn-sm btn-outline-primary me-1" title="查看详情">
+                                        <i class="bi bi-eye"></i>
+                                    </a>
                                     <button type="button" class="btn btn-sm btn-outline-danger"
                                             th:data-id="${inq.id}"
                                             th:data-name="${inq.name + ' - ' + inq.email}"

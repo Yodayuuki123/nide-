@@ -61,6 +61,18 @@
                                             </td>
                                             <td th:text="${item.sortOrder} ?: 0">0</td>
                                             <td class="actions">
+                                                <button type="button" class="btn btn-sm btn-outline-primary me-1"
+                                                        th:data-id="${item.id}"
+                                                        th:data-title="${item.title}"
+                                                        th:data-url="${item.url}"
+                                                        th:data-type="${item.type}"
+                                                        th:data-parentid="${item.parentId}"
+                                                        th:data-sortorder="${item.sortOrder}"
+                                                        th:data-menuid="${menu.id}"
+                                                        onclick="editItem(this)"
+                                                        title="编辑">
+                                                    <i class="bi bi-pencil"></i>
+                                                </button>
                                                 <button type="button" class="btn btn-sm btn-outline-danger"
                                                         th:data-id="${item.id}"
                                                         th:data-name="${item.title}"
@@ -85,6 +97,18 @@
                                                 </td>
                                                 <td th:text="${child.sortOrder} ?: 0">0</td>
                                                 <td class="actions">
+                                                    <button type="button" class="btn btn-sm btn-outline-primary me-1"
+                                                            th:data-id="${child.id}"
+                                                            th:data-title="${child.title}"
+                                                            th:data-url="${child.url}"
+                                                            th:data-type="${child.type}"
+                                                            th:data-parentid="${child.parentId}"
+                                                            th:data-sortorder="${child.sortOrder}"
+                                                            th:data-menuid="${menu.id}"
+                                                            onclick="editItem(this)"
+                                                            title="编辑">
+                                                        <i class="bi bi-pencil"></i>
+                                                    </button>
                                                     <button type="button" class="btn btn-sm btn-outline-danger"
                                                             th:data-id="${child.id}"
                                                             th:data-name="${child.title}"
@@ -185,6 +209,60 @@
     </div>
 </div>
 
+<!-- 编辑菜单项弹窗 -->
+<div class="modal fade" id="editItemModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">编辑菜单项</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <form id="editItemForm" th:action="@{/admin/menus/items/save}" method="post">
+                <div class="modal-body">
+                    <input type="hidden" name="id" id="editItemId">
+                    <input type="hidden" name="menuId" id="editItemMenuId">
+                    <div class="mb-3">
+                        <label class="form-label">标题 <span class="text-danger">*</span></label>
+                        <input type="text" name="title" id="editItemTitle" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">URL <span class="text-danger">*</span></label>
+                        <input type="text" name="url" id="editItemUrl" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">类型</label>
+                        <select name="type" id="editItemType" class="form-select">
+                            <option value="custom">自定义链接</option>
+                            <option value="page">页面</option>
+                            <option value="category">分类</option>
+                            <option value="product">产品</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">父级菜单项</label>
+                        <select name="parentId" id="editItemParentId" class="form-select">
+                            <option value="">— 无（顶级） —</option>
+                            <th:block th:each="item : ${menu.menuItems}">
+                                <option th:if="${item.parentId == null or item.parentId == 0}"
+                                        th:value="${item.id}"
+                                        th:text="${item.title}">Item</option>
+                            </th:block>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">排序</label>
+                        <input type="number" name="sortOrder" id="editItemSortOrder" class="form-control">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+                    <button type="submit" class="btn btn-primary">保存修改</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
 <!-- 删除确认弹窗 -->
 <div class="modal fade" id="deleteItemModal" tabindex="-1">
     <div class="modal-dialog">
@@ -210,6 +288,30 @@
 
 <div th:replace="~{fragments/admin-layout :: adminScripts}"></div>
 <script>
+    function editItem(btn) {
+        document.getElementById('editItemId').value = btn.getAttribute('data-id');
+        document.getElementById('editItemMenuId').value = btn.getAttribute('data-menuid');
+        document.getElementById('editItemTitle').value = btn.getAttribute('data-title') || '';
+        document.getElementById('editItemUrl').value = btn.getAttribute('data-url') || '';
+        document.getElementById('editItemSortOrder').value = btn.getAttribute('data-sortorder') || '0';
+
+        var typeSelect = document.getElementById('editItemType');
+        var typeVal = btn.getAttribute('data-type') || 'custom';
+        for (var i = 0; i < typeSelect.options.length; i++) {
+            if (typeSelect.options[i].value === typeVal) {
+                typeSelect.selectedIndex = i;
+                break;
+            }
+        }
+
+        var parentSelect = document.getElementById('editItemParentId');
+        var parentVal = btn.getAttribute('data-parentid') || '';
+        parentSelect.value = parentVal;
+
+        var modal = new bootstrap.Modal(document.getElementById('editItemModal'));
+        modal.show();
+    }
+
     function confirmDeleteItem(btn) {
         document.getElementById('deleteItemName').textContent = btn.getAttribute('data-name');
         document.getElementById('deleteItemForm').action = '/admin/menus/items/delete/' + btn.getAttribute('data-id');
