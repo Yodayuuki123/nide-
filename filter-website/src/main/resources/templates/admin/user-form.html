@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head th:replace="~{fragments/admin-layout :: adminHead(${user.id != null} ? '编辑 User' : '新增用户')}"></head>
 <body class="admin-body">
 <div class="admin-wrapper">
