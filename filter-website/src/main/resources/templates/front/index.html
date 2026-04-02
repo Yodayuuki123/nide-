@@ -72,7 +72,6 @@
     <div class="aesop-container">
         <div class="section-header text-center fade-in">
             <h2 th:text="#{home.categories.title}">Product Categories</h2>
-            <p th:text="#{home.categories.subtitle}">Comprehensive filtration solutions for every industrial application</p>
         </div>
         <div class="filmedia-cat-grid">
             <th:block th:each="cat : ${categories}">
@@ -185,9 +184,7 @@
 <section class="home-whychoose-section">
     <div class="aesop-container">
         <div class="section-header text-center fade-in">
-            <span class="section-eyebrow" th:text="#{home.why.eyebrow}">Our Advantages</span>
             <h2 th:text="#{home.why.title}">Why Choose Philitee Filter</h2>
-            <button class="btn btn-accent" onclick="openInquiryModal()" style="margin-top:12px;"><i class="bi bi-envelope"></i> <span th:text="#{product.send_inquiry}">Contact Us</span></button>
         </div>
         <div class="whychoose-grid">
             <div class="whychoose-card fade-in">
@@ -247,8 +244,7 @@
                     zoomControl: true,
                     attributionControl: false
                 });
-                L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_nolabels/{z}/{x}/{y}{r}.png').addTo(map);
-                L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_only_labels/{z}/{x}/{y}{r}.png', {pane:'overlayPane'}).addTo(map);
+                L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png').addTo(map);
                 var dots = [
                     [40.7,-74.0,'USA'],[19.4,-99.1,'Mexico'],[23.6,-102.5,'Mexico'],[-23.5,-46.6,'Brazil'],[-34.6,-58.4,'Argentina'],
                     [51.5,-0.1,'UK'],[48.9,2.3,'France'],[52.5,13.4,'Germany'],[41.9,12.5,'Italy'],[40.4,-3.7,'Spain'],
@@ -274,10 +270,11 @@
             });
             </script>
             <style>
-            #worldMapContainer { background: var(--bg-dark); }
-            .map-label { background: rgba(0,0,0,0.7)!important; color:#81C784!important; border:1px solid #4CAF50!important; font-size:11px!important; font-weight:600; padding:2px 8px!important; border-radius:3px!important; box-shadow:none!important; }
+            #worldMapContainer { background: #f0f4f0; }
+            .map-label { background: rgba(255,255,255,0.95)!important; color:#2e7d32!important; border:1px solid #4CAF50!important; font-size:11px!important; font-weight:600; padding:2px 8px!important; border-radius:3px!important; box-shadow:0 1px 4px rgba(0,0,0,0.1)!important; }
             .map-label::before { border-top-color:#4CAF50!important; }
-            .leaflet-control-zoom a { background:rgba(26,46,26,0.8)!important; color:#81C784!important; border-color:#4CAF50!important; }
+            .leaflet-control-zoom a { background:#fff!important; color:#333!important; border-color:#ccc!important; }
+            .leaflet-control-zoom a:hover { background:#4CAF50!important; color:#fff!important; }
             </style>
         </div>
         <div class="global-stats fade-in">
@@ -310,19 +307,25 @@
             <h2 style="text-transform:uppercase;font-family:var(--font-heading);font-weight:700;letter-spacing:0.02em;">EXHIBITION</h2>
             <div style="width:60px;height:4px;background:#42a5f5;margin:12px auto 0;border-radius:2px;"></div>
         </div>
-        <div class="exhibition-grid fade-in">
-            <div class="exhibition-item">
-                <img src="/static/images/exhibition/exhibition1.jpg" alt="Exhibition 1" loading="lazy">
+        <div class="exhibition-carousel-wrapper fade-in" style="margin-top:36px;">
+            <button class="exhibition-arrow exhibition-prev" onclick="exhibitionSlide(-1)"><i class="bi bi-chevron-left"></i></button>
+            <div class="exhibition-track-viewport">
+                <div class="exhibition-track" id="exhibitionTrack">
+                    <div class="exhibition-item">
+                        <img src="/static/images/exhibition/exhibition1.jpg" alt="Exhibition 1" loading="lazy">
+                    </div>
+                    <div class="exhibition-item">
+                        <img src="/static/images/exhibition/exhibition2.jpg" alt="Exhibition 2" loading="lazy">
+                    </div>
+                    <div class="exhibition-item">
+                        <img src="/static/images/exhibition/exhibition3.jpg" alt="Exhibition 3" loading="lazy">
+                    </div>
+                    <div class="exhibition-item">
+                        <img src="/static/images/exhibition/exhibition4.jpg" alt="Exhibition 4" loading="lazy">
+                    </div>
+                </div>
             </div>
-            <div class="exhibition-item">
-                <img src="/static/images/exhibition/exhibition2.jpg" alt="Exhibition 2" loading="lazy">
-            </div>
-            <div class="exhibition-item">
-                <img src="/static/images/exhibition/exhibition3.jpg" alt="Exhibition 3" loading="lazy">
-            </div>
-            <div class="exhibition-item">
-                <img src="/static/images/exhibition/exhibition4.jpg" alt="Exhibition 4" loading="lazy">
-            </div>
+            <button class="exhibition-arrow exhibition-next" onclick="exhibitionSlide(1)"><i class="bi bi-chevron-right"></i></button>
         </div>
     </div>
 </section>
@@ -475,6 +478,26 @@ window.switchAboutImg = function(thumb) {
     thumbs.forEach(function(t) { t.classList.remove('active'); });
     thumb.classList.add('active');
 };
+
+/* ===== Exhibition Carousel ===== */
+(function(){
+    var track = document.getElementById('exhibitionTrack');
+    if (!track) return;
+    var items = track.querySelectorAll('.exhibition-item');
+    var currentOffset = 0;
+    var gap = 16;
+    window.exhibitionSlide = function(dir) {
+        var viewport = track.parentElement;
+        var vpWidth = viewport.offsetWidth;
+        var itemWidth = items[0].offsetWidth + gap;
+        var totalWidth = items.length * itemWidth - gap;
+        var maxOffset = Math.max(0, totalWidth - vpWidth);
+        currentOffset += dir * itemWidth;
+        if (currentOffset < 0) currentOffset = 0;
+        if (currentOffset > maxOffset) currentOffset = maxOffset;
+        track.style.transform = 'translateX(-' + currentOffset + 'px)';
+    };
+})();
 
 /* ===== Product Tag Tab Switching ===== */
 window.switchProductTab = function(btn) {

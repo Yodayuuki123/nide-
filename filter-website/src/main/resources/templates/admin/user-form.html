@@ -12,7 +12,6 @@
             <div class="d-flex justify-content-between align-items-center mb-4">
                 <div>
                     <h4 style="font-size: 1.8rem; margin-bottom: 4px;" th:text="${user.id != null} ? '编辑 User' : '新增用户'">User Form</h4>
-                    <p style="color: var(--admin-text-tertiary); font-size: 13px; margin: 0;" th:text="${user.id != null} ? '更新用户信息和角色分配' : '创建新管理员账号'">Subtitle</p>
                 </div>
                 <a href="/admin/users" class="btn btn-outline-secondary btn-sm">
                     <i class="bi bi-arrow-left"></i> 返回

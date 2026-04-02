@@ -4425,20 +4425,20 @@ img {
 /* ===== 7. Global Sales Network ===== */
 .home-global-section {
     padding: var(--section-padding) 0;
-    background: var(--bg-dark);
-    color: var(--text-inverse);
+    background: #f5f8f5;
+    color: var(--text-primary);
 }
 
 .home-global-section .section-eyebrow {
-    color: var(--accent-light);
+    color: var(--accent);
 }
 
 .home-global-section .section-header h2 {
-    color: #fff;
+    color: var(--text-primary);
 }
 
 .home-global-section .section-header p {
-    color: rgba(255,255,255,0.7);
+    color: var(--text-secondary);
 }
 
 .global-map-wrapper {
@@ -4467,13 +4467,13 @@ img {
 .global-stat-number {
     font-size: 2.5rem;
     font-weight: 700;
-    color: var(--accent-light);
+    color: var(--accent);
     font-family: var(--font-heading);
 }
 
 .global-stat-label {
     font-size: 0.9rem;
-    color: rgba(255,255,255,0.7);
+    color: var(--text-secondary);
     margin-top: 4px;
 }
 

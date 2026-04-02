@@ -12,7 +12,6 @@
             <div class="d-flex justify-content-between align-items-center mb-4">
                 <div>
                     <h4 style="font-size: 1.8rem; margin-bottom: 4px;" th:text="${product.id != null} ? '编辑产品' : '新增产品'">产品表单</h4>
-                    <p style="color: var(--admin-text-tertiary); font-size: 13px; margin: 0;" th:text="${product.id != null} ? '修改产品详情、图片和富文本内容' : '创建新产品，添加描述和媒体资源'">副标题</p>
                 </div>
                 <a href="/admin/products" class="btn btn-outline-secondary btn-sm">
                     <i class="bi bi-arrow-left"></i> <span th:text="#{admin.back}">返回</span>

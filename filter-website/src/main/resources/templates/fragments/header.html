@@ -93,20 +93,20 @@
                             <div class="maincategory-inner">
                                 <!-- Left: main categories list -->
                                 <div class="maincategory-left">
-                                    <div class="maincategory-item"
+                                    <a class="maincategory-item"
                                          th:each="cat,iter : ${globalCategoryTree}"
-                                         th:if="${iter.index < 9}"
                                          th:data-index="${iter.index}"
-                                         onmouseenter="activateMainCat(this)">
+                                         th:href="@{/categories/{slug}(slug=${cat.slug})}"
+                                         onmouseenter="activateMainCat(this)"
+                                         style="text-decoration:none;color:inherit;display:flex;">
                                         <span class="maincategory-item-name" th:text="${cat.name}">Category</span>
                                         <i class="bi bi-chevron-right maincategory-arrow" th:if="${cat.children != null and !cat.children.isEmpty()}"></i>
-                                    </div>
+                                    </a>
                                 </div>
                                 <!-- Right: sub categories -->
                                 <div class="maincategory-right">
                                     <div class="maincategory-sub-panel"
                                          th:each="cat,iter : ${globalCategoryTree}"
-                                         th:if="${iter.index < 9}"
                                          th:id="'maincatsub-' + ${iter.index}">
                                         <div th:if="${cat.children != null and !cat.children.isEmpty()}">
                                             <a th:each="child : ${cat.children}"
@@ -242,7 +242,7 @@
             clearTimeout(closeTimer);
             closeTimer = setTimeout(function() {
                 if (dropdown) dropdown.classList.remove('active');
-            }, 700);
+            }, 1500);
         }
 
         parent.addEventListener('mouseenter', openDropdown);

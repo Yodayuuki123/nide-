@@ -12,7 +12,6 @@
             <div class="d-flex justify-content-between align-items-center mb-4">
                 <div>
                     <h4 style="font-size: 1.8rem; margin-bottom: 4px;" th:text="${category.id != null} ? '编辑分类' : '新增分类'">分类表单</h4>
-                    <p style="color: var(--admin-text-tertiary); font-size: 13px; margin: 0;" th:text="${category.id != null} ? '修改分类详情和层级结构' : '创建新的产品分类'">副标题</p>
                 </div>
                 <a href="/admin/categories" class="btn btn-outline-secondary btn-sm">
                     <i class="bi bi-arrow-left"></i> <span th:text="#{admin.back}">返回</span>

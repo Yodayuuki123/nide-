@@ -17,7 +17,6 @@
                         <span th:text="${menu.name}">Menu Name</span>
                         <span class="badge bg-info text-dark fs-6 ms-2" th:text="${menu.location} ?: 'unassigned'">primary</span>
                     </h4>
-                    <p style="color: var(--admin-text-tertiary); font-size: 13px; margin: 0;">管理菜单项和结构</p>
                 </div>
                 <a href="/admin/menus" class="btn btn-outline-secondary btn-sm">
                     <i class="bi bi-arrow-left"></i> <span th:text="#{admin.back}">返回</span>
@@ -29,7 +28,7 @@
                 <div class="col-lg-8">
                     <div class="admin-card">
                         <div class="admin-card-header">
-                            <h5>菜单项</h5>
+                            
                         </div>
                         <div class="admin-card-body">
                             <div class="table-responsive">
