@@ -25,6 +25,7 @@ public class AdminUserController {
 
     private final AdminUserService adminUserService;
     private final AdminRoleService adminRoleService;
+    private final com.philitee.filter.mapper.AdminUserRoleMapper adminUserRoleMapper;
 
     @GetMapping
     public String list(@RequestParam(defaultValue = "1") int page,
@@ -89,6 +90,8 @@ public class AdminUserController {
                 redirectAttributes.addFlashAttribute("error", "Cannot delete the built-in admin account");
                 return "redirect:/admin/users";
             }
+            // 先清理用户-角色关联表数据
+            adminUserRoleMapper.deleteByUserId(id);
             adminUserService.removeById(id);
             redirectAttributes.addFlashAttribute("message", "User deleted successfully");
         } catch (Exception e) {

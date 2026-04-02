@@ -63,9 +63,9 @@ public class AdminRoleServiceImpl extends ServiceImpl<AdminRoleMapper, AdminRole
         role.setUpdatedAt(LocalDateTime.now());
         this.updateById(role);
 
-        // 重新分配权限
+        // 重新分配权限（permissionIds为null表示全部取消勾选，也需要清理）
+        baseMapper.deletePermissionsByRoleId(role.getId());
         if (permissionIds != null) {
-            baseMapper.deletePermissionsByRoleId(role.getId());
             for (Long permId : permissionIds) {
                 baseMapper.insertRolePermission(role.getId(), permId);
             }

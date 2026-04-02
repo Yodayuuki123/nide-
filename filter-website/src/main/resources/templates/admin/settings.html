@@ -64,12 +64,12 @@
 
                         <!-- switch input -->
                         <div th:if="${setting.inputType == 'switch'}" class="form-check form-switch">
-                            <input class="form-check-input" type="checkbox"
-                                   th:checked="${setting.settingValue == 'true' or setting.settingValue == '1'}"
-                                   onchange="this.previousElementSibling.value = this.checked ? '1' : '0'">
                             <input type="hidden"
                                    th:name="'setting_' + ${setting.settingKey}"
                                    th:value="${setting.settingValue}">
+                            <input class="form-check-input" type="checkbox"
+                                   th:checked="${setting.settingValue == 'true' or setting.settingValue == '1'}"
+                                   onchange="this.previousElementSibling.value = this.checked ? '1' : '0'">
                         </div>
 
                         <!-- richtext input -->

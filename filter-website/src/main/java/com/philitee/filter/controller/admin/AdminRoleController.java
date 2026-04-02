@@ -24,6 +24,7 @@ import java.util.Map;
 public class AdminRoleController {
 
     private final AdminRoleService adminRoleService;
+    private final com.philitee.filter.mapper.AdminRoleMapper adminRoleMapper;
 
     @GetMapping
     public String list(@RequestParam(defaultValue = "1") int page,
@@ -85,6 +86,8 @@ public class AdminRoleController {
     @PostMapping("/delete/{id}")
     public String delete(@PathVariable Long id, RedirectAttributes redirectAttributes) {
         try {
+            // 先清理角色-权限关联表数据
+            adminRoleMapper.deletePermissionsByRoleId(id);
             adminRoleService.removeById(id);
             redirectAttributes.addFlashAttribute("message", "Role deleted successfully");
         } catch (Exception e) {

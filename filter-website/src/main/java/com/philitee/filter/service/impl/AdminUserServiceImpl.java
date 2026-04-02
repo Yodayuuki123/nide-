@@ -86,9 +86,9 @@ public class AdminUserServiceImpl extends ServiceImpl<AdminUserMapper, AdminUser
         user.setUpdatedAt(LocalDateTime.now());
         this.updateById(user);
 
-        // 重新分配角色
+        // 重新分配角色（roleIds为null表示全部取消勾选，也需要清理）
+        userRoleMapper.deleteByUserId(user.getId());
         if (roleIds != null) {
-            userRoleMapper.deleteByUserId(user.getId());
             for (Long roleId : roleIds) {
                 userRoleMapper.insertUserRole(user.getId(), roleId);
             }
