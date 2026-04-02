@@ -26,6 +26,7 @@ public class AdminCategoryController {
 
     private final ProductCategoryService categoryService;
     private final CacheManager cacheManager;
+    private final com.philitee.filter.mapper.ProductProductCategoryMapper productCategoryMapper;
 
     private void evictCategoryCache() {
         try {
@@ -119,6 +120,8 @@ public class AdminCategoryController {
     @PostMapping("/delete/{id}")
     public String delete(@PathVariable Long id, RedirectAttributes redirectAttributes) {
         try {
+            // 先清理产品-分类关联表数据
+            productCategoryMapper.deleteByCategoryId(id);
             categoryService.removeById(id);
             evictCategoryCache();
             redirectAttributes.addFlashAttribute("message", "Category deleted successfully");

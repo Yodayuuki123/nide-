@@ -92,4 +92,12 @@ public interface ProductService extends IService<Product> {
      */
     boolean updateProduct(Product product, List<Long> categoryIds, List<Long> tagIds, List<Long> imageIds);
 
+    /**
+     * 删除产品（同时清理分类、标签、图片关联表数据）
+     *
+     * @param id 产品ID
+     * @return 是否成功
+     */
+    boolean deleteProduct(Long id);
+
 }

@@ -179,6 +179,18 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
         return true;
     }
 
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    @CacheEvict(value = "featuredProducts", allEntries = true)
+    public boolean deleteProduct(Long id) {
+        // 先清理关联表数据
+        productCategoryMapper.deleteByProductId(id);
+        tagRelationMapper.deleteByProductId(id);
+        productImageMapper.deleteByProductId(id);
+        // 再删除产品本身
+        return this.removeById(id);
+    }
+
     /**
      * 填充产品的所有关联信息（图片、分类、标签）
      */

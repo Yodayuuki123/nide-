@@ -21,6 +21,7 @@ import java.time.LocalDateTime;
 public class AdminTagController {
 
     private final ProductTagService tagService;
+    private final com.philitee.filter.mapper.ProductTagRelationMapper tagRelationMapper;
 
     @GetMapping
     public String list(@RequestParam(defaultValue = "1") int page,
@@ -87,6 +88,8 @@ public class AdminTagController {
     @PostMapping("/delete/{id}")
     public String delete(@PathVariable Long id, RedirectAttributes redirectAttributes) {
         try {
+            // 先清理产品-标签关联表数据
+            tagRelationMapper.deleteByTagId(id);
             tagService.removeById(id);
             redirectAttributes.addFlashAttribute("message", "标签删除成功");
         } catch (Exception e) {

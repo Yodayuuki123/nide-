@@ -133,7 +133,7 @@ public class AdminProductController {
     @PostMapping("/delete/{id}")
     public String delete(@PathVariable Long id, RedirectAttributes redirectAttributes) {
         try {
-            productService.removeById(id);
+            productService.deleteProduct(id);
             redirectAttributes.addFlashAttribute("message", "产品删除成功");
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("error", "删除失败: " + e.getMessage());
