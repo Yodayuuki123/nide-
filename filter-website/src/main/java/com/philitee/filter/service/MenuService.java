@@ -42,4 +42,11 @@ public interface MenuService extends IService<Menu> {
      */
     List<MenuItem> getMenuItemTree(Long menuId);
 
+    /**
+     * 清除指定菜单的缓存（菜单项增删改后调用）
+     *
+     * @param menuId 菜单ID
+     */
+    void evictMenuCache(Long menuId);
+
 }

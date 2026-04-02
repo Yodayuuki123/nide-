@@ -82,6 +82,8 @@ public class AdminMenuController {
             wrapper.eq("menu_id", id);
             menuItemMapper.delete(wrapper);
             menuService.removeById(id);
+            // 清除该菜单缓存
+            menuService.evictMenuCache(id);
             redirectAttributes.addFlashAttribute("message", "Menu deleted successfully");
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("error", "Delete failed: " + e.getMessage());
@@ -105,6 +107,8 @@ public class AdminMenuController {
                 menuItemMapper.updateById(menuItem);
                 redirectAttributes.addFlashAttribute("message", "Menu item updated successfully");
             }
+            // 清除该菜单缓存，确保下次查询获取最新数据
+            menuService.evictMenuCache(menuItem.getMenuId());
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("error", "Operation failed: " + e.getMessage());
         }
@@ -117,6 +121,8 @@ public class AdminMenuController {
                                  RedirectAttributes redirectAttributes) {
         try {
             menuItemMapper.deleteById(id);
+            // 清除该菜单缓存，确保下次查询获取最新数据
+            menuService.evictMenuCache(menuId);
             redirectAttributes.addFlashAttribute("message", "Menu item deleted successfully");
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("error", "Delete failed: " + e.getMessage());

@@ -8,7 +8,9 @@ import com.philitee.filter.mapper.MenuItemMapper;
 import com.philitee.filter.mapper.MenuMapper;
 import com.philitee.filter.service.MenuService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -74,6 +76,15 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements Me
         return allItems.stream()
                 .filter(item -> item.getParentId() == null || item.getParentId() == 0)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    @Caching(evict = {
+        @CacheEvict(value = "menuWithItems", key = "#menuId"),
+        @CacheEvict(value = "allMenus", allEntries = true)
+    })
+    public void evictMenuCache(Long menuId) {
+        // 仅用于清除缓存，无需业务逻辑
     }
 
 }
