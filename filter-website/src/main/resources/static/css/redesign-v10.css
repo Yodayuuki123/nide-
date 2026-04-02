@@ -344,8 +344,8 @@
 /* --- Product List: mainCategory sidebar --- */
 .bf-pl-layout-new {
     display: grid;
-    grid-template-columns: 1fr 460px;
-    gap: 24px;
+    grid-template-columns: 1fr 280px;
+    gap: 32px;
     align-items: start;
 }
 .bf-sidebar-maincategory {

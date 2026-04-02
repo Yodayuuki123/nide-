@@ -51,16 +51,17 @@
                 <p th:text="#{home.about.text}">With over 20 years of experience in industrial filtration...</p>
                 <p th:text="#{home.about.text2}">Our state-of-the-art facility features advanced production lines...</p>
                 <a th:href="@{/about}" class="btn btn-outline-accent"><span th:text="#{home.learn_more}">Learn More</span> <i class="bi bi-arrow-right"></i></a>
-            </div>
-            <div class="home-about-gallery fade-in">
-                <div class="about-gallery-main">
-                    <img id="aboutMainImg" src="/static/images/factory/factory1.jpg" alt="Philitee Factory">
-                </div>
-                <div class="about-gallery-thumbs">
+                <!-- Factory thumbnail gallery moved below text -->
+                <div class="about-gallery-thumbs" style="margin-top:24px;">
                     <img src="/static/images/factory/factory1.jpg" alt="Factory" class="active" onclick="switchAboutImg(this)">
                     <img src="/static/images/factory/factory2.jpg" alt="Factory" onclick="switchAboutImg(this)">
                     <img src="/static/images/factory/factory3.jpg" alt="Factory" onclick="switchAboutImg(this)">
                     <img src="/static/images/factory/factory4.jpg" alt="Factory" onclick="switchAboutImg(this)">
+                </div>
+            </div>
+            <div class="home-about-gallery fade-in">
+                <div class="about-gallery-main">
+                    <img id="aboutMainImg" src="/static/images/factory/factory1.jpg" alt="Philitee Factory">
                 </div>
             </div>
         </div>

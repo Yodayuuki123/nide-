@@ -1766,6 +1766,11 @@ img {
 .product-sidebar {
     position: sticky;
     top: 100px;
+    width: 100%;
+    max-width: 100%;
+    overflow: hidden;
+    box-sizing: border-box;
+    padding: 0 4px;
 }
 
 .sidebar {
@@ -1806,6 +1811,8 @@ img {
     border-bottom: 1px solid var(--border);
     padding-bottom: 2px;
     transition: border-color 0.3s ease;
+    max-width: 100%;
+    box-sizing: border-box;
 }
 
 .sidebar-search-input-wrap:focus-within {
@@ -1820,6 +1827,7 @@ img {
 
 .sidebar-search-input-wrap input {
     width: 100%;
+    min-width: 0;
     border: none;
     padding: 10px 0;
     font-size: 14px;
@@ -1827,6 +1835,7 @@ img {
     color: var(--text-primary);
     outline: none;
     font-family: var(--font-body);
+    box-sizing: border-box;
 }
 
 .sidebar-search {
