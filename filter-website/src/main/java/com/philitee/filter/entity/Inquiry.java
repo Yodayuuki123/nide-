@@ -20,6 +20,8 @@ public class Inquiry {
     private String company;
     private String productInterest;
     private String message;
+    private String attachmentPath;
+    private String attachmentName;
     private Boolean isRead;
     private LocalDateTime createdTime;
 }

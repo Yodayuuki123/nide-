@@ -6,6 +6,11 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.philitee.filter.entity.Inquiry;
 import com.philitee.filter.service.InquiryService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,6 +18,9 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.io.File;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
@@ -23,6 +31,9 @@ import java.util.Map;
 public class AdminInquiryController {
 
     private final InquiryService inquiryService;
+
+    @Value("${file.upload-dir:uploads}")
+    private String uploadDir;
 
     @GetMapping
     public String list(
@@ -113,6 +124,24 @@ public class AdminInquiryController {
             result.put("message", e.getMessage());
         }
         return ResponseEntity.ok(result);
+    }
+
+    @GetMapping("/download/{id}")
+    public ResponseEntity<Resource> downloadAttachment(@PathVariable Long id) {
+        Inquiry inquiry = inquiryService.getById(id);
+        if (inquiry == null || !StringUtils.hasText(inquiry.getAttachmentPath())) {
+            return ResponseEntity.notFound().build();
+        }
+        File file = new File(uploadDir, inquiry.getAttachmentPath());
+        if (!file.exists()) {
+            return ResponseEntity.notFound().build();
+        }
+        String fileName = StringUtils.hasText(inquiry.getAttachmentName()) ? inquiry.getAttachmentName() : file.getName();
+        String encodedName = URLEncoder.encode(fileName, StandardCharsets.UTF_8).replace("+", "%20");
+        return ResponseEntity.ok()
+                .contentType(MediaType.APPLICATION_OCTET_STREAM)
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename*=UTF-8''" + encodedName)
+                .body(new FileSystemResource(file));
     }
 
     @PostMapping("/delete/{id}")

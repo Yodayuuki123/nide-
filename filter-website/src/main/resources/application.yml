@@ -53,6 +53,9 @@ mybatis-plus:
   configuration:
     map-underscore-to-camel-case: true
 
+file:
+  upload-dir: /home/ubuntu/nide/filter-website/uploads
+
 upload:
   base-path: /home/ubuntu/nide/filter-website/src/main/resources/static/wp-content/uploads
   url-prefix: /wp-content/uploads

@@ -2,9 +2,11 @@ package com.philitee.filter.controller.front;
 
 import com.philitee.filter.entity.Product;
 import com.philitee.filter.entity.ProductCategory;
+import com.philitee.filter.entity.ProductTag;
 import com.philitee.filter.service.MenuService;
 import com.philitee.filter.service.ProductCategoryService;
 import com.philitee.filter.service.ProductService;
+import com.philitee.filter.service.ProductTagService;
 import com.philitee.filter.util.BreadcrumbItem;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -23,6 +25,7 @@ public class HomeController {
     private final ProductService productService;
     private final ProductCategoryService categoryService;
     private final MenuService menuService;
+    private final ProductTagService tagService;
 
     @GetMapping("/")
     public String index(Model model) {
@@ -47,6 +50,17 @@ public class HomeController {
                 .filter(category -> category != null)
                 .collect(Collectors.toList());
         model.addAttribute("categories", categories);
+
+        // 按标签分组获取推荐产品
+        List<ProductTag> allTags = tagService.getAllTags();
+        java.util.LinkedHashMap<ProductTag, List<Product>> tagProducts = new java.util.LinkedHashMap<>();
+        for (ProductTag tag : allTags) {
+            List<Product> tagProds = productService.getProductsByTag(tag.getId());
+            if (!tagProds.isEmpty()) {
+                tagProducts.put(tag, tagProds);
+            }
+        }
+        model.addAttribute("tagProducts", tagProducts);
 
         return "front/index";
     }

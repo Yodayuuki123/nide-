@@ -71,6 +71,7 @@
                                 <th>公司</th>
                                 <th>感兴趣产品</th>
                                 <th>留言内容</th>
+                                <th>附件</th>
                                 <th>发送时间</th>
                                 <th>操作</th>
                             </tr>
@@ -88,6 +89,15 @@
                                 <td>
                                     <span th:text="${#strings.abbreviate(inq.message, 50)}" class="text-muted">留言内容 preview...</span>
                                 </td>
+                                <td>
+                                    <a th:if="${inq.attachmentPath != null and !inq.attachmentPath.isEmpty()}"
+                                       th:href="@{/admin/inquiries/download/{id}(id=${inq.id})}"
+                                       class="btn btn-sm btn-outline-success" title="下载附件">
+                                        <i class="bi bi-paperclip"></i>
+                                        <span th:text="${inq.attachmentName != null ? #strings.abbreviate(inq.attachmentName, 20) : '附件'}">附件</span>
+                                    </a>
+                                    <span th:unless="${inq.attachmentPath != null and !inq.attachmentPath.isEmpty()}" class="text-muted">-</span>
+                                </td>
                                 <td class="text-muted text-nowrap"
                                     th:text="${inq.createdTime != null} ? ${#temporals.format(inq.createdTime, 'yyyy-MM-dd HH:mm')} : '-'">2026-01-01</td>
                                 <td class="actions">
@@ -104,7 +114,7 @@
                                 </td>
                             </tr>
                             <tr th:if="${inquiryPage.records.isEmpty()}">
-                                <td colspan="8" class="text-center text-muted py-4">暂无询盘数据。</td>
+                                <td colspan="9" class="text-center text-muted py-4">暂无询盘数据。</td>
                             </tr>
                             </tbody>
                         </table>

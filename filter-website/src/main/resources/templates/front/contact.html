@@ -43,7 +43,7 @@
         <!-- Send Message Form -->
         <div class="bf-contact-form-wrapper">
             <h2 class="bf-contact-section-title" th:text="#{contact.form.heading}">Send Us a Message</h2>
-            <form th:action="@{/contact}" method="post" class="bf-contact-form-new">
+            <form th:action="@{/contact}" method="post" enctype="multipart/form-data" class="bf-contact-form-new">
                 <div class="bf-form-row-3">
                     <div class="bf-form-group">
                         <label th:text="#{contact.form.name}">Full Name</label>
@@ -77,6 +77,10 @@
                     <label th:text="#{contact.form.message}">Your Requirements</label>
                     <textarea name="message" rows="6" required
                               th:placeholder="#{contact.form.message.placeholder}" class="bf-textarea-new"></textarea>
+                </div>
+                <div class="bf-form-group">
+                    <label>Attachment</label>
+                    <input type="file" name="attachment" class="bf-input-new" style="padding:8px;">
                 </div>
                 <button type="submit" class="bf-btn bf-btn-primary bf-btn-submit">
                     <i class="bi bi-send"></i> <span th:text="#{contact.form.submit}">Submit Inquiry</span>

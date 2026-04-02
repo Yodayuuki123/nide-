@@ -47,7 +47,7 @@
         <div class="home-about-grid">
             <div class="home-about-text fade-in">
                 <span class="section-eyebrow" th:text="#{home.about.eyebrow}">About Us</span>
-                <h2 th:text="#{home.about.title}">Philitee Filter Technology</h2>
+
                 <p th:text="#{home.about.text}">With over 20 years of experience in industrial filtration...</p>
                 <p th:text="#{home.about.text2}">Our state-of-the-art facility features advanced production lines...</p>
                 <a th:href="@{/about}" class="btn btn-outline-accent"><span th:text="#{home.learn_more}">Learn More</span> <i class="bi bi-arrow-right"></i></a>
@@ -70,8 +70,9 @@
 <!-- ========== 3. Product Categories (鍥?椋庢牸: 澶у浘+鏍囬+MORE鎸夐挳) ========== -->
 <section class="home-categories-section" th:if="${categories != null and !categories.isEmpty()}">
     <div class="aesop-container">
-        <div class="section-header text-center fade-in">
+        <div class="section-header fade-in" style="position:relative;text-align:center;">
             <h2 th:text="#{home.categories.title}">Product Categories</h2>
+            <a th:href="@{/products}" style="position:absolute;right:0;top:50%;transform:translateY(-50%);color:#4CAF50;font-weight:600;font-size:0.95rem;text-decoration:none;border:1px solid #4CAF50;padding:6px 18px;border-radius:4px;transition:all 0.3s;" onmouseover="this.style.background='#4CAF50';this.style.color='#fff';" onmouseout="this.style.background='transparent';this.style.color='#4CAF50';">View More &rarr;</a>
         </div>
         <div class="filmedia-cat-grid">
             <th:block th:each="cat : ${categories}">
@@ -224,7 +225,10 @@
 <!-- ========== 7. Global Sales Network (Custom Map) ========== -->
 <section class="home-global-section">
     <div class="aesop-container">
-
+        <div class="section-header text-center fade-in">
+            <h2 style="text-transform:uppercase;font-family:var(--font-heading);font-weight:700;letter-spacing:0.02em;color:#2e7d32;">Global Commitment</h2>
+            <div style="width:60px;height:4px;background:#4CAF50;margin:12px auto 0;border-radius:2px;"></div>
+        </div>
         <div class="global-map-wrapper fade-in">
             <div id="worldMapContainer" style="width:100%;max-width:900px;margin:0 auto;"></div>
             <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
@@ -338,7 +342,7 @@
             <button type="button" class="inquiry-modal-close" onclick="closeInquiryModal()">&times;</button>
         </div>
         <div class="inquiry-modal-body">
-            <form id="inquiryForm" method="post" th:action="@{/contact}">
+            <form id="inquiryForm" method="post" enctype="multipart/form-data" th:action="@{/contact}">
                 <div class="inquiry-form-row">
                     <div class="inquiry-form-group">
                         <label th:text="#{contact.form.name}">Name *</label>
@@ -362,6 +366,10 @@
                 <div class="inquiry-form-group">
                     <label th:text="#{contact.form.message}">Message *</label>
                     <textarea name="message" rows="4" required th:placeholder="#{contact.form.message.placeholder}"></textarea>
+                </div>
+                <div class="inquiry-form-group">
+                    <label>Attachment</label>
+                    <input type="file" name="attachment" style="padding:8px;width:100%;border:1px solid #ddd;border-radius:4px;">
                 </div>
                 <button type="submit" class="bf-btn bf-btn-primary bf-btn-block">
                     <i class="bi bi-send"></i> <span th:text="#{contact.form.submit}">Submit Inquiry</span>
@@ -407,9 +415,8 @@ if (inquiryForm) {
         var formData = new FormData(inquiryForm);
         fetch('/contact', {
             method: 'POST',
-            body: new URLSearchParams(formData),
+            body: formData,
             headers: {
-                'Content-Type': 'application/x-www-form-urlencoded',
                 'X-Requested-With': 'XMLHttpRequest'
             }
         }).then(function(resp) {
