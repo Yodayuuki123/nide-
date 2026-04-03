@@ -51,19 +51,26 @@
                 <p th:text="#{home.about.text}">With over 20 years of experience in industrial filtration...</p>
                 <p th:text="#{home.about.text2}">Our state-of-the-art facility features advanced production lines...</p>
                 <a th:href="@{/about}" class="btn btn-outline-accent"><span th:text="#{home.learn_more}">Learn More</span> <i class="bi bi-arrow-right"></i></a>
-                <!-- Factory thumbnail gallery moved below text -->
-                <div class="about-gallery-thumbs" style="margin-top:24px;">
-                    <img src="/static/images/factory/factory1.jpg" alt="Factory" class="active" onclick="switchAboutImg(this)">
-                    <img src="/static/images/factory/factory2.jpg" alt="Factory" onclick="switchAboutImg(this)">
-                    <img src="/static/images/factory/factory3.jpg" alt="Factory" onclick="switchAboutImg(this)">
-                    <img src="/static/images/factory/factory4.jpg" alt="Factory" onclick="switchAboutImg(this)">
-                </div>
+
             </div>
             <div class="home-about-gallery fade-in">
                 <div class="about-gallery-main">
                     <img id="aboutMainImg" src="/static/images/factory/factory1.jpg" alt="Philitee Factory">
                 </div>
             </div>
+        </div>
+        <!-- Factory thumbnail carousel (centered below About section) -->
+        <div class="about-gallery-carousel" style="margin-top:32px;display:flex;align-items:center;justify-content:center;gap:12px;">
+            <button class="exhibition-arrow" onclick="aboutCarouselSlide(-1)" style="flex-shrink:0;"><i class="bi bi-chevron-left"></i></button>
+            <div class="about-carousel-viewport" style="overflow:hidden;max-width:800px;width:100%;">
+                <div class="about-carousel-track" id="aboutCarouselTrack" style="display:flex;gap:12px;transition:transform 0.5s ease;">
+                    <div style="flex:0 0 calc(25% - 9px);border-radius:6px;overflow:hidden;"><img src="/static/images/factory/factory1.jpg" alt="Factory 1" style="width:100%;aspect-ratio:4/3;object-fit:cover;display:block;"></div>
+                    <div style="flex:0 0 calc(25% - 9px);border-radius:6px;overflow:hidden;"><img src="/static/images/factory/factory2.jpg" alt="Factory 2" style="width:100%;aspect-ratio:4/3;object-fit:cover;display:block;"></div>
+                    <div style="flex:0 0 calc(25% - 9px);border-radius:6px;overflow:hidden;"><img src="/static/images/factory/factory3.jpg" alt="Factory 3" style="width:100%;aspect-ratio:4/3;object-fit:cover;display:block;"></div>
+                    <div style="flex:0 0 calc(25% - 9px);border-radius:6px;overflow:hidden;"><img src="/static/images/factory/factory4.jpg" alt="Factory 4" style="width:100%;aspect-ratio:4/3;object-fit:cover;display:block;"></div>
+                </div>
+            </div>
+            <button class="exhibition-arrow" onclick="aboutCarouselSlide(1)" style="flex-shrink:0;"><i class="bi bi-chevron-right"></i></button>
         </div>
     </div>
 </section>
@@ -99,17 +106,7 @@
 <section class="home-products-section" th:if="${tagProducts != null and !tagProducts.isEmpty()}">
     <div class="aesop-container">
         <div class="section-header text-center fade-in">
-            <span class="section-eyebrow" th:text="#{home.featured.eyebrow}">Our Products</span>
-            <h2 th:text="#{home.featured.title}">Featured Products</h2>
-        </div>
-        <!-- Tag tabs -->
-        <div class="product-tabs fade-in">
-            <th:block th:each="entry,iter : ${tagProducts}">
-                <button class="product-tab" th:classappend="${iter.index == 0} ? ' active' : ''"
-                        th:data-tab="${'tag-' + entry.key.id}"
-                        onclick="switchProductTab(this)"
-                        th:text="${entry.key.name}">Tag Name</button>
-            </th:block>
+            <h2 th:text="#{home.featured.title}">Best Sellers</h2>
         </div>
         <!-- Tab content panels -->
         <th:block th:each="entry,iter : ${tagProducts}">
@@ -227,7 +224,7 @@
 <section class="home-global-section">
     <div class="aesop-container">
         <div class="section-header text-center fade-in">
-            <h2 style="text-transform:uppercase;font-family:var(--font-heading);font-weight:700;letter-spacing:0.02em;color:#2e7d32;">Global Commitment</h2>
+            <h2 style="text-transform:uppercase;font-family:var(--font-heading);font-weight:700;letter-spacing:0.02em;color:#2e7d32;">GLOBAL COMMITMENT</h2>
             <div style="width:60px;height:4px;background:#4CAF50;margin:12px auto 0;border-radius:2px;"></div>
         </div>
         <div class="global-map-wrapper fade-in">
@@ -275,7 +272,7 @@
             });
             </script>
             <style>
-            #worldMapContainer { background: #f0f4f0; }
+            #worldMapContainer { background: #ffffff; }
             .map-label { background: rgba(255,255,255,0.95)!important; color:#2e7d32!important; border:1px solid #4CAF50!important; font-size:11px!important; font-weight:600; padding:2px 8px!important; border-radius:3px!important; box-shadow:0 1px 4px rgba(0,0,0,0.1)!important; }
             .map-label::before { border-top-color:#4CAF50!important; }
             .leaflet-control-zoom a { background:#fff!important; color:#333!important; border-color:#ccc!important; }
@@ -486,6 +483,26 @@ window.switchAboutImg = function(thumb) {
     thumbs.forEach(function(t) { t.classList.remove('active'); });
     thumb.classList.add('active');
 };
+
+/* ===== About Carousel ===== */
+(function(){
+    var track = document.getElementById('aboutCarouselTrack');
+    if (!track) return;
+    var items = track.children;
+    var currentOffset = 0;
+    var gap = 12;
+    window.aboutCarouselSlide = function(dir) {
+        var viewport = track.parentElement;
+        var vpWidth = viewport.offsetWidth;
+        var itemWidth = items[0].offsetWidth + gap;
+        var totalWidth = items.length * itemWidth - gap;
+        var maxOffset = Math.max(0, totalWidth - vpWidth);
+        currentOffset += dir * itemWidth;
+        if (currentOffset < 0) currentOffset = 0;
+        if (currentOffset > maxOffset) currentOffset = maxOffset;
+        track.style.transform = 'translateX(-' + currentOffset + 'px)';
+    };
+})();
 
 /* ===== Exhibition Carousel ===== */
 (function(){

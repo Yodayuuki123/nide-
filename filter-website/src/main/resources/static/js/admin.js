@@ -345,11 +345,17 @@
     };
 
     // ===== Modal Upload =====
-    var modalUploadZone = document.getElementById('modalUploadZone');
-    var modalFileInput = document.getElementById('modalFileInput');
+    var modalUploadBound = false;
+    function bindModalUpload() {
+        if (modalUploadBound) return;
+        var modalUploadZone = document.getElementById('modalUploadZone');
+        var modalFileInput = document.getElementById('modalFileInput');
+        if (!modalUploadZone || !modalFileInput) return;
+        modalUploadBound = true;
 
-    if (modalUploadZone && modalFileInput) {
-        modalUploadZone.addEventListener('click', function() {
+        modalUploadZone.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
             modalFileInput.click();
         });
 
@@ -376,6 +382,16 @@
             }
         });
     }
+
+    // Bind upload events when modal is shown
+    var imagePickerModalEl = document.getElementById('imagePickerModal');
+    if (imagePickerModalEl) {
+        imagePickerModalEl.addEventListener('shown.bs.modal', function() {
+            bindModalUpload();
+        });
+    }
+    // Also try binding immediately in case modal elements already exist
+    bindModalUpload();
 
     function uploadModalFile(file) {
         var formData = new FormData();

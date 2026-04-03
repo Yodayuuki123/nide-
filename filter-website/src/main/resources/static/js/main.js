@@ -539,7 +539,7 @@ function switchGalleryImage(thumbEl) {
     document.body.classList.add('page-loaded');
 
     // Smooth link transitions (internal links only)
-    var internalLinks = document.querySelectorAll('a[href^="/"]:not([target="_blank"])');
+    var internalLinks = document.querySelectorAll('a[href^="/"]:not([target="_blank"]):not(.maincategory-item):not(.maincategory-sub-link):not(.maincategory-sub-view-all)');
     internalLinks.forEach(function(link) {
         link.addEventListener('click', function(e) {
             var href = link.getAttribute('href');
