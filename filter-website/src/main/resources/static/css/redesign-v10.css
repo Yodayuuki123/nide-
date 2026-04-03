@@ -63,13 +63,14 @@
     display: block;
 }
 .maincategory-inner {
-    display: grid;
-    grid-template-columns: 300px minmax(0, 1fr);
-    max-width: 1200px;
+    display: flex;
+    max-width: 900px;
     margin: 0 auto;
-    min-height: 360px;
+    min-height: 0;
 }
 .maincategory-left {
+    width: 260px;
+    flex-shrink: 0;
     border-right: 1px solid #e8ede4;
     max-height: 70vh;
     overflow-y: auto;
@@ -119,6 +120,9 @@
     max-height: 400px;
     overflow-y: auto;
     background: #ffffff;
+    min-width: 180px;
+    width: auto;
+    flex-shrink: 0;
 }
 .maincategory-sub-panel {
     display: none;
