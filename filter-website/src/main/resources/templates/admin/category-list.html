@@ -1,6 +1,6 @@
 ﻿<!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-<head th:replace="~{fragments/admin-layout :: adminHead('Category Management')}"></head>
+<head th:replace="~{fragments/admin-layout :: adminHead('分类管理')}"></head>
 <body class="admin-body">
 <div class="admin-wrapper">
     <div th:replace="~{fragments/admin-layout :: adminSidebar}"></div>
@@ -9,10 +9,10 @@
         <div class="admin-main">
             <div class="d-flex justify-content-between align-items-center mb-4">
                 <div>
-                    <h4 style="font-size: 1.8rem; margin-bottom: 4px;">Category Management</h4>
+                    <h4 style="font-size: 1.8rem; margin-bottom: 4px;">分类管理</h4>
                 </div>
                 <a href="/admin/categories/add" class="btn btn-primary btn-sm">
-                    <i class="bi bi-plus-circle"></i> Add Category
+                    <i class="bi bi-plus-circle"></i> 新增分类
                 </a>
             </div>
 
@@ -20,19 +20,19 @@
                 <div class="admin-card-body">
                     <form method="get" th:action="@{/admin/categories}" class="row g-2 align-items-end">
                         <div class="col-md-3">
-                            <label class="form-label form-label-sm">Category Name</label>
-                            <input type="text" name="keyword" th:value="${param.keyword}" class="form-control form-control-sm" placeholder="Search category name...">
+                            <label class="form-label form-label-sm">分类名称</label>
+                            <input type="text" name="keyword" th:value="${param.keyword}" class="form-control form-control-sm" placeholder="搜索分类名称...">
                         </div>
                         <div class="col-md-2">
-                            <label class="form-label form-label-sm">Created From</label>
+                            <label class="form-label form-label-sm">创建时间起</label>
                             <input type="date" name="startDate" th:value="${param.startDate}" class="form-control form-control-sm">
                         </div>
                         <div class="col-md-2">
-                            <label class="form-label form-label-sm">Created To</label>
+                            <label class="form-label form-label-sm">创建时间止</label>
                             <input type="date" name="endDate" th:value="${param.endDate}" class="form-control form-control-sm">
                         </div>
                         <div class="col-md-2">
-                            <label class="form-label form-label-sm">Per Page</label>
+                            <label class="form-label form-label-sm">每页显示</label>
                             <select name="size" class="form-select form-select-sm">
                                 <option value="10" th:selected="${categoryPage.size == 10}">10</option>
                                 <option value="20" th:selected="${categoryPage.size == 20}">20</option>
@@ -41,8 +41,8 @@
                             </select>
                         </div>
                         <div class="col-md-3 d-flex gap-2">
-                            <button type="submit" class="btn btn-primary btn-sm"><i class="bi bi-search"></i> Search</button>
-                            <a th:href="@{/admin/categories}" class="btn btn-outline-secondary btn-sm"><i class="bi bi-arrow-counterclockwise"></i> Reset</a>
+                            <button type="submit" class="btn btn-primary btn-sm"><i class="bi bi-search"></i> 搜索</button>
+                            <a th:href="@{/admin/categories}" class="btn btn-outline-secondary btn-sm"><i class="bi bi-arrow-counterclockwise"></i> 重置</a>
                         </div>
                     </form>
                 </div>
@@ -50,8 +50,8 @@
 
             <div class="admin-card">
                 <div class="admin-card-header d-flex justify-content-between align-items-center">
-                    <h5 class="mb-0">All Categories</h5>
-                    <span class="text-muted" th:text="'Total ' + ${categoryPage.total}">Total 0</span>
+                    <h5 class="mb-0">全部分类</h5>
+                    <span class="text-muted" th:text="'共 ' + ${categoryPage.total} + ' 条'">Total 0</span>
                 </div>
                 <div class="admin-card-body">
                     <div class="table-responsive">
@@ -59,12 +59,12 @@
                             <thead>
                             <tr>
                                 <th>ID</th>
-                                <th>Name</th>
-                                <th>Slug</th>
-                                <th>Parent</th>
-                                <th>Products</th>
-                                <th>Updated At</th>
-                                <th>Actions</th>
+                                <th>名称</th>
+                                <th>URL别名</th>
+                                <th>父级分类</th>
+                                <th>产品数</th>
+                                <th>更新时间</th>
+                                <th>操作</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -76,23 +76,23 @@
                                 <td><span class="badge bg-light text-dark" th:text="${productCountMap[cat.id] != null ? productCountMap[cat.id] : 0}">0</span></td>
                                 <td class="text-muted" th:text="${cat.updatedAt != null ? #temporals.format(cat.updatedAt, 'yyyy-MM-dd HH:mm') : (cat.createdAt != null ? #temporals.format(cat.createdAt, 'yyyy-MM-dd HH:mm') : '-')}">2026-01-01</td>
                                 <td class="actions">
-                                    <a th:href="@{/admin/categories/edit/{id}(id=${cat.id})}" class="btn btn-sm btn-outline-primary me-1" title="Edit"><i class="bi bi-pencil"></i></a>
+                                    <a th:href="@{/admin/categories/edit/{id}(id=${cat.id})}" class="btn btn-sm btn-outline-primary me-1" title="编辑"><i class="bi bi-pencil"></i></a>
                                     <button type="button" class="btn btn-sm btn-outline-danger" th:data-id="${cat.id}" th:data-name="${cat.name}" onclick="confirmDelete(this)"><i class="bi bi-trash"></i></button>
                                 </td>
                             </tr>
                             <tr th:if="${categoryPage.records.isEmpty()}">
-                                <td colspan="7" class="text-center text-muted py-4">No category data.</td>
+                                <td colspan="7" class="text-center text-muted py-4">暂无分类数据。</td>
                             </tr>
                             </tbody>
                         </table>
                     </div>
 
                     <div class="p-3 d-flex justify-content-between align-items-center" th:if="${categoryPage.pages > 1}">
-                        <span class="text-muted" style="font-size:13px;" th:text="'Showing ' + ${(categoryPage.current - 1) * categoryPage.size + 1} + '-' + ${categoryPage.current * categoryPage.size < categoryPage.total ? categoryPage.current * categoryPage.size : categoryPage.total} + ' / Total ' + ${categoryPage.total}"></span>
+                        <span class="text-muted" style="font-size:13px;" th:text="'显示 ' + ${(categoryPage.current - 1) * categoryPage.size + 1} + '-' + ${categoryPage.current * categoryPage.size < categoryPage.total ? categoryPage.current * categoryPage.size : categoryPage.total} + ' / 共 ' + ${categoryPage.total} + ' 条'"></span>
                         <nav>
                             <ul class="pagination pagination-sm mb-0">
                                 <li class="page-item" th:classappend="${categoryPage.current <= 1} ? 'disabled'">
-                                    <a class="page-link" th:href="@{/admin/categories(page=${categoryPage.current - 1}, size=${categoryPage.size}, keyword=${param.keyword}, startDate=${param.startDate}, endDate=${param.endDate})}">Prev</a>
+                                    <a class="page-link" th:href="@{/admin/categories(page=${categoryPage.current - 1}, size=${categoryPage.size}, keyword=${param.keyword}, startDate=${param.startDate}, endDate=${param.endDate)}">上一页</a>
                                 </li>
                                 <th:block th:with="startPage=${categoryPage.current - 2 > 1 ? categoryPage.current - 2 : 1}, endPage=${categoryPage.pages < (categoryPage.current - 2 > 1 ? categoryPage.current - 2 : 1) + 4 ? categoryPage.pages : (categoryPage.current - 2 > 1 ? categoryPage.current - 2 : 1) + 4}">
                                     <li th:if="${startPage > 1}" class="page-item">
@@ -110,7 +110,7 @@
                                     </li>
                                 </th:block>
                                 <li class="page-item" th:classappend="${categoryPage.current >= categoryPage.pages} ? 'disabled'">
-                                    <a class="page-link" th:href="@{/admin/categories(page=${categoryPage.current + 1}, size=${categoryPage.size}, keyword=${param.keyword}, startDate=${param.startDate}, endDate=${param.endDate})}">Next</a>
+                                    <a class="page-link" th:href="@{/admin/categories(page=${categoryPage.current + 1}, size=${categoryPage.size}, keyword=${param.keyword}, startDate=${param.startDate}, endDate=${param.endDate})}">下一页</a>
                                 </li>
                             </ul>
                         </nav>
@@ -125,17 +125,17 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Confirm Delete</h5>
+                <h5 class="modal-title">确认删除</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body">
-                <p>Are you sure you want to delete this category?</p>
+                <p>确定要删除此分类？</p>
                 <p class="fw-medium" id="deleteItemName"></p>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
                 <form id="deleteForm" method="post" class="d-inline">
-                    <button type="submit" class="btn btn-outline-danger">Confirm</button>
+                    <button type="submit" class="btn btn-outline-danger">确认删除</button>
                 </form>
             </div>
         </div>

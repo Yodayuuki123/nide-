@@ -11,7 +11,7 @@
         <div class="admin-main">
             <div class="d-flex justify-content-between align-items-center mb-4">
                 <div>
-                    <h4 style="font-size: 1.8rem; margin-bottom: 4px;" th:text="${role.id != null} ? '编辑角色' : '新增角色'">Role Form</h4>
+                    <h4 style="font-size: 1.8rem; margin-bottom: 4px;" th:text="${role.id != null} ? '编辑角色' : '新增角色'">角色表单</h4>
                 </div>
                 <a href="/admin/roles" class="btn btn-outline-secondary btn-sm">
                     <i class="bi bi-arrow-left"></i> 返回
@@ -52,7 +52,7 @@
                             <div class="permission-module-list">
                                 <div th:each="entry : ${permissionMap}" class="permission-module mb-3">
                                     <div class="d-flex align-items-center mb-2">
-                                        <strong class="text-capitalize" th:text="${entry.key}">Module</strong>
+                                        <strong class="text-capitalize" th:text="${entry.key}">模块</strong>
                                         <button type="button" class="btn btn-link btn-sm ms-2 select-all-btn"
                                                 th:data-module="${entry.key}" onclick="toggleModulePerms(this)">
                                             全选

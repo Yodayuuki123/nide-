@@ -30,42 +30,42 @@
                                     <div class="mb-3">
                                         <label class="form-label">名称 <span class="text-danger">*</span></label>
                                         <input type="text" name="name" class="form-control" th:value="${inquiry.name}"
-                                               required placeholder="Customer name">
+                                               required placeholder="客户姓名">
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="mb-3">
                                         <label class="form-label">邮箱 <span class="text-danger">*</span></label>
                                         <input type="email" name="email" class="form-control" th:value="${inquiry.email}"
-                                               required placeholder="customer@example.com">
+                                               required placeholder="客户邮箱">
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="mb-3">
                                         <label class="form-label">电话</label>
                                         <input type="text" name="phone" class="form-control" th:value="${inquiry.phone}"
-                                               placeholder="Phone number">
+                                               placeholder="联系电话">
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="mb-3">
                                         <label class="form-label">公司</label>
                                         <input type="text" name="company" class="form-control" th:value="${inquiry.company}"
-                                               placeholder="Company name">
+                                               placeholder="公司名称">
                                     </div>
                                 </div>
                                 <div class="col-12">
                                     <div class="mb-3">
-                                        <label class="form-label">Product Interest</label>
+                                        <label class="form-label">感兴趣产品</label>
                                         <input type="text" name="productInterest" class="form-control" th:value="${inquiry.productInterest}"
-                                               placeholder="Interested product">
+                                               placeholder="感兴趣的产品">
                                     </div>
                                 </div>
                                 <div class="col-12">
                                     <div class="mb-3">
                                         <label class="form-label">留言内容</label>
                                         <textarea name="message" class="form-control" rows="6"
-                                                  placeholder="Customer message" th:text="${inquiry.message}"></textarea>
+                                                  placeholder="客户留言" th:text="${inquiry.message}"></textarea>
                                     </div>
                                 </div>
                             </div>

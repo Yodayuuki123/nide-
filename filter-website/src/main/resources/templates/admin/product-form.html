@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-<head th:replace="~{fragments/admin-layout :: adminHead(${product.id != null} ? '编辑 Product' : '新增产品')}"></head>
+<head th:replace="~{fragments/admin-layout :: adminHead(${product.id != null} ? '编辑产品' : '新增产品')}"></head>
 <body class="admin-body">
 <div class="admin-wrapper">
     <div th:replace="~{fragments/admin-layout :: adminSidebar}"></div>
@@ -31,12 +31,12 @@
                             <div class="mb-3">
                                 <label class="form-label">产品名称 <span class="text-danger">*</span></label>
                                 <input type="text" name="name" class="form-control" th:value="${product.name}"
-                                       required id="productName" placeholder="Enter product name">
+                                       required id="productName" placeholder="请输入产品名称">
                             </div>
                             <div class="mb-3">
                                 <label class="form-label">URL别名</label>
                                 <input type="text" name="slug" class="form-control" th:value="${product.slug}"
-                                       id="productSlug" placeholder="auto-generated-from-name">
+                                       id="productSlug" placeholder="自动生成自名称">
                             </div>
                             <div class="row g-3">
                                 <div class="col-md-4">
@@ -50,7 +50,7 @@
                                            th:value="${product.price}" placeholder="0.00">
                                 </div>
                                 <div class="col-md-4">
-                                    <label class="form-label">Sale Price</label>
+                                    <label class="form-label">优惠价格</label>
                                     <input type="number" name="salePrice" class="form-control" step="0.01"
                                            th:value="${product.salePrice}" placeholder="0.00">
                                 </div>
@@ -110,7 +110,7 @@
                     <div class="col-lg-4">
                         <!-- Main 图片 -->
                         <div class="admin-form mb-4">
-                            <h6 class="mb-3">Main 图片</h6>
+                            <h6 class="mb-3">主图</h6>
                             <input type="hidden" name="mainImageId" id="mainImageId" th:value="${product.mainImageId}">
                             <div id="mainImagePreview" class="mb-2">
                                 <img th:if="${product.mainImage != null}" th:src="${product.mainImage.url}"
@@ -123,13 +123,13 @@
                             </div>
                             <button type="button" class="btn btn-outline-primary btn-sm w-100"
                                     onclick="openImagePicker('main')">
-                                <i class="bi bi-image"></i> Select 图片
+                                <i class="bi bi-image"></i> 选择主图
                             </button>
                         </div>
 
                         <!-- Gallery 图片s -->
                         <div class="admin-form mb-4">
-                            <h6 class="mb-3">Gallery 图片s</h6>
+                            <h6 class="mb-3">图片库</h6>
                             <div id="galleryImagesContainer" class="d-flex flex-wrap gap-2 mb-2">
                                 <div th:each="img : ${product.images}" class="gallery-thumb-item position-relative"
                                      th:data-id="${img.id}">
@@ -144,7 +144,7 @@
                             </div>
                             <button type="button" class="btn btn-outline-primary btn-sm w-100"
                                     onclick="openImagePicker('gallery')">
-                                <i class="bi bi-images"></i> Add 图片s
+                                <i class="bi bi-images"></i> 添加图片
                             </button>
                         </div>
 
@@ -184,7 +184,7 @@
                                     <label class="form-check-label" th:for="'tag_' + ${tag.id}"
                                            th:text="${tag.name}">Tag</label>
                                 </div>
-                                <p th:if="${tags == null or tags.isEmpty()}" class="text-muted mb-0">No tags available.</p>
+                                <p th:if="${tags == null or tags.isEmpty()}" class="text-muted mb-0">暂无标签。</p>
                             </div>
                         </div>
 
@@ -207,42 +207,42 @@
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Select Image</h5>
+                <h5 class="modal-title">选择图片</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body">
                 <!-- Tab -->
                 <ul class="nav nav-tabs mb-3">
                     <li class="nav-item">
-                        <a class="nav-link active" data-bs-toggle="tab" href="#tabLibrary">Image Library</a>
+                        <a class="nav-link active" data-bs-toggle="tab" href="#tabLibrary">图片库</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" data-bs-toggle="tab" href="#tabUpload">Upload New</a>
+                        <a class="nav-link" data-bs-toggle="tab" href="#tabUpload">上传新图片</a>
                     </li>
                 </ul>
                 <div class="tab-content">
                     <div class="tab-pane fade show active" id="tabLibrary">
                         <!-- Search bar for image picker -->
                         <div class="d-flex gap-2 mb-3">
-                            <input type="text" id="pickerSearchInput" class="form-control form-control-sm" placeholder="Search by file name...">
-                            <button type="button" id="pickerSearchBtn" class="btn btn-primary btn-sm">Search</button>
+                            <input type="text" id="pickerSearchInput" class="form-control form-control-sm" placeholder="按文件名搜索...">
+                            <button type="button" id="pickerSearchBtn" class="btn btn-primary btn-sm">搜索</button>
                         </div>
                         <div id="imagePickerGrid" class="image-picker-grid">
-                            <p class="text-muted text-center py-4">Loading images...</p>
+                            <p class="text-muted text-center py-4">加载中...</p>
                         </div>
                         <!-- Pagination for image picker -->
                         <div class="d-flex justify-content-between align-items-center mt-3">
                             <small class="text-muted" id="pickerPageInfo"></small>
                             <div class="btn-group btn-group-sm">
-                                <button type="button" class="btn btn-outline-secondary" id="pickerPrevPage" disabled>&laquo; Prev</button>
-                                <button type="button" class="btn btn-outline-secondary" id="pickerNextPage" disabled>Next &raquo;</button>
+                                <button type="button" class="btn btn-outline-secondary" id="pickerPrevPage" disabled>&laquo; 上一页</button>
+                                <button type="button" class="btn btn-outline-secondary" id="pickerNextPage" disabled>下一页 &raquo;</button>
                             </div>
                         </div>
                     </div>
                     <div class="tab-pane fade" id="tabUpload">
                         <label class="upload-zone d-block" id="modalUploadZone" for="modalFileInput" style="cursor:pointer;">
                             <i class="bi bi-cloud-arrow-up d-block" style="pointer-events:none;"></i>
-                            <p style="pointer-events:none;">Click or drag file to upload</p>
+                            <p style="pointer-events:none;">点击或拖拽文件至此上传</p>
                             <input type="file" id="modalFileInput" accept="image/*" style="display: none">
                         </label>
                         <div id="uploadProgress" class="mt-2" style="display: none">
@@ -254,8 +254,8 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                <button type="button" class="btn btn-primary" id="confirmImageSelect" disabled>Select</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+                <button type="button" class="btn btn-primary" id="confirmImageSelect" disabled>确认选择</button>
             </div>
         </div>
     </div>

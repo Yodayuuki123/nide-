@@ -62,20 +62,20 @@
                         </div>
                         <div class="col-md-6">
                             <div class="mb-3">
-                                <label class="form-label text-muted">Product Interest</label>
+                                <label class="form-label text-muted">感兴趣产品</label>
                                 <div th:text="${inquiry.productInterest} ?: '-'" class="text-muted">Product</div>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="mb-3">
-                                <label class="form-label text-muted">Created Time</label>
+                                <label class="form-label text-muted">提交时间</label>
                                 <div class="text-muted"
                                      th:text="${inquiry.createdTime != null} ? ${#temporals.format(inquiry.createdTime, 'yyyy-MM-dd HH:mm:ss')} : '-'">2026-01-01</div>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="mb-3">
-                                <label class="form-label text-muted">Read Status</label>
+                                <label class="form-label text-muted">阅读状态</label>
                                 <div>
                                     <span th:if="${inquiry.isRead != null and inquiry.isRead}" class="badge bg-success">已读</span>
                                     <span th:unless="${inquiry.isRead != null and inquiry.isRead}" class="badge bg-warning text-dark">未读</span>

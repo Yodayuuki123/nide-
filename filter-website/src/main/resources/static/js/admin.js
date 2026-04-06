@@ -58,18 +58,18 @@
             modalEl.innerHTML = '<div class="modal-dialog modal-sm modal-dialog-centered">' +
                 '<div class="modal-content">' +
                 '<div class="modal-header border-0 pb-0">' +
-                '<h6 class="modal-title"><i class="bi bi-exclamation-triangle text-warning me-2"></i>Confirm Delete</h6>' +
+                '<h6 class="modal-title"><i class="bi bi-exclamation-triangle text-warning me-2"></i>确认删除</h6>' +
                 '<button type="button" class="btn-close" data-bs-dismiss="modal"></button>' +
                 '</div>' +
                 '<div class="modal-body" id="deleteConfirmMessage"></div>' +
                 '<div class="modal-footer border-0 pt-0">' +
-                '<button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">Cancel</button>' +
-                '<button type="button" class="btn btn-sm btn-danger" id="deleteConfirmBtn">Delete</button>' +
+                '<button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">取消</button>' +
+                '<button type="button" class="btn btn-sm btn-danger" id="deleteConfirmBtn">删除</button>' +
                 '</div></div></div>';
             document.body.appendChild(modalEl);
         }
 
-        document.getElementById('deleteConfirmMessage').textContent = message || 'Are you sure you want to delete this item?';
+        document.getElementById('deleteConfirmMessage').textContent = message || '确定要删除此项目吗？';
         var modal = bootstrap.Modal.getOrCreateInstance(modalEl);
 
         var confirmBtn = document.getElementById('deleteConfirmBtn');
@@ -109,11 +109,11 @@
                             if (data.success) {
                                 resolve(data.url);
                             } else {
-                                reject('Upload failed: ' + (data.message || 'Unknown error'));
+                                reject('上传失败：' + (data.message || '未知错误'));
                             }
                         })
                         .catch(function(err) {
-                            reject('Upload failed: ' + err.message);
+                            reject('上传失败：' + err.message);
                         });
                     });
                 },
@@ -236,7 +236,7 @@
         }
 
         var grid = document.getElementById('imagePickerGrid');
-        if (grid) grid.innerHTML = '<p class="text-muted text-center py-4">Loading...</p>';
+        if (grid) grid.innerHTML = '<p class="text-muted text-center py-4">加载中...</p>';
 
         fetch(url)
             .then(function(resp) { return resp.json(); })
@@ -272,13 +272,13 @@
                         grid.appendChild(div);
                     });
                 } else {
-                    grid.innerHTML = '<p class="text-muted text-center py-4">No images found.</p>';
+                    grid.innerHTML = '<p class="text-muted text-center py-4">暂无图片。</p>';
                 }
 
                 // Update pagination info
                 var pageInfo = document.getElementById('pickerPageInfo');
                 if (pageInfo) {
-                    pageInfo.textContent = 'Page ' + currentPage + ' of ' + totalPages + ' (' + totalRecords + ' images)';
+                    pageInfo.textContent = '第 ' + currentPage + ' 页 / 共 ' + totalPages + ' 页（' + totalRecords + ' 张）';
                 }
 
                 var prevBtn = document.getElementById('pickerPrevPage');
@@ -288,7 +288,7 @@
             })
             .catch(function(err) {
                 console.error('Failed to load images:', err);
-                if (grid) grid.innerHTML = '<p class="text-danger text-center py-4">Failed to load images.</p>';
+                if (grid) grid.innerHTML = '<p class="text-danger text-center py-4">图片加载失败，请刷新重试。</p>';
             });
     }
 
@@ -335,7 +335,7 @@
                 if (modal) modal.hide();
             }
 
-            showToast('Image selected successfully', 'success');
+            showToast('图片已选择', 'success');
         });
     }
 
@@ -420,7 +420,7 @@
                 var confirmBtn = document.getElementById('confirmImageSelect');
                 if (confirmBtn && selectedImageId) confirmBtn.disabled = false;
 
-                showToast('Image uploaded successfully', 'success');
+                showToast('图片上传成功', 'success');
 
                 // Refresh library and switch to library tab
                 loadPickerImages();
@@ -429,18 +429,18 @@
                     bootstrap.Tab.getOrCreateInstance(libraryTabLink).show();
                 }
             } else {
-                showToast('Upload failed: ' + (data.message || 'Unknown error'), 'error');
+                showToast('上传失败：' + (data.message || '未知错误'), 'error');
             }
         })
         .catch(function(err) {
             if (progressDiv) progressDiv.style.display = 'none';
-            showToast('Upload failed: ' + err.message, 'error');
+            showToast('上传失败：' + err.message, 'error');
         });
     }
 
     // ===== Delete Image (AJAX) =====
     window.deleteImage = function(id, btn) {
-        confirmDelete('Are you sure you want to delete this image? This action cannot be undone.', function() {
+        confirmDelete('确定要删除此图片？此操作不可恢复。', function() {
             fetch('/admin/api/images/delete/' + id, { method: 'POST' })
                 .then(function(resp) { return resp.json(); })
                 .then(function(data) {
@@ -448,13 +448,13 @@
                         var item = btn.closest('.image-grid-item');
                         if (item) item.remove();
                         else window.location.reload();
-                        showToast('Image deleted successfully', 'success');
+                        showToast('图片删除成功', 'success');
                     } else {
-                        showToast('Delete failed: ' + (data.message || 'Unknown error'), 'error');
+                        showToast('删除失败：' + (data.message || '未知错误'), 'error');
                     }
                 })
                 .catch(function(err) {
-                    showToast('Delete failed: ' + err.message, 'error');
+                    showToast('删除失败：' + err.message, 'error');
                 });
         });
     };
@@ -470,10 +470,10 @@
     // ===== Show toast for URL params (success/error messages from server redirects) =====
     var urlParams = new URLSearchParams(window.location.search);
     if (urlParams.has('success')) {
-        showToast(decodeURIComponent(urlParams.get('success')) || 'Operation successful', 'success');
+        showToast(decodeURIComponent(urlParams.get('success')) || '操作成功', 'success');
     }
     if (urlParams.has('error')) {
-        showToast(decodeURIComponent(urlParams.get('error')) || 'Operation failed', 'error');
+        showToast(decodeURIComponent(urlParams.get('error')) || '操作失败', 'error');
     }
 
 })();
