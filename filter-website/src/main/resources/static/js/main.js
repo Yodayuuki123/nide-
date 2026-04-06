@@ -683,3 +683,10 @@ function switchGalleryImage(thumbEl) {
 
     updateButtons();
 })();
+
+// ===== BFCache Fix: 解决从详情页返回时出现空白页的问题 =====
+window.addEventListener('pageshow', function(event) {
+    if (event.persisted) {
+        window.location.reload();
+    }
+});

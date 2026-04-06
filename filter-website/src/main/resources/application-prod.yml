@@ -1,7 +1,12 @@
 server:
   port: 8080
+  forward-headers-strategy: native
   servlet:
     context-path: /
+    session:
+      cookie:
+        same-site: lax
+        secure: false
 
 spring:
   main:

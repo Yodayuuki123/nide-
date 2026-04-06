@@ -205,7 +205,7 @@
             progressDiv.style.display = '';
             progressBar.style.width = '35%';
             progressText.textContent = '正在上传 ' + pendingFiles.length + ' 个文件...';
-            fetch('/admin/api/images/batch-upload', { method: 'POST', body: formData })
+            fetch('/admin/api/images/batch-upload', { method: 'POST', body: formData, credentials: 'include' })
                 .then(function(resp) { return resp.json(); })
                 .then(function(data) {
                     progressBar.style.width = '100%';
@@ -235,7 +235,7 @@ function confirmDeleteImage(btn) {
 
 function doDeleteImage() {
     if (!deleteImageId) return;
-    fetch('/admin/api/images/delete/' + deleteImageId, { method: 'POST' })
+    fetch('/admin/api/images/delete/' + deleteImageId, { method: 'POST', credentials: 'include' })
         .then(function(resp) { return resp.json(); })
         .then(function(data) {
             if (data.success) {

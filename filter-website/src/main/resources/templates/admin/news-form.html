@@ -160,7 +160,8 @@
 
                     fetch('/admin/api/images/upload', {
                         method: 'POST',
-                        body: formData
+                        body: formData,
+                        credentials: 'include'
                     })
                     .then(function(resp) { return resp.json(); })
                     .then(function(data) {
@@ -190,7 +191,8 @@
                         formData.append('file', file);
                         fetch('/admin/api/images/upload', {
                             method: 'POST',
-                            body: formData
+                            body: formData,
+                            credentials: 'include'
                         })
                         .then(function(resp) { return resp.json(); })
                         .then(function(data) {

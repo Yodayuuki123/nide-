@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * 产品 Service 实现类
@@ -99,6 +100,38 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
         return products;
     }
 
+    /**
+     * 将产品名称转换为 URL 友好的 slug
+     */
+    private String generateSlug(String name) {
+        if (name == null || name.trim().isEmpty()) {
+            return UUID.randomUUID().toString().substring(0, 8);
+        }
+        String slug = name.trim().toLowerCase()
+                .replaceAll("[^a-z0-9\\u4e00-\\u9fa5]+", "-")
+                .replaceAll("^-+|-+$", "");
+        if (slug.isEmpty()) {
+            slug = UUID.randomUUID().toString().substring(0, 8);
+        }
+        return slug;
+    }
+
+    /**
+     * 确保 slug 唯一，若重复则追加数字后缀
+     */
+    private String ensureUniqueSlug(String baseSlug, Long excludeId) {
+        String slug = baseSlug;
+        int suffix = 1;
+        while (true) {
+            Product existing = baseMapper.selectBySlug(slug);
+            if (existing == null || (excludeId != null && existing.getId().equals(excludeId))) {
+                break;
+            }
+            slug = baseSlug + "-" + suffix++;
+        }
+        return slug;
+    }
+
     @Override
     @Transactional(rollbackFor = Exception.class)
     @CacheEvict(value = "featuredProducts", allEntries = true)
@@ -106,6 +139,11 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
         // 设置时间戳
         product.setCreatedAt(LocalDateTime.now());
         product.setUpdatedAt(LocalDateTime.now());
+        // 自动生成 slug（若未填写）
+        if (product.getSlug() == null || product.getSlug().trim().isEmpty()) {
+            String baseSlug = generateSlug(product.getName());
+            product.setSlug(ensureUniqueSlug(baseSlug, null));
+        }
         // 保存产品
         this.save(product);
         Long productId = product.getId();
@@ -144,6 +182,11 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
     public boolean updateProduct(Product product, List<Long> categoryIds, List<Long> tagIds, List<Long> imageIds) {
         // 设置更新时间
         product.setUpdatedAt(LocalDateTime.now());
+        // 自动生成 slug（若未填写）
+        if (product.getSlug() == null || product.getSlug().trim().isEmpty()) {
+            String baseSlug = generateSlug(product.getName());
+            product.setSlug(ensureUniqueSlug(baseSlug, product.getId()));
+        }
         // 更新产品
         this.updateById(product);
         Long productId = product.getId();

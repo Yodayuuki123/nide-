@@ -102,7 +102,8 @@
 
                         fetch('/admin/api/images/upload', {
                             method: 'POST',
-                            body: formData
+                            body: formData,
+                            credentials: 'include'
                         })
                         .then(function(resp) { return resp.json(); })
                         .then(function(data) {
@@ -238,7 +239,7 @@
         var grid = document.getElementById('imagePickerGrid');
         if (grid) grid.innerHTML = '<p class="text-muted text-center py-4">加载中...</p>';
 
-        fetch(url)
+        fetch(url, { credentials: 'include' })
             .then(function(resp) { return resp.json(); })
             .then(function(data) {
                 if (!grid) return;
@@ -404,7 +405,8 @@
 
         fetch('/admin/api/images/upload', {
             method: 'POST',
-            body: formData
+            body: formData,
+            credentials: 'include'
         })
         .then(function(resp) { return resp.json(); })
         .then(function(data) {
@@ -441,7 +443,7 @@
     // ===== Delete Image (AJAX) =====
     window.deleteImage = function(id, btn) {
         confirmDelete('确定要删除此图片？此操作不可恢复。', function() {
-            fetch('/admin/api/images/delete/' + id, { method: 'POST' })
+            fetch('/admin/api/images/delete/' + id, { method: 'POST', credentials: 'include' })
                 .then(function(resp) { return resp.json(); })
                 .then(function(data) {
                     if (data.success) {
