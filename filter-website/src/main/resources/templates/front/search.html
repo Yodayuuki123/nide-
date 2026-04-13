@@ -10,12 +10,6 @@
 <section class="section">
     <div class="aesop-container">
 
-        <!-- Search Form -->
-        <form th:action="@{/search}" method="get" class="search-form-large fade-in">
-            <input type="text" name="keyword" th:value="${keyword}" th:placeholder="#{search.placeholder}" autofocus>
-            <button type="submit"><i class="bi bi-search"></i></button>
-        </form>
-
         <!-- Results Area -->
         <div th:if="${keyword != null and !keyword.isEmpty()}">
 
