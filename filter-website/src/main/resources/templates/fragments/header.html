@@ -34,7 +34,7 @@
     <!-- Slideshow CSS -->
     <link rel="stylesheet" href="/static/css/slideshow.css?v=6">
     <!-- Redesign v10 -->
-    <link rel="stylesheet" href="/static/css/redesign-v10.css?v=4">
+    <link rel="stylesheet" href="/static/css/redesign-v10.css?v=5">
 </head>
 
 <!-- ===== Navbar Fragment ===== -->
@@ -86,35 +86,23 @@
                     </li>
                     <li class="has-dropdown has-maincategory-dropdown">
                         <a th:href="@{/products}"
-                           th:classappend="${currentUrl != null and (#strings.startsWith(currentUrl, '/products') or #strings.startsWith(currentUrl, '/categories'))} ? 'active' : ''"
+                           th:classappend="${currentUrl != null and (currentUrl == '/products' or #strings.startsWith(currentUrl, '/products/') or #strings.startsWith(currentUrl, '/categories'))} ? 'active' : ''"
                            th:text="#{nav.products}">Products</a>
-                        <!-- mainCategory Dropdown -->
+                        <!-- mainCategory Dropdown: only show sub-categories, no left panel -->
                         <div class="maincategory-dropdown" th:if="${globalCategoryTree != null}">
-                            <div class="maincategory-inner">
-                                <!-- Left: main categories list -->
-                                <div class="maincategory-left">
-                                    <a class="maincategory-item"
-                                         th:each="cat,iter : ${globalCategoryTree}"
-                                         th:data-index="${iter.index}"
-                                         th:href="@{/categories/{slug}(slug=${cat.slug})}"
-                                         onmouseenter="activateMainCat(this)"
-                                         style="text-decoration:none;color:inherit;display:flex;">
-                                        <span class="maincategory-item-name" th:text="${cat.name}">Category</span>
-                                        <i class="bi bi-chevron-right maincategory-arrow" th:if="${cat.children != null and !cat.children.isEmpty()}"></i>
-                                    </a>
-                                </div>
-                                <!-- Right: sub categories -->
-                                <div class="maincategory-right">
-                                    <div class="maincategory-sub-panel"
-                                         th:each="cat,iter : ${globalCategoryTree}"
-                                         th:id="'maincatsub-' + ${iter.index}">
-                                        <div th:if="${cat.children != null and !cat.children.isEmpty()}">
+                            <div class="maincategory-inner maincategory-inner-flat">
+                                <div class="maincategory-flat-grid">
+                                    <div class="maincategory-flat-group"
+                                         th:each="cat,iter : ${globalCategoryTree}">
+                                        <a th:href="@{/categories/{slug}(slug=${cat.slug})}"
+                                           class="maincategory-flat-title"
+                                           th:text="${cat.name}">Category</a>
+                                        <div th:if="${cat.children != null and !cat.children.isEmpty()}" class="maincategory-flat-children">
                                             <a th:each="child : ${cat.children}"
                                                th:href="@{/categories/{slug}(slug=${child.slug})}"
                                                class="maincategory-sub-link"
                                                th:text="${child.name}">Sub Category</a>
                                         </div>
-
                                     </div>
                                 </div>
                             </div>
@@ -215,14 +203,6 @@
         </div>
     </div>
     <script>
-    function activateMainCat(el) {
-        document.querySelectorAll('.maincategory-item').forEach(function(i){ i.classList.remove('active'); });
-        document.querySelectorAll('.maincategory-sub-panel').forEach(function(p){ p.classList.remove('active'); });
-        el.classList.add('active');
-        var idx = el.getAttribute('data-index');
-        var panel = document.getElementById('maincatsub-' + idx);
-        if (panel) panel.classList.add('active');
-    }
     document.addEventListener('DOMContentLoaded', function(){
         var parent = document.querySelector('.has-maincategory-dropdown');
         if (!parent) return;
@@ -232,10 +212,6 @@
         function openDropdown() {
             clearTimeout(closeTimer);
             if (dropdown) dropdown.classList.add('active');
-            var first = parent.querySelector('.maincategory-item');
-            if (first && !parent.querySelector('.maincategory-item.active')) {
-                activateMainCat(first);
-            }
         }
 
         function closeDropdown() {
@@ -369,9 +345,3 @@
 </header>
 
 </html>
-
-
-
-
-
-
