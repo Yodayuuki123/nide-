@@ -12,24 +12,24 @@
 <!-- News Grid -->
 <section class="bf-news-section">
     <div class="bf-container">
-        <!-- Search & Date Filter -->
+        <!-- Search & Date Filter (swapped: date first, keyword last) -->
         <form method="get" th:action="@{/news}" style="margin-bottom:24px;">
             <div style="display:flex;align-items:center;gap:0;border:1px solid #ddd;border-radius:4px;overflow:hidden;background:#fff;">
-                <input type="text" name="keyword" th:value="${keyword}" placeholder="Search news..."
-                       style="flex:1;min-width:180px;padding:12px 16px;border:none;border-right:1px solid #ddd;font-size:14px;font-family:var(--font-body);outline:none;">
                 <div style="display:flex;align-items:center;padding:0 12px;border-right:1px solid #ddd;">
-                    <label style="font-size:13px;font-weight:600;color:#e53e3e;margin-right:8px;white-space:nowrap;font-family:var(--font-body);">Start</label>
+                    <label style="font-size:13px;font-weight:600;color:#e53e3e;margin-right:8px;white-space:nowrap;font-family:var(--font-body);">开始日期</label>
                     <input type="date" name="startDate" th:value="${startDate}"
                            style="padding:10px 8px;border:none;font-size:14px;font-family:var(--font-body);outline:none;min-width:140px;">
                 </div>
                 <div style="display:flex;align-items:center;padding:0 12px;border-right:1px solid #ddd;">
-                    <label style="font-size:13px;font-weight:600;color:#38a169;margin-right:8px;white-space:nowrap;font-family:var(--font-body);">End</label>
+                    <label style="font-size:13px;font-weight:600;color:#38a169;margin-right:8px;white-space:nowrap;font-family:var(--font-body);">结束日期</label>
                     <input type="date" name="endDate" th:value="${endDate}"
                            style="padding:10px 8px;border:none;font-size:14px;font-family:var(--font-body);outline:none;min-width:140px;">
                 </div>
+                <input type="text" name="keyword" th:value="${keyword}" placeholder="搜索新闻..."
+                       style="flex:1;min-width:180px;padding:12px 16px;border:none;border-right:1px solid #ddd;font-size:14px;font-family:var(--font-body);outline:none;">
                 <input type="hidden" name="sort" th:value="${sort}">
                 <button type="submit" style="padding:12px 20px;background:#2d6a4f;color:#fff;border:none;font-size:14px;font-family:var(--font-body);cursor:pointer;white-space:nowrap;flex-shrink:0;">
-                    <i class="bi bi-search"></i> Search
+                    <i class="bi bi-search"></i> 搜索
                 </button>
             </div>
         </form>
