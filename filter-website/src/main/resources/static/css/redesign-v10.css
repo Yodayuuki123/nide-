@@ -1,6 +1,6 @@
-﻿/* ============================================================
+/* ============================================================
    UI REDESIGN v10 - 2026-03-31
-   All blues 鈫?green (#4CAF50 family)
+   All blues → green (#4CAF50 family)
    ============================================================ */
 
 /* --- Compact Logo --- */
@@ -43,7 +43,7 @@
     margin-left: 0 !important;
 }
 
-/* --- mainCategory Dropdown: target-site style without thumbnails --- */
+/* --- mainCategory Dropdown: flat grid layout (no left panel) --- */
 .has-maincategory-dropdown {
     position: static;
 }
@@ -68,6 +68,44 @@
     margin: 0 auto;
     min-height: 0;
 }
+/* Flat grid layout for dropdown */
+.maincategory-inner-flat {
+    display: block;
+    max-width: 1100px;
+    padding: 24px 32px;
+}
+.maincategory-flat-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 24px 32px;
+}
+.maincategory-flat-group {
+    display: flex;
+    flex-direction: column;
+}
+.maincategory-flat-title {
+    display: block;
+    font-size: 15px;
+    font-weight: 700;
+    color: #1a5c2a;
+    text-decoration: none;
+    padding-bottom: 8px;
+    margin-bottom: 6px;
+    border-bottom: 2px solid #4CAF50;
+    transition: color 0.2s;
+}
+.maincategory-flat-title:hover {
+    color: #4CAF50;
+}
+.maincategory-flat-children {
+    display: flex;
+    flex-direction: column;
+}
+.maincategory-flat-children .maincategory-sub-link {
+    padding: 6px 0;
+    border-bottom: 1px solid #f1f4ef;
+}
+/* Legacy styles kept for sidebar compatibility */
 .maincategory-left {
     width: 260px;
     flex-shrink: 0;
@@ -533,6 +571,7 @@
     .bf-footer-grid-3col { grid-template-columns: 1fr; gap: 24px; }
     .bf-pl-layout-new { grid-template-columns: 1fr; }
     .maincategory-dropdown { display: none !important; }
+    .maincategory-flat-grid { grid-template-columns: repeat(2, 1fr); }
 }
 @media (max-width: 576px) {
     .filmedia-cat-img { min-height: 320px; }
@@ -540,6 +579,7 @@
     .filmedia-cat-overlay h4 { font-size: 28px; }
     .filmedia-cat-btn { min-width: 126px; min-height: 44px; padding: 10px 22px; }
     .app-scenario-grid { grid-template-columns: 1fr; }
+    .maincategory-flat-grid { grid-template-columns: 1fr; }
 }
 
 
