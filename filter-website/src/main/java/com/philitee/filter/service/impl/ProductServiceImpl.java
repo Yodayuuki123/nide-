@@ -31,6 +31,40 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
     private final ProductProductCategoryMapper productCategoryMapper;
     private final ProductTagRelationMapper tagRelationMapper;
 
+    /**
+     * 修复产品描述中的图片URL
+     * 将硬编码的绝对路径（如 http://old-domain.com/wp-content/uploads/...）
+     * 替换为相对路径（如 /wp-content/uploads/...），以便 ImageProxyController 或本地路径可以正确处理
+     */
+    private String fixDescriptionImageUrls(String description) {
+        if (description == null || description.isEmpty()) {
+            return description;
+        }
+        // 匹配所有 src="http(s)://任意域名/wp-content/uploads/..." 或 src="http(s)://任意域名/wordpress/wp-content/uploads/..."
+        // 替换为相对路径
+        String fixed = description;
+
+        // Pattern 1: https?://任意域名/wp-content/uploads/路径
+        fixed = fixed.replaceAll(
+            "(src\\s*=\\s*[\"'])https?://[^/\"']+(/wp-content/uploads/[^\"']*)",
+            "$1$2"
+        );
+
+        // Pattern 2: https?://任意域名/wordpress/wp-content/uploads/路径
+        fixed = fixed.replaceAll(
+            "(src\\s*=\\s*[\"'])https?://[^/\"']+(/wordpress/wp-content/uploads/[^\"']*)",
+            "$1$2"
+        );
+
+        // Pattern 3: 处理 background-image: url(...) 中的图片路径
+        fixed = fixed.replaceAll(
+            "(url\\s*\\(\\s*[\"']?)https?://[^/\"')]+(/wp-content/uploads/[^\"')]*)",
+            "$1$2"
+        );
+
+        return fixed;
+    }
+
     @Override
     public Product getProductDetail(Long id) {
         Product product = this.getById(id);
@@ -38,6 +72,9 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
             return null;
         }
         fillProductRelations(product);
+        // 修复描述中的图片URL
+        product.setDescription(fixDescriptionImageUrls(product.getDescription()));
+        product.setShortDescription(fixDescriptionImageUrls(product.getShortDescription()));
         return product;
     }
 
@@ -48,6 +85,9 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
             return null;
         }
         fillProductRelations(product);
+        // 修复描述中的图片URL
+        product.setDescription(fixDescriptionImageUrls(product.getDescription()));
+        product.setShortDescription(fixDescriptionImageUrls(product.getShortDescription()));
         return product;
     }
 
