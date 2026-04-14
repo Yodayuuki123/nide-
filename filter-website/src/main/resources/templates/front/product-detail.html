@@ -20,7 +20,10 @@
                             <img th:if="${product.mainImage != null}"
                                  th:src="${product.mainImage.url}"
                                  th:alt="${product.name}"
-                                 id="galleryMainImage">
+                                 id="galleryMainImage"
+                                 loading="eager"
+                                 fetchpriority="high"
+                                 decoding="async">
                             <div th:unless="${product.mainImage != null}" class="bf-pd-placeholder">
                                 <i class="bi bi-image"></i>
                             </div>
@@ -28,11 +31,11 @@
                         <div class="bf-pd-gallery-thumbs" th:if="${product.images != null and !product.images.isEmpty()}">
                             <div th:if="${product.mainImage != null}" class="bf-pd-thumb active"
                                  th:data-img="${product.mainImage.url}" onclick="switchGalleryImage(this)">
-                                <img th:src="${product.mainImage.url}" th:alt="${product.name}">
+                                <img th:src="${product.mainImage.url}" th:alt="${product.name}" loading="lazy" decoding="async">
                             </div>
                             <div th:each="img : ${product.images}" class="bf-pd-thumb"
                                  th:data-img="${img.url}" onclick="switchGalleryImage(this)">
-                                <img th:src="${img.url}" th:alt="${img.altText} ?: ${product.name}">
+                                <img th:src="${img.url}" th:alt="${img.altText} ?: ${product.name}" loading="lazy" decoding="async">
                             </div>
                         </div>
                     </div>
@@ -91,7 +94,7 @@
                            th:href="@{/products/{slug}(slug=${rp.slug})}"
                            class="bf-pd-related-card">
                             <div class="bf-pd-related-img">
-                                <img th:if="${rp.mainImage != null}" th:src="${rp.mainImage.url}" th:alt="${rp.name}" loading="lazy">
+                                <img th:if="${rp.mainImage != null}" th:src="${rp.mainImage.url}" th:alt="${rp.name}" loading="lazy" decoding="async">
                                 <div th:unless="${rp.mainImage != null}" class="bf-pd-placeholder">
                                     <i class="bi bi-image"></i>
                                 </div>

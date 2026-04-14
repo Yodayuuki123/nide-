@@ -62,6 +62,10 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
             "$1$2"
         );
 
+        // 为产品描述中的图片统一追加浏览器原生懒加载与异步解码，减少详情页首屏阻塞
+        fixed = fixed.replaceAll("<img(?![^>]*\\bloading=)([^>]*)>", "<img loading=\"lazy\" decoding=\"async\"$1>");
+        fixed = fixed.replaceAll("<img([^>]*\\bloading=[\"'][^\"']+[\"'])(?![^>]*\\bdecoding=)([^>]*)>", "<img$1 decoding=\"async\"$2>");
+
         return fixed;
     }
 

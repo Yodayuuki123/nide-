@@ -26,6 +26,9 @@ public class WebMvcConfig implements WebMvcConfigurer {
     @Value("${upload.static-web-path:}")
     private String staticWebPath;
 
+    @Value("${upload.legacy-wordpress-path:}")
+    private String legacyWordpressPath;
+
     @Value("${upload.proxy-enabled:false}")
     private boolean proxyEnabled;
 
@@ -38,12 +41,27 @@ public class WebMvcConfig implements WebMvcConfigurer {
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         if (!proxyEnabled) {
-            // 服务器部署模式：本地文件映射
-            if (staticWebPath != null && !staticWebPath.isEmpty()) {
+            // 服务器部署模式：本地文件映射，按“当前上传目录 -> 静态导出目录 -> 旧 WordPress 目录”顺序回退
+            if (staticWebPath != null && !staticWebPath.isEmpty() && legacyWordpressPath != null && !legacyWordpressPath.isEmpty()) {
+                registry.addResourceHandler("/wp-content/uploads/**")
+                        .addResourceLocations(
+                                "file:" + uploadBasePath + "/",
+                                "file:" + staticWebPath + "/",
+                                "file:" + legacyWordpressPath + "/"
+                        )
+                        .setCachePeriod(2592000);
+            } else if (staticWebPath != null && !staticWebPath.isEmpty()) {
                 registry.addResourceHandler("/wp-content/uploads/**")
                         .addResourceLocations(
                                 "file:" + uploadBasePath + "/",
                                 "file:" + staticWebPath + "/"
+                        )
+                        .setCachePeriod(2592000);
+            } else if (legacyWordpressPath != null && !legacyWordpressPath.isEmpty()) {
+                registry.addResourceHandler("/wp-content/uploads/**")
+                        .addResourceLocations(
+                                "file:" + uploadBasePath + "/",
+                                "file:" + legacyWordpressPath + "/"
                         )
                         .setCachePeriod(2592000);
             } else {
@@ -52,9 +70,18 @@ public class WebMvcConfig implements WebMvcConfigurer {
                         .setCachePeriod(2592000);
             }
 
-            registry.addResourceHandler("/wordpress/wp-content/uploads/**")
-                    .addResourceLocations("file:" + uploadBasePath + "/")
-                    .setCachePeriod(2592000);
+            if (legacyWordpressPath != null && !legacyWordpressPath.isEmpty()) {
+                registry.addResourceHandler("/wordpress/wp-content/uploads/**")
+                        .addResourceLocations(
+                                "file:" + legacyWordpressPath + "/",
+                                "file:" + uploadBasePath + "/"
+                        )
+                        .setCachePeriod(2592000);
+            } else {
+                registry.addResourceHandler("/wordpress/wp-content/uploads/**")
+                        .addResourceLocations("file:" + uploadBasePath + "/")
+                        .setCachePeriod(2592000);
+            }
         }
         // proxy模式下：/wp-content/uploads/** 由 ImageProxyController 处理
 

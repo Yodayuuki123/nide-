@@ -68,7 +68,8 @@ mybatis-plus:
 upload:
   base-path: /root/filter-website/wp-content/uploads
   url-prefix: /wp-content/uploads
-  static-web-path:
+  static-web-path: /root/static_web/filter.philitee.com/wp-content/uploads
+  legacy-wordpress-path: /opt/website/wordpress/wp-content/uploads
   proxy-enabled: false
 
 logging:
