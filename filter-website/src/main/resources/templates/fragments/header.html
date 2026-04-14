@@ -88,23 +88,25 @@
                         <a th:href="@{/products}"
                            th:classappend="${currentUrl != null and (currentUrl == '/products' or #strings.startsWith(currentUrl, '/products/') or #strings.startsWith(currentUrl, '/categories'))} ? 'active' : ''"
                            th:text="#{nav.products}">Products</a>
-                        <!-- mainCategory Dropdown: only show sub-categories, no left panel -->
-                        <div class="maincategory-dropdown" th:if="${globalCategoryTree != null}">
-                            <div class="maincategory-inner maincategory-inner-flat">
-                                <div class="maincategory-flat-grid">
-                                    <div class="maincategory-flat-group"
-                                         th:each="cat,iter : ${globalCategoryTree}">
+                        <!-- Vertical dropdown with sub-categories on hover -->
+                        <div class="vdrop-menu" th:if="${globalCategoryTree != null}">
+                            <div class="vdrop-inner">
+                                <ul class="vdrop-list">
+                                    <li th:each="cat : ${globalCategoryTree}"
+                                        th:classappend="${cat.children != null and !cat.children.isEmpty()} ? 'vdrop-has-children' : ''">
                                         <a th:href="@{/categories/{slug}(slug=${cat.slug})}"
-                                           class="maincategory-flat-title"
+                                           class="vdrop-item"
                                            th:text="${cat.name}">Category</a>
-                                        <div th:if="${cat.children != null and !cat.children.isEmpty()}" class="maincategory-flat-children">
-                                            <a th:each="child : ${cat.children}"
-                                               th:href="@{/categories/{slug}(slug=${child.slug})}"
-                                               class="maincategory-sub-link"
-                                               th:text="${child.name}">Sub Category</a>
-                                        </div>
-                                    </div>
-                                </div>
+                                        <span class="vdrop-arrow" th:if="${cat.children != null and !cat.children.isEmpty()}">&#8250;</span>
+                                        <ul class="vdrop-sub" th:if="${cat.children != null and !cat.children.isEmpty()}">
+                                            <li th:each="child : ${cat.children}">
+                                                <a th:href="@{/categories/{slug}(slug=${child.slug})}"
+                                                   class="vdrop-sub-item"
+                                                   th:text="${child.name}">Sub Category</a>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                </ul>
                             </div>
                         </div>
                     </li>
@@ -206,7 +208,7 @@
     document.addEventListener('DOMContentLoaded', function(){
         var parent = document.querySelector('.has-maincategory-dropdown');
         if (!parent) return;
-        var dropdown = parent.querySelector('.maincategory-dropdown');
+        var dropdown = parent.querySelector('.vdrop-menu');
         var closeTimer;
 
         function openDropdown() {

@@ -43,67 +43,108 @@
     margin-left: 0 !important;
 }
 
-/* --- mainCategory Dropdown: flat grid layout (no left panel) --- */
+/* --- Vertical Dropdown Menu for Products --- */
 .has-maincategory-dropdown {
-    position: static;
+    position: relative;
 }
-.maincategory-dropdown {
+.vdrop-menu {
     display: none;
     position: absolute;
     top: 100%;
     left: 0;
-    width: 100%;
+    min-width: 320px;
     background: #ffffff;
     border-top: 2px solid #4CAF50;
-    box-shadow: 0 12px 34px rgba(16, 32, 17, 0.12);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
     z-index: 1000;
 }
-.has-maincategory-dropdown:hover .maincategory-dropdown,
-.maincategory-dropdown.active {
+.has-maincategory-dropdown:hover .vdrop-menu,
+.vdrop-menu.active {
     display: block;
 }
-.maincategory-inner {
+.vdrop-inner {
+    padding: 0;
+}
+.vdrop-list {
+    list-style: none;
+    margin: 0;
+    padding: 8px 0;
+}
+.vdrop-list > li {
+    position: relative;
     display: flex;
-    max-width: 900px;
-    margin: 0 auto;
-    min-height: 0;
+    align-items: center;
 }
-/* Flat grid layout for dropdown */
-.maincategory-inner-flat {
+.vdrop-item {
     display: block;
-    max-width: 1100px;
-    padding: 24px 32px;
-}
-.maincategory-flat-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: 24px 32px;
-}
-.maincategory-flat-group {
-    display: flex;
-    flex-direction: column;
-}
-.maincategory-flat-title {
-    display: block;
-    font-size: 15px;
-    font-weight: 700;
-    color: #1a5c2a;
+    flex: 1;
+    padding: 10px 20px;
+    font-size: 14px;
+    font-weight: 500;
+    color: #333;
     text-decoration: none;
-    padding-bottom: 8px;
-    margin-bottom: 6px;
-    border-bottom: 2px solid #4CAF50;
-    transition: color 0.2s;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+    transition: background 0.15s, color 0.15s;
+    white-space: nowrap;
 }
-.maincategory-flat-title:hover {
+.vdrop-item:hover {
+    background: #f0f8f0;
     color: #4CAF50;
 }
-.maincategory-flat-children {
-    display: flex;
-    flex-direction: column;
+.vdrop-list > li:hover > .vdrop-item {
+    background: #f0f8f0;
+    color: #4CAF50;
 }
-.maincategory-flat-children .maincategory-sub-link {
-    padding: 6px 0;
-    border-bottom: 1px solid #f1f4ef;
+.vdrop-arrow {
+    position: absolute;
+    right: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 18px;
+    color: #999;
+    pointer-events: none;
+    line-height: 1;
+}
+.vdrop-list > li:hover > .vdrop-arrow {
+    color: #4CAF50;
+}
+/* Separator line between items */
+.vdrop-list > li + li {
+    border-top: 1px solid #f2f2f2;
+}
+/* Sub-menu (second level) */
+.vdrop-sub {
+    display: none;
+    position: absolute;
+    left: 100%;
+    top: 0;
+    min-width: 280px;
+    background: #ffffff;
+    border-left: 2px solid #4CAF50;
+    box-shadow: 4px 4px 20px rgba(0, 0, 0, 0.1);
+    list-style: none;
+    margin: 0;
+    padding: 8px 0;
+    z-index: 1001;
+}
+.vdrop-list > li:hover > .vdrop-sub {
+    display: block;
+}
+.vdrop-sub-item {
+    display: block;
+    padding: 8px 20px;
+    font-size: 13px;
+    color: #555;
+    text-decoration: none;
+    transition: background 0.15s, color 0.15s;
+}
+.vdrop-sub-item:hover {
+    background: #f0f8f0;
+    color: #4CAF50;
+}
+.vdrop-sub > li + li {
+    border-top: 1px solid #f5f5f5;
 }
 /* Legacy styles kept for sidebar compatibility */
 .maincategory-left {
@@ -570,8 +611,7 @@
     .app-scenario-grid { grid-template-columns: repeat(2, 1fr); }
     .bf-footer-grid-3col { grid-template-columns: 1fr; gap: 24px; }
     .bf-pl-layout-new { grid-template-columns: 1fr; }
-    .maincategory-dropdown { display: none !important; }
-    .maincategory-flat-grid { grid-template-columns: repeat(2, 1fr); }
+    .vdrop-menu { display: none !important; }
 }
 @media (max-width: 576px) {
     .filmedia-cat-img { min-height: 320px; }
@@ -579,7 +619,7 @@
     .filmedia-cat-overlay h4 { font-size: 28px; }
     .filmedia-cat-btn { min-width: 126px; min-height: 44px; padding: 10px 22px; }
     .app-scenario-grid { grid-template-columns: 1fr; }
-    .maincategory-flat-grid { grid-template-columns: 1fr; }
+
 }
 
 
