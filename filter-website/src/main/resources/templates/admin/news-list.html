@@ -58,10 +58,7 @@
             </div>
 
             <div class="admin-card">
-                <div class="admin-card-header">
-                    
-                    <span class="text-muted" th:text="'共 ' + ${newsPage.total} + ' 条'"></span>
-                </div>
+                <div class="admin-card-header" style="display:none;"></div>
                 <div class="admin-card-body">
                     <div class="table-responsive">
                         <table class="table admin-table mb-0">
@@ -111,7 +108,7 @@
 
                     <!-- Pagination -->
                     <div class="p-3 d-flex justify-content-between align-items-center" th:if="${newsPage.pages > 1}">
-                        <span class="text-muted" style="font-size:13px;" th:text="'显示 ' + ${(newsPage.current - 1) * newsPage.size + 1} + '-' + ${newsPage.current * newsPage.size < newsPage.total ? newsPage.current * newsPage.size : newsPage.total} + ' / 共 ' + ${newsPage.total} + ' 条'"></span>
+                        <span></span>
                         <nav>
                             <ul class="pagination pagination-sm mb-0">
                                 <li class="page-item" th:classappend="${newsPage.current <= 1} ? 'disabled'">

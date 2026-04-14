@@ -74,7 +74,7 @@
             <div class="admin-card">
                 <div class="admin-card-header d-flex justify-content-between align-items-center">
                     <h5 class="mb-0">图片库</h5>
-                    <span class="text-muted" th:text="'共 ' + ${imagePage.total} + ' 张'">Total 0</span>
+
                 </div>
                 <div class="admin-card-body p-4">
                     <div class="image-grid">
@@ -98,7 +98,7 @@
                     </div>
 
                     <div class="mt-4 d-flex justify-content-between align-items-center" th:if="${imagePage.pages > 1}">
-                        <small class="text-muted" th:text="'显示 ' + ${(imagePage.current - 1) * imagePage.size + 1} + '-' + ${imagePage.current * imagePage.size < imagePage.total ? imagePage.current * imagePage.size : imagePage.total} + ' / 共 ' + ${imagePage.total} + ' 张'"></small>
+                        <small></small>
                         <nav>
                             <ul class="pagination pagination-sm mb-0">
                                 <li class="page-item" th:classappend="${imagePage.current <= 1} ? 'disabled'">
@@ -165,7 +165,22 @@
         pendingFiles.forEach(function(file, index) {
             var item = document.createElement('div');
             item.className = 'border rounded p-2 d-flex align-items-center gap-2';
-            item.innerHTML = '<i class="bi bi-image text-success"></i><small class="text-truncate" style="max-width:180px;">' + file.name + '</small><button type="button" class="btn btn-sm btn-outline-danger">&times;</button>';
+            item.style.cssText = 'min-width:160px; max-width:200px;';
+            var thumbHtml = '';
+            if (file.type && file.type.startsWith('image/')) {
+                thumbHtml = '<img class="pending-thumb" style="width:60px;height:60px;object-fit:cover;border-radius:4px;flex-shrink:0;" />';
+            } else {
+                thumbHtml = '<i class="bi bi-image text-success" style="font-size:2rem;flex-shrink:0;"></i>';
+            }
+            item.innerHTML = thumbHtml + '<div style="flex:1;min-width:0;"><small class="text-truncate d-block" style="max-width:120px;">' + file.name + '</small></div><button type="button" class="btn btn-sm btn-outline-danger" style="flex-shrink:0;">&times;</button>';
+            var img = item.querySelector('.pending-thumb');
+            if (img && file.type && file.type.startsWith('image/')) {
+                (function(imgEl, f) {
+                    var reader = new FileReader();
+                    reader.onload = function(e) { imgEl.src = e.target.result; };
+                    reader.readAsDataURL(f);
+                })(img, file);
+            }
             item.querySelector('button').addEventListener('click', function() {
                 pendingFiles.splice(index, 1);
                 renderPendingFiles();

@@ -51,7 +51,7 @@
                     <div class="admin-card">
                         <div class="admin-card-header d-flex justify-content-between align-items-center">
                             <h5 class="mb-0">全部菜单</h5>
-                            <span class="text-muted" th:text="'共 ' + ${menuPage.total} + ' 个'">Total 0</span>
+
                         </div>
                         <div class="admin-card-body">
                             <div class="table-responsive">
@@ -86,7 +86,7 @@
                             </div>
 
                             <div class="p-3 d-flex justify-content-between align-items-center" th:if="${menuPage.pages > 1}">
-                                <span class="text-muted" style="font-size:13px;" th:text="'显示 ' + ${(menuPage.current - 1) * menuPage.size + 1} + '-' + ${menuPage.current * menuPage.size < menuPage.total ? menuPage.current * menuPage.size : menuPage.total} + ' / 共 ' + ${menuPage.total} + ' 个'"></span>
+                                <span></span>
                                 <nav>
                                     <ul class="pagination pagination-sm mb-0">
                                         <li class="page-item" th:classappend="${menuPage.current <= 1} ? 'disabled'">

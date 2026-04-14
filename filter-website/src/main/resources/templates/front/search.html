@@ -13,14 +13,7 @@
         <!-- Results Area -->
         <div th:if="${keyword != null and !keyword.isEmpty()}">
 
-            <!-- Summary -->
-            <div class="search-result-info fade-in">
-                <span th:text="#{search.results_for}">Results for</span>
-                &ldquo;<strong th:text="${keyword}">keyword</strong>&rdquo;
-                &mdash;
-                <span th:text="${totalResults != null ? totalResults : 0}">0</span>
-                <span th:text="#{pagination.results}">results</span>
-            </div>
+
 
             <!-- Tab Navigation -->
             <div class="search-tabs fade-in">
@@ -110,7 +103,7 @@
 
 <footer th:replace="~{fragments/footer :: footer}"></footer>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 <script src="/static/js/main.js"></script>
 <script>
 function showTab(name, btn) {

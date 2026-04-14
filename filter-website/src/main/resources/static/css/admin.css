@@ -4,7 +4,7 @@
    ============================================ */
 
 /* ===== Fonts (same as frontend) ===== */
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600;700&family=Noto+Serif+SC:wght@400;500;600;700&display=swap');
+@import url('/vendor/fonts/google-fonts-admin.css');
 
 :root {
     /* Modern Professional Blue Palette */
@@ -644,17 +644,19 @@ body.admin-body h5, body.admin-body h6 {
 /* ===== Image Grid Admin ===== */
 .image-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
     gap: 16px;
     padding: 20px;
 }
 
 .image-grid-item {
     position: relative;
-    border-radius: 2px;
+    border-radius: 4px;
     overflow: hidden;
     background: var(--admin-bg-secondary);
-    aspect-ratio: 1;
+    border: 1px solid var(--admin-border);
+    display: flex;
+    flex-direction: column;
     transition: var(--transition);
 }
 
@@ -662,10 +664,37 @@ body.admin-body h5, body.admin-body h6 {
     box-shadow: 0 4px 16px rgba(37,36,34,0.08);
 }
 
-.image-grid-item img {
+.image-grid-thumb {
+    width: 100%;
+    aspect-ratio: 1;
+    overflow: hidden;
+    background: #f5f5f5;
+}
+
+.image-grid-thumb img {
     width: 100%;
     height: 100%;
     object-fit: cover;
+    display: block;
+}
+
+.image-grid-info {
+    padding: 8px 10px;
+    border-top: 1px solid var(--admin-border);
+}
+
+.image-grid-info small {
+    display: block;
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.image-grid-actions {
+    padding: 6px 10px 10px;
+    display: flex;
+    gap: 6px;
 }
 
 .image-grid-item .image-overlay {

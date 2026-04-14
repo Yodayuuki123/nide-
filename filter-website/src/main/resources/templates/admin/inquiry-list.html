@@ -15,7 +15,7 @@
                 <div>
                     <h4 style="font-size: 1.8rem; margin-bottom: 4px;">询盘管理</h4>
                 </div>
-                <span class="badge bg-primary" th:text="${inquiryPage.total} + ' 条'">0 条</span>
+
             </div>
 
             <!-- Search Form -->
@@ -56,10 +56,7 @@
             </div>
 
             <div class="admin-card">
-                <div class="admin-card-header">
-                    
-                    <span class="text-muted" th:text="'共 ' + ${inquiryPage.total} + ' 条'"></span>
-                </div>
+                <div class="admin-card-header" style="display:none;"></div>
                 <div class="admin-card-body">
                     <div class="table-responsive">
                         <table class="table admin-table mb-0">
@@ -90,12 +87,17 @@
                                     <span th:text="${#strings.abbreviate(inq.message, 50)}" class="text-muted">留言内容 preview...</span>
                                 </td>
                                 <td>
-                                    <a th:if="${inq.attachmentPath != null and !inq.attachmentPath.isEmpty()}"
-                                       th:href="@{/admin/inquiries/download/{id}(id=${inq.id})}"
-                                       class="btn btn-sm btn-outline-success" title="下载附件">
-                                        <i class="bi bi-paperclip"></i>
-                                        <span th:text="${inq.attachmentName != null ? #strings.abbreviate(inq.attachmentName, 20) : '附件'}">附件</span>
-                                    </a>
+                                    <div th:if="${inq.attachmentPath != null and !inq.attachmentPath.isEmpty()}">
+                                        <div class="mb-1" style="font-size:12px;" th:text="${inq.attachmentName != null ? inq.attachmentName : 'attachment'}">filename</div>
+                                        <a th:href="@{/admin/inquiries/download/{id}(id=${inq.id})}" target="_blank"
+                                           class="btn btn-sm btn-outline-primary me-1" title="查看">
+                                            <i class="bi bi-eye"></i>
+                                        </a>
+                                        <a th:href="@{/admin/inquiries/download/{id}(id=${inq.id})}"
+                                           class="btn btn-sm btn-outline-success" title="下载" download>
+                                            <i class="bi bi-download"></i>
+                                        </a>
+                                    </div>
                                     <span th:unless="${inq.attachmentPath != null and !inq.attachmentPath.isEmpty()}" class="text-muted">-</span>
                                 </td>
                                 <td class="text-muted text-nowrap"
@@ -122,7 +124,7 @@
 
                     <!-- Pagination -->
                     <div class="p-3 d-flex justify-content-between align-items-center" th:if="${inquiryPage.pages > 1}">
-                        <span class="text-muted" style="font-size:13px;" th:text="'显示 ' + ${(inquiryPage.current - 1) * inquiryPage.size + 1} + '-' + ${inquiryPage.current * inquiryPage.size < inquiryPage.total ? inquiryPage.current * inquiryPage.size : inquiryPage.total} + ' / 共 ' + ${inquiryPage.total} + ' 条'"></span>
+                        <span></span>
                         <nav>
                             <ul class="pagination pagination-sm mb-0">
                                 <li class="page-item" th:classappend="${inquiryPage.current <= 1} ? 'disabled'">
