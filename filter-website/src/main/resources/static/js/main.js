@@ -305,6 +305,7 @@
     // ===== Smooth Image Loading =====
     var lazyImages = document.querySelectorAll('img[loading="lazy"]');
     lazyImages.forEach(function(img) {
+        img.decoding = img.decoding || 'async';
         img.style.opacity = '0';
         img.style.transition = 'opacity 0.5s ease';
         if (img.complete) {
@@ -318,6 +319,27 @@
             });
         }
     });
+
+    // ===== Uploaded Image Fallback =====
+    function getOriginalUploadUrl(url) {
+        if (!url || url.indexOf('/wp-content/uploads/') === -1) return url;
+        return url.replace(/-\d+x\d+(?=\.[a-zA-Z0-9]+(?:$|[?#]))/, '');
+    }
+
+    document.addEventListener('error', function(event) {
+        var img = event.target;
+        if (!img || img.tagName !== 'IMG') return;
+
+        var currentSrc = img.getAttribute('src') || img.currentSrc || '';
+        if (currentSrc.indexOf('/wp-content/uploads/') === -1) return;
+        if (img.dataset.originalFallbackTried === '1') return;
+
+        var fallbackSrc = getOriginalUploadUrl(currentSrc);
+        if (fallbackSrc && fallbackSrc !== currentSrc) {
+            img.dataset.originalFallbackTried = '1';
+            img.src = fallbackSrc;
+        }
+    }, true);
 
     // ===== Category Nav Active State =====
     var currentPath = window.location.pathname;
