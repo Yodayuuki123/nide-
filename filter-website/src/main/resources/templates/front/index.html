@@ -46,7 +46,7 @@
     <div class="aesop-container">
         <div class="home-about-grid">
             <div class="home-about-text fade-in">
-                <span class="section-eyebrow" th:text="#{home.about.eyebrow}">About Us</span>
+                <h2 class="home-about-title" th:text="#{home.about.eyebrow}">About Us</h2>
 
                 <p th:text="#{home.about.text}">With over 20 years of experience in industrial filtration...</p>
                 <p th:text="#{home.about.text2}">Our state-of-the-art facility features advanced production lines...</p>
@@ -79,18 +79,19 @@
 <section class="home-categories-section" th:if="${categories != null and !categories.isEmpty()}">
     <div class="aesop-container">
         <div class="section-header fade-in" style="position:relative;text-align:center;">
-            <h2 th:text="#{home.categories.title}">Product Categories</h2>
+            <h2 class="home-unified-section-title" th:text="#{home.categories.title}">Product Categories</h2>
             <a th:href="@{/products}" style="position:absolute;right:0;top:50%;transform:translateY(-50%);color:#4CAF50;font-weight:600;font-size:0.95rem;text-decoration:none;border:1px solid #4CAF50;padding:6px 18px;border-radius:4px;transition:all 0.3s;" onmouseover="this.style.background='#4CAF50';this.style.color='#fff';" onmouseout="this.style.background='transparent';this.style.color='#4CAF50';">View More &rarr;</a>
         </div>
         <div class="filmedia-cat-grid">
             <th:block th:each="cat : ${categories}">
                 <div class="filmedia-cat-item fade-in">
                     <div class="filmedia-cat-img">
-                        <img th:src="${'/static/wp-content/uploads/category-covers/' + cat.slug + '.jpg'}"
+                        <img th:if="${cat.slug != null and !#strings.isEmpty(cat.slug)}"
+                             th:src="${'/static/wp-content/uploads/category-covers/' + cat.slug + '.jpg'}"
                              th:alt="${cat.name}" loading="lazy"
                              onerror="this.src='/static/wp-content/uploads/category-covers/'+this.dataset.slug+'.jpeg'; this.onerror=function(){this.src='/static/wp-content/uploads/category-covers/'+this.dataset.slug+'.png'; this.onerror=function(){this.style.display='none';this.nextElementSibling.style.display='flex';};};"
                              th:data-slug="${cat.slug}">
-                        <div class="filmedia-cat-placeholder" style="display:none;"><i class="bi bi-funnel"></i></div>
+                        <div class="filmedia-cat-placeholder" th:style="${cat.slug != null and !#strings.isEmpty(cat.slug)} ? 'display:none;' : 'display:flex;'"><i class="bi bi-funnel"></i></div>
                         <div class="filmedia-cat-overlay">
                             <h4 th:text="${cat.name}">Category Name</h4>
                             <a th:href="@{/categories/{slug}(slug=${cat.slug})}" class="filmedia-cat-btn">MORE</a>
@@ -106,7 +107,7 @@
 <section class="home-products-section" th:if="${tagProducts != null and !tagProducts.isEmpty()}">
     <div class="aesop-container">
         <div class="section-header text-center fade-in">
-            <h2 th:text="#{home.featured.title}">Best Sellers</h2>
+            <h2 class="home-unified-section-title" th:text="#{home.featured.title}">Best Sellers</h2>
         </div>
         <!-- Tab content panels -->
         <th:block th:each="entry,iter : ${tagProducts}">
@@ -141,8 +142,7 @@
 <section class="home-applications-section">
     <div class="aesop-container">
         <div class="section-header text-center fade-in">
-            <h2 style="text-transform:uppercase;font-family:var(--font-heading);font-weight:700;letter-spacing:0.02em;" th:text="#{home.app.title}">APPLICATION SCENARIOS</h2>
-            <div style="width:60px;height:4px;background:#42a5f5;margin:12px auto 0;border-radius:2px;"></div>
+            <h2 class="home-unified-section-title" th:text="#{home.app.title}">APPLICATION SCENARIOS</h2>
         </div>
         <div class="app-scenario-grid">
             <div class="app-scenario-item fade-in">
@@ -183,7 +183,7 @@
 <section class="home-whychoose-section">
     <div class="aesop-container">
         <div class="section-header text-center fade-in">
-            <h2 th:text="#{home.why.title}">Why Choose Philitee Filter</h2>
+            <h2 class="home-unified-section-title" th:text="#{home.why.title}">Why Choose Philitee Filter</h2>
         </div>
         <div class="whychoose-grid">
             <div class="whychoose-card fade-in">
@@ -224,8 +224,7 @@
 <section class="home-global-section">
     <div class="aesop-container">
         <div class="section-header text-center fade-in">
-            <h2 style="text-transform:uppercase;font-family:var(--font-heading);font-weight:700;letter-spacing:0.02em;color:#2e7d32;">GLOBAL COMMITMENT</h2>
-            <div style="width:60px;height:4px;background:#4CAF50;margin:12px auto 0;border-radius:2px;"></div>
+            <h2 class="home-unified-section-title">GLOBAL COMMITMENT</h2>
         </div>
         <div class="global-map-wrapper fade-in">
             <div id="worldMapContainer" style="width:100%;max-width:900px;margin:0 auto;"></div>
@@ -306,8 +305,7 @@
 <section class="home-exhibition-section">
     <div class="aesop-container">
         <div class="section-header text-center fade-in">
-            <h2 style="text-transform:uppercase;font-family:var(--font-heading);font-weight:700;letter-spacing:0.02em;">EXHIBITION</h2>
-            <div style="width:60px;height:4px;background:#42a5f5;margin:12px auto 0;border-radius:2px;"></div>
+            <h2 class="home-unified-section-title">EXHIBITION</h2>
         </div>
         <div class="exhibition-carousel-wrapper fade-in" style="margin-top:36px;">
             <button class="exhibition-arrow exhibition-prev" onclick="exhibitionSlide(-1)"><i class="bi bi-chevron-left"></i></button>

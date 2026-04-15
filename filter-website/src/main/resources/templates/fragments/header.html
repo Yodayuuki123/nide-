@@ -43,15 +43,15 @@
     <div class="top-info-bar">
         <div class="aesop-container d-flex justify-content-between align-items-center">
             <div class="top-info-left">
-                <span><i class="bi bi-envelope"></i> info@philiteefilter.com</span>
-                <span class="ms-3"><i class="bi bi-telephone"></i> +86-18057358206</span>
+                <span><i class="bi bi-envelope"></i> belinda@philitee.com</span>
+                <span class="ms-3"><i class="bi bi-telephone"></i> +8613636563667</span>
             </div>
             <div class="top-info-right d-flex align-items-center gap-2">
                 <a href="#" class="social-icon" title="Facebook"><i class="bi bi-facebook"></i></a>
                 <a href="#" class="social-icon" title="LinkedIn"><i class="bi bi-linkedin"></i></a>
                 <a href="#" class="social-icon" title="Twitter"><i class="bi bi-twitter-x"></i></a>
                 <a href="https://www.youtube.com/@ShanghaiPhiliteFiltration" target="_blank" class="social-icon" title="YouTube"><i class="bi bi-youtube"></i></a>
-                <a href="https://wa.me/8618057358206" target="_blank" class="social-icon" title="WhatsApp"><i class="bi bi-whatsapp"></i></a>
+                <a href="https://wa.me/8613636563667" target="_blank" class="social-icon" title="WhatsApp"><i class="bi bi-whatsapp"></i></a>
                 <a href="https://filterphilite.en.alibaba.com/" target="_blank" class="social-icon" title="Alibaba"><i class="bi bi-shop"></i></a>
                 <div class="lang-switch ms-2">
                     <a th:href="@{${currentUrl}(lang='en')}"
@@ -136,10 +136,10 @@
                     <input type="text" name="keyword" placeholder="Search..." autocomplete="off">
                     <button type="submit" aria-label="Search"><i class="bi bi-search"></i></button>
                 </form>
-                <!-- Request Quote Button -->
-                <button type="button" class="header-quote-btn" onclick="openHeaderQuoteModal()" title="Request Quotation">
-                    <i class="bi bi-file-earmark-text"></i>
-                </button>
+                <!-- Contact Button -->
+                <a th:href="@{/contact}" class="header-contact-btn" title="Contact">
+                    <span>Contact</span>
+                </a>
                 <button class="mobile-toggle" onclick="openMobileMenu()" aria-label="Menu">
                     <span></span><span></span><span></span>
                 </button>

@@ -4013,8 +4013,15 @@ img {
     align-items: center;
 }
 
-.home-about-text h2 {
-    margin-bottom: 20px;
+.home-about-title {
+    margin: 0 0 24px;
+    font-family: var(--font-heading);
+    font-size: clamp(42px, 4.5vw, 68px);
+    font-weight: 700;
+    line-height: 0.98;
+    letter-spacing: 0.01em;
+    text-transform: uppercase;
+    color: #17251a;
 }
 
 .home-about-text p {
@@ -4068,6 +4075,11 @@ img {
     .home-about-grid {
         grid-template-columns: 1fr;
         gap: 40px;
+    }
+
+    .home-about-title {
+        font-size: clamp(32px, 8vw, 48px);
+        line-height: 1.02;
     }
 }
 
@@ -6122,6 +6134,88 @@ img {
         grid-template-columns: 1fr;
     }
 }
+
+.header-contact-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 110px;
+    height: 44px;
+    padding: 0 20px;
+    border-radius: 999px;
+    background: var(--accent);
+    color: #fff;
+    font-weight: 600;
+    text-decoration: none;
+    transition: background 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+    box-shadow: 0 8px 18px rgba(24, 160, 88, 0.18);
+}
+
+.header-contact-btn:hover {
+    color: #fff;
+    background: #13824a;
+    transform: translateY(-1px);
+}
+
+.header-contact-btn:focus {
+    color: #fff;
+    outline: none;
+}
+
+.bf-wechat-caption {
+    margin-bottom: 14px !important;
+    font-size: 0.95rem;
+    color: #666 !important;
+}
+
+.bf-wechat-qr {
+    width: 180px;
+    max-width: 100%;
+    height: auto;
+    border-radius: 12px;
+    border: 1px solid #e6e6e6;
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.08);
+}
+
+.home-unified-section-title,
+.home-categories-section .section-header h2,
+.home-products-section .section-header h2,
+.home-applications-section .section-header h2,
+.home-whychoose-section .section-header h2,
+.home-global-section .section-header h2,
+.home-exhibition-section .section-header h2 {
+    font-family: var(--font-heading) !important;
+    font-size: clamp(40px, 5vw, 76px) !important;
+    font-weight: 700 !important;
+    line-height: 0.98 !important;
+    letter-spacing: 0.01em !important;
+    text-transform: uppercase !important;
+    color: #17251a !important;
+    margin: 0 !important;
+}
+
+.home-categories-section .section-header,
+.home-products-section .section-header,
+.home-applications-section .section-header,
+.home-whychoose-section .section-header,
+.home-global-section .section-header,
+.home-exhibition-section .section-header {
+    margin-bottom: 28px;
+}
+
+@media (max-width: 768px) {
+    .home-unified-section-title,
+    .home-categories-section .section-header h2,
+    .home-products-section .section-header h2,
+    .home-applications-section .section-header h2,
+    .home-whychoose-section .section-header h2,
+    .home-global-section .section-header h2,
+    .home-exhibition-section .section-header h2 {
+        font-size: clamp(28px, 9vw, 44px) !important;
+        line-height: 1.02 !important;
+    }
+}
+
 .bf-contact-form-section h2 {
     font-family: var(--font-heading);
     font-size: 1.8rem;

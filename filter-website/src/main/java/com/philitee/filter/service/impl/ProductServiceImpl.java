@@ -287,6 +287,9 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
 
         // 产品图片列表
         List<Image> images = imageMapper.selectByProductId(product.getId());
+        if (images != null) {
+            images.forEach(this::normalizeImage);
+        }
         product.setImages(images);
 
         // 产品分类
@@ -314,8 +317,57 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
     private void fillMainImage(Product product) {
         if (product.getMainImageId() != null) {
             Image mainImage = imageMapper.selectById(product.getMainImageId());
+            normalizeImage(mainImage);
             product.setMainImage(mainImage);
         }
+    }
+
+    /**
+     * 统一规范化图片 URL：
+     * 1. 将数据库中的外部绝对地址改为站内相对路径，避免详情页直接请求旧域名失败。
+     * 2. 当 url 缺失时，优先根据 filePath 回退生成 /wp-content/uploads/** 路径。
+     */
+    private void normalizeImage(Image image) {
+        if (image == null) {
+            return;
+        }
+        String normalizedUrl = normalizeImageUrl(image.getUrl(), image.getFilePath());
+        if (normalizedUrl != null && !normalizedUrl.isBlank()) {
+            image.setUrl(normalizedUrl);
+        }
+    }
+
+    private String normalizeImageUrl(String url, String filePath) {
+        if (url != null && !url.isBlank()) {
+            String trimmedUrl = url.trim();
+
+            String wpRelative = trimmedUrl.replaceFirst("^https?://[^/]+(/wp-content/uploads/.*)$", "$1");
+            if (!wpRelative.equals(trimmedUrl)) {
+                return wpRelative;
+            }
+
+            String wordpressRelative = trimmedUrl.replaceFirst("^https?://[^/]+(/wordpress/wp-content/uploads/.*)$", "$1");
+            if (!wordpressRelative.equals(trimmedUrl)) {
+                return wordpressRelative;
+            }
+
+            if (trimmedUrl.startsWith("/wp-content/uploads/") || trimmedUrl.startsWith("/wordpress/wp-content/uploads/")) {
+                return trimmedUrl;
+            }
+        }
+
+        if (filePath != null && !filePath.isBlank()) {
+            String normalizedFilePath = filePath.trim();
+            if (!normalizedFilePath.startsWith("/")) {
+                normalizedFilePath = "/" + normalizedFilePath;
+            }
+            if (normalizedFilePath.startsWith("/wp-content/uploads/") || normalizedFilePath.startsWith("/wordpress/wp-content/uploads/")) {
+                return normalizedFilePath;
+            }
+            return "/wp-content/uploads" + normalizedFilePath;
+        }
+
+        return url;
     }
 
 }
