@@ -139,10 +139,12 @@
             <i class="bi bi-list fs-4"></i>
         </button>
         <div class="ms-auto d-flex align-items-center gap-3">
-            <span class="text-muted">
-                <i class="bi bi-person-circle"></i>
-                <span sec:authentication="name">管理员</span>
-            </span>
+            <div class="admin-topbar-user" title="当前登录用户">
+                <span class="admin-topbar-avatar">
+                    <i class="bi bi-person-fill"></i>
+                </span>
+                <span class="admin-topbar-name" sec:authentication="name">管理员</span>
+            </div>
         </div>
     </div>
 </div>

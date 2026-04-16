@@ -3936,7 +3936,7 @@ img {
 }
 
 .hero-slide-content h1 {
-    font-size: 3.2rem;
+    font-size: clamp(2.1rem, 4.2vw, 2.6rem);
     color: #fff;
     margin-bottom: 16px;
     font-weight: 600;
@@ -3996,7 +3996,7 @@ img {
 
 @media (max-width: 768px) {
     .hero-carousel { height: 450px; }
-    .hero-slide-content h1 { font-size: 2rem; }
+    .hero-slide-content h1 { font-size: 1.7rem; }
     .hero-slide-content p { font-size: 1rem; }
 }
 
@@ -4016,10 +4016,10 @@ img {
 .home-about-title {
     margin: 0 0 24px;
     font-family: var(--font-heading);
-    font-size: clamp(42px, 4.5vw, 68px);
-    font-weight: 700;
-    line-height: 0.98;
-    letter-spacing: 0.01em;
+    font-size: clamp(17px, 1.7vw, 28px);
+    font-weight: 600;
+    line-height: 1.12;
+    letter-spacing: -0.02em;
     text-transform: uppercase;
     color: #17251a;
 }
@@ -4078,8 +4078,8 @@ img {
     }
 
     .home-about-title {
-        font-size: clamp(32px, 8vw, 48px);
-        line-height: 1.02;
+        font-size: clamp(16px, 4.6vw, 22px);
+        line-height: 1.14;
     }
 }
 
@@ -6185,10 +6185,10 @@ img {
 .home-global-section .section-header h2,
 .home-exhibition-section .section-header h2 {
     font-family: var(--font-heading) !important;
-    font-size: clamp(40px, 5vw, 76px) !important;
-    font-weight: 700 !important;
-    line-height: 0.98 !important;
-    letter-spacing: 0.01em !important;
+    font-size: clamp(17px, 1.7vw, 28px) !important;
+    font-weight: 600 !important;
+    line-height: 1.12 !important;
+    letter-spacing: 0.018em !important;
     text-transform: uppercase !important;
     color: #17251a !important;
     margin: 0 !important;
@@ -6211,8 +6211,8 @@ img {
     .home-whychoose-section .section-header h2,
     .home-global-section .section-header h2,
     .home-exhibition-section .section-header h2 {
-        font-size: clamp(28px, 9vw, 44px) !important;
-        line-height: 1.02 !important;
+        font-size: clamp(16px, 4.6vw, 22px) !important;
+        line-height: 1.18 !important;
     }
 }
 

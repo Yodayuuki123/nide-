@@ -87,9 +87,9 @@
                 <div class="filmedia-cat-item fade-in">
                     <div class="filmedia-cat-img">
                         <img th:if="${cat.slug != null and !#strings.isEmpty(cat.slug)}"
-                             th:src="${'/static/wp-content/uploads/category-covers/' + cat.slug + '.jpg'}"
+                             th:src="${'/wp-content/uploads/category-covers/' + cat.slug + '.jpg'}"
                              th:alt="${cat.name}" loading="lazy"
-                             onerror="this.src='/static/wp-content/uploads/category-covers/'+this.dataset.slug+'.jpeg'; this.onerror=function(){this.src='/static/wp-content/uploads/category-covers/'+this.dataset.slug+'.png'; this.onerror=function(){this.style.display='none';this.nextElementSibling.style.display='flex';};};"
+                             onerror="this.src='/wp-content/uploads/category-covers/'+this.dataset.slug+'.jpeg'; this.onerror=function(){this.src='/wp-content/uploads/category-covers/'+this.dataset.slug+'.png'; this.onerror=function(){this.style.display='none';this.nextElementSibling.style.display='flex';};};"
                              th:data-slug="${cat.slug}">
                         <div class="filmedia-cat-placeholder" th:style="${cat.slug != null and !#strings.isEmpty(cat.slug)} ? 'display:none;' : 'display:flex;'"><i class="bi bi-funnel"></i></div>
                         <div class="filmedia-cat-overlay">
@@ -119,10 +119,15 @@
                             <div class="home-product-img">
                                 <img th:if="${product.mainImage != null}"
                                      th:src="${product.mainImage.url}"
-                                     th:alt="${product.name}" loading="lazy">
-                                <div th:unless="${product.mainImage != null}" class="product-placeholder">
-                                    <i class="bi bi-image"></i>
-                                </div>
+                                     th:alt="${product.name}" loading="lazy" decoding="async">
+                                <th:block th:unless="${product.mainImage != null}">
+                                    <img src="/static/wp-content/uploads/category-covers/wastewater-treatment-machinery.jpg"
+                                         th:alt="${product.name}" loading="lazy" decoding="async"
+                                         onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+                                    <div class="product-placeholder" style="display:none;">
+                                        <i class="bi bi-image"></i>
+                                    </div>
+                                </th:block>
                             </div>
                             <div class="home-product-info">
                                 <span class="home-product-category"
