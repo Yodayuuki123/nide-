@@ -768,3 +768,298 @@
         flex: 1;
     }
 }
+
+/* ============================================================
+   WordPress Content Compatibility Styles
+   For product description HTML imported from WordPress
+   ============================================================ */
+
+/* --- WordPress Image Alignment --- */
+.bf-pd-desc-content .alignnone {
+    display: block;
+    margin: 16px 0;
+    max-width: 100%;
+    height: auto;
+}
+.bf-pd-desc-content .aligncenter {
+    display: block;
+    margin: 16px auto;
+    max-width: 100%;
+    height: auto;
+    text-align: center;
+}
+.bf-pd-desc-content .alignleft {
+    float: left;
+    margin: 8px 20px 12px 0;
+    max-width: 50%;
+    height: auto;
+}
+.bf-pd-desc-content .alignright {
+    float: right;
+    margin: 8px 0 12px 20px;
+    max-width: 50%;
+    height: auto;
+}
+.bf-pd-desc-content .size-full,
+.bf-pd-desc-content .size-large {
+    max-width: 100%;
+    height: auto;
+}
+.bf-pd-desc-content .size-medium {
+    max-width: 100%;
+    height: auto;
+}
+.bf-pd-desc-content img[class*="wp-image-"] {
+    max-width: 100%;
+    height: auto;
+    border-radius: 4px;
+}
+
+/* --- WordPress Figures & Captions --- */
+.bf-pd-desc-content figure {
+    margin: 20px 0;
+    max-width: 100%;
+}
+.bf-pd-desc-content figure img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+.bf-pd-desc-content figcaption,
+.bf-pd-desc-content .wp-caption-text {
+    font-size: 0.85rem;
+    color: #666;
+    text-align: center;
+    margin-top: 8px;
+    font-style: italic;
+}
+.bf-pd-desc-content .wp-caption {
+    max-width: 100%;
+    margin: 16px 0;
+}
+
+/* --- WordPress Block Heading --- */
+.bf-pd-desc-content .wp-block-heading {
+    margin-top: 24px;
+    margin-bottom: 12px;
+}
+
+/* --- Product Description Tables --- */
+.bf-pd-desc-content table {
+    width: 100% !important;
+    border-collapse: collapse;
+    margin: 20px 0;
+    font-size: 0.92rem;
+    border: 1px solid #ddd;
+    table-layout: auto;
+    overflow-x: auto;
+    display: table;
+}
+.bf-pd-desc-content table td,
+.bf-pd-desc-content table th {
+    padding: 10px 14px;
+    border: 1px solid #ddd;
+    vertical-align: middle;
+    line-height: 1.6;
+    word-wrap: break-word;
+}
+.bf-pd-desc-content table th,
+.bf-pd-desc-content table thead td {
+    background: #f5f5f5;
+    font-weight: 600;
+    text-align: left;
+}
+.bf-pd-desc-content table tr:nth-child(even) {
+    background: #fafafa;
+}
+.bf-pd-desc-content table tr:hover {
+    background: #f0f7f0;
+}
+
+/* Excel-style table classes from WordPress */
+.bf-pd-desc-content .et3 {
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    vertical-align: middle;
+}
+.bf-pd-desc-content td[class*="xl6"],
+.bf-pd-desc-content td[class*="xl7"] {
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    vertical-align: middle;
+}
+
+/* Content table classes */
+.bf-pd-desc-content .contenttable {
+    width: 100% !important;
+    border-collapse: collapse;
+    margin: 16px 0;
+}
+.bf-pd-desc-content .contenttable td {
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+}
+.bf-pd-desc-content .contenttable .tr-even {
+    background: #fafafa;
+}
+
+/* Table first column as header style */
+.bf-pd-desc-content table td:first-child {
+    font-weight: 500;
+    background: #f8f9fa;
+    min-width: 160px;
+}
+
+/* --- Product Description Headings --- */
+.bf-pd-desc-content h2 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin: 32px 0 16px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #4CAF50;
+    color: #1a1a1a !important;
+    font-family: var(--font-heading, 'Montserrat', sans-serif);
+}
+.bf-pd-desc-content h3 {
+    font-size: 1.3rem;
+    font-weight: 700;
+    margin: 28px 0 14px;
+    color: #1a1a1a !important;
+    font-family: var(--font-heading, 'Montserrat', sans-serif);
+}
+.bf-pd-desc-content h4 {
+    font-size: 1.15rem;
+    font-weight: 600;
+    margin: 24px 0 12px;
+    color: #222 !important;
+    font-family: var(--font-heading, 'Montserrat', sans-serif);
+}
+.bf-pd-desc-content h5 {
+    font-size: 1.05rem;
+    font-weight: 600;
+    margin: 20px 0 10px;
+    color: #333 !important;
+}
+
+/* --- Product Description Paragraphs --- */
+.bf-pd-desc-content p {
+    margin: 12px 0;
+    line-height: 1.8;
+    color: #333 !important;
+    font-size: 0.95rem;
+}
+
+/* --- Product Description Lists --- */
+.bf-pd-desc-content ul,
+.bf-pd-desc-content ol {
+    margin: 14px 0;
+    padding-left: 24px;
+}
+.bf-pd-desc-content li {
+    margin-bottom: 8px;
+    line-height: 1.7;
+    color: #333 !important;
+}
+.bf-pd-desc-content ul li {
+    list-style-type: disc;
+}
+.bf-pd-desc-content ol li {
+    list-style-type: decimal;
+}
+.bf-pd-desc-content li strong,
+.bf-pd-desc-content li b {
+    color: #1a1a1a !important;
+    font-weight: 600;
+}
+
+/* --- Product Description Strong/Bold --- */
+.bf-pd-desc-content strong,
+.bf-pd-desc-content b {
+    font-weight: 600;
+    color: #1a1a1a !important;
+}
+
+/* --- Product Description Links --- */
+.bf-pd-desc-content a {
+    color: #2e7d32 !important;
+    text-decoration: underline;
+}
+.bf-pd-desc-content a:hover {
+    color: #1b5e20 !important;
+}
+
+/* --- Product Description Horizontal Rules --- */
+.bf-pd-desc-content hr {
+    border: none;
+    border-top: 1px solid #e0e0e0;
+    margin: 24px 0;
+}
+
+/* --- Product Description Divs (section wrappers) --- */
+.bf-pd-desc-content > div {
+    margin: 16px 0;
+}
+
+/* --- Clearfix for floated images --- */
+.bf-pd-desc-content::after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+/* --- Responsive table wrapper --- */
+@media (max-width: 768px) {
+    .bf-pd-desc-content table {
+        display: block;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        font-size: 0.85rem;
+    }
+    .bf-pd-desc-content table td,
+    .bf-pd-desc-content table th {
+        padding: 8px 10px;
+        white-space: nowrap;
+    }
+    .bf-pd-desc-content .alignleft,
+    .bf-pd-desc-content .alignright {
+        float: none;
+        display: block;
+        margin: 12px auto;
+        max-width: 100%;
+    }
+    .bf-pd-desc-content img {
+        max-width: 100% !important;
+        height: auto !important;
+    }
+}
+
+/* --- Magic table classes (from Excel/WPS paste) --- */
+.bf-pd-desc-content td[class*="magic-"] {
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    vertical-align: middle;
+}
+
+/* --- Font classes from WordPress --- */
+.bf-pd-desc-content .font0,
+.bf-pd-desc-content .font1 {
+    font-family: inherit;
+}
+
+/* --- Short description styling --- */
+.bf-pd-short-desc {
+    line-height: 1.7;
+    font-size: 0.95rem;
+}
+.bf-pd-short-desc strong,
+.bf-pd-short-desc b {
+    font-weight: 600;
+}
+.bf-pd-short-desc ul,
+.bf-pd-short-desc ol {
+    margin: 8px 0;
+    padding-left: 20px;
+}
+.bf-pd-short-desc li {
+    margin-bottom: 4px;
+}
