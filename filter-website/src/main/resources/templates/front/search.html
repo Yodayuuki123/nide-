@@ -4,38 +4,16 @@
 <body>
 <header th:replace="~{fragments/header :: navbar}"></header>
 
-<!-- Page Header -->
-<section class="page-header">
-    <div class="aesop-container">
-        <h1 th:text="#{search.title}" class="fade-in">Search</h1>
-        <nav class="breadcrumb-nav">
-            <a th:href="@{/}" th:text="#{breadcrumb.home}">Home</a>
-            <span class="separator">/</span>
-            <span class="current" th:text="#{search.title}">Search</span>
-        </nav>
-    </div>
-</section>
+<!-- Breadcrumb -->
+<div th:replace="~{fragments/breadcrumb :: breadcrumb(${breadcrumbItems})}"></div>
 
 <section class="section">
     <div class="aesop-container">
 
-        <!-- Search Form -->
-        <form th:action="@{/search}" method="get" class="search-form-large fade-in">
-            <input type="text" name="keyword" th:value="${keyword}" th:placeholder="#{search.placeholder}" autofocus>
-            <button type="submit"><i class="bi bi-search"></i></button>
-        </form>
-
         <!-- Results Area -->
         <div th:if="${keyword != null and !keyword.isEmpty()}">
 
-            <!-- Summary -->
-            <div class="search-result-info fade-in">
-                <span th:text="#{search.results_for}">Results for</span>
-                &ldquo;<strong th:text="${keyword}">keyword</strong>&rdquo;
-                &mdash;
-                <span th:text="${totalResults != null ? totalResults : 0}">0</span>
-                <span th:text="#{pagination.results}">results</span>
-            </div>
+
 
             <!-- Tab Navigation -->
             <div class="search-tabs fade-in">
@@ -125,7 +103,8 @@
 
 <footer th:replace="~{fragments/footer :: footer}"></footer>
 
-<script src="/static/js/main.js?v=10"></script>
+<script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="/static/js/frontend-interactions.js"></script>
 <script>
 function showTab(name, btn) {
     document.querySelectorAll('.search-tab-content').forEach(function(el) {

@@ -2,21 +2,10 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head th:replace="~{fragments/header :: htmlHead(#{factory.title}, #{factory.subtitle})}"></head>
 <body>
-<link rel="stylesheet" href="/static/css/slideshow.css?v=6">
 <header th:replace="~{fragments/header :: navbar}"></header>
 
-<!-- Page Header -->
-<section class="page-header">
-    <div class="aesop-container">
-        <h1 th:text="#{factory.title}" class="fade-in">Our Factory</h1>
-        <p th:text="#{factory.subtitle}" class="fade-in">Vertically integrated manufacturing from raw materials to finished products</p>
-        <nav class="breadcrumb-nav">
-            <a th:href="@{/}" th:text="#{breadcrumb.home}">Home</a>
-            <span class="separator">/</span>
-            <span class="current" th:text="#{factory.title}">Factory</span>
-        </nav>
-    </div>
-</section>
+<!-- Breadcrumb -->
+<div th:replace="~{fragments/breadcrumb :: breadcrumb(${breadcrumbItems})}"></div>
 
 <!-- Factory Overview with Slideshow -->
 <section class="editorial-section">
@@ -180,20 +169,12 @@
     </div>
 </section>
 
-<!-- CTA -->
-<section class="cta-banner">
-    <div class="aesop-container">
-        <h3 class="fade-in" th:text="#{cta.title}">Need Custom Filtration Solutions?</h3>
-        <p class="fade-in" th:text="#{cta.subtitle}">Contact our team for professional consultation</p>
-        <div class="fade-in">
-            <a th:href="@{/contact}" class="btn-aesop" th:text="#{cta.button}">Get in Touch</a>
-        </div>
-    </div>
-</section>
+
 
 <footer th:replace="~{fragments/footer :: footer}"></footer>
 
-<script src="/static/js/main.js?v=10"></script>
-<script src="/static/js/slideshow.js?v=3"></script>
+<script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="/static/js/frontend-interactions.js"></script>
+<script src="/static/js/factory-slideshow.js?v=1"></script>
 </body>
 </html>

@@ -88,11 +88,12 @@
                                 </td>
                                 <td>
                                     <div th:if="${inq.attachmentPath != null and !inq.attachmentPath.isEmpty()}">
-                                        <div class="mb-1" style="font-size:12px;" th:text="${inq.attachmentName != null ? inq.attachmentName : 'attachment'}">filename</div>
-                                        <a th:href="@{/admin/inquiries/download/{id}(id=${inq.id})}" target="_blank"
-                                           class="btn btn-sm btn-outline-primary me-1" title="查看">
+                                        <div class="mb-1" style="font-size:12px; word-break:break-all; max-width:160px;"
+                                             th:text="${inq.attachmentName != null ? inq.attachmentName : 'attachment'}">filename</div>
+                                        <button type="button" class="btn btn-sm btn-outline-primary me-1" title="预览"
+                                                th:onclick="'previewAttachment(' + ${inq.id} + ', \'' + ${inq.attachmentName != null ? inq.attachmentName : ''} + '\')'">
                                             <i class="bi bi-eye"></i>
-                                        </a>
+                                        </button>
                                         <a th:href="@{/admin/inquiries/download/{id}(id=${inq.id})}"
                                            class="btn btn-sm btn-outline-success" title="下载" download>
                                             <i class="bi bi-download"></i>
@@ -179,6 +180,36 @@
     </div>
 </div>
 
+<!-- 附件预览弹窗 -->
+<div class="modal fade" id="previewModal" tabindex="-1">
+    <div class="modal-dialog modal-xl modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="previewModalTitle">附件预览</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body text-center" id="previewModalBody" style="min-height:300px; padding:16px;">
+                <div id="previewLoading"><i class="bi bi-hourglass-split"></i> 加载中...</div>
+                <img id="previewImg" src="" alt="" style="display:none; max-width:100%; max-height:75vh; border-radius:4px;">
+                <iframe id="previewIframe" src="" style="display:none; width:100%; height:75vh; border:none;"></iframe>
+                <div id="previewUnsupported" style="display:none;">
+                    <i class="bi bi-file-earmark" style="font-size:48px; color:#999;"></i>
+                    <p class="mt-3 text-muted">该文件类型暂不支持在线预览，请下载后查看。</p>
+                    <a id="previewDownloadBtn" href="#" class="btn btn-primary mt-2" download>
+                        <i class="bi bi-download"></i> 下载文件
+                    </a>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <a id="previewModalDownload" href="#" class="btn btn-success" download>
+                    <i class="bi bi-download"></i> 下载
+                </a>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">关闭</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div th:replace="~{fragments/admin-layout :: adminScripts}"></div>
 <script>
     function confirmDelete(btn) {
@@ -186,6 +217,51 @@
         document.getElementById('deleteForm').action = '/admin/inquiries/delete/' + btn.getAttribute('data-id');
         var modal = new bootstrap.Modal(document.getElementById('deleteModal'));
         modal.show();
+    }
+
+    function previewAttachment(id, fileName) {
+        var previewUrl = '/admin/inquiries/preview/' + id;
+        var downloadUrl = '/admin/inquiries/download/' + id;
+        // Set title
+        document.getElementById('previewModalTitle').textContent = fileName || '附件预览';
+        // Set download links
+        document.getElementById('previewModalDownload').href = downloadUrl;
+        document.getElementById('previewDownloadBtn').href = downloadUrl;
+        // Reset state
+        document.getElementById('previewLoading').style.display = 'block';
+        document.getElementById('previewImg').style.display = 'none';
+        document.getElementById('previewIframe').style.display = 'none';
+        document.getElementById('previewUnsupported').style.display = 'none';
+        document.getElementById('previewImg').src = '';
+        document.getElementById('previewIframe').src = '';
+        // Determine file type by extension
+        var ext = (fileName || '').split('.').pop().toLowerCase();
+        var imageExts = ['jpg','jpeg','png','gif','bmp','webp','svg'];
+        var pdfExts = ['pdf'];
+        var modal = new bootstrap.Modal(document.getElementById('previewModal'));
+        modal.show();
+        if (imageExts.indexOf(ext) >= 0) {
+            var img = document.getElementById('previewImg');
+            img.onload = function() {
+                document.getElementById('previewLoading').style.display = 'none';
+                img.style.display = 'inline-block';
+            };
+            img.onerror = function() {
+                document.getElementById('previewLoading').style.display = 'none';
+                document.getElementById('previewUnsupported').style.display = 'block';
+            };
+            img.src = previewUrl;
+        } else if (pdfExts.indexOf(ext) >= 0) {
+            var iframe = document.getElementById('previewIframe');
+            iframe.onload = function() {
+                document.getElementById('previewLoading').style.display = 'none';
+                iframe.style.display = 'block';
+            };
+            iframe.src = previewUrl;
+        } else {
+            document.getElementById('previewLoading').style.display = 'none';
+            document.getElementById('previewUnsupported').style.display = 'block';
+        }
     }
 </script>
 </body>
