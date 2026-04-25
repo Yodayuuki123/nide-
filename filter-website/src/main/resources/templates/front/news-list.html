@@ -7,33 +7,40 @@
 <!-- Breadcrumb -->
 <div th:replace="~{fragments/breadcrumb :: breadcrumb(${breadcrumbItems})}"></div>
 
+<!-- Page Title -->
+<section class="bf-page-title">
+    <div class="bf-container">
+        <h1 th:text="#{nav.news}">News</h1>
+    </div>
+</section>
 
+<!-- Search & Filter Bar -->
+<section class="bf-filter-bar">
+    <div class="bf-container">
+        <form th:action="@{/news}" method="get" class="bf-filter-form">
+            <div class="bf-filter-group">
+                <input type="text" name="keyword" th:value="${keyword}" th:placeholder="#{news.search.placeholder}" class="bf-filter-input">
+            </div>
+            <div class="bf-filter-group">
+                <input type="date" name="startDate" th:value="${startDate}" class="bf-filter-input bf-date-input">
+            </div>
+            <div class="bf-filter-group">
+                <input type="date" name="endDate" th:value="${endDate}" class="bf-filter-input bf-date-input">
+            </div>
+            <div class="bf-filter-group">
+                <select name="sort" class="bf-filter-input">
+                    <option value="newest" th:selected="${sort == 'newest'}" th:text="#{news.sort.newest}">Newest First</option>
+                    <option value="oldest" th:selected="${sort == 'oldest'}" th:text="#{news.sort.oldest}">Oldest First</option>
+                </select>
+            </div>
+            <button type="submit" class="bf-filter-btn"><i class="bi bi-search"></i> <span th:text="#{search.button}">Search</span></button>
+        </form>
+    </div>
+</section>
 
 <!-- News Grid -->
 <section class="bf-news-section">
     <div class="bf-container">
-        <!-- Search & Date Filter (swapped: date first, keyword last) -->
-        <form method="get" th:action="@{/news}" style="margin-bottom:24px;">
-            <div style="display:flex;align-items:center;gap:0;border:1px solid #ddd;border-radius:4px;overflow:hidden;background:#fff;">
-                <div style="display:flex;align-items:center;padding:0 12px;border-right:1px solid #ddd;">
-                    <label style="font-size:13px;font-weight:600;color:#e53e3e;margin-right:8px;white-space:nowrap;font-family:var(--font-body);">Start Date</label>
-                    <input type="date" name="startDate" th:value="${startDate}"
-                           style="padding:10px 8px;border:none;font-size:14px;font-family:var(--font-body);outline:none;min-width:140px;">
-                </div>
-                <div style="display:flex;align-items:center;padding:0 12px;border-right:1px solid #ddd;">
-                    <label style="font-size:13px;font-weight:600;color:#38a169;margin-right:8px;white-space:nowrap;font-family:var(--font-body);">End Date</label>
-                    <input type="date" name="endDate" th:value="${endDate}"
-                           style="padding:10px 8px;border:none;font-size:14px;font-family:var(--font-body);outline:none;min-width:140px;">
-                </div>
-                <input type="text" name="keyword" th:value="${keyword}" placeholder="Search news..."
-                       style="flex:1;min-width:180px;padding:12px 16px;border:none;border-right:1px solid #ddd;font-size:14px;font-family:var(--font-body);outline:none;">
-                <input type="hidden" name="sort" th:value="${sort}">
-                <button type="submit" style="padding:12px 20px;background:#2d6a4f;color:#fff;border:none;font-size:14px;font-family:var(--font-body);cursor:pointer;white-space:nowrap;flex-shrink:0;">
-                    <i class="bi bi-search"></i> Search
-                </button>
-            </div>
-        </form>
-
         <!-- Search info -->
         <div th:if="${keyword != null and keyword != ''}" class="bf-search-info">
             <span th:text="#{search.results_for}">Search results for:</span> "<strong th:text="${keyword}"></strong>"
@@ -84,7 +91,6 @@
 </section>
 
 <footer th:replace="~{fragments/footer :: footer}"></footer>
-<script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-<script src="/static/js/frontend-interactions.js"></script>
+<script src="/static/js/main.js?v=10"></script>
 </body>
 </html>

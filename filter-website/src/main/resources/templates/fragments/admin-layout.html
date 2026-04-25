@@ -6,7 +6,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title th:text="${pageTitle} + ' - 菲利特管理后台'">管理后台</title>
-    <!-- Fonts: loaded via admin.css local import -->
+    <!-- Performance: Preconnect -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <!-- Google Fonts: Noto Sans SC -->
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <!-- Bootstrap 5.3 -->
     <link href="/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <link href="/vendor/bootstrap-icons/font/bootstrap-icons.min.css" rel="stylesheet">
@@ -139,12 +143,10 @@
             <i class="bi bi-list fs-4"></i>
         </button>
         <div class="ms-auto d-flex align-items-center gap-3">
-            <div class="admin-topbar-user" title="当前登录用户">
-                <span class="admin-topbar-avatar">
-                    <i class="bi bi-person-fill"></i>
-                </span>
-                <span class="admin-topbar-name" sec:authentication="name">管理员</span>
-            </div>
+            <span class="text-muted">
+                <i class="bi bi-person-circle"></i>
+                <span sec:authentication="name">管理员</span>
+            </span>
         </div>
     </div>
 </div>
@@ -153,21 +155,6 @@
 <div th:fragment="adminScripts">
     <script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
     <script src="/static/js/admin.js"></script>
-    <!-- B-17: Flash message toast notifications -->
-    <script th:if="${message}">
-        document.addEventListener('DOMContentLoaded', function() {
-            if (typeof showToast === 'function') {
-                showToast([[${message}]], 'success');
-            }
-        });
-    </script>
-    <script th:if="${error}">
-        document.addEventListener('DOMContentLoaded', function() {
-            if (typeof showToast === 'function') {
-                showToast([[${error}]], 'error');
-            }
-        });
-    </script>
 </div>
 
 </html>

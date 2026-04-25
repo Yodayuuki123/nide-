@@ -21,3 +21,7 @@ Thumbs.db
 # Static uploads (large binary files - tracked separately)
 filter-website/src/main/resources/static/wp-content/uploads/
 server_resources/combined.zip
+filter-website/src/main/resources/static/images/
+filter-website/asphalt.jpg
+filter-website/carbon.jpg
+filter-website/cement.jpg
